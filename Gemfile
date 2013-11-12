@@ -35,6 +35,9 @@ end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
+# Use LDAP for authentication
+gem 'net-ldap'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 

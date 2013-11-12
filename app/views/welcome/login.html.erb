@@ -1,0 +1,9 @@
+<%= flash[:error] %>
+<%= form_for @user, url: :check_login do |u| %>
+  <% if @user.errors.any? %>
+    <%= @user.errors.messages %>
+  <% end %>
+  Username: <%= u.email_field :username, required: true, placeholder: 'john.doe@orasi.com', pattern: '\w+\.\w+@orasi.com', title: 'Orasi email address' %><br />
+  Password: <%= u.password_field :password, required: true %><br />
+  <%= u.submit 'Login' %>
+<% end %>
