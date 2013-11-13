@@ -42,6 +42,6 @@ class WelcomeController < ApplicationController
       :username => "ORASI\\#{first_part_username}",
       :password => password
     }
-    true#ldap.bind
+    ldap.bind
   end
 end
