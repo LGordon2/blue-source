@@ -1,4 +1,5 @@
 ManagerPortal::Application.routes.draw do
+  get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#destroy", as: :logout
   post "login", to: "welcome#validate", as: :check_login

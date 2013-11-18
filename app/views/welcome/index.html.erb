@@ -1,3 +1,18 @@
 <h1>Welcome, <%= "#{current_user.first_name.capitalize}"%>.</h1>
-<%= link_to "Add subordinate"%><BR><BR>
+<table cellspacing="10">
+	<tr>
+		<th>Name</th>
+		<th>Role</th>
+		<th>Supervisor</th>
+		<th>Project</th>
+	</tr>
+	<% current_user.subordinates.each do |user| %>
+	<tr>
+		<td><%= link_to user.first_name.capitalize + " " + user.last_name.capitalize %></td>
+		<td>Consultant</td>
+		<td><%= link_to user.manager.first_name.capitalize + " " + user.manager.last_name.capitalize unless user.manager.nil? %></td>
+		<td><%= user.project.capitalize unless user.project.nil? %></td>
+	</tr>
+	<% end %>
+</table>
 <%= link_to "Logout", :logout %>

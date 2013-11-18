@@ -8,9 +8,13 @@ class WelcomeController < ApplicationController
     end
     
     @user = User.authenticate(params[:user])
-    if @user.save 
+    if @user.save
       session[:current_user_id] = @user.id
-      redirect_to :root
+      unless @user.subordinates.empty?
+        redirect_to :root
+      else
+        redirect_to :sorry
+      end
     else
       render action: :login
     end
@@ -30,6 +34,9 @@ class WelcomeController < ApplicationController
   def index
   end
   
+  def sorry
+  end
+  
   private 
   
   def validate_against_ad(username, password)
@@ -41,7 +48,7 @@ class WelcomeController < ApplicationController
       :username => "ORASI\\#{username}",
       :password => password
     }
-    ldap.bind
+    true#ldap.bind
   end
   
   
