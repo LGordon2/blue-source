@@ -14,7 +14,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-
+*.crt
+*.key
 *.rbc
 *.sassc
 .sass-cache
@@ -35,3 +36,4 @@ pickle-email-*.html
 .project
 /vendor
 /log
+.DS_Store

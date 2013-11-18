@@ -34,14 +34,15 @@ class WelcomeController < ApplicationController
   
   def validate_against_ad(username, password)
     #Do authentication against the AD.
-    first_part_username,_ = username.split("@")
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
     :auth => {
       :method => :simple,
-      :username => "ORASI\\#{first_part_username}",
+      :username => "ORASI\\#{username}",
       :password => password
     }
     ldap.bind
   end
+  
+  
 end
