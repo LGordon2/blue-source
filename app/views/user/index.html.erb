@@ -1,0 +1,12 @@
+<h1><%= @user.first_name.capitalize + " " + @user.last_name.capitalize %></h1>
+<table>
+	<tr>
+		<td>Role:</td>
+		<td><%= @user.role.title unless @user.role.nil? %></td>
+	</tr>
+	<tr>
+		<td>Project:</td>
+		<td><%= @user.project.blank? ? "Not billable" : @user.project %></td>
+	</tr>
+</table>
+<%= link_to "Back", :root %>

@@ -8,9 +8,9 @@
 	</tr>
 	<% current_user.subordinates.each do |user| %>
 	<tr>
-		<td><%= link_to user.first_name.capitalize + " " + user.last_name.capitalize %></td>
-		<td>Consultant</td>
-		<td><%= link_to user.manager.first_name.capitalize + " " + user.manager.last_name.capitalize unless user.manager.nil? %></td>
+		<td><%= link_to user.first_name.capitalize + " " + user.last_name.capitalize, "user/#{user.id}" %></td>
+		<td><%= user.role.title unless user.role.nil? %></td>
+		<td><%= link_to user.manager.first_name.capitalize + " " + user.manager.last_name.capitalize, "user/#{user.manager.id}" unless user.manager.nil? %></td>
 		<td><%= user.project.capitalize unless user.project.nil? %></td>
 	</tr>
 	<% end %>

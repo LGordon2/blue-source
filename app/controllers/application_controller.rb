@@ -18,8 +18,12 @@ class ApplicationController < ActionController::Base
       User.find_by(id: session[:current_user_id])
   end
   
-  def require_login
-    redirect_to :login unless current_user
+  def require_manager_login
+    if current_user.nil?
+      redirect_to :login
+    elsif current_user.subordinates.empty?
+      redirect_to :sorry
+    end
   end
   
   def ssl_configured?

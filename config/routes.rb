@@ -1,7 +1,8 @@
 ManagerPortal::Application.routes.draw do
+  get "user/:id" => "user#index", as: :users
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
-  get "logout", to: "welcome#destroy", as: :logout
+  get "logout", to: "welcome#logout", as: :logout
   post "login", to: "welcome#validate", as: :check_login
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

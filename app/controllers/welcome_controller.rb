@@ -1,5 +1,5 @@
 class WelcomeController < ApplicationController
-  before_action :require_login, only: :index
+  before_action :require_manager_login, only: :index
   
   def validate
     unless validate_against_ad(params[:user][:username],params[:user][:password])
@@ -21,7 +21,7 @@ class WelcomeController < ApplicationController
   end
   
   # "Delete" a login, aka "log the user out"
-  def destroy
+  def logout
     # Remove the user id from the session
     @_current_user = session[:current_user_id] = nil
     redirect_to :root
@@ -32,6 +32,7 @@ class WelcomeController < ApplicationController
   end
 
   def index
+    redirect_to :sorry if current_user.subordinates.empty?
   end
   
   def sorry
