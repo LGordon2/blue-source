@@ -43,7 +43,7 @@
 					</tr>
 					<tr>
 						<td>Extension:</td>
-						<td><%= e.number_field :extension%></td>
+						<td><%= e.number_field :extension, min: 1000, max: 9999%></td>
 					</tr>
 				</table>
 				<%= e.submit "Save"%>
@@ -55,5 +55,5 @@
 	</div>
 
 </div>
-
+<%= link_to "Cancel", @employee%>
 <%= link_to "Back", :root %>

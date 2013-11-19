@@ -49,4 +49,42 @@ class EmployeeTest < ActiveSupport::TestCase
       e1.save!
     end
   end
+  
+  test "start date can not be after the current date" do
+    e = Employee.new
+    e.username = "bob.dylan"
+    e.first_name = "bob"
+    e.last_name = "dylan"
+    e.start_date = DateTime.new(9999,01,01)
+    assert_raises ActiveRecord::RecordInvalid do
+      e.save!
+    end
+  end
+  
+  test "extension must be a valid number" do
+    e = Employee.new
+    e.username = "bob.dylan"
+    e.first_name = "bob"
+    e.last_name = "dylan"
+    e.extension = 0
+    assert_raises ActiveRecord::RecordInvalid do
+      e.save!
+    end
+    e.extension = -1
+    assert_raises ActiveRecord::RecordInvalid do
+      e.save!
+    end
+    e.extension = 999
+    assert_raises ActiveRecord::RecordInvalid do
+      e.save!
+    end
+    e.extension = 10000
+    assert_raises ActiveRecord::RecordInvalid do
+      e.save!
+    end
+    e.extension = 4000
+    assert_nothing_raised ActiveRecord::RecordInvalid do
+      e.save!
+    end
+  end
 end
