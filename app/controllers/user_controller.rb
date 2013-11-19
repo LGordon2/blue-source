@@ -9,10 +9,10 @@ class UserController < ApplicationController
   private
   
   def set_user
-    @user = User.find(params[:id])
+    @employee = Employee.find(params[:id])
   end
   
   def check_manager_status
-    redirect_to :root if @user.manager != current_user and @user != current_user
+    redirect_to :root if @employee.manager != current_user and @employee != current_user
   end
 end

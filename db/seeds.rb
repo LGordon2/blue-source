@@ -9,8 +9,8 @@
 #Build org chart.
 
 #Alissa
-manager = User.create([{username: "alissa.taylor", first_name: "alissa", last_name: "taylor", role: "Manager"}])
-employee = User.create([
+manager = Employee.create([{username: "alissa.taylor", first_name: "alissa", last_name: "taylor", role: "Manager"}])
+employee = Employee.create([
   {username: "andrew.williams"},
   {username: "lewis.gordon"},
   {username: "leroy.davis"},
@@ -24,8 +24,8 @@ employee.each do |e|
 end
 
 #Adam
-manager = User.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: "Manager"}])
-employee = User.create([
+manager = Employee.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: "Manager"}])
+employee = Employee.create([
   {username: "waightstill.avery"},
   {username: "timothy.macior"},
   {username: "brent.monger"},
@@ -40,8 +40,8 @@ employee.each do |e|
 end
 
 #Perry
-manager = User.create([{username: "perry.thomas", first_name: "perry", last_name: "thomas", role: "Manager"}])
-employee = User.create([
+manager = Employee.create([{username: "perry.thomas", first_name: "perry", last_name: "thomas", role: "Manager"}])
+employee = Employee.create([
   {username: "alfredo.gonzalez"},
   {username: "damien.storm"},
   {username: "daniel.mattice"},

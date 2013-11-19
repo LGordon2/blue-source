@@ -1,7 +1,7 @@
 <h1>Login</h1>
-<%= form_for @user, url: :check_login do |u| %>
-  <% if @user.errors.any? %>
-    <%= @user.errors.messages %>
+<%= form_for @employee, url: :check_login do |u| %>
+  <% if @employee.errors.any? %>
+    <%= @employee.errors.messages %>
   <% end %>
   <table>
   	<tr style="text-align:right">

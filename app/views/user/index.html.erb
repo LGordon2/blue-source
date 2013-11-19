@@ -1,16 +1,16 @@
-<h1><%= @user.display_name %></h1>
+<h1><%= @employee.display_name %></h1>
 <table>
 	<tr>
 		<td>Role:</td>
-		<td><%= @user.role unless @user.role.blank? %></td>
+		<td><%= @employee.role unless @employee.role.blank? %></td>
 	</tr>
 	<tr>
 		<td>Project:</td>
-		<td><%= @user.project.blank? ? "Not billable" : @user.project %></td>
+		<td><%= @employee.project.blank? ? "Not billable" : @employee.project %></td>
 	</tr>
 	<tr>
 		<td>Manager:</td>
-		<td><%= link_to @user.manager.display_name, "#{@user.manager.id}" unless @user.manager.blank? %></td>
+		<td><%= link_to @employee.manager.display_name, "#{@employee.manager.id}" unless @employee.manager.blank? %></td>
 	</tr>
 </table>
 <%= link_to "Back", :root %>

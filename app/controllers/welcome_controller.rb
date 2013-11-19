@@ -2,15 +2,15 @@ class WelcomeController < ApplicationController
   before_action :require_manager_login, only: :index
   
   def validate
-    unless validate_against_ad(params[:user][:username],params[:user][:password])
+    unless validate_against_ad(params[:employee][:username],params[:employee][:password])
       redirect_to :login, flash: {error: "Invalid username or password."}
       return
     end
     
-    @user = User.authenticate(params[:user])
-    if @user.save
-      session[:current_user_id] = @user.id
-      unless @user.subordinates.empty?
+    @employee = Employee.authenticate(params[:employee])
+    if @employee.save
+      session[:current_user_id] = @employee.id
+      unless @employee.subordinates.empty?
         redirect_to :root
       else
         redirect_to :sorry
@@ -28,7 +28,7 @@ class WelcomeController < ApplicationController
   end
   
   def login
-    @user = User.new
+    @employee = Employee.new
   end
 
   def index

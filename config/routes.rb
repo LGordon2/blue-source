@@ -1,5 +1,5 @@
 ManagerPortal::Application.routes.draw do
-  get "user/:id" => "user#index", as: :users
+  get "employee/:id" => "user#index", as: :users
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout
