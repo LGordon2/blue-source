@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+manager:
+  username: bob.barker
+  first_name: bob
+  last_name: barker
+
+consultant:
+  username: john.doe
+  first_name: john
+  last_name: doe
+  manager: manager
+  
+manager2:
+  username: bob.ross
+  first_name: bob
+  last_name: ross
+  
+consultant2:
+  username: drew.carey
+  first_name: drew
+  last_name: carey
+  manager: manager2
+
