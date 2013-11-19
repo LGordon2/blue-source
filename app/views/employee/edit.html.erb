@@ -1,0 +1,59 @@
+<h1><%= @employee.display_name %></h1>
+<% if @employee.errors.any? %>
+	<div id="error_explanation">
+		<h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+		<ul>
+			<% @employee.errors.full_messages.each do |msg| %>
+			<li>
+				<%= msg %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+<div class="panel-group">
+	<div class="panel panel-primary">
+
+		<div class="panel-heading">
+			<h4 class="panel-title">General Data</h4>
+		</div>
+		<%= form_for @employee do |e| %>
+		<div id="generalData" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<table class="table">
+					<tr>
+						<td>First Name:</td>
+						<td><%= text_field_tag "employee[first_name]", @employee.first_name.capitalize, type: :text %></td>
+					</tr>
+					<tr>
+						<td>Last Name:</td>
+						<td><%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text %></td>
+					</tr>
+					<tr>
+						<td>Role:</td>
+						<td><%= e.text_field :role %></td>
+					</tr>
+					<tr>
+						<td>Manager:</td>
+						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
+					</tr>
+					<tr>
+						<td>Start Date:</td>
+						<td><%= e.date_field :start_date %></td>
+					</tr>
+					<tr>
+						<td>Extension:</td>
+						<td><%= e.number_field :extension%></td>
+					</tr>
+				</table>
+				<%= e.submit "Save"%>
+			</div>
+
+		</div>
+
+		<% end %>
+	</div>
+
+</div>
+
+<%= link_to "Back", :root %>

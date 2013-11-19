@@ -1,20 +1,29 @@
 <h1>Login</h1>
 <%= form_for @employee, url: :check_login do |u| %>
-  <% if @employee.errors.any? %>
-    <%= @employee.errors.messages %>
-  <% end %>
-  <table>
-  	<tr style="text-align:right">
-  		<td>Username:</td>
-  		<td><%= u.text_field :username, required: true, placeholder: 'john.doe', pattern: '^\w+\.\w+$', title: 'firstname.lastname', autofocus: true %></td>
-  	</tr>
-  	<tr style="text-align:right">
-  		<td>Password:</td>
-  		<td><%= u.password_field :password, required: true %></td>
-  	</tr>
-  	<tr>
-  		<td><%= u.submit 'Login' %></td>
-  	</tr>
-  </table>
+<% if @employee.errors.any? %>
+	<div id="error_explanation">
+		<h2><%= pluralize(@employee.errors.count, "error") %> prohibited you from logging in:</h2>
+		<ul>
+			<% @employee.errors.full_messages.each do |msg| %>
+			<li>
+				<%= msg %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+<table>
+	<tr style="text-align:right">
+		<td>Username:</td>
+		<td><%= u.text_field :username, required: true, placeholder: 'john.doe', pattern: '^\w+\.\w+$', title: 'firstname.lastname', autofocus: true %></td>
+	</tr>
+	<tr style="text-align:right">
+		<td>Password:</td>
+		<td><%= u.password_field :password, required: true %></td>
+	</tr>
+	<tr>
+		<td><%= u.submit 'Login' %></td>
+	</tr>
+</table>
 <% end %>
 <%= flash[:error] %>

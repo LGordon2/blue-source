@@ -1,5 +1,6 @@
 <h1>Welcome, <%= "#{current_user.first_name.capitalize}"%>.</h1>
-<table cellspacing="10">
+<div class="table-responsive">
+<table class="table table-bordered table-condensed" cellspacing="10">
 	<tr>
 		<th>Name</th>
 		<th>Role</th>
@@ -11,8 +12,9 @@
 		<td><%= link_to employee.display_name, "employee/#{employee.id}" %></td>
 		<td><%= employee.role unless employee.role.nil? %></td>
 		<td><%= link_to employee.manager.display_name, "employee/#{employee.manager.id}" unless employee.manager.nil? %></td>
-		<td><%= employee.project.capitalize unless employee.project.nil? %></td>
+		<td><%= employee.project.blank? ? "Not billable" : employee.project.name.capitalize %></td>
 	</tr>
 	<% end %>
 </table>
+</div>
 <%= link_to "Logout", :logout %>

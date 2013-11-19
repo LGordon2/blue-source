@@ -2,12 +2,15 @@ require 'net/ldap'
 class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
   belongs_to :manager, class_name: "Employee"
+  belongs_to :lead, class_name: "Lead"
   belongs_to :project
   
   attr_accessor :display_name
   
   validates :username, presence: true, uniqueness: true
   validates :username, format: /\A\w+\.\w+\z/
+  validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
+  validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
    
   def self.authenticate(user_params)
     employee = Employee.find_by(username: user_params[:username])

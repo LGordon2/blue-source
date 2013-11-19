@@ -53,3 +53,8 @@ employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
   e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
 end
+
+#Projects
+acxiom = Project.create([{name: "Acxiom"}])
+acxiom.first.update(lead: Employee.find_by(username: "adam.thomas"))
+Employee.find_by(username: "lewis.gordon").update(project: acxiom.first)
