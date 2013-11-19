@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class EmployeeController < ApplicationController
   before_action :require_manager_login
   before_action :set_user
   before_action :check_manager_status
