@@ -3,8 +3,18 @@
   <% if @user.errors.any? %>
     <%= @user.errors.messages %>
   <% end %>
-  Username: <%= u.text_field :username, required: true, placeholder: 'john.doe', pattern: '^\w+\.\w+$', title: 'firstname.lastname', autofocus: true %><br />
-  Password: <%= u.password_field :password, required: true %><br />
-  <%= u.submit 'Login' %>
+  <table>
+  	<tr style="text-align:right">
+  		<td>Username:</td>
+  		<td><%= u.text_field :username, required: true, placeholder: 'john.doe', pattern: '^\w+\.\w+$', title: 'firstname.lastname', autofocus: true %></td>
+  	</tr>
+  	<tr style="text-align:right">
+  		<td>Password:</td>
+  		<td><%= u.password_field :password, required: true %></td>
+  	</tr>
+  	<tr>
+  		<td><%= u.submit 'Login' %></td>
+  	</tr>
+  </table>
 <% end %>
 <%= flash[:error] %>

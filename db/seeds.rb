@@ -9,7 +9,7 @@
 #Build org chart.
 
 #Alissa
-manager = User.create([{username: "alissa.taylor", first_name: "alissa", last_name: "taylor", role: Role.create({title: "Manager"})}])
+manager = User.create([{username: "alissa.taylor", first_name: "alissa", last_name: "taylor", role: "Manager"}])
 employee = User.create([
   {username: "andrew.williams"},
   {username: "lewis.gordon"},
@@ -20,11 +20,11 @@ employee = User.create([
   ])
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: Role.create({title: "Consultant"}))
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
 end
 
 #Adam
-manager = User.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: Role.create({title: "Manager"})}])
+manager = User.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: "Manager"}])
 employee = User.create([
   {username: "waightstill.avery"},
   {username: "timothy.macior"},
@@ -36,11 +36,11 @@ employee = User.create([
   ])
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: Role.create({title: "Consultant"}))
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
 end
 
 #Perry
-manager = User.create([{username: "perry.thomas", first_name: "perry", last_name: "thomas", role: Role.create({title: "Manager"})}])
+manager = User.create([{username: "perry.thomas", first_name: "perry", last_name: "thomas", role: "Manager"}])
 employee = User.create([
   {username: "alfredo.gonzalez"},
   {username: "damien.storm"},
@@ -51,5 +51,5 @@ employee = User.create([
   ])
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: Role.create({title: "Consultant"}))
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
 end

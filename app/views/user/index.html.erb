@@ -1,12 +1,16 @@
-<h1><%= @user.first_name.capitalize + " " + @user.last_name.capitalize %></h1>
+<h1><%= @user.display_name %></h1>
 <table>
 	<tr>
 		<td>Role:</td>
-		<td><%= @user.role.title unless @user.role.nil? %></td>
+		<td><%= @user.role unless @user.role.blank? %></td>
 	</tr>
 	<tr>
 		<td>Project:</td>
 		<td><%= @user.project.blank? ? "Not billable" : @user.project %></td>
+	</tr>
+	<tr>
+		<td>Manager:</td>
+		<td><%= link_to @user.manager.display_name, "#{@user.manager.id}" unless @user.manager.blank? %></td>
 	</tr>
 </table>
 <%= link_to "Back", :root %>

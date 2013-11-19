@@ -6,11 +6,11 @@
 		<th>Supervisor</th>
 		<th>Project</th>
 	</tr>
-	<% current_user.subordinates.each do |user| %>
+	<% current_user.subordinates.order(last_name: :asc, first_name: :asc).each do |user| %>
 	<tr>
-		<td><%= link_to user.first_name.capitalize + " " + user.last_name.capitalize, "user/#{user.id}" %></td>
-		<td><%= user.role.title unless user.role.nil? %></td>
-		<td><%= link_to user.manager.first_name.capitalize + " " + user.manager.last_name.capitalize, "user/#{user.manager.id}" unless user.manager.nil? %></td>
+		<td><%= link_to user.display_name, "user/#{user.id}" %></td>
+		<td><%= user.role unless user.role.nil? %></td>
+		<td><%= link_to user.manager.display_name, "user/#{user.manager.id}" unless user.manager.nil? %></td>
 		<td><%= user.project.capitalize unless user.project.nil? %></td>
 	</tr>
 	<% end %>
