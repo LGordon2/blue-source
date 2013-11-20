@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Orasi Manager's Portal</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<div class="container">
-<%= yield %>
-</div>
-</body>
+	<head>
+		<title>Orasi Manager's Portal</title>
+		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<%= link_to image_tag("logo.png", width: "30px", height: "25px"), :root, class: "navbar-brand" %>
+				</div>
+
+
+				<% unless current_user.blank? %>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<%= link_to "Logout", :logout %>
+					</li>
+				</ul><!-- /.navbar-collapse -->
+				<% end %>
+			</nav>
+			<%= yield %>
+		</div>
+	</body>
 </html>

@@ -46,7 +46,7 @@
 						<td><%= e.number_field :extension, min: 1000, max: 9999 %></td>
 					</tr>
 				</table>
-				<%= e.submit "Save"%>
+				<%= e.submit "Save", class: "btn btn-primary"%>
 			</div>
 
 		</div>
@@ -55,5 +55,5 @@
 	</div>
 
 </div>
-<%= link_to "Cancel", @employee%>
-<%= link_to "Back", :root %>
+<%= link_to "Cancel", @employee, class: "btn btn-link"%>
+<%= link_to "Back", :root, class: "btn btn-link" %>
