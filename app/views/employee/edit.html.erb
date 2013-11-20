@@ -39,11 +39,11 @@
 					</tr>
 					<tr>
 						<td>Start Date:</td>
-						<td><%= e.date_field :start_date %></td>
+						<td><%= e.date_field :start_date, max: Time.now %></td>
 					</tr>
 					<tr>
 						<td>Extension:</td>
-						<td><%= e.number_field :extension, min: 1000, max: 9999%></td>
+						<td><%= e.number_field :extension, min: 1000, max: 9999 %></td>
 					</tr>
 				</table>
 				<%= e.submit "Save"%>
