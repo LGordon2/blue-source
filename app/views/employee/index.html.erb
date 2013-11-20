@@ -20,7 +20,7 @@
 						<td><%= @employee.start_date.strftime("%B %e, %Y") unless @employee.start_date.blank? %></td>
 					</tr>
 					<tr>
-						<td>Years with Orasi:</td>
+						<td>Time with Orasi:</td>
 						<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? %></td>
 					</tr>
 					<tr>
