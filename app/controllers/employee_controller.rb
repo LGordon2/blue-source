@@ -1,9 +1,16 @@
 class EmployeeController < ApplicationController
   before_action :require_manager_login
-  before_action :set_user
-  before_action :check_manager_status
+  before_action :set_user, except: :all
+  before_action :check_manager_status, except: :all
   
   def index
+  end
+  
+  def all
+    employees = Employee.all.where(manager: current_user)
+    respond_to do |format|
+      format.json {render json: employees.to_json(include: [:manager,:project])}
+    end
   end
   
   def update
