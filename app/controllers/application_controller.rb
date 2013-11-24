@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  force_ssl if: :ssl_configured?
-  
   helper_method :current_user
   
   private
@@ -24,9 +22,5 @@ class ApplicationController < ActionController::Base
     elsif current_user.subordinates.empty?
       redirect_to :sorry
     end
-  end
-  
-  def ssl_configured?
-    !Rails.env.development? and !Rails.env.test?
   end
 end

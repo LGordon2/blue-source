@@ -87,4 +87,13 @@ class EmployeeTest < ActiveSupport::TestCase
       e.save!
     end
   end
+  
+  test "encrypted data" do
+    e = Employee.new
+    e.username = "lew.gordon"
+    e.last_name = "gordon"
+    e.first_name = "lew"
+    assert_not_nil e.encrypted_first_name
+    e.save!
+  end
 end

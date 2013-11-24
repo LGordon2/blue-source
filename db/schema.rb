@@ -35,9 +35,4 @@ ActiveRecord::Schema.define(version: 20131119174909) do
     t.integer  "lead_id"
   end
 
-  create_table "tests", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
 end

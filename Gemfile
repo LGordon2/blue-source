@@ -38,8 +38,8 @@ gem 'bcrypt-ruby'
 # Use LDAP for authentication
 gem 'net-ldap'
 
-#Alternative rails server
-gem 'thin'
+#Encryption
+gem 'symmetric-encryption'
 
 # Use unicorn as the app server
 # gem 'unicorn'
