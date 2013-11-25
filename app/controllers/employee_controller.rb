@@ -4,12 +4,21 @@ class EmployeeController < ApplicationController
   before_action :check_manager_status, except: :all
   
   def index
+    respond_to do |format|
+      format.json {render json: @employee}
+      format.html
+    end
   end
   
   def all
     employee = Employee.find(current_user)
     respond_to do |format|
-      format.json {render json: employee.all_subordinates.to_json({include: [:manager, :project]})}
+      format.json {render json: employee.all_subordinates.to_json({
+        include: [
+          {:manager => {:only => [:first_name,:last_name]}}, 
+          {:project => {:only => :name}}], 
+        only: [:id, :first_name, :last_name, :role, :manager_id]
+      })}
     end
   end
   
