@@ -9,7 +9,7 @@ class EmployeeController < ApplicationController
   def all
     employee = Employee.find(current_user)
     respond_to do |format|
-      format.json {render json: employee.all_subordinates.to_json({include: [:manager]})}
+      format.json {render json: employee.all_subordinates.to_json({include: [:manager, :project]})}
     end
   end
   
