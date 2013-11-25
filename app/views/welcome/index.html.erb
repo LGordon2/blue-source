@@ -1,22 +1,33 @@
 <section ng-app="employee_list_app">
-<h1>Welcome, <%= "#{current_user.first_name.capitalize}"%>.</h1>
-<%= text_field_tag :query, nil, class: "form-control", placeholder: "Search here...", 'ng-model' => "query" %>
-<div class="table-responsive" ng-controller="employee_list_ctrl">
-<table class="table table-bordered table-condensed" cellspacing="10">
-	<tr>
-		<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse" %></th>
-		<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse"%></th>
-		<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse"%></th>
-		<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse"%></th>
-	</tr>
-	
-	<tr ng-repeat="employee in employees | filter:query | orderBy:predicate:reverse">
-		<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
-		<td>{{employee.role}}</td>
-		<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager.id}}"%></td>
-		<td>{{employee.project.name}}</td>
-	</tr>
-</table>
-</div>
+	<h1>Welcome, <%= link_to "#{current_user.first_name.capitalize}", current_user %>.</h1>
+	<%= text_field_tag :query, nil, class: "form-control", placeholder: "Search here...", 'ng-model' => "query" %>
+	<% unless current_user.role.downcase == "manager" %>
+	<div class="radio-btn-section">
+		<h4 class="radio-btn-label">All employees:</h4>
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-primary active" ng-click="current_id=''">
+				<input type="radio" name="options" id="option1" >
+				On </label>
+			<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>'">
+				<input type="radio" name="options" id="option2">
+				Off </label>
+		</div>
+	</div>
+	<% end %>
+	<div class="table-responsive" ng-controller="employee_list_ctrl">
+		<table class="table table-bordered table-condensed" cellspacing="10">
+			<tr>
+				<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse" %></th>
+				<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse"%></th>
+				<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse"%></th>
+				<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse"%></th>
+			</tr>
+			<tr ng-repeat="employee in employees | filter:{manager_id:current_id}:test | filter:query | orderBy:predicate:reverse ">
+				<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
+				<td>{{employee.role}}</td>
+				<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager.id}}"%></td>
+				<td>{{employee.project.name}}</td>
+			</tr>
+		</table>
+	</div>
 </section>
-<%= link_to "Logout", :logout, class: "btn btn-link" %>

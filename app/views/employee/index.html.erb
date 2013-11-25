@@ -83,5 +83,5 @@
 	</div>
 
 </div>
-<%= link_to "Edit", "edit/#{@employee.id}", class: "btn btn-link" %>
+<%= link_to "Edit", "edit/#{@employee.id}", class: "btn btn-link" if current_user.above? @employee %>
 <%= link_to "Back", :root, class: "btn btn-link" %>

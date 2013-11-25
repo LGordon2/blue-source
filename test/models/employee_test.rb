@@ -16,6 +16,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e1 = Employee.new
     e1.first_name = "chris"
     e1.last_name = "nolan"
+    e1.role = "Consultant"
     assert_raises ActiveRecord::RecordInvalid do
       e1.save!
     end
@@ -28,6 +29,7 @@ class EmployeeTest < ActiveSupport::TestCase
   test "first_name and last_name must be lowercase" do
     e1 = Employee.new
     e1.username = "rob.stewart"
+    e1.role = "Consultant"
     assert_raises ActiveRecord::RecordInvalid do
       e1.first_name = "Rob"
       e1.last_name = "stewart"
@@ -66,6 +68,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e.username = "bob.dylan"
     e.first_name = "bob"
     e.last_name = "dylan"
+    e.role = "Consultant"
     e.extension = 0
     assert_raises ActiveRecord::RecordInvalid do
       e.save!
@@ -88,12 +91,43 @@ class EmployeeTest < ActiveSupport::TestCase
     end
   end
   
-  test "encrypted data" do
-    e = Employee.new
-    e.username = "lew.gordon"
-    e.last_name = "gordon"
-    e.first_name = "lew"
-    assert_not_nil e.encrypted_first_name
-    e.save!
+  test "above functionality" do
+    consultant = employees(:consultant)
+    manager = employees(:manager)
+    director = employees(:director)
+    
+    #Test simple case
+    assert manager.above? consultant
+    assert_not consultant.above? manager
+    
+    #Test another simple case
+    assert director.above? manager
+    assert_not manager.above? director
+    
+    #Test transitivity
+    assert director.above? consultant
+    assert_not consultant.above? director
+  end
+  
+  test "all subordinates" do
+    consultant = employees(:consultant)
+    consultant2 = employees(:consultant2)
+    manager2 = employees(:manager2)
+    manager = employees(:manager)
+    director = employees(:director)
+    
+    #Test nothing
+    assert_nil consultant.all_subordinates
+    
+    #Test simple case
+    assert_equal 1, manager.all_subordinates.count
+    assert_equal consultant.id, manager.all_subordinates.first.id
+    
+    #Test a little more complex
+    assert_equal 2, director.all_subordinates.count
+    assert director.all_subordinates.include?(manager),  "manager is included in all subordinates for director"
+    assert director.all_subordinates.include?(consultant),  "consultant is included in all subordinates for director"
+    assert_not director.all_subordinates.include?(manager2),  "manager2 is not included in all subordinates for director"
+    assert_not director.all_subordinates.include?(consultant2),  "consultant2 is not included in all subordinates for director"
   end
 end

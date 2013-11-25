@@ -3,21 +3,31 @@ manager:
   username: bob.barker
   first_name: bob
   last_name: barker
+  role: "Manager"
+  manager: director
 
 consultant:
   username: john.doe
   first_name: john
   last_name: doe
+  role: "Consultant"
   manager: manager
   
 manager2:
   username: bob.ross
   first_name: bob
   last_name: ross
+  role: "Manager"
   
 consultant2:
   username: drew.carey
   first_name: drew
   last_name: carey
+  role: "Consultant"
   manager: manager2
 
+director:
+  username: steve.jobs
+  first_name: steve
+  last_name: jobs
+  role: "Director"

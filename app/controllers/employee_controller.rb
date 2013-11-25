@@ -7,9 +7,9 @@ class EmployeeController < ApplicationController
   end
   
   def all
-    employees = Employee.all.where(manager: current_user)
+    employee = Employee.find(current_user)
     respond_to do |format|
-      format.json {render json: employees.to_json(include: [:manager,:project])}
+      format.json {render json: employee.all_subordinates.to_json({include: [:manager]})}
     end
   end
   
@@ -28,7 +28,7 @@ class EmployeeController < ApplicationController
   end
   
   def check_manager_status
-    redirect_to :root if @employee.manager != current_user and @employee != current_user
+    redirect_to :root unless @employee == current_user or current_user.above? @employee
   end
   
   def employee_params

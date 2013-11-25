@@ -29,14 +29,16 @@
 						<td>Last Name:</td>
 						<td><%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text %></td>
 					</tr>
+					<% if current_user.role.downcase.in? ["director", "avp"] %>
 					<tr>
 						<td>Role:</td>
-						<td><%= e.select :role, ["Consultant","Manager","Upper Management"], {}, {disabled: "disabled"} %></td>
+						<td><%= e.select :role, ["Consultant","Manager","Director"] %></td>
 					</tr>
 					<tr>
 						<td>Manager:</td>
-						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true }, {disabled: "disabled"} %></td>
+						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
 					</tr>
+					<% end %>
 					<tr>
 						<td>Start Date:</td>
 						<td><%= e.date_field :start_date, max: Time.now %></td>

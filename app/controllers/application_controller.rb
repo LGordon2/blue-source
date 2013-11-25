@@ -16,10 +16,11 @@ class ApplicationController < ActionController::Base
       Employee.find_by(id: session[:current_user_id])
   end
   
+  # Only allow whitelisted roles.
   def require_manager_login
     if current_user.nil?
       redirect_to :login
-    elsif current_user.subordinates.empty?
+    elsif !current_user.role.downcase.in? ["manager","director","avp"]
       redirect_to :sorry
     end
   end
