@@ -31,11 +31,11 @@
 					</tr>
 					<tr>
 						<td>Role:</td>
-						<td><%= e.select :role, ["Consultant","Manager","Upper Management"] %></td>
+						<td><%= e.select :role, ["Consultant","Manager","Upper Management"], {}, {disabled: "disabled"} %></td>
 					</tr>
 					<tr>
 						<td>Manager:</td>
-						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
+						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true }, {disabled: "disabled"} %></td>
 					</tr>
 					<tr>
 						<td>Start Date:</td>

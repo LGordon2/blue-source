@@ -2,7 +2,7 @@
 <div class="panel-group" id="accordion">
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<h4 class="panel-title"><a data-toggle="collapse" href="#generalData">General Data</a></h4>
+			<h4 class="panel-title"><a data-toggle="collapse" href="#generalData">General Info</a></h4>
 		</div>
 		<div id="generalData" class="panel-collapse collapse in">
 			<div class="panel-body">
@@ -31,9 +31,9 @@
 			</div>
 		</div>
 		<div class="panel-heading">
-			<h4 class="panel-title"><a data-toggle="collapse" href="#projectData">Project Data</a></h4>
+			<h4 class="panel-title"><a data-toggle="collapse" href="#projectData">Project Info</a></h4>
 		</div>
-		<div id="projectData" class="panel-collapse collapse in">
+		<div id="projectData" class="panel-collapse collapse">
 			<div class="panel-body">
 				<table class="table">
 					<tr>
@@ -53,8 +53,29 @@
 						<td><%= @employee.project.start_date unless @employee.project.blank?%></td>
 					</tr>
 					<tr>
-						<td>Projected End</td>
+						<td>Projected End:</td>
 						<td><%= @employee.project.projected_end unless @employee.project.blank?%></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" href="#pdoData">Vacation Info</a></h4>
+		</div>
+		<div id="pdoData" class="panel-collapse collapse">
+			<div class="panel-body">
+				<table class="table">
+					<tr>
+						<td>Sick days taken:</td>
+						<td>0/10</td>
+					</tr>
+					<tr>
+						<td>Vacation days taken:</td>
+						<td>0/10</td>
+					</tr>
+					<tr>
+						<td>Floating holidays taken:</td>
+						<td>0/2</td>
 					</tr>
 				</table>
 			</div>

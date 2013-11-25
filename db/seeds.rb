@@ -7,6 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Build org chart.
+acxiom = Project.create({name: "Acxiom"})
+scottrade = Project.create({name: "Scottrade"})
+absg = Project.create({name: "ABSG"})
+davita = Project.create({name: "Davita"})
 
 #Alissa
 manager = Employee.create([{username: "alissa.taylor", first_name: "alissa", last_name: "taylor", role: "Manager"}])
@@ -22,6 +26,12 @@ employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
   e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
 end
+employee[0].update(project: scottrade)
+employee[1].update(project: acxiom)
+employee[2].update(project: scottrade)
+employee[3].update(project: scottrade)
+employee[4].update(project: absg)
+employee[5].update(project: davita)
 
 #Adam
 manager = Employee.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: "Manager"}])
@@ -55,6 +65,4 @@ employee.each do |e|
 end
 
 #Projects
-acxiom = Project.create([{name: "Acxiom"}])
-acxiom.first.update(lead: Employee.find_by(username: "adam.thomas"))
-Employee.find_by(username: "lewis.gordon").update(project: acxiom.first)
+acxiom.update(lead: Employee.find_by(username: "adam.thomas"))
