@@ -25,7 +25,7 @@
 			<tr ng-repeat="employee in employees | filter:{manager_id:current_id}:test | filter:query | orderBy:predicate:reverse ">
 				<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
 				<td>{{employee.role}}</td>
-				<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager.id}}"%></td>
+				<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
 				<td>{{employee.project.name}}</td>
 			</tr>
 		</table>

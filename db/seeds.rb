@@ -82,8 +82,8 @@ end
 manager = Employee.create([{username: "julia.walser", first_name: "julia", last_name: "walser", role: "Manager"}])
 employee = Employee.create([
   {username: "greg.dorman"},
-  {username: "jason.storm"},
-  {username: "spenser.mattice"},
+  {username: "jason.rickard"},
+  {username: "spenser.chamberlain"},
   {username: "yhung.mlo"}
   ])
 employee.each do |e|
