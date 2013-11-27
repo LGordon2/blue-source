@@ -8,6 +8,7 @@ ManagerPortal::Application.routes.draw do
   patch "employee/:id", to: "employee#update"
   
   get "projects", to: "project#all"
+  post "projects", to: "project#new"
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout

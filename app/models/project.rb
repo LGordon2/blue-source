@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :lead, class_name: "Employee"
   
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates_with StartDateValidator
   validate :projected_end_cannot_be_before_start_date
   

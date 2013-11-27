@@ -1,0 +1,15 @@
+<h1><%= @project.name %></h1>
+<table class="table table-bordered table-responsive">
+	<tr>
+		<td>Team Lead</td>
+		<td><%= @project.lead.display_name unless @project.lead.blank? %></td>
+	</tr>
+	<tr>
+		<td>Start Date</td>
+		<td><%= @project.start_date %></td>
+	</tr>
+	<tr>
+		<td>Projected End Date</td>
+		<td><%= @project.projected_end %></td>
+	</tr>
+</table>

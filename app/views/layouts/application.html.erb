@@ -7,23 +7,33 @@
 		<%= csrf_meta_tags %>
 	</head>
 	<body>
-		<div class="container">
-			<nav class="navbar navbar-default" role="navigation">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<%= link_to image_tag("logo.png", width: "30px", height: "25px", class: "img-responsive"), :root, class: "navbar-brand" %>
-				</div>
+		<header>
+			<div class="container">
+				<nav class="navbar navbar-default" role="navigation">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<%= image_tag "logo.png", class: "img-responsive brand", width: "50px", style: "padding: 5px" %>
+					</div>
 
-
-				<% unless current_user.blank? %>
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<%= link_to "Logout", :logout %>
-					</li>
-				</ul><!-- /.navbar-collapse -->
-				<% end %>
-			</nav>
-			<%= yield %>
-		</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<% unless current_user.blank? %>
+						<ul class="nav navbar-nav navbar-right">
+							<li><%= link_to "Projects", :projects %></li>
+							<li><%= link_to current_user.display_name, :root %></li>
+							<li><%= link_to "Logout", :logout %></li>
+						</ul>
+						<% end %>
+					</div><!-- /.navbar-collapse -->
+				</nav>
+				<%= yield %>
+			</div>
+		</header>
 	</body>
 </html>
