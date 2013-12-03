@@ -30,6 +30,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e1 = Employee.new
     e1.username = "rob.stewart"
     e1.role = "Consultant"
+    e1.save!
     assert_raises ActiveRecord::RecordInvalid do
       e1.first_name = "Rob"
       e1.last_name = "stewart"

@@ -1,14 +1,20 @@
 ManagerPortal::Application.routes.draw do
   
-  get "project/add"
-  get "project/:id", to: "project#index"
+  #Employees stuff
   get "employees", to: "employee#all"
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee
   patch "employee/:id", to: "employee#update"
   
+  #Projects
   get "projects", to: "project#all"
   post "projects", to: "project#new"
+  get "project/add"
+  get "project/:id", to: "project#index", as: :project
+  get "project/edit/:id", to: "project#edit"
+  patch "project/:id", to: "project#update"
+  
+  #Welcome (login)
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout

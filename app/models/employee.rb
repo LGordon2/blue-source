@@ -7,20 +7,25 @@ class Employee < ActiveRecord::Base
   
   attr_accessor :display_name
   
-  validates :username, presence: true, uniqueness: true
-  validates :username, format: /\A\w+\.\w+\z/
+  before_validation :set_names, on: :create
+  
+  validates :username, presence: true, uniqueness: true, format: /\A\w+\.\w+\z/
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
   validates :role, presence: true, inclusion: {in: ["Consultant", "Manager", "Director", "AVP"]}
   validates_with StartDateValidator
+  
+  def set_names
+    self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
+  end
    
   def self.authenticate(user_params)
     employee = Employee.find_by(username: user_params[:username])
     return employee unless employee.nil?
     employee = Employee.new
     employee.username = user_params[:username].downcase
-    employee.first_name,employee.last_name = user_params[:username].downcase.split(".")
+    
     return employee
   end
   

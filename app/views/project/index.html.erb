@@ -12,6 +12,10 @@
 		<td>Projected End Date</td>
 		<td><%= @project.projected_end %></td>
 	</tr>
+	<tr>
+		<td>Project Status</td>
+		<td><%= @project.status %></td>
+	</tr>
 </table>
-<%= link_to "Edit" %>
+<%= link_to "Edit", 'edit/'+@project.id.to_s %>
 <%= link_to "Back", :projects%>

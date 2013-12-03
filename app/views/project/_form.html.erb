@@ -1,0 +1,31 @@
+<%= form_for @project do |f| %>
+<table class="table-responsive">
+	<tr>
+		<td>Name:</td>
+		<td><%= f.text_field :name %></td>
+	</tr>
+	<tr>
+		<td>Team Lead:</td>
+		<td><%= f.select :lead_id, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}%></td>
+	</tr>
+	<tr>
+		<td>Project Status:</td>
+		<td><%= f.select :status, ["Active", "Inactive", "Pending"] %></td>
+	</tr>
+	<% if @project.errors.any? %>
+	<div id="error_explanation">
+		<h2><%= pluralize(@project.errors.count, "error") %> prohibited you from creating new project:</h2>
+		<ul>
+			<% @project.errors.full_messages.each do |msg| %>
+			<li>
+				<%= msg %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
+	<% end %>
+	<tr>
+		<td><%= f.submit class: "btn btn-primary btn-sm" %></td>
+	</tr>
+</table>
+<% end %>
