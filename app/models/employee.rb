@@ -1,6 +1,7 @@
 require 'net/ldap'
 class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
+  has_many :vacations
   belongs_to :manager, class_name: "Employee"
   belongs_to :lead, class_name: "Lead"
   belongs_to :project

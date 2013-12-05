@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date_req: 2013-12-03
+  start: 2013-12-03
+  end: 2013-12-03
+  type: 
+
+two:
+  date_req: 2013-12-03
+  start: 2013-12-03
+  end: 2013-12-03
+  type: 

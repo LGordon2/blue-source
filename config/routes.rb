@@ -1,6 +1,8 @@
 ManagerPortal::Application.routes.draw do
-  
+ 
   #Employees stuff
+  get "employee/vacation/:id", to: "employee#vacation"
+  post "employee/vacation/:id", to: "vacation#new"
   get "employees", to: "employee#all"
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee

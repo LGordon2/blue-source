@@ -1,0 +1,57 @@
+<section ng-app="vacation_index_app">
+	<h1>Vacation Details for <%= @employee.display_name %></h1>
+	<% unless flash.blank? %>
+	<div class="alert-inline">
+		<% if flash[:error] %>
+		<% flash[:error].each do |msg| %>
+		<div class="alert alert-danger fade in">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+				&times;
+			</button>
+			<%= msg %>
+		</div>
+		<% end %>
+		<% elsif flash[:notice] %>
+		<div class="alert alert-success fade in">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+				&times;
+			</button>
+			<%= flash[:notice] %>
+		</div>
+		<% end %>
+	</div>
+	<% end %>
+	<table class="table table-responsive table-bordered table-hover table-condensed">
+		<tr>
+			<th>Date Requested</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Total Business Days</th>
+			<th>Type</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<% @employee.vacations.each do |v| %>
+		<tr class="<%= "success" if @employee.vacations.last == v and !flash[:notice].blank? %>">
+			<td><%= v.date_requested %></td>
+			<td><%= v.start_date %></td>
+			<td><%= v.end_date %></td>
+			<td></td>
+			<td><%= v.vacation_type %></td>
+			<td> <%= link_to :root do %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
+			<td> <%= link_to :root, :data => {confirm: "Are you sure you want to delete this?"} do %> <span class="glyphicon glyphicon-trash"></span> <% end %> </td>
+		</tr>
+		<% end %>
+		<%= form_for :vacation do |f| %>
+		<tr ng-controller="new_vacation_controller">
+			<td><%= f.date_field :date_requested, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td><%= f.date_field :start_date, "ng-model" => "start_date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td><%= f.date_field :end_date, "ng-model" => "end_date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td id="business-days"><strong>{{calc_business_days(start_date, end_date)}}</strong></td>
+			<td><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"] %></td>
+		</tr>
+	</table>
+	<%= f.submit class: "btn btn-primary" %>
+	<% end %>
+	<%= link_to "Back", "/employee/#{@employee.id}" %>
+</section>
