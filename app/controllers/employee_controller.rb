@@ -22,6 +22,13 @@ class EmployeeController < ApplicationController
     end
   end
   
+  def vacation
+    respond_to do |format|
+      format.json {render json: @employee.vacations}
+      format.html
+    end
+  end
+  
   def update
     if @employee.update(employee_params)
       redirect_to @employee

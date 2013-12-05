@@ -1,8 +1,12 @@
 ManagerPortal::Application.routes.draw do
  
+  #Vacation
+  delete "/vacation/:id", to: "vacation#destroy", as: :vacation
+  post "/vacation/new", to: "vacation#new"
+  patch "/vacation/:id", to: "vacation#update"
+ 
   #Employees stuff
   get "employee/vacation/:id", to: "employee#vacation"
-  post "employee/vacation/:id", to: "vacation#new"
   get "employees", to: "employee#all"
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee

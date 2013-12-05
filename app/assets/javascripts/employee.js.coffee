@@ -1,6 +1,12 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+$(document).on "ready", ->
+  $(".edit-btn").on "click", ->
+    $(this).children().toggleClass("hidden")
+    $(this).parent().siblings(".edit-field").each (index) ->
+      $(this).children().toggleClass("hidden")
+
 @vacation_index_app = angular.module('vacation_index_app', [])
 
 thanksgivingDayUSA = (_date) ->
@@ -49,7 +55,7 @@ calc_non_business_days = (start_date, end_date) ->
   days += 1 if temp_date.isOrasiHoliday()
   return days
 
-new_vacation_controller = ($scope) ->
+new_vacation_controller = ($scope, $http) ->
   $scope.calc_business_days = (_start_date, _end_date) ->
     return if (typeof _start_date=="undefined") or (typeof _end_date=="undefined")
     start_date = new Date({year,month,day}=_start_date.split("-"))

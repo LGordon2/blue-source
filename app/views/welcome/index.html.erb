@@ -31,7 +31,7 @@
 					<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse"%></th>
 					<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse"%></th>
 				</tr>
-				<tr ng-repeat="employee in employees | filter:{manager_id:current_id}:test | filter:query | orderBy:predicate:reverse ">
+				<tr ng-repeat="employee in employees | filter:{manager_id:current_id}:test | filter:query | orderBy:predicate:reverse">
 					<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
 					<td>{{employee.role}}</td>
 					<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>

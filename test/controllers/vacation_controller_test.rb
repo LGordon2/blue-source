@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class VacationControllerTest < ActionController::TestCase
-  test "should get new" do
+  test "should not get new if user not logged in" do
     get :new
-    assert_response :success
+    assert_redirected_to :login
   end
 
 end
