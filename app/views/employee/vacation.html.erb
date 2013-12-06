@@ -1,4 +1,4 @@
-<div ng-app="vacation_index_app">
+<div>
 	<h1>Vacation Details for <%= @employee.display_name %></h1>
 	<% unless flash.blank? %>
 	<div class="alert-inline">
@@ -22,7 +22,7 @@
 	</div>
 	<% end %>
 
-	<table ng-controller="new_vacation_controller" class="table table-responsive table-bordered table-hover table-condensed">
+	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
 			<th>Date Requested</th>
 			<th>Start Date</th>
@@ -36,11 +36,12 @@
 		</tr>
 		<% @employee.vacations.each do |v| %>
 		<%= form_for v do |f| %>
-		<tr id="<%= "vacation_#{v.id}" %>" class="<%= "success" if v == @employee.vacations.last and !flash[:created].blank? %>">
+		<tr id="<%= "vacation-#{v.id}" %>" class="vacation-row <%= "success" if v == @employee.vacations.last and !flash[:created].blank? %>">
+			<%= f.hidden_field :business_days, id: "hidden_business_days-#{v.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
 			<td class="edit-field"><span><%= v.date_requested%></span><%= f.date_field :date_requested, class: "hidden" %></td>
-			<td class="edit-field"><span><%= v.start_date%></span><%= f.date_field :start_date, class:"hidden","ng-init" => "start_date#{v.id} = \"#{v.start_date}\"", "ng-model" => "start_date#{v.id}" %></td>
-			<td class="edit-field"><span><%= v.end_date%></span><%= f.date_field :end_date, class:"hidden","ng-init" => "end_date#{v.id} = \"#{v.end_date}\"", "ng-model" => "end_date#{v.id}" %></td>
-			<td>{{calc_business_days(start_date<%= "#{v.id}"%>, end_date<%= "#{v.id}"%>)}}</td>
+			<td class="edit-field"><span><%= v.start_date %></span><%= f.date_field :start_date, id: "start_date-#{v.id}", class:"hidden date-field" %></td>
+			<td class="edit-field"><span><%= v.end_date %></span><%= f.date_field :end_date, id: "end_date-#{v.id}", class:"hidden date-field" %></td>
+			<td id="<%= "business_days-#{v.id}" %>"><strong></strong></td>
 			<td class="edit-field"><span><%= v.vacation_type%></span><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"], {}, class:"hidden" %></td>
 			<td><%= link_to "#", id: v.id, class: "edit-btn" do %><%= f.submit class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
 			<td> <%= link_to v, method: :delete, :data => {confirm: "Are you sure you want to delete this?"} do %> <span class="glyphicon glyphicon-trash"></span> <% end %> </td>
@@ -48,18 +49,18 @@
 		<% end %>
 		<% end %>
 		<%= form_for :vacation, url: {controller: "vacation", action: "new"} do |f| %>
-		<tr>
-			<%= f.hidden_field :business_days, value: "{{calc_business_days(start_date, end_date)}}" %>
+		<tr id="vacation-new" class="vacation-row">
+			<%= f.hidden_field :business_days, id: "hidden_business_days-new", value: "{{calc_business_days(start_date, end_date)}}" %>
 			<%= f.hidden_field :manager_id, value: "#{current_user.id}" %>
 			<%= f.hidden_field :employee_id, value: "#{@employee.id}" %>
 			<td><%= f.text_field :date_requested, value: Time.now.strftime("%F"), type: "date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
-			<td><%= f.date_field :start_date, "ng-model" => "start_date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
-			<td><%= f.date_field :end_date, "ng-model" => "end_date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
-			<td id="business-days"><strong>{{calc_business_days(start_date, end_date)}}</strong></td>
+			<td><%= f.date_field :start_date, id:"start_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td><%= f.date_field :end_date, id:"end_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td id="business_days-new"><strong></strong></td>
 			<td><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"] %></td>
 		</tr>
-		<%= f.submit class: "btn btn-primary" %>
-		<% end %>
 	</table>
+	<%= f.submit class: "btn btn-primary" %>
+	<% end %>
 	<%= link_to "Back", "/employee/#{@employee.id}" %>
 </div>
