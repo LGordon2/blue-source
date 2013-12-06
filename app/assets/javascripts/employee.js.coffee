@@ -1,11 +1,23 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).on "ready", ->
+$(document).ready ->
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
     $(this).parent().siblings(".edit-field").each (index) ->
       $(this).children().toggleClass("hidden")
+  $(".vacation-row").each (index) ->
+    set_business_days($(this))
+  $(".date-field").on "change", ->
+    set_business_days($(this))
+
+set_business_days = (object) ->
+  id = object.attr("id").split("-")[1]
+  $start_date = $("#start_date-#{id}")
+  $end_date = $("#end_date-#{id}")
+  bsn_days = calc_business_days($start_date.val(),$end_date.val())
+  $("#business_days-#{id}").children().text(bsn_days)
+  $("#hidden_business_days-#{id}").val(bsn_days)
 
 @vacation_index_app = angular.module('vacation_index_app', [])
 
@@ -55,17 +67,13 @@ calc_non_business_days = (start_date, end_date) ->
   days += 1 if temp_date.isOrasiHoliday()
   return days
 
-new_vacation_controller = ($scope, $http) ->
-  $scope.calc_business_days = (_start_date, _end_date) ->
-    return if (typeof _start_date=="undefined") or (typeof _end_date=="undefined")
-    start_date = new Date({year,month,day}=_start_date.split("-"))
-    end_date = new Date({year,month,day}=_end_date.split("-"))
-    return if isNaN(end_date - start_date)
-
-    unless end_date >= start_date then $("#business-days").css("color","#FF0000") else $("#business-days").css("color","#000000")
-    non_business_days = calc_non_business_days(start_date, end_date)
-    bsn_days = Math.round((end_date - start_date)/1000/60/60/24 + 1 - (non_business_days))
-
-new_vacation_controller.$inject = ['$scope', '$http']
-
-@vacation_index_app.controller 'new_vacation_controller', new_vacation_controller
+calc_business_days = (_start_date, _end_date) ->
+  return if (typeof _start_date=="undefined") or (typeof _end_date=="undefined")
+  [year,month,day]=_start_date.split("-")
+  start_date = new Date(year,month-1,day)
+  [year,month,day]=_end_date.split("-")
+  end_date = new Date(year,month-1,day)
+  return if isNaN(end_date - start_date)
+  
+  non_business_days = calc_non_business_days(start_date, end_date)
+  bsn_days = Math.round((end_date - start_date)/1000/60/60/24 + 1 - (non_business_days))
