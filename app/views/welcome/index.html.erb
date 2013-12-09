@@ -9,10 +9,10 @@
 		<div class="radio-btn-section">
 			<h4 class="radio-btn-label">All employees:</h4>
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary active" ng-click="current_id=''">
+				<label class="btn btn-primary active" ng-click="current_id='';search()">
 					<input type="radio" name="options" id="option1" >
 					On </label>
-				<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>'">
+				<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>';search()">
 					<input type="radio" name="options" id="option2">
 					Off </label>
 			</div>
@@ -39,7 +39,7 @@
 			</table>
 		</div>
 	</div>
-	<div>
+	<div ng-hide="pagedEmployees.length==1">
 		<ul class="pagination">
 		  <li ng-class="{disabled: currentPage == 0}"><a href ng-click="prevPage()">&laquo;</a></li>
 		  <li ng-repeat="n in range(0,pagedEmployees.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a href ng-bind="n + 1">{{n}}</a></li>

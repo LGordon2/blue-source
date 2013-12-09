@@ -11,11 +11,13 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     $scope.employees = data
     $scope.search()
   $scope.predicate = 'last_name'
+  $scope.current_id = ''
   $scope.sortingOrder = 'name';
   employeesPerPage = 10;
   
   $scope.filter_on_id = true
   $scope.test = (expected, actual) ->
+    console.log(actual)
     return unless actual == '' then parseInt(actual) == parseInt(expected) else true
 
   searchMatch = (haystack, needle) ->
@@ -27,6 +29,9 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       return searchMatch(employee.display_name, $scope.query) || searchMatch(employee.role, $scope.query) || 
       (searchMatch(employee.manager.first_name, $scope.query) || searchMatch(employee.manager.last_name, $scope.query) && employee.manager?) || (searchMatch(employee.project.name, $scope.query) if employee.project?)
     )
+    
+    manager_id = $scope.manager_id
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test)
     
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
     
