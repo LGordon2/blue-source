@@ -1,7 +1,7 @@
-<section ng-app="employee_list_app" class="center-block">
+<section ng-app="employee_list_app" ng-controller="employee_list_ctrl" class="center-block">
 	<h1>Welcome, <%= link_to "#{current_user.first_name.capitalize}", current_user %>.</h1>
 	<div class="row">
-		<%= text_field_tag :query, nil, class: "form-control", placeholder: "Search here...", 'ng-model' => "query" %>
+		<input type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
 	</div>
 	
 	<div class="row">
@@ -21,17 +21,16 @@
 		<br />
 		<% end %>
 	</div> 
-
 	<div class="row">
-		<div class="table-responsive" ng-controller="employee_list_ctrl">
+		<div class="table-responsive">
 			<table class="table table-bordered table-condensed" cellspacing="10">
 				<tr>
-					<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse" %></th>
-					<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse"%></th>
-					<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse"%></th>
-					<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse"%></th>
+					<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
+					<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse; search()"%></th>
+					<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
+					<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%></th>
 				</tr>
-				<tr ng-repeat="employee in employees | filter:{manager_id:current_id}:test | filter:query | orderBy:predicate:reverse">
+				<tr ng-repeat="employee in pagedEmployees[currentPage]">
 					<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
 					<td>{{employee.role}}</td>
 					<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
@@ -39,5 +38,12 @@
 				</tr>
 			</table>
 		</div>
+	</div>
+	<div>
+		<ul class="pagination">
+		  <li ng-class="{disabled: currentPage == 0}"><a href ng-click="prevPage()">&laquo;</a></li>
+		  <li ng-repeat="n in range(0,pagedEmployees.length)" ng-class="{active: n == currentPage}" ng-click="setPage()"><a href ng-bind="n + 1">{{n}}</a></li>
+		  <li ng-class="{disabled: currentPage == pagedEmployees.length - 1}"><a href ng-click="nextPage()">&raquo;</a></li>
+		</ul>
 	</div>
 </section>

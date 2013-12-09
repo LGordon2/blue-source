@@ -29,7 +29,6 @@ class Vacation < ActiveRecord::Base
       unless id == vacation.id
         (vacation.start_date..vacation.end_date).each do |vacation_date|
           (start_date..end_date).each do |date|
-            Rails.logger.error "start_date #{start_date} vacation_date #{vacation_date}"
             return errors.add(:date_range, "includes date already included for PDO.") if date == vacation_date
           end
         end
