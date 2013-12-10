@@ -14,6 +14,10 @@
 						<td><%= @employee.role unless @employee.role.blank? %></td>
 					</tr>
 					<tr>
+						<td>Level:</td>
+						<td><%= @employee.level unless @employee.level.blank? %></td>
+					</tr>
+					<tr>
 						<td>Manager:</td>
 						<td><%= link_to @employee.manager.display_name, "#{@employee.manager.id}" unless @employee.manager.blank? %></td>
 					</tr>
@@ -33,7 +37,9 @@
 			</div>
 		</div>
 		<div class="panel-heading">
+			<%= link_to "Manage", nil, class: "btn btn-default btn-xs pull-right" %>
 			<h4 class="panel-title"><a data-toggle="collapse" href="#projectData">Project Info</a></h4>
+			<div class="clearfix"></div>
 		</div>
 		<div id="projectData" class="panel-collapse collapse">
 			<div class="panel-body">
@@ -63,7 +69,7 @@
 		</div>
 		<div class="panel-heading">
 			<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" %>
-			<h4 class="panel-title"><a data-toggle="collapse" href="#pdoData">Vacation Info</a></h4>
+			<h4 class="panel-title"><a data-toggle="collapse" href="#pdoData">Time Off Info</a></h4>
 			
 			<div class="clearfix"></div>
 		</div>
@@ -72,15 +78,15 @@
 				<table class="table">
 					<tr>
 						<td>Sick days taken:</td>
-						<td>0/10</td>
+						<td><%= "#{@employee.sick_days_taken(2013)}/#{@employee.max_sick_days}" %></td>
 					</tr>
 					<tr>
 						<td>Vacation days taken:</td>
-						<td>0/10</td>
+						<td><%= "#{@employee.vacation_days_taken(2013)}/#{@employee.max_vacation_days}" %></td>
 					</tr>
 					<tr>
 						<td>Floating holidays taken:</td>
-						<td>0/2</td>
+						<td><%= "#{@employee.floating_holidays_taken(2013)}/#{@employee.max_floating_holidays}" %></td>
 					</tr>
 				</table>
 			</div>

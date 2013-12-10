@@ -35,6 +35,10 @@
 						<td><%= e.select :role, ["Consultant","Manager","Director"] %></td>
 					</tr>
 					<tr>
+						<td>Level:</td>
+						<td><%= e.text_field :level %></td>
+					</tr>
+					<tr>
 						<td>Manager:</td>
 						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
 					</tr>

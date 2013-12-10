@@ -10,6 +10,7 @@ class Vacation < ActiveRecord::Base
   validate :end_date_cannot_be_before_start_date
   validate :manager_is_above_employee
   validate :vacation_not_already_included
+  validate :validate_pto_day_limit
   
   def end_date_cannot_be_before_start_date
     unless end_date.blank? or start_date.blank? or end_date >= start_date
@@ -34,6 +35,33 @@ class Vacation < ActiveRecord::Base
         end
       end
     end
+  end
+  
+  def self.fiscal_new_year_date(date = Date.current)
+    Date.new(self.calculate_fiscal_year(date),05,01)
+  end
+  
+  def self.calculate_fiscal_year(date = Date.current)
+    date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
+  end
+  
+  def validate_pto_day_limit
+    case self.vacation_type
+    when "Sick"
+      days_taken = self.employee.sick_days_taken(2013)
+      max_days = self.employee.max_sick_days
+    when "Vacation"
+      days_taken = self.employee.vacation_days_taken(2013)
+      max_days = self.employee.max_vacation_days(self.end_date)
+    when "Floating Holiday"
+      days_taken = self.employee.floating_holidays_taken(2013)
+      max_days = self.employee.max_floating_holidays
+    end
     
+    previous_business_days = self.business_days_was.blank? ? 0 : self.business_days_was
+    
+    if days_taken - previous_business_days + self.business_days > max_days
+      errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
+    end
   end
 end

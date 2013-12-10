@@ -131,4 +131,20 @@ class EmployeeTest < ActiveSupport::TestCase
     assert_not director.all_subordinates.include?(manager2),  "manager2 is not included in all subordinates for director"
     assert_not director.all_subordinates.include?(consultant2),  "consultant2 is not included in all subordinates for director"
   end
+  
+  test "max vacation days" do
+    employee = employees(:consultant)
+    
+    employee.start_date = Date.current.ago(1)
+    assert_equal 10, employee.max_vacation_days
+    
+    employee.start_date = Date.current.years_ago(4)
+    assert_equal 15, employee.max_vacation_days
+    
+    employee.start_date = Date.current.years_ago(7)
+    assert_equal 20, employee.max_vacation_days
+    
+    employee.start_date = Date.current.years_ago(3).days_since(7)
+    assert_equal 10, employee.max_vacation_days
+  end
 end
