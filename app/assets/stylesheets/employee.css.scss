@@ -4,10 +4,6 @@
 .alert-inline
 {
   display:inline-block;
-}
-
-.alert-inline
-{
   div{
     display:inline-block;
   }
@@ -17,11 +13,16 @@
 {
   display:inline-block;
   padding:15px 0px;
-}
-.vacation-header
-{
   h3{
     padding:10px;
     display:inline;
+  }
+}
+.vacation-summary-table
+{
+  padding:10px;
+  span
+  {
+    padding:10px;
   }
 }

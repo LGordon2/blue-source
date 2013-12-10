@@ -90,15 +90,15 @@ class Employee < ActiveRecord::Base
     return 2
   end
   
-  def sick_days_taken(year)
+  def sick_days_taken(year=Date.current.year)
     pdo_taken(year, "Sick")
   end
   
-  def vacation_days_taken(year)
+  def vacation_days_taken(year=Date.current.year)
     pdo_taken(year, "Vacation")
   end
   
-  def floating_holidays_taken(year)
+  def floating_holidays_taken(year=Date.current.year)
     pdo_taken(year, "Floating Holiday")
   end
   

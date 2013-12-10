@@ -58,8 +58,8 @@ class Vacation < ActiveRecord::Base
       max_days = self.employee.max_floating_holidays
     end
     
-    previous_business_days = self.business_days_was.blank? ? 0 : self.business_days_was
-    
+    previous_business_days = if self.business_days_was.blank? or self.vacation_type_was != self.vacation_type then 0 else self.business_days_was end
+
     if days_taken - previous_business_days + self.business_days > max_days
       errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
     end

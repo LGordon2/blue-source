@@ -1,1 +1,0 @@
-$("#vacation-<%= @vacation.id %>").remove()

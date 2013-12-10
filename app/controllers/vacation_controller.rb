@@ -17,7 +17,6 @@ class VacationController < ApplicationController
     respond_to do |format|
       if @vacation.update(vacation_params)
         format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: true}}
-        format.js {}
       else
         format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages}}
       end
@@ -28,7 +27,6 @@ class VacationController < ApplicationController
     @vacation.destroy if current_user.above? @vacation.employee
     respond_to do |format|
       format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
-      format.js
     end
   end
   
