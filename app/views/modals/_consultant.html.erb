@@ -1,0 +1,29 @@
+<%= form_for :employee, url: "employee/new", method: :post do |f| %>
+<div class="form-group">
+	<%= f.label :first_name, class: "control-label" %>
+	<%= f.text_field :first_name, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :last_name, class: "control-label" %>
+	<%= f.text_field :last_name, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :role, class: "control-label" %>
+	<%= f.select :role, ["Consultant","Manager","Director"], {},class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :level, class: "control-label" %>
+	<%= f.text_field :level, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :manager, class: "control-label"%>
+	<%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, {include_blank: true}, class: "form-control" %></td>
+</div>
+<div class="form-group">
+	<%= f.label :start_date, class: "control-label" %>
+	<%= f.date_field :start_date, max: Time.now, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.submit class: "btn btn-primary"%>
+</div>
+<% end %>

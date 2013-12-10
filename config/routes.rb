@@ -11,6 +11,7 @@ ManagerPortal::Application.routes.draw do
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee
   patch "employee/:id", to: "employee#update"
+  post "employee/new", to: "employee#new"
   
   #Projects
   get "projects", to: "project#all"

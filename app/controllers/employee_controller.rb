@@ -1,13 +1,23 @@
 class EmployeeController < ApplicationController
   before_action :require_manager_login
-  before_action :set_user, except: :all
-  before_action :check_manager_status, except: :all
+  before_action :set_user, except: [:all,:new]
+  before_action :check_manager_status, except: [:all, :new]
   
   def index
     respond_to do |format|
       format.json {render json: @employee}
       format.html
     end
+  end
+  
+  def new 
+    @employee = Employee.new(employee_params)
+    @employee.first_name = @employee.first_name.downcase
+    @employee.last_name = @employee.last_name.downcase
+    @employee.username = "#{@employee.first_name}.#{@employee.last_name}"
+    if @employee.save
+      redirect_to :root
+    end 
   end
   
   def all
