@@ -34,8 +34,10 @@
 			<th>End Date</th>
 			<th>Total Business Days</th>
 			<th>Type</th>
+			<% if @employee.vacations.count > 0 %>
 			<th>Edit</th>
 			<th>Delete</th>
+			<% end %>
 		</tr>
 		<div id="all_vacations">
 			<% @employee.vacations.each do |vacation| %>
