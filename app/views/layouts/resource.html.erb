@@ -25,7 +25,7 @@
 	</div>
 	<div>
 		<div class="table-responsive">
-			<table ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0" class="table table-bordered table-condensed" cellspacing="10">
+			<table ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
 				<%= yield :table %>
 			</table>
 			<h2 ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length<=0">No rows found for '{{query}}'</h2>

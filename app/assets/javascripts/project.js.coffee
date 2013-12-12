@@ -7,6 +7,8 @@
 
 project_list_ctrl = ($scope, $http, $filter) ->
   $http.get('projects.json').success (data) ->
+    data.forEach (value, key) ->
+      value.lead.display_name = value.lead.first_name[0].toUpperCase() + value.lead.first_name[1..-1] + " " + value.lead.last_name[0].toUpperCase() + value.lead.last_name[1..-1] if value.lead
     $scope.projects = data
     $scope.search()
   $scope.predicate = 'name'
