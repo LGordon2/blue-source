@@ -43,7 +43,7 @@
 						<% end %>
 					</div><!-- /.navbar-collapse -->
 				</nav>
-				<%= yield %>
+				<%= content_for?(:content) ? yield(:content) : yield %>
 			</div>
 		</header>
 	</body>

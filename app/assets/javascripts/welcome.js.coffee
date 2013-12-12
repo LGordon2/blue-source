@@ -1,9 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).ready ->
-  $(window).on "keypress", ->
-    $("#search-bar").focus() unless $(".modal").attr("aria-hidden")=="false"
+#= require auto_focus_search
 
 @employee_list_app = angular.module('employee_list_app', []);
 
@@ -43,6 +41,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     
   $scope.groupToPages = () ->
     $scope.pagedEmployees = []
+    return if $scope.filteredEmployees.length==0
     for i in [0..$scope.filteredEmployees.length-1]
       if i % employeesPerPage == 0
         $scope.pagedEmployees[Math.floor(i / employeesPerPage)] = [ $scope.filteredEmployees[i] ]

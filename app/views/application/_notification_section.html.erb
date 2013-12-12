@@ -1,0 +1,7 @@
+<% if flash[:notice] or flash[:error] %>
+<div class="alert <%= flash[:notice].blank? ? "alert-danger" : "alert-success" %> alert-dismissable">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	<%= flash[:notice] %>
+	<%= flash[:error] %>
+</div>
+<% end %>
