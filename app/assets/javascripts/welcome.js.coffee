@@ -1,6 +1,10 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+$(document).ready ->
+  $(window).on "keypress", ->
+    $("#search-bar").focus() unless $(".modal").attr("aria-hidden")=="false"
+
 @employee_list_app = angular.module('employee_list_app', []);
 
 employee_list_ctrl = ($scope, $http, $filter) ->
@@ -17,7 +21,6 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   
   $scope.filter_on_id = true
   $scope.test = (expected, actual) ->
-    console.log(actual)
     return unless actual == '' then parseInt(actual) == parseInt(expected) else true
 
   searchMatch = (haystack, needle) ->

@@ -16,7 +16,9 @@ class EmployeeController < ApplicationController
     @employee.last_name = @employee.last_name.downcase
     @employee.username = "#{@employee.first_name}.#{@employee.last_name}"
     if @employee.save
-      redirect_to :root
+      redirect_to :root, flash: {notice: "Employee added successfully."}
+    else
+      redirect_to :root, flash: {error: @employee.errors.full_messages.first}
     end 
   end
   

@@ -1,11 +1,11 @@
 <%= form_for :employee, url: "employee/new", method: :post do |f| %>
 <div class="form-group">
 	<%= f.label :first_name, class: "control-label" %>
-	<%= f.text_field :first_name, class: "form-control" %>
+	<%= f.text_field :first_name, class: "form-control", required: true %>
 </div>
 <div class="form-group">
 	<%= f.label :last_name, class: "control-label" %>
-	<%= f.text_field :last_name, class: "form-control" %>
+	<%= f.text_field :last_name, class: "form-control", required: true %>
 </div>
 <div class="form-group">
 	<%= f.label :role, class: "control-label" %>
@@ -24,6 +24,7 @@
 	<%= f.date_field :start_date, max: Time.now, class: "form-control" %>
 </div>
 <div class="form-group">
+	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	<%= f.submit class: "btn btn-primary"%>
 </div>
 <% end %>

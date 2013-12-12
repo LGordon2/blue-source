@@ -1,9 +1,15 @@
 <section ng-app="employee_list_app" ng-controller="employee_list_ctrl" class="center-block">
 	<h1>Welcome, <%= link_to "#{current_user.first_name.capitalize}", current_user %>.</h1>
-	<div class="row">
-		<input type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
+	<% if flash[:notice] or flash[:error] %>
+	<div class="alert <%= flash[:notice].blank? ? "alert-danger" : "alert-success" %> alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<%= flash[:notice] %>
+		<%= flash[:error] %>
 	</div>
-
+	<% end %>
+	<div class="row">
+		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
+	</div>
 	<div class="row">
 		<% unless current_user.role.downcase == "manager" %>
 		<div class="radio-btn-section">

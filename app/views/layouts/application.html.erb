@@ -6,6 +6,9 @@
 		<%= stylesheet_link_tag params[:controller], media: "all"%>
 		<%= javascript_include_tag "application" %>
 		<%= javascript_include_tag params[:controller]%>
+		<!--[if lte IE 8]>
+		<%= javascript_include_tag "json2" %>
+		<![endif]-->
 		<%= csrf_meta_tags %>
 	</head>
 	<body>
@@ -27,9 +30,15 @@
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<% unless current_user.blank? %>
 						<ul class="nav navbar-nav navbar-right">
-							<li><%= link_to "Projects", :projects %></li>
-							<li><%= link_to current_user.display_name, :root %></li>
-							<li><%= link_to "Logout", :logout %></li>
+							<li>
+								<%= link_to "Projects", :projects %>
+							</li>
+							<li>
+								<%= link_to current_user.display_name, :root %>
+							</li>
+							<li>
+								<%= link_to "Logout", :logout %>
+							</li>
 						</ul>
 						<% end %>
 					</div><!-- /.navbar-collapse -->

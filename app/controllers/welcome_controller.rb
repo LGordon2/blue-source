@@ -42,6 +42,8 @@ class WelcomeController < ApplicationController
   
   def validate_against_ad(username, password)
     #Do authentication against the AD.
+    return true unless Rails.env.production?
+    
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
     :auth => {
@@ -49,6 +51,6 @@ class WelcomeController < ApplicationController
       :username => "ORASI\\#{username}",
       :password => password
     }
-    true#ldap.bind
+    ldap.bind
   end
 end
