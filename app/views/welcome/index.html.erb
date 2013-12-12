@@ -1,78 +1,29 @@
-<section ng-app="employee_list_app" ng-controller="employee_list_ctrl" class="center-block">
-	<h1>Welcome, <%= link_to "#{current_user.first_name.capitalize}", current_user %>.</h1>
-	<% if flash[:notice] or flash[:error] %>
-	<div class="alert <%= flash[:notice].blank? ? "alert-danger" : "alert-success" %> alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<%= flash[:notice] %>
-		<%= flash[:error] %>
-	</div>
-	<% end %>
-	<div class="row">
-		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
-	</div>
-	<div class="row">
-		<% unless current_user.role.downcase == "manager" %>
-		<div class="radio-btn-section">
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary active" ng-click="current_id='';search()">
-					<input type="radio" name="options" id="option1" >
-					All </label>
-				<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>';search()">
-					<input type="radio" name="options" id="option2">
-					Filtered </label>
-			</div>
-			<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#myModal"} %>
-		</div>
+<% content_for :table do %>
+<tr>
+	<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
+	<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse; search()"%></th>
+	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
+	<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%></th>
+</tr>
+<tr ng-repeat="employee in pagedEmployees[currentPage]">
+	<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
+	<td>{{employee.role}}</td>
+	<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
+	<td><%= link_to '{{employee.project.name}}', "project/{{employee.project_id}}"%></td>
+</tr>
+<% end %>
 
-		<% else %>
-		<br />
-		<% end %>
-	</div>
-	<div class="row">
-		<div class="table-responsive">
-			<table class="table table-bordered table-condensed" cellspacing="10">
-				<tr>
-					<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
-					<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse; search()"%></th>
-					<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
-					<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%></th>
-				</tr>
-				<tr ng-repeat="employee in pagedEmployees[currentPage]">
-					<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
-					<td>{{employee.role}}</td>
-					<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
-					<td><%= link_to '{{employee.project.name}}', "project/{{employee.project_id}}"%></td>
-				</tr>
-			</table>
-		</div>
-	</div>
-	<div ng-hide="pagedEmployees.length==1">
-		<ul class="pagination">
-			<li ng-class="{disabled: currentPage == 0}">
-				<a href ng-click="prevPage()">&laquo;</a>
-			</li>
-			<li ng-repeat="n in range(0,pagedEmployees.length)" ng-class="{active: n == currentPage}" ng-click="setPage()">
-				<a href ng-bind="n + 1">{{n}}</a>
-			</li>
-			<li ng-class="{disabled: currentPage == pagedEmployees.length - 1}">
-				<a href ng-click="nextPage()">&raquo;</a>
-			</li>
-		</ul>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-						&times;
-					</button>
-					<h4 class="modal-title" id="myModalLabel">Add Consultant</h4>
-				</div>
-				<div class="modal-body">
-					<%= render "modals/consultant" %>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-</section>
+<% content_for :welcome_msg do %>
+Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
+<% end %>
+
+<% content_for :header_btns do %>
+<div class="btn-group" data-toggle="buttons">
+	<label class="btn btn-primary active" ng-click="current_id='';search()">
+		<input type="radio" name="options" id="option1" >
+		All </label>
+	<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>';search()">
+		<input type="radio" name="options" id="option2">
+		Filtered </label>
+</div>
+<% end %>

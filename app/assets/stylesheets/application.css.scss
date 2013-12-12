@@ -13,7 +13,14 @@
  *= require bootstrap-theme
  *= require scaffolds
  */
-
+.radio-btn-section
+{
+  padding: 10px
+}
+.radio-btn-label
+{
+  display: inline;
+}
 
 #error_explanation {
   width: 450px;

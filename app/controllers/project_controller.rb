@@ -2,7 +2,11 @@ class ProjectController < ApplicationController
   before_action :require_manager_login
   before_action :set_project, only: [:index, :edit]
   
+  layout "resource", only: :all
+  
   def all
+    @modal_title = "Add Project"
+    @resource_for_angular = "project"
     respond_to do |format|
       format.json {render json: Project.all.to_json({
         include: [
@@ -28,8 +32,10 @@ class ProjectController < ApplicationController
   
   def new
     @project = Project.new(project_params)
-    if !@project.save
-      render action: :add
+    if @project.save
+      redirect_to :back, flash: {notice: "Project saved successfully."}
+    else
+      redirect_to :back, flash: {error: @project.errors.full_messages.first}
     end 
   end
   

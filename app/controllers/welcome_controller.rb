@@ -1,6 +1,8 @@
 class WelcomeController < ApplicationController
   before_action :require_manager_login, only: :index
   
+  layout "resource", only: :index
+  
   def validate
     unless validate_against_ad(params[:employee][:username],params[:employee][:password])
       redirect_to :login, flash: {error: "Invalid username or password."}
@@ -32,6 +34,8 @@ class WelcomeController < ApplicationController
   end
 
   def index
+    @modal_title = "Add Consultant"
+    @resource_for_angular = "employee"
     redirect_to :sorry if current_user.subordinates.empty?
   end
   
