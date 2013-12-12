@@ -44,6 +44,9 @@
 			</li>
 		</ul>
 	</div>
+	<% content_for :modal_header do %>
+		Add <%= @resource_for_angular.blank? ? controller_name.capitalize : @resource_for_angular.capitalize %>
+	<% end %>
 	<% content_for :modal_content do %>
 		<% @in_modal = true %>
 		<%= render "modals/#{controller_name}" %>

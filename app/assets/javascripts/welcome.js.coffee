@@ -5,7 +5,7 @@
 
 @employee_list_app = angular.module('employee_list_app', []);
 
-employee_list_ctrl = ($scope, $http, $filter) ->
+employee_list_ctrl = ($scope, $http, $filter, $window) ->
   $http.get('employees.json').success (data) ->
     data.forEach (value, key) ->
       value.display_name = value.first_name[0].toUpperCase() + value.first_name[1..-1] + " " + value.last_name[0].toUpperCase() + value.last_name[1..-1]
@@ -61,7 +61,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     $scope.currentPage-- if ($scope.currentPage > 0)
   
   
-employee_list_ctrl.$inject = ['$scope', '$http', '$filter'];
+employee_list_ctrl.$inject = ['$scope', '$http', '$filter', '$window'];
 
 @employee_list_app.controller 'employee_list_ctrl', employee_list_ctrl
 
