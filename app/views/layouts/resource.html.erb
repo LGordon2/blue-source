@@ -45,7 +45,8 @@
 		</ul>
 	</div>
 	<% content_for :modal_content do %>
-	<%= render "modals/#{controller_name}" %>
+		<% @in_modal = true %>
+		<%= render "modals/#{controller_name}" %>
 	<% end %>
 	<%= render "modals/modal" %>
 </section>
