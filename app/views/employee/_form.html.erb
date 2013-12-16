@@ -1,51 +1,52 @@
-<%= form_for @employee do |e| %>
-<table class="table">
-	<tr>
-		<td>First Name:</td>
-		<td><%= text_field_tag "employee[first_name]", @employee.first_name.capitalize, type: :text %></td>
-	</tr>
-	<tr>
-		<td>Last Name:</td>
-		<td><%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text %></td>
-	</tr>
-	<% if current_user.is_upper_management? %>
-	<tr>
-		<td>Role:</td>
-		<td><%= e.select :role, Employee.roles %></td>
-	</tr>
-	<tr>
-		<td>Level:</td>
-		<td><%= e.text_field :level %></td>
-	</tr>
-	<tr>
-		<td>Manager:</td>
-		<td><%= select :employee, :manager_id, Employee.all.find_all {|e| e.is_manager_or_higher? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
-	</tr>
-	<tr>
-		<td>Status:</td>
-		<td><%= e.select :status, Employee.statuses %></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td>Start Date:</td>
-		<td><%= e.date_field :start_date, max: Time.now %></td>
-	</tr>
-	<tr>
-		<td>Phone Number:</td>
-		<td><%= e.phone_field :phone_number %></td>
-	</tr>
-	<tr>
-		<td>Extension:</td>
-		<td><%= e.number_field :extension, min: 1000, max: 9999 %></td>
-	</tr>
-	<tr>
-		<td>IM Name:</td>
-		<td><%= e.text_field :im_name %></td>
-	</tr>
-	<tr>
-		<td>IM Client:</td>
-		<td><%= e.select :im_client, Employee.im_client_types, {include_blank: true} %></td>
-	</tr>
-</table>
-<%= e.submit class: "btn btn-primary"%>
+<%= form_for @employee, html: {class: "form-horizontal", role: "form"} do |f| %>
+<div class="form-group">
+	<%= f.label :first_name, nil, class: "control-label" %>
+	<%= text_field_tag "employee[first_name]", @employee.first_name.capitalize, type: :text, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :last_name, nil, class: "control-label" %>
+	<%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text, class: "form-control" %>
+</div>
+<% if current_user.is_upper_management? %>
+<div class="form-group">
+	<%= f.label :role, nil, class: "control-label" %>
+	<%= f.select :role, Employee.roles, {}, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :level, nil, class: "control-label" %>
+	<%= f.text_field :level, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :manager, nil, class: "control-label" %>
+	<%= select :employee, :manager_id, Employee.all.find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :status, nil, class: "control-label" %>
+	<%= f.select :status, Employee.statuses, {}, class: "form-control" %>
+</div>
+<% end %>
+<div class="form-group">
+	<%= f.label :start_date, nil, class: "control-label" %>
+	<%= f.date_field :start_date, max: Time.now, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :phone_number, nil, class: "control-label" %>
+	<%= f.phone_field :phone_number, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :extension, nil, class: "control-label" %>
+	<%= f.number_field :extension, min: 1000, max: 9999, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :im_name, "IM Name", class: "control-label" %>
+	<%= f.text_field :im_name, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :im_client, "IM Client", class: "control-label" %>
+	<%= f.select :im_client, Employee.im_client_types, {include_blank: true}, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
+	<%= f.submit class: "btn btn-primary"%>
+</div>
 <% end %>

@@ -1,0 +1,21 @@
+<%= form_for @employee do |f| %>
+<%= hidden_field "form", "in_modal", value: true %>
+<div class="form-group">
+        <%= f.label :project, class: "control-label" %>
+        <%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
+</div>
+<% if current_user.is_upper_management? %>
+<div class="form-group">
+        <%= f.label :roll_on_date, class: "control-label" %>
+        <%= f.date_field :roll_on_date, class: "form-control" %>
+</div>
+<div class="form-group">
+        <%= f.label :roll_off_date, class: "control-label" %>
+        <%= f.date_field :roll_off_date, class: "form-control" %>
+</div>
+<% end %>
+<div class="form-group">
+        <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
+        <%= f.submit class: "btn btn-primary"%>
+</div>
+<% end %>

@@ -1,0 +1,20 @@
+<% n=1 %>
+<% while content_for?("modal_content_#{n}") do %>
+<!-- Modal -->
+<div class="modal fade" id="modal_<%=n%>" tabindex="-1" role="dialog" aria-labelledby="modal_label_<%=n%>" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="modal_label_<%=n%>"><%= yield "modal_header_#{n}" %></h4>
+			</div>
+			<div class="modal-body">
+				<%= yield "modal_content_#{n}" %>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<% n += 1 %>
+<% end %>

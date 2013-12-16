@@ -1,6 +1,6 @@
 <% content_for 'panel_title_1' do %>Project Info<% end %>
 <% content_for 'panel_heading_1' do %>
-<%= link_to "Manage", "edit/#{@project.id}", class: "btn btn-default btn-xs pull-right" if current_user.is_upper_management? %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.is_upper_management? %>
 <% end %>
 <% content_for 'panel_body_1' do %>
 <table class="table table-responsive">
@@ -22,7 +22,19 @@
 	</tr>
 </table>
 <% end %>
+
 <% content_for :footer do %>
 <%= link_to "Back", :projects %>
 <% end %>
+
+<% content_for "modal_header_1" do %>
+Manage Project
+<% end %>
+
+<% content_for "modal_content_1" do %>
+<% @in_modal = true %>
+<%= render "form" %>
+<% end %>
+
+<%= render "modals/modal_group"%>
 <%= render "panel_group" %>

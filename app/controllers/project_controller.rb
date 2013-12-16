@@ -20,7 +20,7 @@ class ProjectController < ApplicationController
     project = Project.find(params[:id])
     project.update(project_params)
     if project.save
-      redirect_to project
+      redirect_to project, flash: {notice: "Project successfully updated."}
     else
       redirect_to :back, flash: {error: project.errors.full_messages.first}
     end
@@ -56,6 +56,6 @@ class ProjectController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :lead_id, :start_date, :projected_end, :status) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :lead_id, :start_date, :end_date, :status) if current_user.is_upper_management?
   end
 end

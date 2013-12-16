@@ -1,7 +1,21 @@
+<!-- General info panel -->
+<!-- Header information -->
 <% content_for 'panel_title_1' do %>General Info<% end %>
 <% content_for 'panel_heading_1' do %>
-<%= link_to "Manage", "edit/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee  %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.above? @employee %>
 <% end %>
+<!-- /Header information -->
+
+<!-- Modal content -->
+<!-- Content for modal -->
+<% content_for "modal_header_1" do %>Manage Employee<% end %>
+
+<% content_for "modal_content_1" do %>
+<%@in_modal=true%>
+<%= render "form" %>
+<% end %> 
+
+<!-- General info body -->
 <% content_for 'panel_body_1' do %>
 <table class="table">
 	<tr>
@@ -46,10 +60,24 @@
 	</tr>
 </table>
 <% end %>
+<!-- /General info body -->
+
+<!-- Project info panel -->
+<!-- Project info head -->
 <% content_for 'panel_title_2' do %>Project Info<% end %>
 <% content_for 'panel_heading_2' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#myModal"} if current_user.above? @employee %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_2"} if current_user.above? @employee %>
 <% end %>
+<!-- /Project info head -->
+
+<!-- Content for modal -->
+<% content_for "modal_header_2" do %>Manage Project<% end %>
+
+<% content_for "modal_content_2" do %>
+<%= render "project_form" %>
+<% end %> 
+
+<!-- Project info body -->
 <% content_for 'panel_body_2' do %>
 <table class="table">
 	<tr>
@@ -74,10 +102,18 @@
 	</tr>
 </table>
 <% end %>
+<!-- /Project info body -->
+<!-- /Project info panel -->
+
+<!-- Time off panel -->
+<!-- Time off head -->
 <% content_for 'panel_title_3' do %>Time Off Info<% end %>
 <% content_for 'panel_heading_3' do %>
 <%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee %>
 <% end %>
+<!-- /Time off head -->
+
+<!-- Time off body -->
 <% content_for 'panel_body_3' do %>
 <table class="table">
 	<tr>
@@ -94,35 +130,14 @@
 	</tr>
 </table>
 <% end %>
+<!-- /Time off body -->
+<!-- /Time off panel -->
+
+
 <% content_for :footer do %>
 <%= link_to "Back", :root %>
 <% end %>
-<%= render "panel_group" %>
-<% content_for :modal_header do %>
-Manage Project
-<% end %>
-<% content_for :modal_content do %>
-<% form_for @employee do |f| %>
-<%= hidden_field "form", "in_modal", value: true %>
-<div class="form-group">
-	<%= f.label :project, class: "control-label" %>
-	<%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
-</div>
-<% if current_user.is_upper_management? %>
-<div class="form-group">
-	<%= f.label :roll_on_date, class: "control-label" %>
-	<%= f.date_field :roll_on_date, class: "form-control" %>
-</div>
-<div class="form-group">
-	<%= f.label :roll_off_date, class: "control-label" %>
-	<%= f.date_field :roll_off_date, class: "form-control" %>
-</div>
-<% end %>
-<div class="form-group">
-	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
-	<%= f.submit class: "btn btn-primary"%>
-</div>
-<% end %>
-<% end %>
 
-<%= render 'modals/modal' %>
+<%= render 'modals/modal_group' %>
+<%= render "panel_group" %>
+
