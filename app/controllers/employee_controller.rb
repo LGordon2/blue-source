@@ -60,8 +60,9 @@ class EmployeeController < ApplicationController
   end
   
   def employee_params
-    param_hash = params.require(:employee).permit(:first_name, :last_name, :project_id, :start_date, :extension, :level) if current_user.role == "Manager"
-    param_hash = params.require(:employee).permit(:first_name, :last_name, :project_id, :role, :manager_id, :start_date, :extension, :level) if current_user.role == "Director" or current_user.role == "AVP"
+    allowed_params = [:first_name, :last_name, :project_id, :start_date, :extension, :level, :phone_number, :im_name, :im_client]
+    allowed_params += [:role, :manager_id] if current_user.role == "Director" or current_user.role == "AVP"
+    param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
   end
 end

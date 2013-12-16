@@ -48,8 +48,20 @@
 						<td><%= e.date_field :start_date, max: Time.now %></td>
 					</tr>
 					<tr>
+						<td>Phone Number:</td>
+						<td><%= e.phone_field :phone_number %></td>
+					</tr>
+					<tr>
 						<td>Extension:</td>
 						<td><%= e.number_field :extension, min: 1000, max: 9999 %></td>
+					</tr>
+					<tr>
+						<td>IM Name:</td>
+						<td><%= e.text_field :im_name %></td>
+					</tr>
+					<tr>
+						<td>IM Client:</td>
+						<td><%= e.select :im_client, ["Windows Messenger", "Google Talk", "Skype", "AIM", "IRC"], {include_blank: true} %></td>
 					</tr>
 				</table>
 				<%= e.submit "Save", class: "btn btn-primary"%>

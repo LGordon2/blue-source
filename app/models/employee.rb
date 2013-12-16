@@ -9,16 +9,23 @@ class Employee < ActiveRecord::Base
   attr_accessor :display_name
   
   before_validation :set_names, on: :create
+  after_validation :fix_phone_number
   
   validates :username, presence: true, uniqueness: true, format: /\A\w+\.\w+\z/
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
   validates :role, presence: true, inclusion: {in: ["Consultant", "Manager", "Director", "AVP"]}
+  validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates_with StartDateValidator
   
   def set_names
     self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
+  end
+  
+  def fix_phone_number
+    clean_number = self.phone_number.tr_s(" ()", "").tr_s("-","")
+    self.phone_number = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
   end
    
   def self.authenticate(user_params)

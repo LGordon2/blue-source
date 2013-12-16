@@ -31,8 +31,20 @@
 						<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? %></td>
 					</tr>
 					<tr>
+						<td>Phone Number:</td>
+						<td><%= @employee.phone_number unless @employee.phone_number.blank? %></td>
+					</tr>
+					<tr>
 						<td>Extension:</td>
 						<td><%= @employee.extension unless @employee.extension.blank?%></td>
+					</tr>
+					<tr>
+						<td>IM Username:</td>
+						<td><%= @employee.im_name unless @employee.im_name.blank? %></td>
+					</tr>
+					<tr>
+						<td>IM Client:</td>
+						<td><%= @employee.im_client unless @employee.im_client.blank? %></td>
 					</tr>
 				</table>
 			</div>
