@@ -18,7 +18,6 @@ ManagerPortal::Application.routes.draw do
   post "projects", to: "project#new"
   get "project/add"
   get "project/:id", to: "project#index", as: :project
-  get "project/edit/:id", to: "project#edit"
   patch "project/:id", to: "project#update"
   
   #Welcome (login)

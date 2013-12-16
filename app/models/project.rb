@@ -7,7 +7,7 @@ class Project < ActiveRecord::Base
   
   def end_date_cannot_be_before_start_date
     unless end_date.blank? or end_date > start_date
-      errors.add(:projected_end, "can't be after start date.")
+      errors.add(:end_date, "can't be before start date.")
     end
   end
   
