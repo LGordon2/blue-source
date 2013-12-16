@@ -5,7 +5,7 @@
 
 @employee_list_app = angular.module('employee_list_app', []);
 
-employee_list_ctrl = ($scope, $http, $filter, $window) ->
+employee_list_ctrl = ($scope, $http, $filter) ->
   $http.get('employees.json').success (data) ->
     if (angular.isObject(data))
       data.forEach (value, key) ->
@@ -16,6 +16,7 @@ employee_list_ctrl = ($scope, $http, $filter, $window) ->
       $scope.employees = []
     $scope.search()
   $scope.predicate = 'last_name'
+  $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
   employeesPerPage = 10;
@@ -63,7 +64,7 @@ employee_list_ctrl = ($scope, $http, $filter, $window) ->
     $scope.currentPage-- if ($scope.currentPage > 0)
   
   
-employee_list_ctrl.$inject = ['$scope', '$http', '$filter', '$window'];
+employee_list_ctrl.$inject = ['$scope', '$http', '$filter'];
 
 @employee_list_app.controller 'employee_list_ctrl', employee_list_ctrl
 

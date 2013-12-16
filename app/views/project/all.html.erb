@@ -1,8 +1,8 @@
 <% content_for :table do %>
 <tr>
-	<th><%= link_to "Project Name", "#", 'ng-click' => "predicate='name'; reverse=!reverse" %></th>
-	<th><%= link_to "Team Lead", "#", 'ng-click' => "predicate='lead.last_name'; reverse!=reverse "%></th>
-	<th><%= link_to "Status", "#" %></th>
+	<th><%= link_to "Project Name", "#", 'ng-click' => "predicate='name'; reverse=!reverse; search()" %></th>
+	<th><%= link_to "Team Lead", "#", 'ng-click' => "predicate='lead.last_name';  reverse=!reverse; search() "%></th>
+	<th><%= link_to "Status", "#", 'ng-click' => "predicate='status'; reverse=!reverse; search()" %></th>
 </tr>
 <tr ng-repeat="project in pagedProjects[currentPage] ">
 	<td><%= link_to '{{project.name}}', "project/{{project.id}}"%></td>

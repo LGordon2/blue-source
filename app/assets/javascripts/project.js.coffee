@@ -12,6 +12,7 @@ project_list_ctrl = ($scope, $http, $filter) ->
     $scope.projects = data
     $scope.search()
   $scope.predicate = 'name'
+  $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
   projectsPerPage = 10;
@@ -31,7 +32,6 @@ project_list_ctrl = ($scope, $http, $filter) ->
     
     $scope.currentPage = 0;
     $scope.groupToPages()
-    console.log($scope.pagedProjects.length)
     
   $scope.groupToPages = () ->
     $scope.pagedProjects = []
