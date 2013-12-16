@@ -3,10 +3,10 @@ class Project < ActiveRecord::Base
   after_save :set_project_for_employee
   
   validates :name, presence: true, uniqueness: true
-  validate :projected_end_cannot_be_before_start_date
+  validate :end_date_cannot_be_before_start_date
   
-  def projected_end_cannot_be_before_start_date
-    unless projected_end.blank? or projected_end > start_date
+  def end_date_cannot_be_before_start_date
+    unless end_date.blank? or end_date > start_date
       errors.add(:projected_end, "can't be after start date.")
     end
   end

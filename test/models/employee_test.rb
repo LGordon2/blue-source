@@ -17,6 +17,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e1.first_name = "chris"
     e1.last_name = "nolan"
     e1.role = "Consultant"
+    e1.status = "Permanent"
     assert_raises ActiveRecord::RecordInvalid do
       e1.save!
     end
@@ -30,6 +31,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e1 = Employee.new
     e1.username = "rob.stewart"
     e1.role = "Consultant"
+    e1.status = "Permanent"
     e1.save!
     assert_raises ActiveRecord::RecordInvalid do
       e1.first_name = "Rob"
@@ -70,6 +72,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e.first_name = "bob"
     e.last_name = "dylan"
     e.role = "Consultant"
+    e.status = "Permanent"
     e.extension = 0
     assert_raises ActiveRecord::RecordInvalid do
       e.save!
@@ -146,5 +149,12 @@ class EmployeeTest < ActiveSupport::TestCase
     
     employee.start_date = Date.current.years_ago(3).days_since(7)
     assert_equal 10, employee.max_vacation_days
+  end
+  
+  test "roll off date can't be before roll on date" do
+    employee = employees(:consultant)
+    employee.roll_on_date = Date.current
+    employee.roll_off_date = Date.current.ago(1.day)
+    assert_not employee.save
   end
 end

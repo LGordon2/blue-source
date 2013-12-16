@@ -5,6 +5,7 @@ manager:
   last_name: barker
   role: "Manager"
   manager: director
+  status: "Permanent"
 
 consultant:
   username: john.doe
@@ -12,12 +13,14 @@ consultant:
   last_name: doe
   role: "Consultant"
   manager: manager
+  status: "Permanent"
   
 manager2:
   username: bob.ross
   first_name: bob
   last_name: ross
   role: "Manager"
+  status: "Permanent"
   
 consultant2:
   username: drew.carey
@@ -25,9 +28,11 @@ consultant2:
   last_name: carey
   role: "Consultant"
   manager: manager2
+  status: "Permanent"
 
 director:
   username: steve.jobs
   first_name: steve
   last_name: jobs
   role: "Director"
+  status: "Permanent"

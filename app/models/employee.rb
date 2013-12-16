@@ -15,9 +15,11 @@ class Employee < ActiveRecord::Base
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
-  validates :role, presence: true, inclusion: {in: ["Consultant", "Manager", "Director", "AVP"]}
+  validates :role, presence: true
   validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
+  validates :status, presence: true
   validates_with StartDateValidator
+  validate :roll_off_date_cannot_be_before_roll_on_date
   
   def set_names
     self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
@@ -126,7 +128,17 @@ class Employee < ActiveRecord::Base
     ["Windows Messenger", "Google Talk", "Skype", "AIM", "IRC"]
   end
   
+  def self.statuses
+    ["Permanent", "Contractor", "Inactive"]
+  end
+  
   private
+  
+  def roll_off_date_cannot_be_before_roll_on_date
+    unless roll_off_date.blank? or roll_on_date.blank? or roll_off_date >= roll_on_date
+      errors.add(:roll_off_date, "can't be before start date.")
+    end
+  end
   
   def pdo_taken(year, type)
     pdo_days = 0

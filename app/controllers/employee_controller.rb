@@ -14,7 +14,7 @@ class EmployeeController < ApplicationController
     if request.referer == root_url+"employee/vacation/#{@employee.id}"
       @prev_page = 3
     end
-    @prev_page = 2 unless flash[:project].blank?
+    @prev_page = 2 if flash[:project] == true
     
     respond_to do |format|
       format.json {render json: @employee}
@@ -58,9 +58,9 @@ class EmployeeController < ApplicationController
   
   def update
     if @employee.update(employee_params)
-      redirect_to @employee, flash: {notice: "Employee successfully updated.", project: true}
+      redirect_to @employee, flash: {notice: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
     else
-      render action: :edit
+      if params[:form][:in_modal] then redirect_to :back, flash: {error: @employee.errors.full_messages.first} else render action: :edit end
     end
   end
   
@@ -90,7 +90,7 @@ class EmployeeController < ApplicationController
   
   def employee_params
     allowed_params = [:first_name, :last_name, :project_id, :start_date, :extension, :level, :phone_number, :im_name, :im_client]
-    allowed_params += [:role, :manager_id] if current_user.role == "Director" or current_user.role == "AVP"
+    allowed_params += [:role, :manager_id, :status, :roll_on_date, :roll_off_date] if current_user.role == "Director" or current_user.role == "AVP"
     param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
   end

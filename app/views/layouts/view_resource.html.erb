@@ -6,6 +6,6 @@
 		<%= yield %>
 	</div>
 </div>
-<%= link_to "Back", :root, class: "btn btn-link" %>
+<%= yield :footer %>
 <% end %>
 <%= render template: "layouts/application" %>

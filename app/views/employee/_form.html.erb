@@ -1,0 +1,51 @@
+<%= form_for @employee do |e| %>
+<table class="table">
+	<tr>
+		<td>First Name:</td>
+		<td><%= text_field_tag "employee[first_name]", @employee.first_name.capitalize, type: :text %></td>
+	</tr>
+	<tr>
+		<td>Last Name:</td>
+		<td><%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text %></td>
+	</tr>
+	<% if current_user.is_upper_management? %>
+	<tr>
+		<td>Role:</td>
+		<td><%= e.select :role, Employee.roles %></td>
+	</tr>
+	<tr>
+		<td>Level:</td>
+		<td><%= e.text_field :level %></td>
+	</tr>
+	<tr>
+		<td>Manager:</td>
+		<td><%= select :employee, :manager_id, Employee.all.find_all {|e| e.is_manager_or_higher? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
+	</tr>
+	<tr>
+		<td>Status:</td>
+		<td><%= e.select :status, Employee.statuses %></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td>Start Date:</td>
+		<td><%= e.date_field :start_date, max: Time.now %></td>
+	</tr>
+	<tr>
+		<td>Phone Number:</td>
+		<td><%= e.phone_field :phone_number %></td>
+	</tr>
+	<tr>
+		<td>Extension:</td>
+		<td><%= e.number_field :extension, min: 1000, max: 9999 %></td>
+	</tr>
+	<tr>
+		<td>IM Name:</td>
+		<td><%= e.text_field :im_name %></td>
+	</tr>
+	<tr>
+		<td>IM Client:</td>
+		<td><%= e.select :im_client, Employee.im_client_types, {include_blank: true} %></td>
+	</tr>
+</table>
+<%= e.submit class: "btn btn-primary"%>
+<% end %>

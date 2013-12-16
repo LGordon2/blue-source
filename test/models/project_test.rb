@@ -24,7 +24,7 @@ class ProjectTest < ActiveSupport::TestCase
   test "projected end cannot before start date" do
     p = Project.new
     p.name = "Southern Company"
-    p.projected_end = DateTime.new(2013,01,01)
+    p.end_date = DateTime.new(2013,01,01)
     p.start_date = DateTime.new(2014,01,01)
     assert_raises ActiveRecord::RecordInvalid do
       p.save!
@@ -36,6 +36,7 @@ class ProjectTest < ActiveSupport::TestCase
     e = Employee.new
     e.username = "adam.thomas"
     e.role = "Manager"
+    e.status = "Permanent"
     e.save!
     p.name = "TitleMax"
     p.lead = e
