@@ -12,11 +12,7 @@ class WelcomeController < ApplicationController
     @employee = Employee.authenticate(params[:employee])
     if @employee.save
       session[:current_user_id] = @employee.id
-      unless @employee.subordinates.empty?
-        redirect_to :root
-      else
-        redirect_to :sorry
-      end
+      redirect_to :root
     else
       render action: :login
     end
@@ -36,7 +32,7 @@ class WelcomeController < ApplicationController
   def index
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
-    redirect_to :sorry if current_user.subordinates.empty?
+    redirect_to :sorry unless current_user.is_manager_or_higher?
   end
   
   def sorry

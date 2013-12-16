@@ -1,13 +1,26 @@
 class EmployeeController < ApplicationController
   before_action :require_manager_login
-  before_action :set_user, except: [:all,:new]
-  before_action :check_manager_status, except: [:all, :new]
+  before_action :set_user, only: [:index, :edit, :vacation, :update]
+  
+  #Only manager of employee can edit vacation, employee info, or update info.
+  before_action :check_manager_status, only: [:edit, :vacation, :update]
+  
+  #Manager of employee or employee can view themselves.
+  before_action :check_employee_is_current_user_or_manager, only: [:index]
   
   def index
+    if request.referer == root_url+"employee/vacation/#{@employee.id}"
+      @prev_page = :vacation
+    end
+    @prev_page = :project unless flash[:project].blank?
+    
     respond_to do |format|
       format.json {render json: @employee}
       format.html
     end
+  end
+  
+  def edit
   end
   
   def new 
@@ -43,7 +56,7 @@ class EmployeeController < ApplicationController
   
   def update
     if @employee.update(employee_params)
-      redirect_to @employee, flash: {notice: "Employee successfully updated."}
+      redirect_to @employee, flash: {notice: "Employee successfully updated.", project: true}
     else
       render action: :edit
     end
@@ -56,7 +69,11 @@ class EmployeeController < ApplicationController
   end
   
   def check_manager_status
-    redirect_to :root unless @employee == current_user or current_user.above? @employee
+    redirect_to :root unless current_user.above? @employee
+  end
+  
+  def check_employee_is_current_user_or_manager
+    redirect_to :root unless current_user == @employee or current_user.above? @employee
   end
   
   def employee_params

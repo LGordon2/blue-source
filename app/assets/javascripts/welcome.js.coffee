@@ -7,10 +7,13 @@
 
 employee_list_ctrl = ($scope, $http, $filter, $window) ->
   $http.get('employees.json').success (data) ->
-    data.forEach (value, key) ->
-      value.display_name = value.first_name[0].toUpperCase() + value.first_name[1..-1] + " " + value.last_name[0].toUpperCase() + value.last_name[1..-1]
-      value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
-    $scope.employees = data
+    if (angular.isObject(data))
+      data.forEach (value, key) ->
+        value.display_name = value.first_name[0].toUpperCase() + value.first_name[1..-1] + " " + value.last_name[0].toUpperCase() + value.last_name[1..-1]
+        value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
+      $scope.employees = data
+    else
+      $scope.employees = []
     $scope.search()
   $scope.predicate = 'last_name'
   $scope.current_id = ''
@@ -30,7 +33,6 @@ employee_list_ctrl = ($scope, $http, $filter, $window) ->
       return searchMatch(employee.display_name, $scope.query) || searchMatch(employee.role, $scope.query) || 
       (searchMatch(employee.manager.first_name, $scope.query) || searchMatch(employee.manager.last_name, $scope.query) && employee.manager?) || (searchMatch(employee.project.name, $scope.query) if employee.project?)
     )
-    
     manager_id = $scope.manager_id
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test)
     

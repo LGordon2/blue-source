@@ -29,10 +29,10 @@
 						<td>Last Name:</td>
 						<td><%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text %></td>
 					</tr>
-					<% if current_user.role.downcase.in? ["director", "avp"] %>
+					<% if current_user.is_upper_management? %>
 					<tr>
 						<td>Role:</td>
-						<td><%= e.select :role, ["Consultant","Manager","Director"] %></td>
+						<td><%= e.select :role, Employee.roles %></td>
 					</tr>
 					<tr>
 						<td>Level:</td>
@@ -40,7 +40,7 @@
 					</tr>
 					<tr>
 						<td>Manager:</td>
-						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
+						<td><%= select :employee, :manager_id, Employee.all.find_all {|e| e.is_manager_or_higher? }.collect {|e| [e.display_name, e.id]}, { include_blank: true } %></td>
 					</tr>
 					<% end %>
 					<tr>
@@ -61,10 +61,10 @@
 					</tr>
 					<tr>
 						<td>IM Client:</td>
-						<td><%= e.select :im_client, ["Windows Messenger", "Google Talk", "Skype", "AIM", "IRC"], {include_blank: true} %></td>
+						<td><%= e.select :im_client, Employee.im_client_types, {include_blank: true} %></td>
 					</tr>
 				</table>
-				<%= e.submit "Save", class: "btn btn-primary"%>
+				<%= e.submit class: "btn btn-primary"%>
 			</div>
 
 		</div>

@@ -54,7 +54,7 @@
 			<h4 class="panel-title"><a data-toggle="collapse" href="#projectData">Project Info</a></h4>
 			<div class="clearfix"></div>
 		</div>
-		<div id="projectData" class="panel-collapse collapse">
+		<div id="projectData" class="panel-collapse collapse <%= :in if @prev_page == :project %>">
 			<div class="panel-body">
 				<table class="table">
 					<tr>
@@ -81,12 +81,12 @@
 			</div>
 		</div>
 		<div class="panel-heading">
-			<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" %>
+			<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee %>
 			<h4 class="panel-title"><a data-toggle="collapse" href="#pdoData">Time Off Info</a></h4>
 
 			<div class="clearfix"></div>
 		</div>
-		<div id="pdoData" class="panel-collapse collapse">
+		<div id="pdoData" class="panel-collapse collapse <%= :in if @prev_page == :vacation %>">
 			<div class="panel-body">
 				<table class="table">
 					<tr>

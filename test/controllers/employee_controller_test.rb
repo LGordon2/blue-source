@@ -40,4 +40,10 @@ class EmployeeControllerTest < ActionController::TestCase
     get :index, {id: employees(:consultant2).id}, session = {current_user_id: employees(:consultant).id}
     assert_redirected_to controller: :welcome, action: :sorry
   end
+  
+  test "manager should be redirected to root when trying to manage own vacation" do
+    manager = employees(:manager)
+    get :vacation, {id: manager.id}, {current_user_id: manager}
+    assert_redirected_to :root
+  end
 end

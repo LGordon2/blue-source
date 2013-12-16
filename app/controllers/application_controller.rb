@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def require_manager_login
     if current_user.nil?
       redirect_to :login
-    elsif !current_user.role.downcase.in? ["manager","director","avp"]
+    elsif !current_user.is_manager_or_higher?
       redirect_to :sorry
     end
   end

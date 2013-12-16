@@ -24,6 +24,7 @@ class Employee < ActiveRecord::Base
   end
   
   def fix_phone_number
+    return if self.phone_number.blank?
     clean_number = self.phone_number.tr_s(" ()", "").tr_s("-","")
     self.phone_number = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
   end
@@ -109,6 +110,22 @@ class Employee < ActiveRecord::Base
     pdo_taken(year, "Floating Holiday")
   end
   
+  def is_manager_or_higher?
+    self.role.downcase.in? ["manager","director","avp"]
+  end
+  
+  def is_upper_management?
+    self.role.downcase.in? ["director", "avp"]
+  end
+  
+  def self.roles
+    ["Consultant","Manager","Director","AVP"]
+  end
+  
+  def self.im_client_types
+    ["Windows Messenger", "Google Talk", "Skype", "AIM", "IRC"]
+  end
+  
   private
   
   def pdo_taken(year, type)
@@ -119,4 +136,5 @@ class Employee < ActiveRecord::Base
     end
     return pdo_days
   end
+  
 end

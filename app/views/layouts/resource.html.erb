@@ -28,7 +28,8 @@
 			<table ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
 				<%= yield :table %>
 			</table>
-			<h2 ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length<=0">No rows found for '{{query}}'</h2>
+			<h2 ng-show="<%= @resource_for_angular.pluralize %>.length==0">No <%= @resource_for_angular.pluralize %> found.</h2>
+			<h2 ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length<=0 && <%= @resource_for_angular.pluralize %>.length>0 ">No rows found for '{{query}}'</h2>
 		</div>
 	</div>
 	<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>1">
