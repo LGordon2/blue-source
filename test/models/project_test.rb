@@ -12,11 +12,11 @@ class ProjectTest < ActiveSupport::TestCase
     end
   end
   
-  test "start date cannot be after the current date" do
+  test "start date can be after the current date" do
     p = Project.new
     p.name = "Southern Company"
     p.start_date = DateTime.new(9999,01,01)
-    assert_raises ActiveRecord::RecordInvalid do
+    assert_nothing_raised ActiveRecord::RecordInvalid do
       p.save!
     end
   end

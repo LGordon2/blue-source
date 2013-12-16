@@ -12,6 +12,14 @@
 	<%= f.select :status, ["Active", "Inactive", "Pending"], {}, class: "form-control" %>
 </div>
 <div class="form-group">
+	<%= f.label :start_date, class: "control-label" %>
+	<%= f.date_field :start_date, class: "form-control" %>	
+</div>
+<div class="form-group">
+	<%= f.label :projected_end, class: "control-label" %>
+	<%= f.date_field :projected_end, class: "form-control" %>	
+</div>
+<div class="form-group">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
 	<%= f.submit class: "btn btn-primary"%>
 </div>

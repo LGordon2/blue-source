@@ -1,5 +1,9 @@
-<h1><%= @project.name %></h1>
-<table class="table table-bordered table-responsive">
+<% content_for 'panel_title_1' do %>Project Info<% end %>
+<% content_for 'panel_heading_1' do %>
+<%= link_to "Manage", "edit/#{@project.id}", class: "btn btn-default btn-xs pull-right" if current_user.is_upper_management? %>
+<% end %>
+<% content_for 'panel_body_1' do %>
+<table class="table table-responsive">
 	<tr>
 		<td>Team Lead</td>
 		<td><%= @project.lead.display_name unless @project.lead.blank? %></td>
@@ -17,5 +21,5 @@
 		<td><%= @project.status %></td>
 	</tr>
 </table>
-<%= link_to "Edit", 'edit/'+@project.id.to_s %>
-<%= link_to "Back", :projects%>
+<% end %>
+<%= render "panel_group" %>

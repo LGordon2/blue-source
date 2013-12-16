@@ -15,3 +15,6 @@
 //= require jquery.ui.effect-blind
 //= require jquery_ujs
 //= require bootstrap
+$(document).ready(function() {
+  return $("#help-btn").tooltip();
+});

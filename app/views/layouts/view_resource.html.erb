@@ -1,0 +1,11 @@
+<% content_for :content do %>
+<h1><%= @title %></h1>
+<%= render 'notification_section' %>
+<div class="panel-group" id="accordion">
+	<div class="panel panel-primary">
+		<%= yield %>
+	</div>
+</div>
+<%= link_to "Back", :root, class: "btn btn-link" %>
+<% end %>
+<%= render template: "layouts/application" %>

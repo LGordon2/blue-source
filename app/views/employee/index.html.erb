@@ -1,125 +1,109 @@
-<h1><%= @employee.display_name %></h1>
-<%= render 'notification_section' %>
-<div class="panel-group" id="accordion">
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<%= link_to "Manage", "edit/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee  %>
-			<h4 class="panel-title"><a data-toggle="collapse" href="#generalData">General Info</a></h4>
-			<div class="clearfix"></div>
-		</div>
-		<div id="generalData" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<table class="table">
-					<tr>
-						<td>Role:</td>
-						<td><%= @employee.role unless @employee.role.blank? %></td>
-					</tr>
-					<tr>
-						<td>Level:</td>
-						<td><%= @employee.level unless @employee.level.blank? %></td>
-					</tr>
-					<tr>
-						<td>Manager:</td>
-						<td><%= link_to @employee.manager.display_name, "#{@employee.manager.id}" unless @employee.manager.blank? %></td>
-					</tr>
-					<tr>
-						<td>Start Date:</td>
-						<td><%= @employee.start_date.strftime("%B %e, %Y") unless @employee.start_date.blank? %></td>
-					</tr>
-					<tr>
-						<td>Time with Orasi:</td>
-						<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? %></td>
-					</tr>
-					<tr>
-						<td>Phone Number:</td>
-						<td><%= @employee.phone_number unless @employee.phone_number.blank? %></td>
-					</tr>
-					<tr>
-						<td>Extension:</td>
-						<td><%= @employee.extension unless @employee.extension.blank?%></td>
-					</tr>
-					<tr>
-						<td>IM Username:</td>
-						<td><%= @employee.im_name unless @employee.im_name.blank? %></td>
-					</tr>
-					<tr>
-						<td>IM Client:</td>
-						<td><%= @employee.im_client unless @employee.im_client.blank? %></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="panel-heading">
-			<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#myModal"} if current_user.above? @employee %>
-			<h4 class="panel-title"><a data-toggle="collapse" href="#projectData">Project Info</a></h4>
-			<div class="clearfix"></div>
-		</div>
-		<div id="projectData" class="panel-collapse collapse <%= :in if @prev_page == :project %>">
-			<div class="panel-body">
-				<table class="table">
-					<tr>
-						<td>Project:</td>
-						<td><%= @employee.project.blank? ? "Not billable" : @employee.project.name %></td>
-					</tr>
-					<tr>
-						<td>Project Lead:</td>
-						<td><%= @employee.project.lead.display_name unless @employee.project.blank? or @employee.project.lead.blank? %></td>
-					</tr>
-					<tr>
-						<td>Lead Extension:</td>
-						<td><%= @employee.project.lead.extension unless @employee.project.blank? or @employee.project.lead.blank? %></td>
-					</tr>
-					<tr>
-						<td>Start Date:</td>
-						<td><%= @employee.project.start_date unless @employee.project.blank?%></td>
-					</tr>
-					<tr>
-						<td>Projected End:</td>
-						<td><%= @employee.project.projected_end unless @employee.project.blank?%></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div class="panel-heading">
-			<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee %>
-			<h4 class="panel-title"><a data-toggle="collapse" href="#pdoData">Time Off Info</a></h4>
-
-			<div class="clearfix"></div>
-		</div>
-		<div id="pdoData" class="panel-collapse collapse <%= :in if @prev_page == :vacation %>">
-			<div class="panel-body">
-				<table class="table">
-					<tr>
-						<td>Sick days taken:</td>
-						<td><%= "#{@employee.sick_days_taken(2013)}/#{@employee.max_sick_days}" %></td>
-					</tr>
-					<tr>
-						<td>Vacation days taken:</td>
-						<td><%= "#{@employee.vacation_days_taken(2013)}/#{@employee.max_vacation_days}" %></td>
-					</tr>
-					<tr>
-						<td>Floating holidays taken:</td>
-						<td><%= "#{@employee.floating_holidays_taken(2013)}/#{@employee.max_floating_holidays}" %></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-	<% content_for :modal_header do %>
-	Manage Project
-	<% end %>
-	<% content_for :modal_content do %>
-	<% form_for @employee do |f| %>
-	<div class="form-group">
-		<%= f.label :project, class: "control-label" %>
-		<%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
-	</div>
-	<div class="form-group">
-		<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
-		<%= f.submit class: "btn btn-primary"%>
-	</div>
-	<% end %>
-	<% end %>
-	<%= render 'modals/modal' %>
+<% content_for 'panel_title_1' do %>General Info<% end %>
+<% content_for 'panel_heading_1' do %>
+<%= link_to "Manage", "edit/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee  %>
+<% end %>
+<% content_for 'panel_body_1' do %>
+<table class="table">
+	<tr>
+		<td>Role:</td>
+		<td><%= @employee.role unless @employee.role.blank? %></td>
+	</tr>
+	<tr>
+		<td>Level:</td>
+		<td><%= @employee.level unless @employee.level.blank? %></td>
+	</tr>
+	<tr>
+		<td>Manager:</td>
+		<td><%= link_to @employee.manager.display_name, "#{@employee.manager.id}" unless @employee.manager.blank? %></td>
+	</tr>
+	<tr>
+		<td>Start Date:</td>
+		<td><%= @employee.start_date.strftime("%B %e, %Y") unless @employee.start_date.blank? %></td>
+	</tr>
+	<tr>
+		<td>Time with Orasi:</td>
+		<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? %></td>
+	</tr>
+	<tr>
+		<td>Phone Number:</td>
+		<td><%= @employee.phone_number unless @employee.phone_number.blank? %></td>
+	</tr>
+	<tr>
+		<td>Extension:</td>
+		<td><%= @employee.extension unless @employee.extension.blank?%></td>
+	</tr>
+	<tr>
+		<td>IM Username:</td>
+		<td><%= @employee.im_name unless @employee.im_name.blank? %></td>
+	</tr>
+	<tr>
+		<td>IM Client:</td>
+		<td><%= @employee.im_client unless @employee.im_client.blank? %></td>
+	</tr>
+</table>
+<% end %>
+<% content_for 'panel_title_2' do %>Project Info<% end %>
+<% content_for 'panel_heading_2' do %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#myModal"} if current_user.above? @employee %>
+<% end %>
+<% content_for 'panel_body_2' do %>
+<table class="table">
+	<tr>
+		<td>Project:</td>
+		<td><%= @employee.project.blank? ? "Not billable" : @employee.project.name %></td>
+	</tr>
+	<tr>
+		<td>Project Lead:</td>
+		<td><%= @employee.project.lead.display_name unless @employee.project.blank? or @employee.project.lead.blank? %></td>
+	</tr>
+	<tr>
+		<td>Lead Extension:</td>
+		<td><%= @employee.project.lead.extension unless @employee.project.blank? or @employee.project.lead.blank? %></td>
+	</tr>
+	<tr>
+		<td>Start Date:</td>
+		<td><%= @employee.project.start_date unless @employee.project.blank?%></td>
+	</tr>
+	<tr>
+		<td>Projected End:</td>
+		<td><%= @employee.project.projected_end unless @employee.project.blank?%></td>
+	</tr>
+</table>
+<% end %>
+<% content_for 'panel_title_3' do %>Time Off Info<% end %>
+<% content_for 'panel_heading_3' do %>
+<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee %>
+<% end %>
+<% content_for 'panel_body_3' do %>
+<table class="table">
+	<tr>
+		<td>Sick days taken:</td>
+		<td><%= "#{@employee.sick_days_taken(2013)}/#{@employee.max_sick_days}" %></td>
+	</tr>
+	<tr>
+		<td>Vacation days taken:</td>
+		<td><%= "#{@employee.vacation_days_taken(2013)}/#{@employee.max_vacation_days}" %></td>
+	</tr>
+	<tr>
+		<td>Floating holidays taken:</td>
+		<td><%= "#{@employee.floating_holidays_taken(2013)}/#{@employee.max_floating_holidays}" %></td>
+	</tr>
+</table>
+<% end %>
+<%= render "panel_group" %>
+<% content_for :modal_header do %>
+Manage Project
+<% end %>
+<% content_for :modal_content do %>
+<% form_for @employee do |f| %>
+<div class="form-group">
+	<%= f.label :project, class: "control-label" %>
+	<%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
 </div>
-<%= link_to "Back", :root, class: "btn btn-link" %>
+<div class="form-group">
+	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
+	<%= f.submit class: "btn btn-primary"%>
+</div>
+<% end %>
+<% end %>
+<%= render 'modals/modal' %>

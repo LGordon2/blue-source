@@ -2,7 +2,7 @@ class ProjectController < ApplicationController
   before_action :require_manager_login
   before_action :set_project, only: [:index, :edit]
   
-  layout "resource", only: :all
+  layout :set_layout
   
   def all
     @modal_title = "Add Project"
@@ -19,10 +19,10 @@ class ProjectController < ApplicationController
   def update
     project = Project.find(params[:id])
     project.update(project_params)
-    if project.save!
+    if project.save
       redirect_to project
     else
-      redirect_to :back
+      redirect_to :back, flash: {error: project.errors.full_messages.first}
     end
   end
   
@@ -43,9 +43,19 @@ class ProjectController < ApplicationController
   
   def set_project
     @project = Project.find(params[:id])
+    @title = @project.name
+  end
+  
+  def set_layout
+    case action_name
+    when "index"
+      "view_resource"
+    when "all"
+      "resource"
+    end
   end
   
   def project_params
-    params.require(:project).permit(:name, :lead_id, :status)
+    params.require(:project).permit(:name, :lead_id, :start_date, :projected_end, :status) if current_user.is_upper_management?
   end
 end

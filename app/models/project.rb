@@ -3,7 +3,6 @@ class Project < ActiveRecord::Base
   after_save :set_project_for_employee
   
   validates :name, presence: true, uniqueness: true
-  validates_with StartDateValidator
   validate :projected_end_cannot_be_before_start_date
   
   def projected_end_cannot_be_before_start_date

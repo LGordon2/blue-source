@@ -8,11 +8,13 @@ class EmployeeController < ApplicationController
   #Manager of employee or employee can view themselves.
   before_action :check_employee_is_current_user_or_manager, only: [:index]
   
+  layout :set_layout
+  
   def index
     if request.referer == root_url+"employee/vacation/#{@employee.id}"
-      @prev_page = :vacation
+      @prev_page = 3
     end
-    @prev_page = :project unless flash[:project].blank?
+    @prev_page = 2 unless flash[:project].blank?
     
     respond_to do |format|
       format.json {render json: @employee}
@@ -66,6 +68,7 @@ class EmployeeController < ApplicationController
   
   def set_user
     @employee = Employee.find(params[:id])
+    @title = @employee.display_name
   end
   
   def check_manager_status
@@ -74,6 +77,15 @@ class EmployeeController < ApplicationController
   
   def check_employee_is_current_user_or_manager
     redirect_to :root unless current_user == @employee or current_user.above? @employee
+  end
+  
+  def set_layout
+    case action_name
+    when "index"
+      "view_resource"
+    when "all"
+      "resource"
+    end
   end
   
   def employee_params
