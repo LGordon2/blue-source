@@ -56,7 +56,7 @@
 			<td><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"] %></td>
 		</tr>
 	</table>
-	<%= f.submit class: "btn btn-primary" %>
+	<%= f.submit "Save Time Off", class: "btn btn-primary" %>
 	<% end %>
 	<%= link_to "Back", "/employee/#{@employee.id}" %>
 </div>

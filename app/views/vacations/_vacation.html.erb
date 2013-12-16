@@ -6,7 +6,7 @@
 	<td class="edit-field"><span><%= vacation.end_date %></span><%= f.date_field :end_date, id: "end_date-#{vacation.id}", class:"hidden date-field" %></td>
 	<td id="<%= "business_days-#{vacation.id}" %>"><strong></strong></td>
 	<td class="edit-field"><span><%= vacation.vacation_type%></span><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"], {}, class:"hidden" %></td>
-	<td><%= link_to "#", id: vacation.id, class: "edit-btn" do %><%= f.submit class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
+	<td><%= link_to "#", id: vacation.id, class: "edit-btn" do %><%= f.submit "Update Time Off", class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
 	<td> <%= link_to vacation, method: :delete, :data => {confirm: "Are you sure you want to delete this?"} do %>
 		   <span class="glyphicon glyphicon-trash"></span> 
 		 <% end %> 
