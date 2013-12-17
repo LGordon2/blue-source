@@ -38,6 +38,12 @@ class WelcomeController < ApplicationController
   def sorry
   end
   
+  def issue
+    email = HelpMailer.comments_email(issue_params[:from],issue_params[:email],issue_params[:comments],issue_params[:type])
+    email.deliver
+    redirect_to :back
+  end
+  
   private 
   
   def validate_against_ad(username, password)
@@ -52,5 +58,9 @@ class WelcomeController < ApplicationController
       :password => password
     }
     ldap.bind
+  end
+  
+  def issue_params
+    params.require(:issue).permit(:from, :email, :comments, :type)
   end
 end

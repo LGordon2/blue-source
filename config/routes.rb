@@ -25,6 +25,7 @@ ManagerPortal::Application.routes.draw do
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout
   post "login", to: "welcome#validate", as: :check_login
+  post "issue", to: "welcome#issue", as: :issue
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
