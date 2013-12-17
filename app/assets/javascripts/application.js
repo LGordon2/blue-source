@@ -15,6 +15,8 @@
 //= require jquery.ui.effect-blind
 //= require jquery_ujs
 //= require bootstrap
+//= require jquery.autosize.min
 $(document).ready(function() {
+  $('textarea').autosize({append: "\n"});
   return $("#help-btn").tooltip();
 });

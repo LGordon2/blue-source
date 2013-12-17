@@ -43,7 +43,7 @@
 							<%= link_to "Logout", :logout %>
 						</li>
 						<li>
-							<%= link_to :root do %>
+							<%= link_to "", data: {toggle: "modal", target: "#help_modal"} do %>
 							<span id="help-btn" data-toggle="tooltip" data-placement="bottom" title="Help" class="glyphicon glyphicon-question-sign"></span>
 							<% end %>
 						</li>
@@ -57,5 +57,39 @@
 		<div class="container">
 			<%= content_for?(:content) ? yield(:content) : yield %>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs">
+							<li class="active">
+								<a href="#about" data-toggle="tab">About</a>
+							</li>
+							<li>
+								<a href="#contact" data-toggle="tab">Contact</a>
+							</li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div class="tab-pane active" id="about">
+								WIP
+							</div>
+							<div class="tab-pane" id="contact">
+								<% unless current_user.blank? %>
+								<%= render "contact_form" %>
+								<% end %>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</body>
 </html>
