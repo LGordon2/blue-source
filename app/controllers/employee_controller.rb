@@ -38,9 +38,8 @@ class EmployeeController < ApplicationController
   end
   
   def all
-    employee = Employee.find(current_user)
     respond_to do |format|
-      format.json {render json: employee.all_subordinates.to_json({
+      format.json {render json: current_user.all_subordinates.to_json({
         include: [
           {:manager => {:only => [:first_name,:last_name]}}, 
           {:project => {:only => :name}}], 
@@ -72,11 +71,11 @@ class EmployeeController < ApplicationController
   end
   
   def check_manager_status
-    redirect_to :root unless current_user.above? @employee
+    redirect_to :root unless current_user.above? @employee or current_user.admin?
   end
   
   def check_employee_is_current_user_or_manager
-    redirect_to :root unless current_user == @employee or current_user.above? @employee
+    redirect_to :root unless current_user == @employee or current_user.above? @employee or current_user.admin?
   end
   
   def set_layout
@@ -90,7 +89,7 @@ class EmployeeController < ApplicationController
   
   def employee_params
     allowed_params = [:first_name, :last_name, :project_id, :start_date, :extension, :level, :phone_number, :im_name, :im_client]
-    allowed_params += [:role, :manager_id, :status, :roll_on_date, :roll_off_date] if current_user.role == "Director" or current_user.role == "AVP"
+    allowed_params += [:role, :manager_id, :status, :roll_on_date, :roll_off_date] if current_user.is_upper_management?
     param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
   end

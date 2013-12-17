@@ -1,12 +1,14 @@
 <% content_for :table do %>
-<tr>
-	<th><%= link_to "Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
+<tr ng-init="role='<%=current_user.role%>'">
+	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
+	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Role", "#", 'ng-click' => "predicate='role'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%></th>
 </tr>
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
-	<td><%= link_to '{{employee.display_name}}', "employee/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.first_name}}', "employee/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.last_name}}', "employee/{{employee.id}}"%></td>
 	<td>{{employee.role}}</td>
 	<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
 	<td><%= link_to '{{employee.project.name}}', "project/{{employee.project_id}}"%></td>

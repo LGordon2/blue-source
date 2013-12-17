@@ -9,7 +9,8 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   $http.get('employees.json').success (data) ->
     if (angular.isObject(data))
       data.forEach (value, key) ->
-        value.display_name = value.first_name[0].toUpperCase() + value.first_name[1..-1] + " " + value.last_name[0].toUpperCase() + value.last_name[1..-1]
+        value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
+        value.last_name = value.last_name[0].toUpperCase() + value.last_name[1..-1]
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
       $scope.employees = data
     else
@@ -31,11 +32,13 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     
   $scope.search = ->
     $scope.filteredEmployees = $filter('filter')($scope.employees, (employee) ->
-      return searchMatch(employee.display_name, $scope.query) || searchMatch(employee.role, $scope.query) || 
-      (searchMatch(employee.manager.first_name, $scope.query) || searchMatch(employee.manager.last_name, $scope.query) && employee.manager?) || (searchMatch(employee.project.name, $scope.query) if employee.project?)
-    )
+      return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
+      searchMatch(employee.role, $scope.query) || 
+      (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
+      searchMatch(employee.manager.last_name, $scope.query))) || 
+      (employee.project? && searchMatch(employee.project.name, $scope.query)))
     manager_id = $scope.manager_id
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test)
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role == "Admin"
     
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
     

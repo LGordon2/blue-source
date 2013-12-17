@@ -2,7 +2,7 @@
 <!-- Header information -->
 <% content_for 'panel_title_1' do %>General Info<% end %>
 <% content_for 'panel_heading_1' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.above? @employee %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.above? @employee or current_user.admin? %>
 <% end %>
 <!-- /Header information -->
 
@@ -66,7 +66,7 @@
 <!-- Project info head -->
 <% content_for 'panel_title_2' do %>Project Info<% end %>
 <% content_for 'panel_heading_2' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_2"} if current_user.above? @employee %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_2"} if current_user.above? @employee or current_user.admin? %>
 <% end %>
 <!-- /Project info head -->
 
@@ -109,7 +109,7 @@
 <!-- Time off head -->
 <% content_for 'panel_title_3' do %>Time Off Info<% end %>
 <% content_for 'panel_heading_3' do %>
-<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee %>
+<%= link_to "Manage", "vacation/#{@employee.id}", class: "btn btn-default btn-xs pull-right" if current_user.above? @employee or current_user.admin? %>
 <% end %>
 <!-- /Time off head -->
 

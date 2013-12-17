@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  date_requested: 2013-12-03
-  start_date: 2013-12-03
-  end_date: 2013-12-03
+  date_requested: 2013-12-17
+  start_date: 2013-12-19
+  end_date: 2013-12-19
+  business_days: 1
   vacation_type: Sick
 
 two:
-  date_requested: 2013-12-03
-  start_date: 2013-12-03
-  end_date: 2013-12-03
+  date_requested: 2013-12-17
+  start_date: 2013-12-19
+  end_date: 2013-12-19
+  business_days: 1
   vacation_type: Sick

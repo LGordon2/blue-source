@@ -51,6 +51,7 @@ class Employee < ActiveRecord::Base
   end
   
   def all_subordinates
+    return Employee.all if self.role == "Admin"
     return if self.subordinates.empty?
     all_subordinates = self.subordinates
     self.subordinates.each do |employee|
@@ -119,15 +120,15 @@ class Employee < ActiveRecord::Base
   end
   
   def is_manager_or_higher?
-    self.role.downcase.in? ["manager","director","avp"]
+    self.role.downcase.in? ["manager","director","avp","admin"]
   end
   
   def is_upper_management?
-    self.role.downcase.in? ["director", "avp"]
+    self.role.downcase.in? ["director", "avp", "admin"]
   end
   
   def self.roles
-    ["Consultant","Manager","Director","AVP"]
+    ["Consultant","Manager","Director","AVP", "Admin"]
   end
   
   def self.im_client_types
@@ -136,6 +137,10 @@ class Employee < ActiveRecord::Base
   
   def self.statuses
     ["Permanent", "Contractor", "Inactive"]
+  end
+  
+  def admin?
+    return self.role == "Admin"
   end
   
   private

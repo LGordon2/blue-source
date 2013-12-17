@@ -36,3 +36,10 @@ director:
   last_name: jobs
   role: "Director"
   status: "Permanent"
+
+admin:
+  username: bill.gates
+  first_name: bill
+  last_name: gates
+  role: "Admin"
+  status: "Permanent"

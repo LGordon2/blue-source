@@ -6,16 +6,18 @@ $(document).ready ->
     $(this).children().toggleClass("hidden")
     $(this).parent().siblings(".edit-field").each (index) ->
       $(this).children().toggleClass("hidden")
+    $(this).parent().siblings(".check-field").each (index) ->
+      $(this).children().prop("disabled",!$(this).children().prop("disabled"))
   $(".vacation-row").each (index) ->
     set_business_days($(this))
-  $(".date-field").on "change", ->
-    set_business_days($(this))
+  $(".date-field,input[type=checkbox]").on "change", ->
+    set_business_days($(this).parents(".vacation-row"))
 
 set_business_days = (object) ->
   id = object.attr("id").split("-")[1]
   $start_date = $("#start_date-#{id}")
   $end_date = $("#end_date-#{id}")
-  bsn_days = calc_business_days($start_date.val(),$end_date.val())
+  bsn_days = calc_business_days($start_date.val(),$end_date.val(),object.find("input:checked").length==1)
   $("#business_days-#{id}").children().text(bsn_days)
   $("#hidden_business_days-#{id}").val(bsn_days)
 
@@ -67,7 +69,7 @@ calc_non_business_days = (start_date, end_date) ->
   days += 1 if temp_date.isOrasiHoliday()
   return days
 
-calc_business_days = (_start_date, _end_date) ->
+calc_business_days = (_start_date, _end_date, half_day_set) ->
   return if (typeof _start_date=="undefined") or (typeof _end_date=="undefined")
   [year,month,day]=_start_date.split("-")
   start_date = new Date(year,month-1,day)
@@ -77,3 +79,7 @@ calc_business_days = (_start_date, _end_date) ->
   
   non_business_days = calc_non_business_days(start_date, end_date)
   bsn_days = Math.round((end_date - start_date)/1000/60/60/24 + 1 - (non_business_days))
+  bsn_days -= 0.5 if half_day_set
+  return bsn_days
+  
+  
