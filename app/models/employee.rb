@@ -12,7 +12,7 @@ class Employee < ActiveRecord::Base
   before_validation :set_status_and_role_if_blank, on: :create
   after_validation :fix_phone_number
   
-  validates :username, presence: true, uniqueness: true, format: /\A\w+\.\w+\z/
+  validates :username, presence: true, uniqueness: true
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
@@ -28,7 +28,13 @@ class Employee < ActiveRecord::Base
   end
   
   def set_names
-    self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
+    if self.first_name.blank? or self.last_name.blank?
+      self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
+    end
+    
+    if self.first_name.blank? or self.last_name.blank?
+      errors.add(:username, "is not valid.")
+    end
   end
   
   def fix_phone_number
@@ -37,13 +43,40 @@ class Employee < ActiveRecord::Base
     self.phone_number = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
   end
    
-  def self.authenticate(user_params)
+  def self.find_or_create(user_params)
     employee = Employee.find_by(username: user_params[:username])
     return employee unless employee.nil?
+    
     employee = Employee.new
     employee.username = user_params[:username].downcase
     
     return employee
+  end
+  
+  def validate_against_ad(password)
+    #Do authentication against the AD.
+    return true unless Rails.env.production?
+    
+    ldap = Net::LDAP.new :host => '10.238.242.32',
+    :port => 389,
+    :auth => {
+      :method => :simple,
+      :username => "ORASI\\#{self.username}",
+      :password => password
+    }
+    validated = ldap.bind
+    if validated and (self.first_name.blank? or self.last_name.blank?)
+    
+      filter = Net::LDAP::Filter.eq("samaccountname", self.username)
+      treebase = "dc=orasi, dc=com"
+      self.first_name,self.last_name=ldap.search(
+        base: treebase,
+        filter: filter,
+        attributes: %w[displayname]
+      ).first.displayname.first.downcase.split(" ")
+    end
+    
+    return validated
   end
   
   def display_name

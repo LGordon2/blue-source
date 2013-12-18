@@ -4,12 +4,13 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    unless validate_against_ad(params[:employee][:username],params[:employee][:password])
+    @employee = Employee.find_or_create(employee_params)
+    
+    unless @employee.validate_against_ad(params[:employee][:password])
       redirect_to :login, flash: {error: "Invalid username or password."}
       return
     end
     
-    @employee = Employee.authenticate(params[:employee])
     if @employee.save
       session[:current_user_id] = @employee.id
       redirect_to :root
@@ -46,21 +47,11 @@ class WelcomeController < ApplicationController
   
   private 
   
-  def validate_against_ad(username, password)
-    #Do authentication against the AD.
-    return true unless Rails.env.production?
-    
-    ldap = Net::LDAP.new :host => '10.238.242.32',
-    :port => 389,
-    :auth => {
-      :method => :simple,
-      :username => "ORASI\\#{username}",
-      :password => password
-    }
-    ldap.bind
-  end
-  
   def issue_params
     params.require(:issue).permit(:from, :email, :comments, :type)
+  end
+  
+  def employee_params
+    params.require(:employee).permit(:username)
   end
 end
