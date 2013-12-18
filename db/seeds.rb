@@ -22,10 +22,12 @@ employee = Employee.create([
   {username: "maria.lao"},
   {username: "robert.meeks"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
+
 employee[0].update(project: scottrade)
 employee[1].update(project: acxiom)
 employee[2].update(project: scottrade)
@@ -36,7 +38,6 @@ employee[5].update(project: davita)
 #Adam
 manager = Employee.create([{username: "adam.thomas", first_name: "adam", last_name: "thomas", role: "Manager"}])
 employee = Employee.create([
-  {username: "waightstill.avery"},
   {username: "timothy.macior"},
   {username: "brent.monger"},
   {username: "nikki.eubanks"},
@@ -44,9 +45,10 @@ employee = Employee.create([
   {username: "stephen.king"},
   {username: "ethan.bell"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
 #Perry
@@ -59,10 +61,12 @@ employee = Employee.create([
   {username: "kia.tinsley"},
   {username: "matt.mitchell"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
+
 
 #Eric
 manager = Employee.create([{username: "eric.trout", first_name: "eric", last_name: "trout", role: "Manager"}])
@@ -73,9 +77,10 @@ employee = Employee.create([
   {username: "joey.lane"},
   {username: "robert.straughn"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
 #Julia
@@ -86,9 +91,10 @@ employee = Employee.create([
   {username: "spenser.chamberlain"},
   {username: "yhung.mlo"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
 #Jessica
@@ -103,13 +109,14 @@ employee = Employee.create([
   {username: "katelyn.chumbley"},
   {username: "christine.stephenson"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
-#Adam
-manager = Employee.create([{username: "adam.huntley", first_name: "adam", last_name: "huntley", role: "Manager"}])
+#Waits
+manager = Employee.create([{username: "waightstill.avery", first_name: "waightstill", last_name: "avery", role: "Manager"}])
 employee = Employee.create([
   {username: "andrew.dargatz"},
   {username: "justin.phlegar"},
@@ -119,9 +126,10 @@ employee = Employee.create([
   {username: "lateef.livers"},
   {username: "barinuadum.bariyiga"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
 #Hope
@@ -133,28 +141,32 @@ employee = Employee.create([
   {username: "lily.powell"},
   {username: "maryum.lawson"}
   ])
+manager.first.update(email: "#{manager.first.username}@orasi.com")
 employee.each do |e|
   first_name_,last_name_ = e.username.split(".")
-  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant")
+  e.update(first_name: first_name_, last_name: last_name_, manager: manager.first, role: "Consultant", email: "#{e.username}@orasi.com")
 end
 
 #Projects
 acxiom.update(lead: Employee.find_by(username: "adam.thomas"))
 
 paul = Employee.create({username: "paul.wysosky", first_name: "paul", last_name: "wysosky", role: "Director"})
+paul.update(email: "#{paul.username}@orasi.com")
 Employee.find_by(username: "alissa.taylor").update(manager: paul)
 Employee.find_by(username: "adam.thomas").update(manager: paul)
 Employee.find_by(username: "eric.trout").update(manager: paul)
 Employee.find_by(username: "julia.walser").update(manager: paul)
 
 kristi = Employee.create({username: "kristi.collins", first_name: "kristi", last_name: "collins", role: "Director"})
+kristi.update(email: "#{kristi.username}@orasi.com")
 Employee.find_by(username: "perry.thomas").update(manager: kristi)
-Employee.find_by(username: "adam.huntley").update(manager: kristi)
+Employee.find_by(username: "waightstill.avery").update(manager: kristi)
 Employee.find_by(username: "jessica.marshall").update(manager: kristi)
 Employee.find_by(username: "hope.isley").update(manager: kristi)
 
-
 virginia = Employee.create({username: "virginia.vestal", first_name: "virginia", last_name: "vestal", role: "AVP"})
+virginia.update(email: "#{virginia.username}@orasi.com")
 linley = Employee.create({username: "linley.love", first_name: "linley", last_name: "love", role: "Admin"})
+linley.update(email: "#{linley.username}@orasi.com")
 paul.update(manager: virginia)
 kristi.update(manager: virginia)

@@ -8,7 +8,6 @@ class Employee < ActiveRecord::Base
   
   attr_accessor :display_name
   
-  before_validation :set_names, on: :create
   before_validation :set_status_and_role_if_blank, on: :create
   after_validation :fix_phone_number
   
@@ -16,6 +15,7 @@ class Employee < ActiveRecord::Base
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
   validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
+  validates :email, presence: true
   validates :role, presence: true
   validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
@@ -25,16 +25,6 @@ class Employee < ActiveRecord::Base
   def set_status_and_role_if_blank
     self.status = Employee.statuses.first if self.status.blank?
     self.role = Employee.roles.first if self.role.blank?
-  end
-  
-  def set_names
-    if self.first_name.blank? or self.last_name.blank?
-      self.first_name,self.last_name = self.username.downcase.split(".") unless self.username.blank?
-    end
-    
-    if self.first_name.blank? or self.last_name.blank?
-      errors.add(:username, "is not valid.")
-    end
   end
   
   def fix_phone_number
@@ -55,7 +45,11 @@ class Employee < ActiveRecord::Base
   
   def validate_against_ad(password)
     #Do authentication against the AD.
-    return true unless Rails.env.production?
+    unless Rails.env.production?
+      self.first_name,self.last_name = self.username.downcase.split(".") if self.first_name.blank? or self.last_name.blank?
+      self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
+      return true
+    end
     
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
@@ -74,6 +68,11 @@ class Employee < ActiveRecord::Base
         filter: filter,
         attributes: %w[displayname]
       ).first.displayname.first.downcase.split(" ")
+      self.email=ldap.search(
+        base: treebase,
+        filter: filter,
+        attributes: %w[mail]
+      ).first.mail.first.downcase
     end
     
     return validated
