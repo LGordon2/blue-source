@@ -8,6 +8,5 @@ class HelpMailerTest < ActionMailer::TestCase
     type = "Bug"
     email = HelpMailer.comments_email(from, email, comments, type).deliver
     assert !ActionMailer::Base.deliveries.empty?
-    assert_equal ['lewis.gordon@orasi.com'], email.to
   end
 end

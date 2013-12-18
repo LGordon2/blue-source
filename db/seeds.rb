@@ -155,7 +155,6 @@ Employee.find_by(username: "hope.isley").update(manager: kristi)
 
 
 virginia = Employee.create({username: "virginia.vestal", first_name: "virginia", last_name: "vestal", role: "AVP"})
-linley = Employee.create({username: "linley.love", first_name: "linley", last_name: "love", role: "AVP"})
+linley = Employee.create({username: "linley.love", first_name: "linley", last_name: "love", role: "Admin"})
 paul.update(manager: virginia)
 kristi.update(manager: virginia)
-virginia.update(manager: linley)
