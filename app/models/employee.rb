@@ -35,7 +35,7 @@ class Employee < ActiveRecord::Base
   end
    
   def self.find_or_create(user_params)
-    employee = Employee.find_by(username: user_params[:username])
+    employee = Employee.find_by(username: user_params[:username].downcase)
     return employee unless employee.nil?
     
     employee = Employee.new
