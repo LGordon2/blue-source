@@ -1,7 +1,7 @@
 require 'net/ldap'
 class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
-  has_many :vacations
+  has_many :vacations, validate: true
   belongs_to :manager, class_name: "Employee"
   belongs_to :lead, class_name: "Lead"
   belongs_to :project
@@ -19,8 +19,15 @@ class Employee < ActiveRecord::Base
   validates :role, presence: true
   validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
+  validate :pto_day_limit
   validates_with StartDateValidator
   validate :roll_off_date_cannot_be_before_roll_on_date
+  
+  def pto_day_limit
+    unless vacation_days_taken <= max_vacation_days and sick_days_taken <= max_sick_days and floating_holidays_taken <= max_floating_holidays
+      errors[:time_off] << 'saved for this fiscal year is preventing this employee from being saved.'
+    end
+  end
   
   def set_status_role_and_email_if_blank
     self.status = Employee.statuses.first if self.status.blank?
