@@ -14,6 +14,7 @@ consultant:
   role: "Consultant"
   manager: manager
   status: "Permanent"
+  start_date: "2010-12-19"
   
 manager2:
   username: bob.ross

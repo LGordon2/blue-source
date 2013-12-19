@@ -20,5 +20,3 @@ three:
   end_date: 2013-12-27
   business_days: 3
   vacation_type: Vacation
-  employee_id: employees(:consultant).id
-  manager_id: employees(:manager).id

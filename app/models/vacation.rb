@@ -1,16 +1,28 @@
 class Vacation < ActiveRecord::Base
+  include VacationHelper
+  
   belongs_to :employee
   belongs_to :manager, class_name: "Employee"
+  
+  before_validation :calculate_business_days
   
   validates :vacation_type, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :employee, presence: true
   validates :manager, presence: true
+  validates :business_days, presence: true
   validate :end_date_cannot_be_before_start_date
   validate :manager_is_above_employee
   validate :vacation_not_already_included
-  validate :validate_pto_day_limit
+  validate :pdo_days_taken
+  
+  private
+  
+  def calculate_business_days
+    self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
+    self.business_days -= 0.5 unless self.half_day == 1
+  end
   
   def end_date_cannot_be_before_start_date
     unless end_date.blank? or start_date.blank? or end_date >= start_date
@@ -37,31 +49,42 @@ class Vacation < ActiveRecord::Base
     end
   end
   
-  def self.fiscal_new_year_date(date = Date.current)
-    Date.new(self.calculate_fiscal_year(date),05,01)
+  def pdo_days_taken
+    unless validate_days_taken(self.start_date,self.end_date)
+      errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
+    end
   end
   
-  def self.calculate_fiscal_year(date = Date.current)
-    date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
-  end
-  
-  def validate_pto_day_limit
+  def validate_days_taken(start_date,end_date,days_taken=0.0)
+    date_range = (start_date..end_date)
+    fiscal_new_year = Vacation.fiscal_new_year_date(start_date)
+    unless self.employee.start_date.blank?
+      anniversary_date = self.employee.start_date
+      correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(start_date) else Vacation.calculate_fiscal_year(start_date)-1 end
+      anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
+    end
+    
+    if fiscal_new_year.in?(date_range) and start_date != fiscal_new_year
+      return validate_days_taken(start_date,fiscal_new_year-1) && validate_days_taken(fiscal_new_year,end_date)
+    elsif anniversary_date.in?(date_range) and start_date != anniversary_date
+      return validate_days_taken(start_date,anniversary_date-1) && validate_days_taken(anniversary_date,end_date,Vacation.calc_business_days_for_range(start_date,anniversary_date-1))
+    end
+    
     case self.vacation_type
     when "Sick"
-      days_taken = self.employee.sick_days_taken(self.end_date.year)
+      days_already_taken = self.employee.sick_days_taken(start_date, self.id)
       max_days = self.employee.max_sick_days
     when "Vacation"
-      days_taken = self.employee.vacation_days_taken(self.end_date.year)
-      max_days = self.employee.max_vacation_days(self.end_date)
+      days_already_taken = self.employee.vacation_days_taken(start_date, self.id)
+      max_days = self.employee.max_vacation_days(start_date)
     when "Floating Holiday"
-      days_taken = self.employee.floating_holidays_taken(self.end_date.year)
+      days_already_taken = self.employee.floating_holidays_taken(start_date, self.id)
       max_days = self.employee.max_floating_holidays
     end
     
-    previous_business_days = if self.business_days_was.blank? or self.vacation_type_was != self.vacation_type then 0 else self.business_days_was end
-
-    if days_taken - previous_business_days + self.business_days > max_days
-      errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
-    end
+    business_days_taken_in_range = Vacation.calc_business_days_for_range(start_date, end_date)
+    business_days_already_taken = days_already_taken + days_taken
+    
+    return business_days_taken_in_range + business_days_already_taken <= max_days
   end
 end

@@ -3,14 +3,7 @@ class Project < ActiveRecord::Base
   after_save :set_project_for_employee
   
   validates :name, presence: true, uniqueness: true
-  validate :start_date_valid
   validate :end_date_cannot_be_before_start_date
-  
-  def start_date_valid
-    if start_date.blank?
-      errors[:start_date] << " invalid."
-    end
-  end
   
   def end_date_cannot_be_before_start_date
     unless end_date.blank? or end_date > start_date

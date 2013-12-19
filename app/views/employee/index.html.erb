@@ -118,15 +118,15 @@
 <table class="table">
 	<tr>
 		<td>Sick days taken:</td>
-		<td><%= "#{@employee.sick_days_taken(2013)}/#{@employee.max_sick_days}" %></td>
+		<td><%= "#{@employee.sick_days_taken}/#{@employee.max_sick_days}" %></td>
 	</tr>
 	<tr>
 		<td>Vacation days taken:</td>
-		<td><%= "#{@employee.vacation_days_taken(2013)}/#{@employee.max_vacation_days}" %></td>
+		<td><%= "#{@employee.vacation_days_taken}/#{@employee.max_vacation_days}" %></td>
 	</tr>
 	<tr>
 		<td>Floating holidays taken:</td>
-		<td><%= "#{@employee.floating_holidays_taken(2013)}/#{@employee.max_floating_holidays}" %></td>
+		<td><%= "#{@employee.floating_holidays_taken}/#{@employee.max_floating_holidays}" %></td>
 	</tr>
 </table>
 <% end %>
