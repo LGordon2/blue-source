@@ -7,11 +7,11 @@
 <% if current_user.is_upper_management? %>
 <div class="form-group">
         <%= f.label :roll_on_date, class: "control-label" %>
-        <%= f.date_field :roll_on_date, class: "form-control" %>
+        <%= f.date_field :roll_on_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <div class="form-group">
         <%= f.label :roll_off_date, class: "control-label" %>
-        <%= f.date_field :roll_off_date, class: "form-control" %>
+        <%= f.date_field :roll_off_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <% end %>
 <div class="form-group">

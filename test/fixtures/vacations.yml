@@ -13,3 +13,12 @@ two:
   end_date: 2013-12-19
   business_days: 1
   vacation_type: Sick
+  
+three:
+  date_requested: 2013-12-17
+  start_date: 2013-12-23
+  end_date: 2013-12-27
+  business_days: 3
+  vacation_type: Vacation
+  employee_id: employees(:consultant).id
+  manager_id: employees(:manager).id

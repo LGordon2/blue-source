@@ -48,13 +48,13 @@ class Vacation < ActiveRecord::Base
   def validate_pto_day_limit
     case self.vacation_type
     when "Sick"
-      days_taken = self.employee.sick_days_taken(2013)
+      days_taken = self.employee.sick_days_taken(self.end_date.year)
       max_days = self.employee.max_sick_days
     when "Vacation"
-      days_taken = self.employee.vacation_days_taken(2013)
+      days_taken = self.employee.vacation_days_taken(self.end_date.year)
       max_days = self.employee.max_vacation_days(self.end_date)
     when "Floating Holiday"
-      days_taken = self.employee.floating_holidays_taken(2013)
+      days_taken = self.employee.floating_holidays_taken(self.end_date.year)
       max_days = self.employee.max_floating_holidays
     end
     

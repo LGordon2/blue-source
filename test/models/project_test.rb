@@ -35,8 +35,11 @@ class ProjectTest < ActiveSupport::TestCase
     p = Project.new
     e = Employee.new
     e.username = "adam.thomas"
+    e.first_name = "adam"
+    e.last_name = "thomas"
     e.role = "Manager"
     e.status = "Permanent"
+    e.email = "adam.thomas@orasi.com"
     e.save!
     p.name = "TitleMax"
     p.lead = e

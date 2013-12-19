@@ -16,6 +16,16 @@ class ApplicationController < ActionController::Base
       Employee.find_by(id: session[:current_user_id])
   end
   
+  def validate_date(date_param)
+    unless date_param.blank?
+      begin
+        Date.parse(date_param)
+      rescue
+        redirect_to :back, flash: {error: "Date is invalid."}
+      end
+    end
+  end
+  
   # Only allow whitelisted roles.
   def require_manager_login
     if current_user.nil?

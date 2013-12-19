@@ -1,6 +1,9 @@
 class ProjectController < ApplicationController
   before_action :require_manager_login
-  before_action :set_project, only: [:index, :edit]
+  before_action :set_project, only: [:index, :edit, :update]
+  
+  before_action :validate_start_date, only: [:new, :update]
+  before_action :validate_end_date, only: [:new, :update]
   
   layout :set_layout
   
@@ -17,12 +20,10 @@ class ProjectController < ApplicationController
   end
   
   def update
-    project = Project.find(params[:id])
-    project.update(project_params)
-    if project.save
-      redirect_to project, flash: {notice: "Project successfully updated."}
+    if @project.update(project_params)
+      redirect_to @project, flash: {notice: "Project successfully updated."}
     else
-      redirect_to :back, flash: {error: project.errors.full_messages.first}
+      redirect_to :back, flash: {error: @project.errors.full_messages.first}
     end
   end
   
@@ -53,6 +54,14 @@ class ProjectController < ApplicationController
     when "all"
       "resource"
     end
+  end
+  
+  def validate_start_date
+    validate_date(project_params[:start_date])
+  end
+  
+  def validate_end_date
+    validate_date(project_params[:end_date])
   end
   
   def project_params

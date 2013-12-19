@@ -8,6 +8,11 @@ class EmployeeController < ApplicationController
   #Manager of employee or employee can view themselves.
   before_action :check_employee_is_current_user_or_manager, only: [:index]
   
+  #Validate date parameters.
+  before_action :validate_start_date, only: [:new, :update]
+  before_action :validate_roll_on_date, only: [:new, :update]
+  before_action :validate_roll_off_date, only: [:new, :update]
+  
   layout :set_layout
   
   def index
@@ -59,7 +64,7 @@ class EmployeeController < ApplicationController
     if @employee.update(employee_params)
       redirect_to @employee, flash: {notice: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
     else
-      if params[:form][:in_modal] then redirect_to :back, flash: {error: @employee.errors.full_messages.first} else render action: :edit end
+      redirect_to :back, flash: {error: @employee.errors.full_messages.first}
     end
   end
   
@@ -85,6 +90,18 @@ class EmployeeController < ApplicationController
     when "all"
       "resource"
     end
+  end
+  
+  def validate_start_date
+    validate_date(employee_params[:start_date])
+  end
+  
+  def validate_roll_on_date
+    validate_date(employee_params[:roll_on_date])
+  end
+  
+  def validate_roll_off_date
+    validate_date(employee_params[:roll_off_date])
   end
   
   def employee_params

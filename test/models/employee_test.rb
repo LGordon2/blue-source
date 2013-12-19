@@ -5,8 +5,10 @@ class EmployeeTest < ActiveSupport::TestCase
      e1 = Employee.new
      e2 = Employee.new
      e1.username = "john.doe"
+     e1.email = "john.doe@orasi.com"
      e1.save
      e2.username = "john.doe"
+     e2.email = "john.doe@orasi.com"
      assert_raises ActiveRecord::RecordInvalid do
        e2.save!
      end
@@ -18,6 +20,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e1.last_name = "nolan"
     e1.role = "Consultant"
     e1.status = "Permanent"
+    e1.email = "chris.nolan@orasi.com"
     assert_raises ActiveRecord::RecordInvalid do
       e1.save!
     end
@@ -30,6 +33,9 @@ class EmployeeTest < ActiveSupport::TestCase
   test "first_name and last_name must be lowercase" do
     e1 = Employee.new
     e1.username = "rob.stewart"
+    e1.first_name = "rob"
+    e1.last_name = "stewart"
+    e1.email = "rob.stewart@orasi.com"
     e1.role = "Consultant"
     e1.status = "Permanent"
     e1.save!
@@ -73,6 +79,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e.last_name = "dylan"
     e.role = "Consultant"
     e.status = "Permanent"
+    e.email = "bob.dylan@orasi.com"
     e.extension = 0
     assert_raises ActiveRecord::RecordInvalid do
       e.save!

@@ -27,7 +27,7 @@
 <% end %>
 <div class="form-group">
 	<%= f.label :start_date, nil, class: "control-label" %>
-	<%= f.date_field :start_date, max: Time.now, class: "form-control" %>
+	<%= f.date_field :start_date, max: Time.now, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <div class="form-group">
 	<%= f.label :phone_number, nil, class: "control-label" %>

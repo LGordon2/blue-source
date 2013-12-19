@@ -8,7 +8,7 @@ class Employee < ActiveRecord::Base
   
   attr_accessor :display_name
   
-  before_validation :set_status_and_role_if_blank, on: :create
+  before_validation :set_status_role_and_email_if_blank, on: :create
   after_validation :fix_phone_number
   
   validates :username, presence: true, uniqueness: true
@@ -22,9 +22,10 @@ class Employee < ActiveRecord::Base
   validates_with StartDateValidator
   validate :roll_off_date_cannot_be_before_roll_on_date
   
-  def set_status_and_role_if_blank
+  def set_status_role_and_email_if_blank
     self.status = Employee.statuses.first if self.status.blank?
     self.role = Employee.roles.first if self.role.blank?
+    self.email = "#{self.username}@orasi.com"
   end
   
   def fix_phone_number

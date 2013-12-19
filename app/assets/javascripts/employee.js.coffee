@@ -49,7 +49,7 @@ Date.prototype.isOrasiHoliday = ->
   (this.getMonth() == 10 and thanksgivingDayUSA(this)-1 == this.getDate()) or #Thanksgiving
   (this.getMonth() == 10 and thanksgivingDayUSA(this) == this.getDate()) or #Black Friday (day after Thanksgiving)
   (this.getMonth() == 8 and laborDayUSA(this) == this.getDate()) or #Labor Day
-  (this.getMonth() == 4 and memorialDayUSA(this) == this.getDate())
+  (this.getMonth() == 4 and memorialDayUSA(this) == this.getDate()) #Memorial Day
 
 Date.prototype.addDays = (days) ->
   this.setDate(this.getDate() + days * 1)
