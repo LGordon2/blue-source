@@ -143,7 +143,7 @@ class Employee < ActiveRecord::Base
   
   #days taken minus the time taken in the vacation with id = id.
   def sick_days_taken(on_date=Date.current, id=nil)
-    pdo_taken(on_date, "Sick")
+    pdo_taken(on_date, "Sick", id)
   end
   
   def vacation_days_taken(on_date=Date.current, id=nil)

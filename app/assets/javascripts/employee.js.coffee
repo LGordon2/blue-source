@@ -4,10 +4,8 @@
 $(document).ready ->
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
-    $(this).parent().siblings(".edit-field").each (index) ->
+    $(this).parent().siblings(".edit-field,.check-field").each (index) ->
       $(this).children().toggleClass("hidden")
-    $(this).parent().siblings(".check-field").each (index) ->
-      $(this).children().prop("disabled",!$(this).children().prop("disabled"))
   $(".vacation-row").each (index) ->
     set_business_days($(this))
   $(".date-field,input[type=checkbox]").on "change", ->

@@ -21,7 +21,7 @@ class Vacation < ActiveRecord::Base
   
   def calculate_business_days
     self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
-    self.business_days -= 0.5 unless self.half_day == 1
+    self.business_days -= 0.5 if self.half_day
   end
   
   def end_date_cannot_be_before_start_date
