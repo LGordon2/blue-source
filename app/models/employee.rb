@@ -98,7 +98,7 @@ class Employee < ActiveRecord::Base
   end
   
   def all_subordinates
-    return Employee.all if self.role == "Admin"
+    return Employee.all if self.is_upper_management?
     return if self.subordinates.empty?
     all_subordinates = self.subordinates
     self.subordinates.each do |employee|

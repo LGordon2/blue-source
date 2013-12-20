@@ -80,7 +80,7 @@ class EmployeeController < ApplicationController
   end
   
   def check_employee_is_current_user_or_manager
-    redirect_to :root unless current_user == @employee or current_user.above? @employee or current_user.admin?
+    redirect_to :root unless current_user == @employee or current_user.above? @employee or current_user.is_upper_management?
   end
   
   def set_layout
