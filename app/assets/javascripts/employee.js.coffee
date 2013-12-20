@@ -10,6 +10,7 @@ $(document).ready ->
     set_business_days($(this))
   $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this).parents(".vacation-row"))
+    
 
 set_business_days = (object) ->
   id = object.attr("id").split("-")[1]

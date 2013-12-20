@@ -1,8 +1,8 @@
 <% n = 1 %>
 <% while content_for?("panel_body_#{n}") do %>
-<div class="panel-heading">
+<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#panel_body_<%=n%>">
 	<%= yield "panel_heading_#{n}" %>
-	<h4 class="panel-title"><a data-toggle="collapse" href="#panel_body_<%=n%>"><%= yield "panel_title_#{n}" %></a></h4>
+	<h4 class="panel-title"><%= yield "panel_title_#{n}" %></h4>
 	<div class="clearfix"></div>
 </div>
 <div id="panel_body_<%=n%>" class="panel-collapse <%= if n==1 or n==@prev_page then "in" else "collapse" end %>">
