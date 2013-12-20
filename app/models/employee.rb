@@ -117,6 +117,7 @@ class Employee < ActiveRecord::Base
   def max_vacation_days(on_date = Date.current)
     return 10 if self.start_date.blank?
     anniversary_date = self.start_date
+    anniversary_date = Date.new(self.start_date.year,2,28) if anniversary_date.leap? and self.start_date.month == 2 and self.start_date.day==29
     #Correct year to put in for fiscal year.
     correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(on_date) else Vacation.calculate_fiscal_year(on_date)-1 end
     #m is days from anniversary date (day of year hired) to fiscal new year year (May 1st)
@@ -194,6 +195,8 @@ class Employee < ActiveRecord::Base
   end
   
   def pdo_taken(on_date, type, id=nil)
+    on_date = Date.new(self.start_date.year,2,28) if on_date.leap? and on_date.month == 2 and on_date.day==29
+    
     year = Vacation.calculate_fiscal_year(on_date)
     pdo_days = 0.0
     self.vacations.where(vacation_type: type).where("start_date >= ?", Date.new(year-1,05,01).to_s).each do |vacation|
