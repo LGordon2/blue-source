@@ -52,18 +52,17 @@ module VacationHelper
   module PTO
     include VacationHelper
     
-    #class
+    #Calculates the fiscal year of the given date.
     def calculate_fiscal_year(date = Date.current)
-      date = Date.current if date.blank?
       date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
     end
     
-    #class
+    #Calculates the next fiscal new year date for the given date.
     def fiscal_new_year_date(date = Date.current)
       Date.new(calculate_fiscal_year(date),05,01)
     end
     
-    #class
+    #Calculates the number of business days used for a date range.
     def calc_business_days_for_range(start_date, end_date)
       total = 0
       return total if start_date.blank? or end_date.blank?
