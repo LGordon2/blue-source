@@ -14,7 +14,8 @@ class Vacation < ActiveRecord::Base
   validate :manager_is_above_employee
   validate :vacation_not_already_included
   validate :pdo_days_taken #also calculates business days taken
-  validates :business_days, presence: true
+  
+  after_validation :set_business_days
   
   private
   
@@ -22,6 +23,12 @@ class Vacation < ActiveRecord::Base
     unless end_date.blank? or start_date.blank? or end_date >= start_date
       errors.add(:end_date, "can't be before start date.")
     end
+  end
+  
+  def set_business_days
+    #Calculates the correct number of business days taken.
+    self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
+    self.business_days -= 0.5 if self.half_day
   end
   
   #Validate that the person who requested the vacation is above the employee.
@@ -55,10 +62,6 @@ class Vacation < ActiveRecord::Base
       errors[:date] << "Invalid date entered."
       return
     end
-    
-    #Calculates the correct number of business days taken.
-    self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
-    self.business_days -= 0.5 if self.half_day
     
     #Gets the date range of the requested vacation
     date_range = (start_date..end_date)
