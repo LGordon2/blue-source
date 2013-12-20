@@ -65,6 +65,7 @@ class Vacation < ActiveRecord::Base
     fiscal_new_year = Vacation.fiscal_new_year_date(start_date)
     unless self.employee.start_date.blank?
       anniversary_date = self.employee.start_date
+      anniversary_date = Date.new(self.employee.start_date.year,2,28) if self.employee.start_date.leap? and self.employee.start_date.month == 2 and self.employee.start_date.day==29
       correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(start_date) else Vacation.calculate_fiscal_year(start_date)-1 end
       anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
     end
