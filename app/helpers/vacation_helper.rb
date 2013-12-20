@@ -43,6 +43,10 @@ module VacationHelper
       calc_day = 25 + (12 - day_of_week) % 7
       self.month == 5 and self.day == calc_day
     end
+    
+    def new_years_day?
+      self.month == 1 and self.day == 1
+    end
   end
   
   module PTO
@@ -50,6 +54,7 @@ module VacationHelper
     
     #class
     def calculate_fiscal_year(date = Date.current)
+      date = Date.current if date.blank?
       date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
     end
     
@@ -61,11 +66,12 @@ module VacationHelper
     #class
     def calc_business_days_for_range(start_date, end_date)
       total = 0
+      return total if start_date.blank? or end_date.blank?
       (start_date..end_date).each do |date|
         total += 1 unless date.saturday? or date.sunday? or 
         date.thanksgiving? or date.labor_day? or date.memorial_day? or
         date.christmas? or date.christmas_eve? or date.independence_day? or
-        date.black_friday?
+        date.black_friday? or date.new_years_day?
       end
       return total
     end

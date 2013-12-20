@@ -56,6 +56,11 @@ class Vacation < ActiveRecord::Base
   end
   
   def validate_days_taken(start_date,end_date,days_taken=0.0)
+    if start_date.blank? or end_date.blank?
+      errors[:date] << "Invalid date entered."
+      return
+    end
+    
     date_range = (start_date..end_date)
     fiscal_new_year = Vacation.fiscal_new_year_date(start_date)
     unless self.employee.start_date.blank?

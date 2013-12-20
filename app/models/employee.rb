@@ -10,6 +10,7 @@ class Employee < ActiveRecord::Base
   
   before_validation :set_status_role_and_email_if_blank, on: :create
   after_validation :fix_phone_number
+  after_validation :set_username_if_blank, on: :create
   
   validates :username, presence: true, uniqueness: true
   validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
@@ -33,6 +34,10 @@ class Employee < ActiveRecord::Base
     self.status = Employee.statuses.first if self.status.blank?
     self.role = Employee.roles.first if self.role.blank?
     self.email = "#{self.username}@orasi.com"
+  end
+  
+  def set_username_if_blank
+    username = "#{self.first_name}.#{self.last_name}" if username.blank?
   end
   
   def fix_phone_number
@@ -117,7 +122,7 @@ class Employee < ActiveRecord::Base
   def max_vacation_days(on_date = Date.current)
     return 10 if self.start_date.blank?
     anniversary_date = self.start_date
-    anniversary_date = Date.new(self.start_date.year,2,28) if anniversary_date.leap? and self.start_date.month == 2 and self.start_date.day==29
+    anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
     #Correct year to put in for fiscal year.
     correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(on_date) else Vacation.calculate_fiscal_year(on_date)-1 end
     #m is days from anniversary date (day of year hired) to fiscal new year year (May 1st)
@@ -128,7 +133,7 @@ class Employee < ActiveRecord::Base
     
     years_with_orasi_on_anniversary = correct_year_for_fiscal_year - anniversary_date.year
     if years_with_orasi_on_anniversary < 0
-      raise Exception
+      return 10
     end
     n = case (years_with_orasi_on_anniversary)
     when 0..3 then 10
