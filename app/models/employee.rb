@@ -115,6 +115,17 @@ class Employee < ActiveRecord::Base
     self.above? other_employee.manager unless other_employee.manager.nil?
   end
   
+  def max_days(vacation_type,on_date=Date.current)
+    case vacation_type
+    when "Sick"
+      return max_sick_days
+    when "Vacation"
+      return max_vacation_days(on_date)
+    when "Floating Holiday"
+      return max_floating_holidays
+    end
+  end
+  
   def max_sick_days
     return 10
   end
@@ -191,12 +202,18 @@ class Employee < ActiveRecord::Base
     return self.role == "Admin"
   end
   
-  private
-  
-  def roll_off_date_cannot_be_before_roll_on_date
-    unless roll_off_date.blank? or roll_on_date.blank? or roll_off_date >= roll_on_date
-      errors.add(:roll_off_date, "can't be before start date.")
+  def pdo_taken_in_range(start_date, end_date, type, except_id=nil)
+    pdo_days = 0.0
+    self.vacations.where(vacation_type: type).where("start_date >= ? and start_date <= ?",start_date.to_s,end_date.to_s).where.not(id: except_id).each do |vacation|
+      if vacation.end_date <= end_date
+        pdo_days += vacation.business_days
+        #Account for half day
+        pdo_days -= 0.5 if vacation.half_day 
+      else
+        pdo_days += Vacation.calc_business_days_for_range(vacation.start_date,end_date)
+      end
     end
+    return pdo_days
   end
   
   def pdo_taken(on_date, type, id=nil)
@@ -216,13 +233,21 @@ class Employee < ActiveRecord::Base
     
     last_fiscal_new_year = Vacation.fiscal_new_year_date(Date.new(on_date.year-1,on_date.month,on_date.day))
     self.vacations.where(vacation_type: type).where("start_date < ?", Date.new(year-1,05,01).to_s).each do |vacation|
-      next if !id.nil? and vacation.id == id
-      date_range = (vacation.start_date..vacation.end_date)
-      if last_fiscal_new_year.in?(date_range)
-        pdo_days += Vacation.calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
+        next if !id.nil? and vacation.id == id
+        date_range = (vacation.start_date..vacation.end_date)
+        if last_fiscal_new_year.in?(date_range)
+          pdo_days += Vacation.calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
+        end
       end
+      return pdo_days
+  end
+  
+  private
+  
+  def roll_off_date_cannot_be_before_roll_on_date
+    unless roll_off_date.blank? or roll_on_date.blank? or roll_off_date >= roll_on_date
+      errors.add(:roll_off_date, "can't be before start date.")
     end
-    return pdo_days
   end
   
 end

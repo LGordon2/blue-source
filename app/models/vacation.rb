@@ -51,54 +51,71 @@ class Vacation < ActiveRecord::Base
   end
   
   def pdo_days_taken
-    unless validate_days_taken(self.start_date,self.end_date)
+    unless validate_pto(self.start_date,self.end_date)
       errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
     end
   end
   
-  def validate_days_taken(start_date,end_date,days_taken=0.0)
-    #Check for invalid dates.
-    if start_date.blank? or end_date.blank?
-      errors[:date] << "Invalid date entered."
-      return
-    end
+  def validate_pto(start_date, end_date)
+    #Get the correct days taken and max days for the vacation type.
+    days_taken_this_fiscal_year = self.employee.pdo_taken(start_date, self.vacation_type, self.id)
     
-    #Gets the date range of the requested vacation
     date_range = (start_date..end_date)
     fiscal_new_year = Vacation.fiscal_new_year_date(start_date)
     
-    #Calculates the correct anniversary date for this fiscal year.
-    unless self.employee.start_date.blank?
-      anniversary_date = self.employee.start_date
-      anniversary_date = Date.new(self.employee.start_date.year,2,28) if self.employee.start_date.leap? and self.employee.start_date.month == 2 and self.employee.start_date.day==29
-      correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(start_date) else Vacation.calculate_fiscal_year(start_date)-1 end
-      anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
-    end
-    
     #Check to see if the fiscal year is in the date range or the anniversary date is in the date range.
     if fiscal_new_year.in?(date_range) and start_date != fiscal_new_year
-      return validate_days_taken(start_date,fiscal_new_year-1) && validate_days_taken(fiscal_new_year,end_date)
-    elsif anniversary_date.in?(date_range) and start_date != anniversary_date
-      return validate_days_taken(start_date,anniversary_date-1) && validate_days_taken(anniversary_date,end_date,Vacation.calc_business_days_for_range(start_date,anniversary_date-1))
+      return validate_pto(start_date,fiscal_new_year-1) && validate_pto(fiscal_new_year,end_date)
     end
     
-    #Get the correct days taken and max days for the vacation type.
-    case self.vacation_type
-    when "Sick"
-      days_already_taken = self.employee.sick_days_taken(start_date, self.id)
-      max_days = self.employee.max_sick_days
-    when "Vacation"
-      days_already_taken = self.employee.vacation_days_taken(start_date, self.id)
-      max_days = self.employee.max_vacation_days(start_date)
-    when "Floating Holiday"
-      days_already_taken = self.employee.floating_holidays_taken(start_date, self.id)
-      max_days = self.employee.max_floating_holidays
+    #If their anniversary is blank just validate for the range given.
+    business_days_taken_range = Vacation.calc_business_days_for_range(start_date,end_date)
+    
+    #Account for half day
+    business_days_taken_range -= 0.5 if self.half_day
+    if self.employee.start_date.blank?
+      return business_days_taken_range + days_taken_this_fiscal_year <= self.employee.max_days(self.vacation_type,start_date)
     end
     
-    business_days_taken_in_range = Vacation.calc_business_days_for_range(start_date, end_date)
-    business_days_taken_in_range -= 0.5 if self.half_day
-    business_days_already_taken = days_already_taken + days_taken
+    #Calculates the correct anniversary date for this fiscal year.
+    anniversary_date = self.employee.start_date
+    anniversary_date = Date.new(self.employee.start_date.year,2,28) if self.employee.start_date.leap? and self.employee.start_date.month == 2 and self.employee.start_date.day==29
+    correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(start_date) else Vacation.calculate_fiscal_year(start_date)-1 end
+    anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
     
-    return business_days_taken_in_range + business_days_already_taken <= max_days
-  end
+    last_fiscal_new_year=Date.new(Vacation.calculate_fiscal_year(start_date)-1,5,1)
+    
+    #Calculate days already taken from start of fiscal year to anniversary - 1
+    days_taken_from_start_to_anniv = self.employee.pdo_taken_in_range(last_fiscal_new_year,anniversary_date-1,self.vacation_type,self.id)
+    
+    #Calculate days taken from anniversary to end of fiscal year
+    days_taken_from_anniv_to_end = self.employee.pdo_taken_in_range(anniversary_date,Vacation.fiscal_new_year_date(start_date)-1,self.vacation_type,self.id)
+    
+    if anniversary_date.in?(date_range)
+      #Calculate days requested from start to anniversary - 1
+      business_days_requested_start_to_anniv = Vacation.calc_business_days_for_range(start_date,anniversary_date-1)
+      #Calculate days requested from anniversary to end
+      business_days_requested_anniv_to_end = Vacation.calc_business_days_for_range(anniversary_date,end_date)
+    elsif end_date < anniversary_date
+      #Calculate days requested from start to end date
+      business_days_requested_start_to_anniv = Vacation.calc_business_days_for_range(start_date,end_date)
+      #Calculate days requested from anniversary to end
+      business_days_requested_anniv_to_end = 0
+    elsif end_date >= anniversary_date
+      #Calculate days requested from start to anniversary - 1
+      business_days_requested_start_to_anniv = 0
+      #Calculate days requested from anniversary to end
+      business_days_requested_anniv_to_end = Vacation.calc_business_days_for_range(start_date,end_date)
+    else
+      raise Exception
+    end
+    
+    #Account for half day
+    business_days_taken_range -= 0.5 if self.half_day
+    
+    #Make sure that the days before the anniversary date don't exceed the max days for the start date
+    #and the days after the anniversary date don't exceed the max days for the anniversary date.
+    return business_days_requested_start_to_anniv + days_taken_from_start_to_anniv <= self.employee.max_days(self.vacation_type, start_date) &&
+    business_days_requested_start_to_anniv + business_days_requested_anniv_to_end + days_taken_from_start_to_anniv + days_taken_from_anniv_to_end <= self.employee.max_days(self.vacation_type, anniversary_date)
+ end
 end
