@@ -93,11 +93,11 @@
 		<td><%= @employee.project.lead.extension unless @employee.project.blank? or @employee.project.lead.blank? %></td>
 	</tr>
 	<tr>
-		<td>Roll on date:</td>
+		<td>Roll On Date:</td>
 		<td><%= @employee.roll_on_date %></td>
 	</tr>
 	<tr>
-		<td>Roll off date:</td>
+		<td>Roll Off Date:</td>
 		<td><%= @employee.roll_off_date %></td>
 	</tr>
 </table>
@@ -117,15 +117,15 @@
 <% content_for 'panel_body_3' do %>
 <table class="table">
 	<tr>
-		<td>Sick days taken:</td>
+		<td>Sick Days Taken:</td>
 		<td><%= "#{@employee.sick_days_taken}/#{@employee.max_sick_days}" %></td>
 	</tr>
 	<tr>
-		<td>Vacation days taken:</td>
+		<td>Vacation Days Taken:</td>
 		<td><%= "#{@employee.vacation_days_taken}/#{@employee.max_vacation_days}" %></td>
 	</tr>
 	<tr>
-		<td>Floating holidays taken:</td>
+		<td>Floating Holidays Taken:</td>
 		<td><%= "#{@employee.floating_holidays_taken}/#{@employee.max_floating_holidays}" %></td>
 	</tr>
 </table>
