@@ -25,6 +25,7 @@ class Employee < ActiveRecord::Base
   
   def pto_day_limit
     #Calculates the correct anniversary date for this fiscal year.
+    return if self.start_date.blank?
     anniversary_date = self.start_date
     anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
     correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year else Vacation.calculate_fiscal_year-1 end

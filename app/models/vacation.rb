@@ -84,6 +84,7 @@ class Vacation < ActiveRecord::Base
     business_days_taken_range = Vacation.calc_business_days_for_range(start_date,end_date)
     
     #Account for half day
+    
     business_days_taken_range -= 0.5 if self.half_day
     if self.employee.start_date.blank?
       return business_days_taken_range + days_taken_this_fiscal_year <= self.employee.max_days(self.vacation_type,start_date)
@@ -120,6 +121,13 @@ class Vacation < ActiveRecord::Base
       business_days_requested_anniv_to_end = Vacation.calc_business_days_for_range(start_date,end_date)
     else
       raise Exception
+    end
+    
+    #Take into account sick days.
+    if business_days_requested_anniv_to_end > 0 and self.half_day
+      business_days_requested_anniv_to_end -= 0.5 
+    elsif business_days_requested_start_to_anniv > 0 and self.half_day
+      business_days_requested_start_to_anniv -= 0.5
     end
     
     #Make sure that the days before the anniversary date don't exceed the max days for the start date
