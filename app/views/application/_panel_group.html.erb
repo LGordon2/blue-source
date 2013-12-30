@@ -1,6 +1,6 @@
 <% n = 1 %>
 <% while content_for?("panel_body_#{n}") do %>
-<div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#panel_body_<%=n%>">
+<div class="panel-heading" data-toggle=<%= "collapse" if content_for?("panel_body_2") %> data-parent="#accordion" data-target="#panel_body_<%=n%>">
 	<%= yield "panel_heading_#{n}" %>
 	<h4 class="panel-title"><%= yield "panel_title_#{n}" %></h4>
 	<div class="clearfix"></div>
