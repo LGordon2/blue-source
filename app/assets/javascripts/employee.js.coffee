@@ -45,8 +45,8 @@ Date.prototype.isOrasiHoliday = ->
   (this.getMonth() == 11 and this.getDate() == 24) or #Christmas eve
   (this.getMonth() == 0 and this.getDate() == 1) or #New Years Day
   (this.getMonth() == 6 and this.getDate() == 4) or #Independence Day
-  (this.getMonth() == 10 and thanksgivingDayUSA(this)-1 == this.getDate()) or #Thanksgiving
-  (this.getMonth() == 10 and thanksgivingDayUSA(this) == this.getDate()) or #Black Friday (day after Thanksgiving)
+  (this.getMonth() == 10 and thanksgivingDayUSA(this) == this.getDate()) or #Thanksgiving
+  (this.getMonth() == 10 and thanksgivingDayUSA(this)+1 == this.getDate()) or #Black Friday (day after Thanksgiving)
   (this.getMonth() == 8 and laborDayUSA(this) == this.getDate()) or #Labor Day
   (this.getMonth() == 4 and memorialDayUSA(this) == this.getDate()) #Memorial Day
 

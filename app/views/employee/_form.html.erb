@@ -18,7 +18,7 @@
 </div>
 <div class="form-group">
 	<%= f.label :manager, nil, class: "control-label" %>
-	<%= select :employee, :manager_id, Employee.all.find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control" %>
+	<%= select :employee, :manager_id, Employee.all.order(:first_name).where.not(id: @employee).find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :status, nil, class: "control-label" %>
@@ -27,7 +27,7 @@
 <% end %>
 <div class="form-group">
 	<%= f.label :start_date, nil, class: "control-label" %>
-	<%= f.date_field :start_date, max: Time.now, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+	<%= f.date_field :start_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <div class="form-group">
 	<%= f.label :phone_number, nil, class: "control-label" %>

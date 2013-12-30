@@ -17,11 +17,11 @@
 </div>
 <div class="form-group">
 	<%= f.label :manager, class: "control-label"%>
-	<%= select :employee, :manager_id, Employee.all.find_all {|e| !e.subordinates.empty? }.collect {|e| [e.display_name, e.id]}, {include_blank: true}, class: "form-control" %>
+	<%= select :employee, :manager_id, Employee.all.order(:first_name).find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :start_date, class: "control-label" %>
-	<%= f.date_field :start_date, max: Time.now, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+	<%= f.date_field :start_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <div class="form-group">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>

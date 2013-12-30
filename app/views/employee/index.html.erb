@@ -40,7 +40,7 @@
 	</tr>
 	<tr>
 		<td>Time with Orasi:</td>
-		<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? %></td>
+		<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? or @employee.start_date >= Time.now %></td>
 	</tr>
 	<tr>
 		<td>Phone Number:</td>
@@ -132,7 +132,6 @@
 <% end %>
 <!-- /Time off body -->
 <!-- /Time off panel -->
-
 
 <% content_for :footer do %>
 <%= link_to "Back", :root %>

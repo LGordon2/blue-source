@@ -21,7 +21,6 @@ class Employee < ActiveRecord::Base
   validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validate :pto_day_limit
-  validates_with StartDateValidator
   validate :roll_off_date_cannot_be_before_roll_on_date
   
   def pto_day_limit

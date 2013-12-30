@@ -61,13 +61,13 @@ class EmployeeTest < ActiveSupport::TestCase
     end
   end
   
-  test "start date can not be after the current date" do
+  test "start date can be after the current date" do
     e = Employee.new
     e.username = "bob.dylan"
     e.first_name = "bob"
     e.last_name = "dylan"
     e.start_date = Date.new(9999,01,01)
-    assert_raises ActiveRecord::RecordInvalid do
+    assert_nothing_raised ActiveRecord::RecordInvalid do
       e.save!
     end
   end
