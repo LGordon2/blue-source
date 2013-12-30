@@ -4,7 +4,6 @@ class Vacation < ActiveRecord::Base
   belongs_to :employee
   belongs_to :manager, class_name: "Employee"
   
-  
   validates :vacation_type, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
@@ -27,6 +26,10 @@ class Vacation < ActiveRecord::Base
   
   def set_business_days
     #Calculates the correct number of business days taken.
+    Rails.logger.error "Start date was blank." if self.start_date.blank?
+    Rails.logger.error "End date was blank." if self.end_date.blank?
+    return if self.start_date.blank? or self.end_date.blank?
+    
     self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
     self.business_days -= 0.5 if self.half_day
   end
@@ -39,9 +42,14 @@ class Vacation < ActiveRecord::Base
   end
   
   def vacation_not_already_included
+    Rails.logger.error "Start date was blank." if self.start_date.blank?
+    Rails.logger.error "End date was blank." if self.end_date.blank?
+    return if self.start_date.blank? or self.end_date.blank?
+    
     Employee.find(employee_id).vacations.each do |vacation|
       unless id == vacation.id
         (vacation.start_date..vacation.end_date).each do |vacation_date|
+
           (start_date..end_date).each do |date|
             return errors.add(:date_range, "includes date already included for PDO.") if date == vacation_date
           end
@@ -51,6 +59,10 @@ class Vacation < ActiveRecord::Base
   end
   
   def pdo_days_taken
+    Rails.logger.error "Start date was blank." if self.start_date.blank?
+    Rails.logger.error "End date was blank." if self.end_date.blank?
+    return if self.start_date.blank? or self.end_date.blank?
+    
     unless validate_pto(self.start_date,self.end_date)
       errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
     end
@@ -109,9 +121,6 @@ class Vacation < ActiveRecord::Base
     else
       raise Exception
     end
-    
-    #Account for half day
-    business_days_taken_range -= 0.5 if self.half_day
     
     #Make sure that the days before the anniversary date don't exceed the max days for the start date
     #and the days after the anniversary date don't exceed the max days for the anniversary date.

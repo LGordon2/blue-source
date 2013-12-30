@@ -1,7 +1,7 @@
 require 'net/ldap'
 class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
-  has_many :vacations, validate: true
+  has_many :vacations
   belongs_to :manager, class_name: "Employee"
   belongs_to :lead, class_name: "Lead"
   belongs_to :project
@@ -24,8 +24,25 @@ class Employee < ActiveRecord::Base
   validate :roll_off_date_cannot_be_before_roll_on_date
   
   def pto_day_limit
-    unless vacation_days_taken <= max_vacation_days and sick_days_taken <= max_sick_days and floating_holidays_taken <= max_floating_holidays
-      errors[:time_off] << 'saved for this fiscal year is preventing this employee from being saved.'
+    #Calculates the correct anniversary date for this fiscal year.
+    anniversary_date = self.start_date
+    anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
+    correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year else Vacation.calculate_fiscal_year-1 end
+    anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
+    
+    last_fiscal_new_year=Date.new(Vacation.calculate_fiscal_year-1,5,1)
+    
+    #Calculate days already taken from start of fiscal year to anniversary - 1
+    days_taken_from_start_to_anniv = self.pdo_taken_in_range(last_fiscal_new_year,anniversary_date-1,"Vacation")
+    
+    #Calculate days taken from anniversary to end of fiscal year
+    days_taken_from_anniv_to_end = self.pdo_taken_in_range(anniversary_date,Vacation.fiscal_new_year_date-1,"Vacation")
+    
+    vacation_days_are_correct = days_taken_from_start_to_anniv <= self.max_days("Vacation", last_fiscal_new_year) &&
+    days_taken_from_start_to_anniv + days_taken_from_anniv_to_end <= self.max_days("Vacation", anniversary_date)
+
+    unless vacation_days_are_correct and sick_days_taken <= max_sick_days and floating_holidays_taken <= max_floating_holidays
+      errors.add(:time_off, 'saved for this fiscal year is preventing this employee from being saved.')
     end
   end
   
@@ -206,8 +223,6 @@ class Employee < ActiveRecord::Base
     self.vacations.where(vacation_type: type).where("start_date >= ? and start_date <= ?",start_date.to_s,end_date.to_s).where.not(id: except_id).each do |vacation|
       if vacation.end_date <= end_date
         pdo_days += vacation.business_days
-        #Account for half day
-        pdo_days -= 0.5 if vacation.half_day 
       else
         pdo_days += Vacation.calc_business_days_for_range(vacation.start_date,end_date)
       end
