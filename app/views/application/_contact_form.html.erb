@@ -21,6 +21,8 @@
 		<%= f.select :type, ["Bug","Enhancement"], {}, class: "form-control" %>
 	</div>
 </div>
+<div class="form-group modal-footer">
 <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
 <%= submit_tag "Send", class: "btn btn-primary"%>
+</div>
 <% end %>
