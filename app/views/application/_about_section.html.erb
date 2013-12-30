@@ -1,0 +1,42 @@
+<!-- Initial about section -->
+<h4>About</h4>
+<p>BlueSource is a employee information tracker. It's creation came from the need to have a universal tool for storing employee records. Using BlueSource, a user is able to track general employee information, projects, and time off. All this is stored on a central database so as employees transfer to different functional and project teams, their pertinent information transfers easily. It uses the current Orasi user credentials, so there is no need to create a different account.</p>
+<!-- /Initial about section -->
+
+<!-- Employees section -->
+<h4>Employees</h4>
+<h5>Employee Table</h5>
+<p>When a user logs onto the application, they are presented with all of the employees on their function team. Directors and above are presented with all employees and a button to filter to just their people. From this screen, the user can see basic information with the option to click on the employee's name for a screen with detailed information. Clicking the user's name in the upper right part of the screen or the logo will always return a user to this table.</p>
+
+<h5>Adding Employee</h5>
+<p>Only a Director or above can add an employee to BlueSource. From the main employee table, click the 'Add' button above the table. A pop-up shows with all the available fields for adding an employee. Once finished, click 'Save Employee' to create record or 'Close' to close the pop-up without saving.  Note here that once an employee is added, it cannot be deleted. Instead, projects can move to an 'Inactive' status. This way we can keep track of past employees or reactivate employees if they are rehired.</p>
+
+<h5>Details Page</h5>
+<p>The details page contains three area to view and manage.</p>
+
+<h5>General Information</h5>
+<p>The general information area can be expanded by clicking on the blue 'General Info' bar. Once expanded, the user is able to see all the basic information about the consultant they are working with. To edit the information, click the 'Manage' button in the bar and a pop-up will show with all the fields your username can edit. Note that only a Director and above can edit a person's 'Role' and 'Manager' field. Once you are satisfied with your changes, click the 'Update Employee' button to save changes or 'Close' to close the pop-up without saving changes.</p>
+	
+<h5>Project Info</h5>
+<p>The project information area can be expanded by clicking on the blue 'Project Info' bar. Once expanded, the user is able to see the employee's current project. Note here that an employee has 'Roll On Date' and 'Roll Off Date' fields. These are different than a project's start and end date. They also can only be set by Director level and above. To change an employee's project, click the 'Manage' button in the bar and a pop-up will show with a dropdown of all available projects. A Director or above will also see the roll on and off date fields here. Once you are satisfied with your changes, click the 'Update Employee' button to save changes or 'Close' to close the pop-up without saving changes.</p>
+
+<h5>Time Off Info</h5>
+<p>The time off information area can be expanded by clicking on the blue Time Off Info' bar. Once expanded, the user is able to see a ratio of time taken off by this employee in Sick, Vacation, and Floating categories to the time they have remaining. The time remaining for vacations is calculated by the employee's start date. If the employee's start date is missing, this field will default to 10. To view a detailed list or update time off, click the 'Manage' button in bar and the time off details page will show for that employee. From this screen, a user can view running totals and a line-by-line account for all time off submissions.  To add a time off submission, look at the bottom of the table for pre-started new record row. Fill in the 'Date Requested' if different from the current date. Enter the full range for the employee's request. BlueSource will automatically calculate around weekends and holidays so there is no reason to separate each request. Select the type of time off being requested and whether to subtract half from the range selected. Click 'Save Time Off' to submit new record. The user also has the option of editing or deleting records by clicking the appropriate icon in that record's field. To navigate away from this screen, click the 'Back' button.</p>
+<!-- /Employees section -->
+
+<!-- Projects section -->
+<h4>Projects</h4>
+<h5>Project Table</h5>
+<p>To navigate to the project area, a user clicks on the 'Projects' link at the top right of the screen. This will take you to the projects table where all available projects in the BlueSource are located. A user can see the details of any project by clicking on the project name. This will take you to that project's detail page where you can see the information for that project.</p>
+
+<h5>Adding a Project</h5>
+<p>Only a Director or above can add a project to BlueSource. From the main project table, click the 'Add' button above the table. A pop-up shows with all the available fields for adding a project. Once finished, click 'Create Project' to create record or 'Close' to close the pop-up without saving.  Note here that once a project is added, it cannot be deleted. Instead, projects can move to an 'Inactive' status. This way we can keep track of past projects or reactivate projects if they are needed again.</p>
+
+<h5>Editing a Project</h5>
+<p>Only a Director or above can edit a project. From the project's detail screen, click the 'Manage' button in the blue bar. . A pop-up shows with all the available fields for editing  a project. Once finished, click 'Update Project' to update the record or 'Close' to close the pop-up without saving.</p>
+<!-- /Projects section -->
+
+<div class="modal-footer">
+<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
+</div>
+
