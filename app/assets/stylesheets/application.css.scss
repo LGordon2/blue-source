@@ -22,30 +22,34 @@
 {
   display: inline;
 }
-nav
+.nav
 {
   .glyphicon
   {
     font-size:18px;
   }
   
-  .brand
+  a.help-icon:hover, a.help-icon:focus
   {
-    padding: 5px;
-    width: 125px;
-    
-  }
-  .brand-link:hover
-  {
-    background-color:rgba(255,0,0,0);
+    background-color:rgba(0, 0, 0, 0);
+    color: rgb(102, 102, 102);
   }
 }
 .navbar-header
 {
   display:inline;
+  a:hover, a:focus
+  {
+    background-color:rgba(0, 0, 0, 0);
+  }
   .brand
   {
     display: inline;
+    width: 100px;
+  }
+  .img-brand
+  {
+    padding:10px;
   }
 }
 .panel-group
