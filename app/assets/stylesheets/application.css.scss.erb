@@ -8,11 +8,22 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require bootstrap
  *= require bootstrap-theme
  *= require scaffolds
+ *= require_self
  */
+$orasi_blue: #357bb9;
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('<%= font_path "glyphicons-halflings-regular.eot" %>');
+  src: url('<%= font_path "glyphicons-halflings-regular.eot" %>?#iefix') format('embedded-opentype'), url('<%= font_path "glyphicons-halflings-regular.woff" %>') format('woff'), url('<%= font_path "glyphicons-halflings-regular.ttf" %>') format('truetype'), url('<%= font_path "glyphicons-halflings-regular.svg" %>#glyphicons_halflingsregular') format('svg');
+}
+.navbar
+{
+  border-bottom-color: #357bb9;
+}
 .radio-btn-section
 {
   padding-top: 10px;
@@ -71,4 +82,8 @@ textarea
 {
   width: 300px;
   float: left;
+}
+a
+{
+  color:$orasi_blue;
 }
