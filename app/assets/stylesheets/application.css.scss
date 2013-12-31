@@ -61,7 +61,14 @@
     width: 25%;
   }
 }
+
+a:hov
 textarea
 {
   resize: none;  
+}
+.container.login-form
+{
+  width: 300px;
+  float: left;
 }
