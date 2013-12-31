@@ -13,6 +13,9 @@ development:   &development_defaults
 
 test:
   <<: *development_defaults
+  
+staging:
+  <<: *development_defaults
 
 release:
   # Since the key to encrypt and decrypt with must NOT be stored along with the
