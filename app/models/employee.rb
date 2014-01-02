@@ -91,7 +91,7 @@ class Employee < ActiveRecord::Base
   end
   
   def display_name
-    self.first_name.capitalize + " " + self.last_name.split('-').map {|name| name.split("'").map {|word| word.capitalize}.join("'")}.join("-")
+    self.first_name.capitalize + " " + self.last_name.capitalize
   end
   
   def all_subordinates
