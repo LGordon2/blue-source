@@ -7,7 +7,7 @@ class WelcomeController < ApplicationController
     @employee = Employee.find_or_create(employee_params)
     
     unless @employee.validate_against_ad(params[:employee][:password])
-      redirect_to :login, flash: {error: "Invalid username or password."}
+      redirect_to :login, flash: {error: @employee.errors.full_messages}
       return
     end
     

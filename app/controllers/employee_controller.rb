@@ -32,13 +32,10 @@ class EmployeeController < ApplicationController
   
   def new 
     @employee = Employee.new(employee_params)
-    @employee.first_name = @employee.first_name.downcase
-    @employee.last_name = @employee.last_name.downcase
-    @employee.username = "#{@employee.first_name}.#{@employee.last_name}"
     if @employee.save
       redirect_to :root, flash: {notice: "Employee added successfully."}
     else
-      redirect_to :root, flash: {error: @employee.errors.full_messages.first}
+      redirect_to :root, flash: {error: @employee.errors.full_messages}
     end 
   end
   
@@ -105,7 +102,7 @@ class EmployeeController < ApplicationController
   end
   
   def employee_params
-    allowed_params = [:first_name, :last_name, :project_id, :start_date, :extension, :level, :phone_number, :im_name, :im_client]
+    allowed_params = [:first_name, :last_name, :project_id, :start_date, :extension, :level, :phone_number, :email, :im_name, :im_client]
     allowed_params += [:role, :manager_id, :status, :roll_on_date, :roll_off_date] if current_user.is_upper_management?
     param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?

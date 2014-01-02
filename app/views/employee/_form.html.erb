@@ -35,7 +35,11 @@
 </div>
 <div class="form-group">
 	<%= f.label :extension, nil, class: "control-label" %>
-	<%= f.number_field :extension, min: 1000, max: 9999, class: "form-control" %>
+	<%= f.number_field :extension, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :email, nil, class: "control-label" %>
+	<%= f.text_field :email, class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :im_name, "IM Name", class: "control-label" %>

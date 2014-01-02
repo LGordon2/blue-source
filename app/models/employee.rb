@@ -8,15 +8,14 @@ class Employee < ActiveRecord::Base
   
   attr_accessor :display_name
   
-  before_validation :set_status_role_and_email_if_blank, on: :create
+  before_validation :set_standards_for_user
   after_validation :fix_phone_number
-  after_validation :set_username_if_blank, on: :create
   
   validates :username, presence: true, uniqueness: true
-  validates :first_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
-  validates :last_name, format: {with: /\A[a-z]+\z/, message: "must be lowercase."}
-  validates :extension, numericality: {greater_than_or_equal_to: 1000, less_than_or_equal_to: 9999, allow_blank: true}
-  validates :email, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :extension, numericality: { only_integer: true, allow_blank: true }
+  validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true
   validates :phone_number, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
@@ -46,22 +45,6 @@ class Employee < ActiveRecord::Base
       errors.add(:time_off, 'saved for this fiscal year is preventing this employee from being saved.')
     end
   end
-  
-  def set_status_role_and_email_if_blank
-    self.status = Employee.statuses.first if self.status.blank?
-    self.role = Employee.roles.first if self.role.blank?
-    self.email = "#{self.username}@orasi.com"
-  end
-  
-  def set_username_if_blank
-    username = "#{self.first_name}.#{self.last_name}" if username.blank?
-  end
-  
-  def fix_phone_number
-    return if self.phone_number.blank?
-    clean_number = self.phone_number.tr_s(" ()", "").tr_s("-","")
-    self.phone_number = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
-  end
    
   def self.find_or_create(user_params)
     employee = Employee.find_by(username: user_params[:username].downcase)
@@ -81,7 +64,6 @@ class Employee < ActiveRecord::Base
       self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
       return true
     end
-    
     
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
@@ -111,7 +93,13 @@ class Employee < ActiveRecord::Base
   end
   
   def display_name
-    self.first_name.capitalize + " " + self.last_name.capitalize
+    if self.last_name.include?("-")
+      self.first_name.capitalize + " " + self.last_name.capitalize.split("-").map {|name|name.capitalize}.join("-")
+    elsif self.last_name.include?("'")
+      self.first_name.capitalize + " " + self.last_name.capitalize.split("'").map {|name|name.capitalize}.join("'")
+    else
+      self.first_name.capitalize + " " + self.last_name.capitalize
+    end
   end
   
   def all_subordinates
@@ -263,6 +251,36 @@ class Employee < ActiveRecord::Base
     unless roll_off_date.blank? or roll_on_date.blank? or roll_off_date >= roll_on_date
       errors.add(:roll_off_date, "can't be before start date.")
     end
+  end
+  
+  #Make sure that we conform to standards
+  def set_standards_for_user
+    self.first_name = self.first_name.downcase unless self.first_name.blank?
+    self.last_name = self.last_name.downcase unless self.last_name.blank?
+    self.status = Employee.statuses.first if self.status.blank?
+    self.role = Employee.roles.first if self.role.blank?
+    self.email = get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-'","")}@orasi.com") if self.email.blank? and !self.first_name.blank? and !self.last_name.blank?
+    self.username,_ = self.email.split("@") unless self.email.blank?
+  end
+  
+  #Make sure we can generate a unique email for a user.
+  def get_unique_email(email)
+    employee_has_email = !Employee.find_by(email: email).blank?
+    return email unless employee_has_email
+    new_email = email.split("@").first.split(".")
+    if new_email.count == 2
+      email_num = 1
+    else
+      email_num = new_email.last
+    end
+    return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-'","")}.#{email_num.to_i+1}@orasi.com")
+  end
+  
+  #Attempts to correct any type of phone number format (US only) added to a standard format.
+  def fix_phone_number
+    return if self.phone_number.blank?
+    clean_number = self.phone_number.tr_s(" ()", "").tr_s("-","")
+    self.phone_number = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
   end
   
 end
