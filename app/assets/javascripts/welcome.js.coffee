@@ -10,7 +10,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     if (angular.isObject(data))
       data.forEach (value, key) ->
         value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
-        value.last_name = value.last_name[0].toUpperCase() + value.last_name[1..-1]
+        value.last_name = (value.last_name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-"
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
       $scope.employees = data
     else

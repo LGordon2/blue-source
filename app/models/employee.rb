@@ -6,8 +6,6 @@ class Employee < ActiveRecord::Base
   belongs_to :lead, class_name: "Lead"
   belongs_to :project
   
-  attr_accessor :display_name
-  
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
   
@@ -93,13 +91,7 @@ class Employee < ActiveRecord::Base
   end
   
   def display_name
-    if self.last_name.include?("-")
-      self.first_name.capitalize + " " + self.last_name.capitalize.split("-").map {|name|name.capitalize}.join("-")
-    elsif self.last_name.include?("'")
-      self.first_name.capitalize + " " + self.last_name.capitalize.split("'").map {|name|name.capitalize}.join("'")
-    else
-      self.first_name.capitalize + " " + self.last_name.capitalize
-    end
+    self.first_name.capitalize + " " + self.last_name.split('-').map {|name| name.split("'").map {|word| word.capitalize}.join("'")}.join("-")
   end
   
   def all_subordinates
