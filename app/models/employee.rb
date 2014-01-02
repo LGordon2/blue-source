@@ -251,7 +251,7 @@ class Employee < ActiveRecord::Base
     self.last_name = self.last_name.downcase unless self.last_name.blank?
     self.status = Employee.statuses.first if self.status.blank?
     self.role = Employee.roles.first if self.role.blank?
-    self.email = get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-'","")}@orasi.com") if self.email.blank? and !self.first_name.blank? and !self.last_name.blank?
+    self.email = get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}@orasi.com") if self.email.blank? and !self.first_name.blank? and !self.last_name.blank?
     self.username,_ = self.email.split("@") unless self.email.blank?
   end
   
@@ -265,7 +265,7 @@ class Employee < ActiveRecord::Base
     else
       email_num = new_email.last
     end
-    return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-'","")}.#{email_num.to_i+1}@orasi.com")
+    return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}.#{email_num.to_i+1}@orasi.com")
   end
   
   #Attempts to correct any type of phone number format (US only) added to a standard format.

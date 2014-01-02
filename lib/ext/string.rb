@@ -1,5 +1,5 @@
 class String
   def capitalize
-    self.split('-').map {|_name| _name.split("'").map {|word| word[0].upcase + word[1..-1].downcase}.join("'")}.join("-")
+    self.split.map {|name| name.split('-').map {|name| name.split("'").map {|name| name[0].upcase + name[1..-1].downcase}.join("'")}.join("-")}.join(" ")
   end
 end
