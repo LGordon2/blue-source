@@ -5,27 +5,7 @@
 		<span><%= "#{@employee.vacation_days_taken}/#{@employee.max_vacation_days}" %> Vacation Days</span>
 		<span><%= "#{@employee.floating_holidays_taken}/#{@employee.max_floating_holidays}" %> Floating Holidays</span>
 	</div>
-	<% unless flash.blank? %>
-	<div class="alert-inline">
-		<% if flash[:error] %>
-		<% flash[:error].each do |msg| %>
-		<div class="alert alert-danger fade in">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-				&times;
-			</button>
-			<%= msg %>
-		</div>
-		<% end %>
-		<% elsif flash[:notice] %>
-		<div class="alert alert-success alert-dismissable fade in">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-				&times;
-			</button>
-			<%= flash[:notice] %>
-		</div>
-		<% end %>
-	</div>
-	<% end %>
+	<%= render "notification_section" %>
 
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
@@ -42,7 +22,22 @@
 		</tr>
 		<div id="all_vacations">
 			<% @employee.vacations.each do |vacation| %>
-			<%= render(vacation) %>
+			<%= form_for vacation do |f| %>
+			<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %>">
+				<%= f.hidden_field :business_days, id: "hidden_business_days-#{vacation.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
+				<td class="edit-field"><span><%= vacation.date_requested%></span><%= f.date_field :date_requested, class: "hidden" %></td>
+				<td class="edit-field"><span><%= vacation.start_date %></span><%= f.date_field :start_date, id: "start_date-#{vacation.id}", class:"hidden date-field" %></td>
+				<td class="edit-field"><span><%= vacation.end_date %></span><%= f.date_field :end_date, id: "end_date-#{vacation.id}", class:"hidden date-field" %></td>
+				<td id="<%= "business_days-#{vacation.id}" %>"><strong></strong></td>
+				<td class="edit-field"><span><%= vacation.vacation_type%></span><%= f.select :vacation_type, ["Sick","Vacation","Floating Holiday"], {}, class:"hidden" %></td>
+				<td class="check-field"><%= f.check_box :half_day, {class: "hidden"}, "true", "false"  %></td>
+				<td><%= link_to "#", id: vacation.id, class: "edit-btn" do %><%= f.submit "Update Time Off", class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
+				<td> <%= link_to vacation, method: :delete, :data => {confirm: "Are you sure you want to delete this?"} do %>
+					   <span class="glyphicon glyphicon-trash"></span> 
+					 <% end %> 
+				</td>
+			</tr>
+			<%end%>
 			<% end %>
 		</div>
 		<%= form_for :vacation, url: {controller: "vacation", action: "new"} do |f| %>

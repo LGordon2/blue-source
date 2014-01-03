@@ -9,7 +9,7 @@ class VacationController < ApplicationController
     @vacation = Vacation.new(vacation_params)
     respond_to do |format|
       if @vacation.save
-        format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: true}}
+        format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
       end
@@ -19,7 +19,7 @@ class VacationController < ApplicationController
   def update
     respond_to do |format|
       if @vacation.update(vacation_params)
-        format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: true}}
+        format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: @vacation.id}}
       else
         format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages}}
       end
