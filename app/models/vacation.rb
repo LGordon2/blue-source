@@ -85,7 +85,6 @@ class Vacation < ActiveRecord::Base
     business_days_taken_range = Vacation.calc_business_days_for_range(start_date,end_date)
     
     #Account for half day
-    
     business_days_taken_range -= 0.5 if self.half_day
     if self.employee.start_date.blank?
       return business_days_taken_range + days_taken_this_fiscal_year <= self.employee.max_days(self.vacation_type,start_date)

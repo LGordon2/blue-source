@@ -206,6 +206,7 @@ class Employee < ActiveRecord::Base
         pdo_days += vacation.business_days
       else
         pdo_days += Vacation.calc_business_days_for_range(vacation.start_date,end_date)
+        pdo_days -= 0.5 if vacation.half_day?
       end
     end
     return pdo_days
