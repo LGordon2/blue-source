@@ -7,14 +7,14 @@
 	<%= f.label :last_name, nil, class: "control-label" %>
 	<%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text, class: "form-control" %>
 </div>
+<div class="form-group">
+	<%= f.label :level, nil, class: "control-label" %>
+	<%= f.text_field :level, class: "form-control" %>
+</div>
 <% if current_user.is_upper_management? %>
 <div class="form-group">
 	<%= f.label :role, nil, class: "control-label" %>
 	<%= f.select :role, Employee.roles, {}, class: "form-control" %>
-</div>
-<div class="form-group">
-	<%= f.label :level, nil, class: "control-label" %>
-	<%= f.text_field :level, class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :manager, nil, class: "control-label" %>
