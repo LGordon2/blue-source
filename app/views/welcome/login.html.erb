@@ -1,21 +1,12 @@
 <h1>Login</h1>
 <%= form_for @employee, url: :check_login, html: {role: "form", class: "form-horizontal"} do |u| %>
 <div class="container login-form">
-	<% if @employee.errors.any? %>
 	<div class="form-group">
-		<h2><%= pluralize(@employee.errors.count, "error") %> prohibited you from logging in:</h2>
-		<ul>
-			<% @employee.errors.full_messages.each do |msg| %>
-			<li>
-				<%= msg %>
-			</li>
-			
-			<% end %>
-		</ul>
-	</div>
-	<% end %>
-	<div class="form-group">
-		<%= flash[:error] %>
+		<% unless flash[:error].blank? %>
+		<% flash[:error].each do |msg| %>
+		<%= msg %>
+		<% end %>
+		<% end %>
 	</div>
 	<div class="form-group">
 		<%= u.label :username %>
