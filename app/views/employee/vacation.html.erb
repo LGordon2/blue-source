@@ -1,9 +1,9 @@
 <div>
 	<h1>Time Off Details for <%= @employee.display_name %></h1>
 	<div class="vacation-summary-table">
-		<span><%= "#{@employee.sick_days_taken}/#{@employee.max_sick_days}" %> Sick Days</span>
-		<span><%= "#{@employee.vacation_days_taken}/#{@employee.max_vacation_days}" %> Vacation Days</span>
-		<span><%= "#{@employee.floating_holidays_taken}/#{@employee.max_floating_holidays}" %> Floating Holidays</span>
+		<span><%= "#{@employee.sick_days_taken.prettify}/#{@employee.max_sick_days}" %> Sick Days</span>
+		<span><%= "#{@employee.vacation_days_taken.prettify}/#{@employee.max_vacation_days}" %> Vacation Days</span>
+		<span><%= "#{@employee.floating_holidays_taken.prettify}/#{@employee.max_floating_holidays}" %> Floating Holidays</span>
 	</div>
 	<%= render "notification_section" %>
 
