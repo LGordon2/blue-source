@@ -47,8 +47,8 @@
 		<td><%= @employee.phone_number unless @employee.phone_number.blank? %></td>
 	</tr>
 	<tr>
-		<td>Extension:</td>
-		<td><%= @employee.extension unless @employee.extension.blank?%></td>
+		<td>Office Phone:</td>
+		<td><%= @employee.office_phone unless @employee.office_phone.blank?%></td>
 	</tr>
 	<tr>
 		<td>Email:</td>
@@ -93,8 +93,8 @@
 		<td><%= @employee.project.lead.display_name unless @employee.project.blank? or @employee.project.lead.blank? %></td>
 	</tr>
 	<tr>
-		<td>Lead Extension:</td>
-		<td><%= @employee.project.lead.extension unless @employee.project.blank? or @employee.project.lead.blank? %></td>
+		<td>Lead Office Phone:</td>
+		<td><%= @employee.project.lead.office_phone unless @employee.project.blank? or @employee.project.lead.blank? %></td>
 	</tr>
 	<tr>
 		<td>Roll On Date:</td>
