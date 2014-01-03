@@ -4,17 +4,18 @@ class Vacation < ActiveRecord::Base
   belongs_to :employee
   belongs_to :manager, class_name: "Employee"
   
+  before_validation :set_business_days
+  
   validates :vacation_type, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :employee, presence: true
   validates :manager, presence: true
+  validates :business_days, presence: true, numericality: {greater_than: 0}
   validate :end_date_cannot_be_before_start_date
   validate :manager_is_above_employee
   validate :vacation_not_already_included
   validate :pdo_days_taken #also calculates business days taken
-  
-  after_validation :set_business_days
   
   private
   
