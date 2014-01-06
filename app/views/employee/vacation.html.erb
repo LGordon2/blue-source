@@ -21,7 +21,7 @@
 			<% end %>
 		</tr>
 		<div id="all_vacations">
-			<% @employee.vacations.order("#{params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
+			<% @employee.vacations.order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
 			<%= form_for vacation do |f| %>
 			<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 				<%= f.hidden_field :business_days, id: "hidden_business_days-#{vacation.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
