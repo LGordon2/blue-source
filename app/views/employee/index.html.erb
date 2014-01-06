@@ -43,8 +43,8 @@
 		<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? or @employee.start_date >= Time.now %></td>
 	</tr>
 	<tr>
-		<td>Phone Number:</td>
-		<td><%= @employee.phone_number unless @employee.phone_number.blank? %></td>
+		<td>Cell Phone:</td>
+		<td><%= @employee.cell_phone unless @employee.cell_phone.blank? %></td>
 	</tr>
 	<tr>
 		<td>Office Phone:</td>
