@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     if current_user.nil?
       redirect_to :login
     elsif !current_user.is_manager_or_higher?
-      redirect_to :sorry
+      redirect_to consultant_vacation_path(id: current_user.id)
     end
   end
 end

@@ -24,6 +24,7 @@ ManagerPortal::Application.routes.draw do
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout
+  get "consultant/vacation/:id", to: "welcome#consultant_vacation", as: :consultant_vacation
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
   # The priority is based upon order of creation: first created -> highest priority.
