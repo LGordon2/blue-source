@@ -14,7 +14,7 @@ class Employee < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true
-  validates :phone_number, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
+  validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validate :pto_day_limit
   validate :roll_off_date_cannot_be_before_roll_on_date
@@ -270,7 +270,7 @@ class Employee < ActiveRecord::Base
   
   #Attempts to correct any type of phone number format (US only) added to a standard format.
   def fix_phone_number
-    self.phone_number,self.office_phone = [self.phone_number,self.office_phone].map do |phone_num|
+    self.cell_phone,self.office_phone = [self.cell_phone,self.office_phone].map do |phone_num|
       unless phone_num.blank?
         clean_number = phone_num.tr_s(" ()", "").tr_s("-","")
         phone_num = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
