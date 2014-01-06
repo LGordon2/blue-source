@@ -52,7 +52,7 @@
 	</tr>
 	<tr>
 		<td>Email:</td>
-		<td><%= @employee.email unless @employee.email.blank? %></td>
+		<td><%= mail_to @employee.email unless @employee.email.blank? %></td>
 	</tr>
 	<tr>
 		<td>IM Username:</td>

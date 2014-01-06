@@ -6,7 +6,7 @@ ManagerPortal::Application.routes.draw do
   patch "/vacation/:id", to: "vacation#update"
  
   #Employees stuff
-  get "employee/vacation/:id", to: "employee#vacation"
+  get "employee/vacation/:id", to: "employee#vacation", as: :employee_vacation
   get "employees", to: "employee#all"
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee

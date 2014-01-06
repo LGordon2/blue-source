@@ -9,11 +9,11 @@
 
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
-			<th>Date Requested</th>
-			<th>Start Date</th>
-			<th>End Date</th>
-			<th>Total Business Days</th>
-			<th>Type</th>
+			<th><%= link_to 'Date Requested',employee_vacation_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Start Date',employee_vacation_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'End Date',employee_vacation_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Total Business Days',employee_vacation_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Type',employee_vacation_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
 			<th>Half Day</th>
 			<% if @employee.vacations.count > 0 %>
 			<th>Edit</th>
@@ -21,7 +21,7 @@
 			<% end %>
 		</tr>
 		<div id="all_vacations">
-			<% @employee.vacations.each do |vacation| %>
+			<% @employee.vacations.order("#{params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
 			<%= form_for vacation do |f| %>
 			<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 				<%= f.hidden_field :business_days, id: "hidden_business_days-#{vacation.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
