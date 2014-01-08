@@ -18,6 +18,7 @@ ManagerPortal::Application.routes.draw do
   post "projects", to: "project#new"
   get "project/add"
   get "project/:id", to: "project#index", as: :project
+  get "project/:id/leads", to: "project#all_leads", as: :leads
   patch "project/:id", to: "project#update"
   
   #Welcome (login)

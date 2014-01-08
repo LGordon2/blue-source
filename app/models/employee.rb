@@ -1,8 +1,10 @@
 require 'net/ldap'
 class Employee < ActiveRecord::Base
-  has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
+  has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
+  has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations
   belongs_to :manager, class_name: "Employee"
+  belongs_to :team_lead, class_name: "Employee"
   belongs_to :project
   
   before_validation :set_standards_for_user
@@ -242,6 +244,7 @@ class Employee < ActiveRecord::Base
     self.role = Employee.roles.first if self.role.blank?
     self.email = get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}@orasi.com") if self.email.blank? and !self.first_name.blank? and !self.last_name.blank?
     self.username,_ = self.email.split("@") unless self.email.blank?
+    self.team_lead = nil if self.project.blank?
   end
   
   #Make sure we can generate a unique email for a user.
@@ -266,5 +269,4 @@ class Employee < ActiveRecord::Base
       end
     end
   end
-  
 end

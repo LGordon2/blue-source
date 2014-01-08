@@ -1,21 +1,28 @@
 <%= form_for @employee do |f| %>
+<% unless @employee.project.blank? %>
+<% @project_team_leads = Project.find(@employee.project.id).leads %>
+<% else %>
+<% @project_team_leads = []%>
+<% end %>
 <%= hidden_field "form", "in_modal", value: true %>
 <div class="form-group">
-        <%= f.label :project, class: "control-label" %>
-        <%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
+    <%= f.label :project, class: "control-label" %>
+    <%= select :employee, :project_id, Project.order("lower(name) asc").collect {|p| [p.name, p.id]}, {include_blank: true}, class: "form-control" %>
 </div>
-<% if current_user.is_upper_management? %>
+<div class="form-group <%= "hidden" if @project_team_leads.count <= 1 %>" id="team_lead_section">
+	<%= f.label :team_lead, class: "control-label" %>
+	<%= f.select :team_lead_id, @project_team_leads.collect {|p| [p.display_name, p.id]} , {include_blank: @project_team_leads.count > 1}, class: "form-control" %>
+</div>
 <div class="form-group">
-        <%= f.label 'Roll On Date', 'Roll On Date', class: "control-label" %>
-        <%= f.date_field :roll_on_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+    <%= f.label 'Roll On Date', 'Roll On Date', class: "control-label" %>
+    <%= f.date_field :roll_on_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
 <div class="form-group">
-        <%= f.label :roll_off_date, 'Roll Off Date', class: "control-label" %>
-        <%= f.date_field :roll_off_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+    <%= f.label :roll_off_date, 'Roll Off Date', class: "control-label" %>
+    <%= f.date_field :roll_off_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
-<% end %>
 <div class="form-group modal-footer">
-        <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
-        <%= f.submit class: "btn btn-primary"%>
+    <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
+    <%= f.submit class: "btn btn-primary"%>
 </div>
 <% end %>

@@ -8,9 +8,8 @@
 project_list_ctrl = ($scope, $http, $filter) ->
   $http.get('projects.json').success (data) ->
     data.forEach (value, key) ->
-      #value.lead.display_name = value.lead.first_name[0].toUpperCase() + value.lead.first_name[1..-1] + " " + value.lead.last_name[0].toUpperCase() + value.lead.last_name[1..-1] if value.lead
       all_leads = ("#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}" for lead in value.leads)
-      value.all_leads = all_leads.join(", ")
+      value.all_leads = all_leads.sort().join(", ")
     $scope.projects = data
     $scope.search()
   $scope.predicate = 'name'

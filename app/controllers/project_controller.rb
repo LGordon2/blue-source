@@ -1,6 +1,6 @@
 class ProjectController < ApplicationController
   before_action :require_manager_login
-  before_action :set_project, only: [:index, :edit, :update]
+  before_action :set_project, only: [:index, :edit, :update, :all_leads]
   
   before_action :validate_start_date, only: [:new, :update]
   before_action :validate_end_date, only: [:new, :update]
@@ -17,6 +17,13 @@ class ProjectController < ApplicationController
           {:leads => {:only => [:id, :first_name,:last_name]}}
         ], only: [:id, :name, :status]})}
       format.html {render action: :all}
+    end
+  end
+  
+  def all_leads
+    respond_to do |format|
+      format.json {render json: @project.leads.order(first_name: :asc), only: [:first_name,:last_name,:id]}
+      format.html
     end
   end
   
