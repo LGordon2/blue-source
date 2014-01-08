@@ -6,7 +6,11 @@
 <table class="table table-responsive">
 	<tr>
 		<td>Team Lead</td>
-		<td><%= @project.lead.display_name unless @project.lead.blank? %></td>
+		<% @all_leads = [] %>
+		<% @project.leads.each do |lead| %>
+		<% @all_leads << lead.display_name unless lead.blank? %>
+		<% end %>
+		<td><%= @all_leads %></td>
 	</tr>
 	<tr>
 		<td>Start Date</td>

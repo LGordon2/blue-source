@@ -13,13 +13,19 @@ class ProjectController < ApplicationController
     respond_to do |format|
       format.json {render json: Project.all.to_json({
         include: [
-          {:lead => {:only => [:id, :first_name,:last_name]}}
+          {:leads => {:only => [:id, :first_name,:last_name]}}
         ], only: [:id, :name, :status]})}
       format.html {render action: :all}
     end
   end
   
   def update
+    raise Exception
+    params[:project][:leads].each do |lead_id|
+      next if lead_id.blank?
+      Employee.find(lead_id).update(project_id: params[:id], project_lead: true)
+    end
+    
     if @project.update(project_params)
       redirect_to @project, flash: {notice: "Project successfully updated."}
     else
@@ -65,6 +71,6 @@ class ProjectController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :lead_id, :start_date, :end_date, :status) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :start_date, :leads, :end_date, :status) if current_user.is_upper_management?
   end
 end

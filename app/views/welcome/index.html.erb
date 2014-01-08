@@ -21,6 +21,7 @@ Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
 <% end %>
 
 <% content_for :header_btns do %>
+<% if !current_user.subordinates.blank? and current_user.subordinates.count > 0 and current_user.subordinates.count != current_user.all_subordinates.count %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary active" ng-click="current_id='';search()">
 		<input type="radio" name="options" id="option1" >
@@ -29,4 +30,5 @@ Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
 		<input type="radio" name="options" id="option2">
 		Filtered </label>
 </div>
+<% end %>
 <% end %>

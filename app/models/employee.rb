@@ -3,7 +3,6 @@ class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id"
   has_many :vacations
   belongs_to :manager, class_name: "Employee"
-  belongs_to :lead, class_name: "Lead"
   belongs_to :project
   
   before_validation :set_standards_for_user
@@ -41,16 +40,6 @@ class Employee < ActiveRecord::Base
     unless vacation_days_are_correct and sick_days_taken <= max_sick_days and floating_holidays_taken <= max_floating_holidays
       errors.add(:time_off, 'saved for this fiscal year is preventing this employee from being saved.')
     end
-  end
-   
-  def self.find_or_create(user_params)
-    employee = Employee.find_by(username: user_params[:username].downcase)
-    return employee unless employee.nil?
-    
-    employee = Employee.new
-    employee.username = user_params[:username].downcase
-    
-    return employee
   end
   
   def validate_against_ad(password)

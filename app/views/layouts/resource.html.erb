@@ -1,19 +1,15 @@
 <% content_for :content do %>
-<section ng-app="<%= @resource_for_angular %>_list_app" ng-controller="<%= @resource_for_angular %>_list_ctrl" class="center-block">
+<section id="ng-app" ng-app="<%= @resource_for_angular %>_list_app" ng-controller="<%= @resource_for_angular %>_list_ctrl" class="center-block">
 	<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.pluralize.capitalize %></h1>
 	<%= render 'notification_section' %>
 	<div class>
 		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
 	</div>
 	<div>
-		<% unless current_user.role.downcase == "manager" %>
 		<div class="radio-btn-section">
 			<%= yield :header_btns %>
-			<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
+			<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} unless current_user.role.downcase == 'manager' %>
 		</div>
-		<% else %>
-		<br />
-		<% end %>
 	</div>
 	<div>
 		<div class="table-responsive">

@@ -148,7 +148,6 @@ employee.each do |e|
 end
 
 #Projects
-acxiom.update(lead: Employee.find_by(username: "adam.thomas"))
 
 paul = Employee.create({username: "paul.wysosky", first_name: "paul", last_name: "wysosky", role: "Director"})
 paul.update(email: "#{paul.username}@orasi.com")

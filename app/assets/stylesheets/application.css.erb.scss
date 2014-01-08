@@ -96,3 +96,22 @@ a
     padding:10px;
   }
 }
+.glyphicon.glyphicon-plus-sign,.glyphicon.glyphicon-remove
+{
+  cursor:pointer;
+  
+}
+.glyphicon.glyphicon-plus-sign
+{
+  color:green;
+}
+.glyphicon.glyphicon-remove
+{
+  color:red;
+}
+.additional-lead-field
+{
+  width:90%;
+  margin-left:5px;
+  display:inline;
+}

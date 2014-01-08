@@ -3,9 +3,22 @@
 	<%= f.label :name, class: "control-label" %>
 	<%= f.text_field :name, class: "form-control", required: true %>
 </div>
-<div class="form-group">
+<div class="form-group team-lead-section">
 	<%= f.label 'Team Lead', class: "control-label" %>
-	<%= f.select :lead_id, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}, class: "form-control"%>
+	<%= f.select :leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}, name: "project[leads][]", class: "form-control"%>
+</div>
+<div>
+	<script type="text/javascript">
+	$(document).on("ready", function() {
+	  return $(".glyphicon-plus-sign").on("click", function() {
+	    $(".team-lead-section").last().after('<div class="form-group team-lead-section"><span class="glyphicon glyphicon-remove"></span><%= f.select(:leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {}, name: "project[leads][]", class: "form-control additional-lead-field").tr_s("\n","").html_safe %></div>');
+	    return $(".glyphicon-remove").on("click", function() {
+	      return $(this).parent().remove();
+	    });
+	  });
+	});	
+	</script>
+	<span class="glyphicon glyphicon-plus-sign"></span>
 </div>
 <div class="form-group">
 	<%= f.label :status, class: "control-label" %>

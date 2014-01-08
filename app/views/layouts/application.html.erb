@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:ng="http://angularjs.org">
 	<head>
 		<title>BlueSource</title>
 		<%= stylesheet_link_tag    "application", media: "all"%>
@@ -7,7 +7,7 @@
 		<%= javascript_include_tag "application" %>
 		<%= javascript_include_tag params[:controller]%>
 		<!--[if lte IE 8]>
-		<%= javascript_include_tag "json2" %>
+		<%= asset_path "json2.js" %>
 		<![endif]-->
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -30,7 +30,7 @@
 					<% unless current_user.blank? %>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<%= link_to "Projects", :projects %>
+							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
 						</li>
 						<li>
 							<%= link_to current_user.display_name, :root %>
@@ -51,6 +51,25 @@
 		<div class="container">
 			<%= content_for?(:content) ? yield(:content) : yield %>
 		</div>
+		<% if flash[:email] %>
+		<script type="text/javascript">
+		$(document).on("ready", function() {
+		  return $("#emailModal").modal("show");
+		});
+		</script>
+		<div class="modal fade" id="emailModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						Email successfully sent.
+					</div>
+				</div>
+			</div>
+		</div>
+		<% end %>
 		<!-- Modal -->
 		<div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog">

@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_or_create(employee_params)
+    @employee = Employee.find_or_create_by(employee_params)
     
     unless @employee.validate_against_ad(params[:employee][:password])
       redirect_to :login, flash: {error: @employee.errors.full_messages+["Invalid username or password."]}
@@ -12,11 +12,9 @@ class WelcomeController < ApplicationController
     end
     
     if @employee.save
-      
       session[:current_user_id] = @employee.id
       redirect_to :root
     else
-      
       render action: :login
     end
   end
@@ -44,7 +42,7 @@ class WelcomeController < ApplicationController
   def issue
     email = HelpMailer.comments_email(issue_params[:from],issue_params[:email],issue_params[:comments],issue_params[:type])
     email.deliver
-    redirect_to :back
+    redirect_to :back, flash: {email: "#{issue_params[:type].capitalize} email sent."}
   end
   
   private 

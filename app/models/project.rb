@@ -1,6 +1,5 @@
 class Project < ActiveRecord::Base
-  belongs_to :lead, class_name: "Employee"
-  after_save :set_project_for_employee
+  has_many :employees
   
   validates :name, presence: true, uniqueness: true
   validate :end_date_cannot_be_before_start_date
@@ -11,7 +10,7 @@ class Project < ActiveRecord::Base
     end
   end
   
-  def set_project_for_employee
-    self.lead.update(project: self) unless self.lead.blank?
+  def leads
+    self.employees.where(project_lead: true)
   end
 end
