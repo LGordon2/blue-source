@@ -14,7 +14,9 @@
  *= require_self
  */
 $orasi_blue: #357bb9;
-
+#add_team_lead{
+  margin-bottom:5px;
+}
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('<%= asset_path "glyphicons-halflings-regular.eot" %>');
@@ -96,12 +98,12 @@ a
     padding:10px;
   }
 }
-.glyphicon.glyphicon-plus-sign,.glyphicon.glyphicon-remove
+.glyphicon.glyphicon-plus,.glyphicon.glyphicon-remove
 {
   cursor:pointer;
   
 }
-.glyphicon.glyphicon-plus-sign
+.glyphicon.glyphicon-plus
 {
   color:green;
 }
@@ -111,7 +113,6 @@ a
 }
 .additional-lead-field
 {
-  width:90%;
-  margin-left:5px;
+  width:96.7%;
   display:inline;
 }

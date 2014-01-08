@@ -8,7 +8,9 @@
 project_list_ctrl = ($scope, $http, $filter) ->
   $http.get('projects.json').success (data) ->
     data.forEach (value, key) ->
-      value.lead.display_name = value.lead.first_name[0].toUpperCase() + value.lead.first_name[1..-1] + " " + value.lead.last_name[0].toUpperCase() + value.lead.last_name[1..-1] if value.lead
+      #value.lead.display_name = value.lead.first_name[0].toUpperCase() + value.lead.first_name[1..-1] + " " + value.lead.last_name[0].toUpperCase() + value.lead.last_name[1..-1] if value.lead
+      all_leads = ("#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}" for lead in value.leads)
+      value.all_leads = all_leads.join(", ")
     $scope.projects = data
     $scope.search()
   $scope.predicate = 'name'
@@ -20,12 +22,13 @@ project_list_ctrl = ($scope, $http, $filter) ->
   $scope.filter_on_id = true
 
   searchMatch = (haystack, needle) ->
+    return false unless haystack
     return true unless needle
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
   $scope.search = ->
     $scope.filteredProjects = $filter('filter')($scope.projects, (project) ->
-      return searchMatch(project.name, $scope.query)
+      return searchMatch(project.name, $scope.query) || searchMatch(project.all_leads, $scope.query) || searchMatch(project.status, $scope.query) 
     )
     
     $scope.filteredProjects = $filter('orderBy')($scope.filteredProjects,$scope.predicate,$scope.reverse)

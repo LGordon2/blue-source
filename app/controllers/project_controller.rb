@@ -4,6 +4,7 @@ class ProjectController < ApplicationController
   
   before_action :validate_start_date, only: [:new, :update]
   before_action :validate_end_date, only: [:new, :update]
+  before_action :update_leads, only: [:new, :update]
   
   layout :set_layout
   
@@ -20,12 +21,6 @@ class ProjectController < ApplicationController
   end
   
   def update
-    raise Exception
-    params[:project][:leads].each do |lead_id|
-      next if lead_id.blank?
-      Employee.find(lead_id).update(project_id: params[:id], project_lead: true)
-    end
-    
     if @project.update(project_params)
       redirect_to @project, flash: {notice: "Project successfully updated."}
     else
@@ -59,6 +54,15 @@ class ProjectController < ApplicationController
       "view_resource"
     when "all"
       "resource"
+    end
+  end
+  
+  def update_leads
+    Employee.where(project_id: params[:id]).update_all(project_lead: false)
+    return unless params[:project][:leads]
+    params[:project][:leads].each do |lead_id|
+      next if lead_id.blank?
+      Employee.find(lead_id).update(project_id: params[:id], project_lead: true)
     end
   end
   
