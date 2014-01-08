@@ -27,6 +27,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     return unless actual == '' then parseInt(actual) == parseInt(expected) else true
 
   searchMatch = (haystack, needle) ->
+    return false unless haystack
     return true unless needle
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
@@ -36,7 +37,8 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       searchMatch(employee.role, $scope.query) || 
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
       searchMatch(employee.manager.last_name, $scope.query))) || 
-      (employee.project? && searchMatch(employee.project.name, $scope.query)))
+      (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
+      searchMatch(employee.location, $scope.query))
     manager_id = $scope.manager_id
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role == "Admin"
     

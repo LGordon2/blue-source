@@ -35,6 +35,10 @@
 		<td><%= @employee.status %></td>
 	</tr>
 	<tr>
+		<td>Location:</td>
+		<td><%= @employee.location %></td>
+	</tr>
+	<tr>
 		<td>Start Date:</td>
 		<td><%= @employee.start_date.strftime("%B %e, %Y") unless @employee.start_date.blank? %></td>
 	</tr>

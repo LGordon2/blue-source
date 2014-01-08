@@ -17,6 +17,7 @@ class Employee < ActiveRecord::Base
   validates :role, presence: true
   validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
+  validates :location, inclusion: {in: ["Greensboro","Atlanta"]}, allow_blank: true
   validate :pto_day_limit
   validate :roll_off_date_cannot_be_before_roll_on_date
   
@@ -171,6 +172,10 @@ class Employee < ActiveRecord::Base
   
   def is_upper_management?
     self.role.downcase.in? ["director", "avp", "admin"]
+  end
+  
+  def self.locations
+    ["Greensboro", "Atlanta"]
   end
   
   def self.roles
