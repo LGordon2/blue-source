@@ -33,4 +33,8 @@ Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
 		Filtered </label>
 </div>
 <% end %>
+<div class="btn-group" data-toggle="buttons">
+	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
+		<input type="checkbox" name="options" id="option1">Show Inactives</label>
+</div>
 <% end %>

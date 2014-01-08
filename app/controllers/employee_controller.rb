@@ -45,7 +45,7 @@ class EmployeeController < ApplicationController
         include: [
           {:manager => {:only => [:first_name,:last_name]}}, 
           {:project => {:only => :name}}], 
-        only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location]
+        only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
       })}
     end
   end

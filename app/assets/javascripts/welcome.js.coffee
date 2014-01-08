@@ -16,6 +16,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     else
       $scope.employees = []
     $scope.search()
+  $scope.show_inactive=false
   $scope.predicate = 'last_name'
   $scope.reverse = false
   $scope.current_id = ''
@@ -40,6 +41,8 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
       searchMatch(employee.location, $scope.query))
     manager_id = $scope.manager_id
+    console.log($scope.show_inactives)
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{status:"!Inactive"}) unless $scope.show_inactive
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role == "Admin"
     
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
