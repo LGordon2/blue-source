@@ -2,7 +2,7 @@
 <html xmlns:ng="http://angularjs.org">
 	<head>
 		<title>BlueSource</title>
-		<%= stylesheet_link_tag    "application", media: "all"%>
+		<%= stylesheet_link_tag "application", media: "all"%>
 		<%= stylesheet_link_tag params[:controller], media: "all"%>
 		<%= javascript_include_tag "application" %>
 		<%= javascript_include_tag params[:controller]%>
@@ -33,7 +33,7 @@
 							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
 						</li>
 						<li>
-							<%= link_to current_user.display_name, :root %>
+							<%= link_to 'Employees', :root %>
 						</li>
 						<li>
 							<%= link_to "Logout", :logout %>

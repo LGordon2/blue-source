@@ -3,7 +3,7 @@
 	<%= f.label :name, class: "control-label" %>
 	<%= f.text_field :name, class: "form-control", required: true %>
 </div>
-<%= f.label 'Team Leads', class: "control-label team-lead-section" %>
+<%= f.label 'Team Lead(s)', class: "control-label team-lead-section" %>
 <% Employee.where(project_id: @project.id, project_lead: true).order(first_name: :asc).each do |lead| %>
 <div class="form-group team-lead-section">
 <%= f.select :leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true, selected: lead.id},  name: "project[leads][]", class: "form-control additional-lead-field"%>

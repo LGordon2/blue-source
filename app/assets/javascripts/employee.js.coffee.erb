@@ -10,9 +10,24 @@ $(document).ready ->
     set_business_days($(this))
   $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this).parents(".vacation-row"))
-  #set_team_leads()
   $("#employee_project_id").on "change", ->
     set_team_leads()
+  $("#employee_role").on "change", ->
+    levels_select = $("#employee_level")
+    levels_select.empty()
+    switch $(this).val()
+      when "Consultant"
+        levels = <%= Employee.levels(:consultant) %>
+      when "Manager"
+        levels = <%= Employee.levels(:manager) %>
+      when "Director"
+        levels = <%= Employee.levels(:director) %>
+      when "AVP"
+        levels = <%= Employee.levels(:avp) %>
+      else
+        levels = <%= Employee.levels(:else) %>
+    for level in levels
+      levels_select.append("<option value=\"#{level}\">#{level}</option>")
    
 
 set_team_leads = ->
