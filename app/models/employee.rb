@@ -23,7 +23,7 @@ class Employee < ActiveRecord::Base
   validate :manager_cannot_be_subordinate
   
   def manager_cannot_be_subordinate
-    if self.above?(self.manager)
+    if self.manager and self.above?(self.manager)
       errors.add(:base, "You cannot be above your manager.") 
     end 
   end
