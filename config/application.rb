@@ -20,18 +20,10 @@ module ManagerPortal
     # config.i18n.default_locale = :de
     config.autoload_paths += Dir["#{Rails.root}/lib/ext"]
     config.assets.precompile << Proc.new do |path|
-      if path =~ /\.(css|js)\z/
-        full_path = Rails.application.assets.resolve(path).to_path
-        app_assets_path = Rails.root.join('app', 'assets').to_path
-        if full_path.starts_with? app_assets_path
-          puts "including asset: " + full_path
+      if path =~ /\.(css|js|eot|svg|ttf|woff)\z/
         true
-        else
-          puts "excluding asset: " + full_path
-        false
-        end
       else
-      false
+        false
       end
     end
   end
