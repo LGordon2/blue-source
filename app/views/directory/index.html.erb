@@ -8,9 +8,9 @@
 	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
 </tr>
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
-	<td>{{employee.first_name}}</td>
-	<td>{{employee.last_name}}</td>
-	<td>{{employee.manager_name}}</td>
+	<td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>
+	<td><a href="mailto:{{employee.email}}">{{employee.last_name}}</a></td>
+	<td><a href="mailto:{{employee.manager.email}}">{{employee.manager_name}}</a></td>
 	<td ng-show='filteredDepartment==""'>{{employee.department}}</td>
 	<td>{{employee.office_phone}}</td>
 	<td>{{employee.cell_phone}}</td>
