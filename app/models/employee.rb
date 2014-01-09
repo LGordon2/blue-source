@@ -135,13 +135,15 @@ class Employee < ActiveRecord::Base
       return 10
     end
     n = case (years_with_orasi_on_anniversary)
-    when 0..3 then 10
+    when 0 then 0
+    when 1..3 then 10
     when 4..6 then 15
     else 20
     end
     #d is days of vacation given after upcoming anniversary. 0-3 years = 10 | 3-6 years = 15 | 6+ years = 20
     d = case (years_with_orasi_on_anniversary)
-    when 0..2 then 10
+    when 0 then 10
+    when 1..2 then 10
     when 3..5 then 15
     else 20
     end

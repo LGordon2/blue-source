@@ -12,6 +12,7 @@ project_list_ctrl = ($scope, $http, $filter) ->
       value.all_leads = all_leads.sort().join(", ")
     $scope.projects = data
     $scope.search()
+  $scope.show_inactive=false
   $scope.predicate = 'name'
   $scope.reverse = false
   $scope.current_id = ''
@@ -26,10 +27,11 @@ project_list_ctrl = ($scope, $http, $filter) ->
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
   $scope.search = ->
+    console.log($scope.predicate)
     $scope.filteredProjects = $filter('filter')($scope.projects, (project) ->
       return searchMatch(project.name, $scope.query) || searchMatch(project.all_leads, $scope.query) || searchMatch(project.status, $scope.query) 
     )
-    
+    $scope.filteredProjects = $filter('filter')($scope.filteredProjects,{status:"!Inactive"}) unless $scope.show_inactive
     $scope.filteredProjects = $filter('orderBy')($scope.filteredProjects,$scope.predicate,$scope.reverse)
     
     $scope.currentPage = 0;
