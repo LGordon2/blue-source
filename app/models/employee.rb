@@ -207,6 +207,10 @@ class Employee < ActiveRecord::Base
     ["Permanent", "Contractor", "Inactive"]
   end
   
+  def self.departments
+    ["Rural Testing", "PSO"]
+  end
+  
   def admin?
     return self.role == "Admin"
   end

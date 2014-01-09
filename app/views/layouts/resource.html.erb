@@ -8,7 +8,6 @@
 	<div>
 		<div class="radio-btn-section">
 			<%= yield :header_btns %>
-			<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} unless current_user.role.downcase == 'manager' or !content_for?("add_form") %>
 		</div>
 	</div>
 	<div>
@@ -34,14 +33,6 @@
 		</ul>
 	</div>
 	<%= yield :footer %>
-	<% content_for "modal_header_1" do %>
-		Add <%= @resource_for_angular.blank? ? controller_name.capitalize : @resource_for_angular.capitalize %>
-	<% end %>
-	<% content_for "modal_content_1" do %>
-		<% @in_modal = true %>
-		<%= render "add_form" if content_for?("add_form") %>
-	<% end %>
-	<%= render "modals/modal_group" %>
 </section>
 
 <% end %>

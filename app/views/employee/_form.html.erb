@@ -53,6 +53,12 @@
 	<%= f.label :im_client, "IM Client", class: "control-label" %>
 	<%= f.select :im_client, Employee.im_client_types, {include_blank: true}, class: "form-control" %>
 </div>
+<% if current_user.is_upper_management? %>
+<div class="form-group">
+	<%= f.label :department, 'Department', class: "control-label" %>
+	<%= f.select :department, Employee.departments, {include_blank: true}, class: "form-control" %>
+</div>
+<% end %>
 <div class="form-group modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
 	<%= f.submit class: "btn btn-primary"%>

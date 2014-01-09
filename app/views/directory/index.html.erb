@@ -1,27 +1,42 @@
 <% content_for :table do %>
-<tr ng-init="role='<%=current_user.role%>'">
+<tr ng-init="role='<%=current_user.role%>';filteredDepartment=''">
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
+	<th ng-show='filteredDepartment==""'><%= link_to "Department", "#", "ng-click" => "predicate='department'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Office Phone", "#", 'ng-click' => "predicate='office_phone'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
 </tr>
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
-	<td><%= link_to '{{employee.first_name}}', "employee/{{employee.id}}"%></td>
-	<td><%= link_to '{{employee.last_name}}', "employee/{{employee.id}}"%></td>
-	<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
+	<td>{{employee.first_name}}</td>
+	<td>{{employee.last_name}}</td>
+	<td>{{employee.manager_name}}</td>
+	<td ng-show='filteredDepartment==""'>{{employee.department}}</td>
 	<td>{{employee.office_phone}}</td>
 	<td>{{employee.cell_phone}}</td>
 </tr>
 <% end %>
 
 <% content_for :welcome_msg do %>
-Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
+<span ng-show="filteredDepartment==''">Orasi Directory</span>
+<span ng-hide="filteredDepartment==''"><%= current_user.department unless current_user.department.blank? %> Directory</span>
 <% end %>
 
 <% content_for :header_btns do %>
+<% unless current_user.department.blank? %>
 <div class="btn-group" data-toggle="buttons">
-	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
-		<input type="checkbox" name="options" id="option1">Show Inactives</label>
+	
+	<%= label_tag :department, class: "btn btn-primary", 'ng-click' => "filteredDepartment='#{current_user.department}';search()" do %>
+		<input type="radio" name="options" id="option1"><%= current_user.department %>
+	<% end %>
+	
+	<%= label_tag :department, class: "btn btn-primary active", 'ng-click' => "filteredDepartment='';search()" do %>
+		<input type="radio" name="options" id="option2">All
+	<% end %>
 </div>
+<% end %>
+<% end %>
+
+<% content_for :footer do %>
+<%= link_to "Back", :root %>
 <% end %>

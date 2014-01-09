@@ -15,7 +15,18 @@
 	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
 </div>
+<div class="btn-group">
+	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} unless current_user.role.downcase == 'manager' %>
+</div>
 <% end %>
 <% content_for :footer do %>
+	<% content_for "modal_header_1" do %>
+		Add <%= @resource_for_angular.blank? ? controller_name.capitalize : @resource_for_angular.capitalize %>
+	<% end %>
+	<% content_for "modal_content_1" do %>
+		<% @in_modal = true %>
+		<%= render "add_form" %>
+	<% end %>
+	<%= render "modals/modal_group" %>
 <%= link_to "Back", :root %>
 <% end %>
