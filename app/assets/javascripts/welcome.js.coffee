@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_focus_search
+#= require auto_set_levels
 
 @employee_list_app = angular.module('employee_list_app', []);
 

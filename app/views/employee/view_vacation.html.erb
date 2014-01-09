@@ -12,7 +12,6 @@
 		<th><%= link_to 'End Date',view_vacation_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
 		<th><%= link_to 'Total Business Days',view_vacation_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
 		<th><%= link_to 'Type',view_vacation_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
-		<th>Half Day</th>
 	</tr>
 	<% @employee.vacations.order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
 	<tr>
@@ -21,9 +20,10 @@
 		<td><%= vacation.end_date %></td>
 		<td><%= vacation.business_days.prettify %></td>
 		<td><%= vacation.vacation_type %></td>
-		<td><%= vacation.half_day.to_s.capitalize %></td>
 	</tr>
 	<% end %>
 </table>
 <% end %>
 <%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
+<div class="clearfix"></div>
+<%= link_to "Back", :back, style: "margin-top: 10px" unless current_user.role == "Consultant"%>

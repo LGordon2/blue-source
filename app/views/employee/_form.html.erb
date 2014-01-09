@@ -1,11 +1,11 @@
 <%= form_for @employee, html: {class: "form-horizontal", role: "form"} do |f| %>
 <div class="form-group">
 	<%= f.label :first_name, nil, class: "control-label" %>
-	<%= text_field_tag "employee[first_name]", @employee.first_name.capitalize, type: :text, class: "form-control" %>
+	<%= f.text_field :first_name, value: "#{@employee.first_name.capitalize unless @employee.first_name.blank?}", class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :last_name, nil, class: "control-label" %>
-	<%= text_field_tag "employee[last_name]", @employee.last_name.capitalize, type: :text, class: "form-control" %>
+	<%= f.text_field :last_name, value: "#{@employee.last_name.capitalize unless @employee.last_name.blank?}", class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :level, nil, class: "control-label" %>
