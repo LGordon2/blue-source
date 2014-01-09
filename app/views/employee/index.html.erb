@@ -44,7 +44,7 @@
 	</tr>
 	<tr>
 		<td>Time with Orasi:</td>
-		<td><%= time_ago_in_words(@employee.start_date) unless @employee.start_date.blank? or @employee.start_date >= Time.now %></td>
+		<td><%= time_ago_exact(@employee.start_date) unless @employee.start_date.blank? or @employee.start_date >= Time.now %></td>
 	</tr>
 	<tr>
 		<td>Cell Phone:</td>

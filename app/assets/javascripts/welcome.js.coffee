@@ -13,6 +13,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
         value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
         value.last_name = (value.last_name.split(' ').map (name) -> (name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-").join " "
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
+        value.project = {"name": "Not billable"} if typeof value.project == 'undefined'
       $scope.employees = data
     else
       $scope.employees = []
