@@ -20,6 +20,13 @@ class Employee < ActiveRecord::Base
   validates :location, inclusion: {in: ["Greensboro","Atlanta"]}, allow_blank: true
   validate :pto_day_limit
   validate :roll_off_date_cannot_be_before_roll_on_date
+  validate :manager_cannot_be_subordinate
+  
+  def manager_cannot_be_subordinate
+    if self.above?(self.manager)
+      errors.add(:manager, "cannot above your manager.") 
+    end 
+  end
   
   def pto_day_limit
     #Calculates the correct anniversary date for this fiscal year.
