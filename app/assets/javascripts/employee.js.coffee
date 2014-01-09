@@ -1,6 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+#= require auto_set_levels
 $(document).ready ->
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
@@ -12,22 +13,9 @@ $(document).ready ->
     set_business_days($(this).parents(".vacation-row"))
   $("#employee_project_id").on "change", ->
     set_team_leads()
-  $("#employee_role").on "change", ->
-    levels_select = $("#employee_level")
-    levels_select.empty()
-    switch $(this).val()
-      when "Consultant"
-        levels = <%= Employee.levels(:consultant) %>
-      when "Manager"
-        levels = <%= Employee.levels(:manager) %>
-      when "Director"
-        levels = <%= Employee.levels(:director) %>
-      when "AVP"
-        levels = <%= Employee.levels(:avp) %>
-      else
-        levels = <%= Employee.levels(:else) %>
-    for level in levels
-      levels_select.append("<option value=\"#{level}\">#{level}</option>")
+  $("#start_date-new").on "change", ->
+    $("#end_date-new").val($(this).val())
+    set_business_days($(this).parents(".vacation-row"))
    
 
 set_team_leads = ->
