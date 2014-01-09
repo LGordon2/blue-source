@@ -24,7 +24,7 @@ class Employee < ActiveRecord::Base
   
   def manager_cannot_be_subordinate
     if self.above?(self.manager)
-      errors.add(:manager, "cannot above your manager.") 
+      errors.add(:base, "You cannot be above your manager.") 
     end 
   end
   
