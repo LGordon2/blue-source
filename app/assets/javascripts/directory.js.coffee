@@ -41,7 +41,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       searchMatch(employee.cell_phone, $scope.query)
       )
     manager_id = $scope.manager_id
-    console.log($scope.show_inactives)
+
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{status:"!Inactive"}) unless $scope.show_inactive
     
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
