@@ -3,7 +3,7 @@ require 'test_helper'
 class WelcomeControllerTest < ActionController::TestCase
   test "should redirect to sorry if consultant" do
     get :index, nil, {current_user_id: employees(:consultant).id}
-    assert_redirected_to action: :sorry
+    assert_redirected_to consultant_vacation_path(employees(:consultant))
   end
   
   test "should get index if manager" do

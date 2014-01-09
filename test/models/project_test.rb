@@ -30,20 +30,4 @@ class ProjectTest < ActiveSupport::TestCase
       p.save!
     end
   end
-  
-  test "project assigned lead must have project under their record" do
-    p = Project.new
-    e = Employee.new
-    e.username = "adam.thomas"
-    e.first_name = "adam"
-    e.last_name = "thomas"
-    e.role = "Manager"
-    e.status = "Permanent"
-    e.email = "adam.thomas@orasi.com"
-    e.save!
-    p.name = "TitleMax"
-    p.lead = e
-    p.save!
-    assert e.project == p, "The project lead's project is the new project."
-  end
 end

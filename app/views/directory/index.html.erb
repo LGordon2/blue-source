@@ -1,0 +1,27 @@
+<% content_for :table do %>
+<tr ng-init="role='<%=current_user.role%>'">
+	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
+	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
+	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
+	<th><%= link_to "Office Phone", "#", 'ng-click' => "predicate='office_phone'; reverse=!reverse; search()"%></th>
+	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
+</tr>
+<tr ng-repeat="employee in pagedEmployees[currentPage]">
+	<td><%= link_to '{{employee.first_name}}', "employee/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.last_name}}', "employee/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
+	<td>{{employee.office_phone}}</td>
+	<td>{{employee.cell_phone}}</td>
+</tr>
+<% end %>
+
+<% content_for :welcome_msg do %>
+Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
+<% end %>
+
+<% content_for :header_btns do %>
+<div class="btn-group" data-toggle="buttons">
+	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
+		<input type="checkbox" name="options" id="option1">Show Inactives</label>
+</div>
+<% end %>

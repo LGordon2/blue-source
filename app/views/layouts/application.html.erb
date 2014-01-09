@@ -30,6 +30,9 @@
 					<% unless current_user.blank? %>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
+							<%= link_to 'Directory', :directory %>
+						</li>
+						<li>
 							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
 						</li>
 						<li>

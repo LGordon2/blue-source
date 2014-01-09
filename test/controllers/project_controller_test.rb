@@ -8,7 +8,7 @@ class ProjectControllerTest < ActionController::TestCase
   
   test "should not get all if consultant" do
     get :all, nil, session = {current_user_id: employees(:consultant).id}
-    assert_redirected_to :sorry
+    assert_redirected_to consultant_vacation_path(employees(:consultant))
   end
 
   test "manager can view projects" do

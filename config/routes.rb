@@ -1,5 +1,6 @@
 ManagerPortal::Application.routes.draw do
  
+  get "directory/index"
   #Vacation
   delete "/vacation/:id", to: "vacation#destroy", as: :vacation
   post "/vacation/new", to: "vacation#new"
@@ -28,6 +29,11 @@ ManagerPortal::Application.routes.draw do
   get "consultant/vacation/:id", to: "welcome#consultant_vacation", as: :consultant_vacation
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
+  
+  #Directory
+  get 'directory', to: 'directory#index', as: :directory
+  get "directory/employees", to: "directory#employees"
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
