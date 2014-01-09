@@ -32,7 +32,9 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
   $scope.search = ->
-    $scope.filteredEmployees = $filter('filter')($scope.employees, (employee) ->
+    $scope.filteredEmployees = $filter('filter')($scope.employees,{status: "!Inactive"})
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{department: $scope.filteredDepartment}) unless $scope.filteredDepartment == ''
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees, (employee) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
       searchMatch(employee.manager.last_name, $scope.query))) || 
@@ -41,8 +43,6 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       searchMatch(employee.cell_phone, $scope.query)
       )
     manager_id = $scope.manager_id
-    
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{department: $scope.filteredDepartment}) unless $scope.filteredDepartment == ''
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
 
     $scope.currentPage = 0;

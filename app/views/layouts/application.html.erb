@@ -36,7 +36,7 @@
 							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
 						</li>
 						<li>
-							<%= link_to 'Employees', :root %>
+							<%= link_to current_user.role == 'Consultant' ? "My Information" : "Employees", :root %>
 						</li>
 						<li>
 							<%= link_to "Logout", :logout %>
