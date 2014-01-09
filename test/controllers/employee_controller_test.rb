@@ -13,12 +13,12 @@ class EmployeeControllerTest < ActionController::TestCase
   
   test "consultant should not get edit and should be redirected to sorry" do
     get :edit, {id: employees(:consultant).id}, session = {current_user_id: employees(:consultant).id}
-    assert_redirected_to consultant_vacation_path(employees(:consultant))
+    assert_redirected_to view_vacation_path(employees(:consultant))
   end
   
   test "consultant should not be able to edit other consultant and should be redirected to sorry" do
     get :edit, {id: employees(:consultant2).id}, session = {current_user_id: employees(:consultant).id}
-    assert_redirected_to consultant_vacation_path(employees(:consultant))
+    assert_redirected_to view_vacation_path(employees(:consultant))
   end
   
   test "should be able to view consultant if manager" do
@@ -33,12 +33,12 @@ class EmployeeControllerTest < ActionController::TestCase
   
   test "consultant should not be able to view consultant" do
     get :index, {id: employees(:consultant).id}, session = {current_user_id: employees(:consultant).id}
-    assert_redirected_to consultant_vacation_path(employees(:consultant))
+    assert_redirected_to view_vacation_path(employees(:consultant))
   end
   
   test "consultant should not be able to view other consultant" do
     get :index, {id: employees(:consultant2).id}, session = {current_user_id: employees(:consultant).id}
-    assert_redirected_to consultant_vacation_path(employees(:consultant))
+    assert_redirected_to view_vacation_path(employees(:consultant))
   end
   
   test "manager should be redirected to root when trying to manage own vacation" do

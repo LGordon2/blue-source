@@ -33,7 +33,6 @@ class WelcomeController < ApplicationController
   def index
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
-    redirect_to :sorry unless current_user.is_manager_or_higher?
   end
   
   def sorry

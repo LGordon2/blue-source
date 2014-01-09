@@ -55,7 +55,7 @@ class VacationControllerTest < ActionController::TestCase
   test "consultants can't change each other's vacation" do
     @sick_day_params[:vacation][:employee_id] = @consultant.id
     get :new, @sick_day_params, {current_user_id: @consultant.id}
-    assert_redirected_to consultant_vacation_path(@consultant)
+    assert_redirected_to view_vacation_path(@consultant)
   end
 
   test "consultant's manager should be able to delete consultant's vacation" do

@@ -8,6 +8,7 @@ ManagerPortal::Application.routes.draw do
  
   #Employees stuff
   get "employee/vacation/:id", to: "employee#vacation", as: :employee_vacation
+  get "employee/vacation/:id/view", to: "employee#view_vacation", as: :view_vacation
   get "employees", to: "employee#all"
   get "employee/edit/:id", to: "employee#edit"
   get "employee/:id", to: "employee#index", as: :employee
@@ -26,7 +27,6 @@ ManagerPortal::Application.routes.draw do
   get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout
-  get "consultant/vacation/:id", to: "welcome#consultant_vacation", as: :consultant_vacation
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
   

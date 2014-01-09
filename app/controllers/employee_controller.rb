@@ -1,6 +1,6 @@
 class EmployeeController < ApplicationController
-  before_action :require_manager_login
-  before_action :set_user, only: [:index, :edit, :vacation, :update]
+  before_action :require_manager_login, except: :view_vacation
+  before_action :set_user, only: [:index, :edit, :vacation, :update, :view_vacation]
   
   #Only manager of employee can edit vacation, employee info, or update info.
   before_action :check_manager_status, only: [:edit, :vacation, :update]
