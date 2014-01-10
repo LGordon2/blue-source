@@ -16,13 +16,24 @@ $(document).ready ->
   $("#start_date-new").on "change", ->
     $("#end_date-new").val($(this).val())
     set_business_days($(this).parents(".vacation-row"))
-  $(".vacation-type").hover ->
+  $("select.vacation-type").on "mouseover mouseleave", ->
     if $(this).val() == "Other"
-      $(this).popover('show')
+      $(this).popover('show') if $(this).siblings(".popover").length == 0
+      $(this).siblings(".popover").removeClass('hidden')
       $(".popover").find("input").keyup ->
         $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
     else
-      $(this).popover('hide') 
+      $(this).popover('hide')
+      $(this).siblings(".popover").addClass('hidden')
+  $("select.vacation-type").on "change", (event) ->
+    if $(this).val() == "Other"
+      $(this).popover('show') unless window.navigator.msPointerEnabled == true or $(this).siblings(".popover").length > 0
+      $(this).siblings(".popover").removeClass('hidden')
+      $(".popover").find("input").keyup ->
+        $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
+    else
+      $(this).siblings(".popover").addClass('hidden')
+      
   $("span.reason-show").hover ->
     $(this).popover('toggle')
    
