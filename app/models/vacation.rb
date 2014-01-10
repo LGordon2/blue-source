@@ -16,8 +16,19 @@ class Vacation < ActiveRecord::Base
   validate :manager_is_above_employee
   validate :vacation_not_already_included
   validate :pdo_days_taken #also calculates business days taken
+  validate :reason_present_if_other
+  
+  def self.types
+    ["Sick","Vacation","Floating Holiday","Other"]
+  end
   
   private
+  
+  def reason_present_if_other
+    if self.reason.blank? and self.vacation_type == "Other"
+      errors.add(:base, "Reason must be present for vacation type 'Other'.")
+    end
+  end
   
   def end_date_cannot_be_before_start_date
     unless end_date.blank? or start_date.blank? or end_date >= start_date
@@ -62,7 +73,7 @@ class Vacation < ActiveRecord::Base
   def pdo_days_taken
     Rails.logger.error "Start date was blank." if self.start_date.blank?
     Rails.logger.error "End date was blank." if self.end_date.blank?
-    return if self.start_date.blank? or self.end_date.blank?
+    return if self.start_date.blank? or self.end_date.blank? or self.vacation_type == "Other"
     
     unless validate_pto(self.start_date,self.end_date)
       errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")

@@ -16,6 +16,15 @@ $(document).ready ->
   $("#start_date-new").on "change", ->
     $("#end_date-new").val($(this).val())
     set_business_days($(this).parents(".vacation-row"))
+  $(".vacation-type").hover ->
+    if $(this).val() == "Other"
+      $(this).popover('show')
+      $(".popover").find("input").keyup ->
+        $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
+    else
+      $(this).popover('hide') 
+  $("span.reason-show").hover ->
+    $(this).popover('toggle')
    
 
 set_team_leads = ->

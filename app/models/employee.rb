@@ -126,7 +126,8 @@ class Employee < ActiveRecord::Base
   end
   
   def max_vacation_days(on_date = Date.current)
-    return 10 if self.start_date.blank?
+    adjusted_days = self.additional_days.blank? ? 0 : self.additional_days
+    return 10 + adjusted_days if self.start_date.blank?
     anniversary_date = self.start_date
     anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
     #Correct year to put in for fiscal year.
@@ -139,7 +140,7 @@ class Employee < ActiveRecord::Base
     
     years_with_orasi_on_anniversary = correct_year_for_fiscal_year - anniversary_date.year
     if years_with_orasi_on_anniversary < 0
-      return 10
+      return 10 + adjusted_days
     end
     n = case (years_with_orasi_on_anniversary)
     when 0 then 0
@@ -155,7 +156,7 @@ class Employee < ActiveRecord::Base
     else 20
     end
     
-    if on_date >= Date.new(correct_year_for_fiscal_year,anniversary_date.month,anniversary_date.day) then ((p/365.0)*n+(m/365.0)*d).round else n end
+    if on_date >= Date.new(correct_year_for_fiscal_year,anniversary_date.month,anniversary_date.day) then ((p/365.0)*n+(m/365.0)*d).round + adjusted_days else n + adjusted_days end
   end
   
   def max_floating_holidays
