@@ -6,7 +6,7 @@ class EmployeeController < ApplicationController
   before_action :check_manager_status, only: [:edit, :vacation, :update]
   
   #Manager of employee or employee can view themselves.
-  before_action :check_employee_is_current_user_or_manager, only: [:index]
+  before_action :check_employee_is_current_user_or_manager, only: [:index, :view_vacation, :update]
   
   #Validate date parameters.
   before_action :validate_start_date, only: [:new, :update]
