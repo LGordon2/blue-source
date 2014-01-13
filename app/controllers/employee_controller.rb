@@ -30,7 +30,7 @@ class EmployeeController < ApplicationController
   def edit
   end
   
-  def new 
+  def new
     @employee = Employee.new(employee_params)
     if @employee.save
       redirect_to :root, flash: {notice: "Employee added successfully."}

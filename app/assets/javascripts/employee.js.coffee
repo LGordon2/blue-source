@@ -2,6 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_set_levels
+
+window.setEvent = -> #alert "Hello, world!"
+  $(".popover input").on "keyup", ->
+    $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
+
 $(document).ready ->
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
@@ -19,15 +24,13 @@ $(document).ready ->
   $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
     $(this).popover('show') if $(this).siblings(".popover").length == 0
     $(this).siblings(".popover").show()
-    $(".popover input").on "keyup", ->
-      $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
     if $(this).val() != "Other"
       $(this).siblings(".popover").hide()
   
   $("select.vacation-type").change ->
     return unless window.navigator.msPointerEnabled == true
     if $(this).val() != "Other"
-      $(this).siblings(".popover").show()
+      $(this).popover('show')
     else
       $(this).popover('hide')
       
