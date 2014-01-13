@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_set_levels
 
-window.setEvent = -> #alert "Hello, world!"
+window.setEvent = ->
   $(".popover input").each (index) ->
     $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
 
