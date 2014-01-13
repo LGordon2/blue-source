@@ -4,7 +4,7 @@
 #= require auto_set_levels
 
 window.setEvent = -> #alert "Hello, world!"
-  $(".popover input").on "keyup", ->
+  $(".popover input").each (index) ->
     $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
 
 $(document).ready ->
