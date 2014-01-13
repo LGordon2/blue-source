@@ -16,23 +16,20 @@ $(document).ready ->
   $("#start_date-new").on "change", ->
     $("#end_date-new").val($(this).val())
     set_business_days($(this).parents(".vacation-row"))
-  $("select.vacation-type").on "mouseover mouseleave", ->
-    if $(this).val() == "Other"
-      $(this).popover('show') if $(this).siblings(".popover").length == 0
-      $(this).siblings(".popover").removeClass('hidden')
-      $(".popover").find("input").keyup ->
-        $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
+  $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
+    $(this).popover('show') if $(this).siblings(".popover").length == 0
+    $(this).siblings(".popover").show()
+    $(".popover input").on "keyup", ->
+      $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
+    if $(this).val() != "Other"
+      $(this).siblings(".popover").hide()
+  
+  $("select.vacation-type").change ->
+    return unless window.navigator.msPointerEnabled == true
+    if $(this).val() != "Other"
+      $(this).siblings(".popover").show()
     else
       $(this).popover('hide')
-      $(this).siblings(".popover").addClass('hidden')
-  $("select.vacation-type").on "change", (event) ->
-    if $(this).val() == "Other"
-      $(this).popover('show') unless window.navigator.msPointerEnabled == true or $(this).siblings(".popover").length > 0
-      $(this).siblings(".popover").removeClass('hidden')
-      $(".popover").find("input").keyup ->
-        $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
-    else
-      $(this).siblings(".popover").addClass('hidden')
       
   $("span.reason-show").hover ->
     $(this).popover('toggle')

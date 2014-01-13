@@ -62,7 +62,7 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 			<td><%= f.date_field :start_date, id:"start_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
 			<td><%= f.date_field :end_date, id:"end_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
 			<td id="business_days-new"><strong></strong></td>
-			<td><%= f.select :vacation_type, Vacation.types, {}, data: {title: "Reason", content: "<input required>", placement: 'bottom', html: true, animation: false, delay: "{show: 100}"}, id: "vacation_type-new", class: "vacation-type" %></td>
+			<td><%= f.select :vacation_type, Vacation.types, {}, data: {title: "Reason", content: "<input>", placement: 'bottom', html: true, animation: false}, id: "vacation_type-new", class: "vacation-type" %></td>
 			<td><%= f.check_box :half_day %></td>
 		</tr>
 	</table>
