@@ -17,7 +17,7 @@ class Employee < ActiveRecord::Base
   validates :role, presence: true
   validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
-  validates :location, inclusion: {in: ["Greensboro","Atlanta"]}, allow_blank: true
+  validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :pto_day_limit
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
@@ -185,7 +185,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.locations
-    ["Greensboro", "Atlanta"]
+    ["Greensboro", "Atlanta", "Remote"]
   end
   
   def self.levels(type)
@@ -216,7 +216,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.departments
-    ["Rural Testing", "PSO"]
+    ["Rural", "PSO", "MPT", "Mobile", "SAP"]
   end
   
   def admin?
