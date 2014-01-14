@@ -11,6 +11,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       data.forEach (value, key) ->
         value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
         value.last_name = (value.last_name.split(' ').map (name) -> (name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-").join " "
+        value.display_name = "#{value.first_name} #{value.last_name}"
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
       $scope.employees = data
     else
@@ -36,8 +37,9 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{department: $scope.filteredDepartment}) unless $scope.filteredDepartment == ''
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees, (employee) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
+      searchMatch(employee.display_name, $scope.query) ||
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
-      searchMatch(employee.manager.last_name, $scope.query))) || 
+      searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager_name, $scope.query))) || 
       searchMatch(employee.department, $scope.query) ||
       searchMatch(employee.office_phone, $scope.query) ||
       searchMatch(employee.cell_phone, $scope.query)
