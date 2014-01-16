@@ -38,3 +38,4 @@ pickle-email-*.html
 /log
 .DS_Store
 public/assets
+.settings
