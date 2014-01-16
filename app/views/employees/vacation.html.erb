@@ -12,7 +12,7 @@
 			<%= f.submit class: "btn btn-default btn-xs", data: {confirm: "- Warning - 
 You are about to alter this employees vacation days. This alteration will carry from one fiscal year to the other and can be changed at any time. 
 This feature is intended to correct the automatically calculated vacation days to accommodate any compensation given to an employee. E.g. Carrying over vacation from one fiscal year to another, vacation negotiated during job offer, military leave, etc. 
-If you simply want to give a person compensation, bereavement, paternity or maternity, etc. days off please select ‘Other’ from the dropdown in the 'Type' column when noting these days. 
+If you simply want to give a person compensation, bereavement, paternity or maternity, etc. days off please select ���Other��� from the dropdown in the 'Type' column when noting these days. 
 "} %>
 			<% end %>
 		</div>
@@ -66,7 +66,7 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 			<td><%= f.check_box :half_day %></td>
 		</tr>
 	</table>
-	<%= link_to "Back", "/employee/#{@employee.id}", class: "btn btn-default" %>
+	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" %>
 	<%= f.submit "Save Time Off", class: "btn btn-primary" %>
 	<% end %>
 </div>
