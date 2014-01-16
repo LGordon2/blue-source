@@ -1,4 +1,4 @@
-<%= form_for @employee, html: {class: "form-horizontal", role: "form"} do |f| %>
+<%= form_for @employee, url: :employee_new, html: {class: "form-horizontal", role: "form"} do |f| %>
 <div class="form-group">
 	<%= f.label :first_name, nil, class: "control-label" %>
 	<%= f.text_field :first_name, value: "#{@employee.first_name.capitalize unless @employee.first_name.blank?}", class: "form-control" %>
