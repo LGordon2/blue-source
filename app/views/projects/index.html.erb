@@ -5,7 +5,7 @@
 	<th><%= link_to "Status", "#", 'ng-click' => "predicate='status'; reverse=!reverse; search()" %></th>
 </tr>
 <tr ng-repeat="project in pagedProjects[currentPage] ">
-	<td><%= link_to '{{project.name}}', "project/{{project.id}}"%></td>
+	<td><%= link_to '{{project.name}}', "projects/{{project.id}}"%></td>
 	<td>{{project.all_leads}}</td>
 	<td>{{project.status}}</td>
 </tr>

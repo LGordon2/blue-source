@@ -8,11 +8,11 @@
 	<th><%= link_to "Location", "#", 'ng-click' => "predicate='location'; reverse=!reverse; search()"%></th>
 </tr>
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
-	<td><%= link_to '{{employee.first_name}}', "employee/{{employee.id}}"%></td>
-	<td><%= link_to '{{employee.last_name}}', "employee/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.first_name}}', "employees/{{employee.id}}"%></td>
+	<td><%= link_to '{{employee.last_name}}', "employees/{{employee.id}}"%></td>
 	<td>{{employee.role}}</td>
-	<td><%= link_to '{{employee.manager_name}}', "employee/{{employee.manager_id}}"%></td>
-	<td ng-show="employee.project.name!='Not billable'"><%= link_to '{{employee.project.name}}', "project/{{employee.project_id}}"%></td>
+	<td><%= link_to '{{employee.manager_name}}', "employees/{{employee.manager_id}}"%></td>
+	<td ng-show="employee.project.name!='Not billable'"><%= link_to '{{employee.project.name}}', "projects/{{employee.project_id}}"%></td>
 	<td ng-hide="employee.project.name!='Not billable'">Not billable</td>
 	<td>{{employee.location}}</td>
 </tr>

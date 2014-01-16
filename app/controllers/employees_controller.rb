@@ -1,21 +1,21 @@
-class EmployeeController < ApplicationController
+class EmployeesController < ApplicationController
   before_action :require_manager_login, except: :view_vacation
-  before_action :set_user, only: [:index, :edit, :vacation, :update, :view_vacation]
+  before_action :set_user, only: [:show, :edit, :vacation, :update, :view_vacation]
   
   #Only manager of employee can edit vacation, employee info, or update info.
   before_action :check_manager_status, only: [:edit, :vacation, :update]
   
   #Manager of employee or employee can view themselves.
-  before_action :check_employee_is_current_user_or_manager, only: [:index, :view_vacation, :update]
+  before_action :check_employee_is_current_user_or_manager, only: [:show, :view_vacation, :update]
   
   #Validate date parameters.
-  before_action :validate_start_date, only: [:new, :update]
-  before_action :validate_roll_on_date, only: [:new, :update]
-  before_action :validate_roll_off_date, only: [:new, :update]
+  before_action :validate_start_date, only: [:create, :update]
+  before_action :validate_roll_on_date, only: [:create, :update]
+  before_action :validate_roll_off_date, only: [:create, :update]
   
   layout :set_layout
   
-  def index
+  def show
     if request.referer == root_url+"employee/vacation/#{@employee.id}"
       @prev_page = 3
     end
@@ -30,7 +30,7 @@ class EmployeeController < ApplicationController
   def edit
   end
   
-  def new
+  def create
     @employee = Employee.new(employee_params)
     if @employee.save
       redirect_to :root, flash: {notice: "Employee added successfully."}
@@ -39,7 +39,9 @@ class EmployeeController < ApplicationController
     end 
   end
   
-  def all
+  def index
+    @modal_title = "Add Consultant"
+    @resource_for_angular = "employee"
     respond_to do |format|
       format.json {render json: current_user.all_subordinates.to_json({
         include: [
@@ -47,6 +49,7 @@ class EmployeeController < ApplicationController
           {:project => {:only => :name}}], 
         only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
       })}
+      format.html
     end
   end
   
@@ -82,9 +85,9 @@ class EmployeeController < ApplicationController
   
   def set_layout
     case action_name
-    when "index"
+    when "show"
       "view_resource"
-    when "all"
+    when "index"
       "resource"
     end
   end

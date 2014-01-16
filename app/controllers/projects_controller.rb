@@ -1,6 +1,6 @@
-class ProjectController < ApplicationController
+class ProjectsController < ApplicationController
   before_action :require_manager_login
-  before_action :set_project, only: [:index, :edit, :update, :all_leads]
+  before_action :set_project, only: [:show, :edit, :update, :all_leads]
   
   before_action :validate_start_date, only: [:new, :update]
   before_action :validate_end_date, only: [:new, :update]
@@ -8,7 +8,7 @@ class ProjectController < ApplicationController
   
   layout :set_layout
   
-  def all
+  def index
     @modal_title = "Add Project"
     @resource_for_angular = "project"
     respond_to do |format|
@@ -16,7 +16,7 @@ class ProjectController < ApplicationController
         include: [
           {:leads => {:only => [:id, :first_name,:last_name]}}
         ], only: [:id, :name, :status]})}
-      format.html {render action: :all}
+      format.html {render action: :index}
     end
   end
   
@@ -39,7 +39,7 @@ class ProjectController < ApplicationController
     @project = Project.new
   end
   
-  def new
+  def create
     @project = Project.new(project_params)
     if @project.save
       redirect_to :back, flash: {notice: "Project saved successfully."}
@@ -57,9 +57,9 @@ class ProjectController < ApplicationController
   
   def set_layout
     case action_name
-    when "index"
+    when "show"
       "view_resource"
-    when "all"
+    when "index"
       "resource"
     end
   end

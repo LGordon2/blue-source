@@ -1,5 +1,5 @@
 ManagerPortal::Application.routes.draw do
- 
+  
   get "directory/index"
   #Vacation
   delete "/vacation/:id", to: "vacation#destroy", as: :vacation
@@ -7,21 +7,14 @@ ManagerPortal::Application.routes.draw do
   patch "/vacation/:id", to: "vacation#update"
  
   #Employees stuff
-  get "employee/vacation/:id", to: "employee#vacation", as: :employee_vacation
-  get "employee/vacation/:id/view", to: "employee#view_vacation", as: :view_vacation
-  get "employees", to: "employee#all"
-  get "employee/edit/:id", to: "employee#edit"
-  get "employee/:id", to: "employee#index", as: :employee
-  patch "employee/:id", to: "employee#update"
-  post "employee/new", to: "employee#new"
+  get "employees/vacation/:id", to: "employees#vacation", as: :employee_vacation
+  get "employees/vacation/:id/view", to: "employees#view_vacation", as: :view_vacation
+  resources :employees, only: [:index,:show,:create,:update,:edit]
   
   #Projects
-  get "projects", to: "project#all"
-  post "projects", to: "project#new"
-  get "project/add"
-  get "project/:id", to: "project#index", as: :project
-  get "project/:id/leads", to: "project#all_leads", as: :leads
-  patch "project/:id", to: "project#update"
+  get "projects/:id/leads", to: "projects#all_leads", as: :leads
+  resources :projects, only: [:index,:show,:create,:update,:edit]
+  
   
   #Welcome (login)
   get "sorry", to: 'welcome#sorry', as: :sorry
@@ -38,7 +31,7 @@ ManagerPortal::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
+  root 'employees#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
