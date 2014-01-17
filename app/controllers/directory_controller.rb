@@ -6,7 +6,7 @@ class DirectoryController < ApplicationController
       format.json {render json: Employee.all.to_json({
         include: [
           {manager: {only: [:first_name, :last_name, :email]}}
-        ], only: [:id, :first_name, :last_name, :office_phone, :cell_phone, :status, :department, :manager_id, :email]
+        ], only: [:id, :first_name, :last_name, :office_phone, :cell_phone, :status, :department, :manager_id, :email, :im_name, :im_client]
       })}
     end
   end
