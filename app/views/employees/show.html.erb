@@ -19,6 +19,10 @@
 <% content_for 'panel_body_1' do %>
 <table class="table">
 	<tr>
+		<td class="logo-row"><%= image_tag 'logo.png', class: "image image-responsive", width: "65px"%> username:</td>
+		<td><%= @employee.username unless @employee.username.blank? %></td>
+	</tr>
+	<tr>
 		<td>Role:</td>
 		<td><%= @employee.role unless @employee.role.blank? %></td>
 	</tr>

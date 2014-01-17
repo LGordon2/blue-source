@@ -1,5 +1,11 @@
 <%= form_for @employee, url: employee_path(@employee), html: {class: "form-horizontal", role: "form"} do |f| %>
 <div class="form-group">
+	<%= f.label :username, nil, class: "control-label" do %>
+	<%= image_tag 'logo.png', class: "image image-responsive", width: "65px"%> username
+	<% end %>
+	<%= f.text_field :username, value: "#{@employee.username unless @employee.username.blank?}", class: "form-control" %>
+</div>
+<div class="form-group">
 	<%= f.label :first_name, nil, class: "control-label" %>
 	<%= f.text_field :first_name, value: "#{@employee.first_name.capitalize unless @employee.first_name.blank?}", class: "form-control" %>
 </div>

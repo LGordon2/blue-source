@@ -4,10 +4,11 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_or_create_by(employee_params)
+    @employee = Employee.find_by(employee_params)
     
-    unless @employee.validate_against_ad(params[:employee][:password])
-      redirect_to :login, flash: {error: @employee.errors.full_messages+["Invalid username or password."]}
+    unless !@employee.blank? and @employee.validate_against_ad(params[:employee][:password])
+      additional_errors = @employee.blank? ? [] : @employee.errors.full_messages
+      redirect_to :login, flash: {error: additional_errors+["Invalid username or password."]}
       return
     end
     

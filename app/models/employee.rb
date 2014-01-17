@@ -277,7 +277,6 @@ class Employee < ActiveRecord::Base
     self.status = Employee.statuses.first if self.status.blank?
     self.role = Employee.roles.first if self.role.blank?
     self.email = get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}@orasi.com") if self.email.blank? and !self.first_name.blank? and !self.last_name.blank?
-    self.username,_ = self.email.split("@") unless self.email.blank?
     self.team_lead = nil if self.project.blank?
   end
   
