@@ -13,7 +13,11 @@ employee_list_ctrl = ($scope, $http, $filter) ->
         value.last_name = (value.last_name.split(' ').map (name) -> (name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-").join " "
         value.display_name = "#{value.first_name} #{value.last_name}"
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
+        if typeof value.im_client == 'string'
+          value.im_client_full = value.im_client
+          value.im_client = value.im_client.toLowerCase().split(' ')[0]
       $scope.employees = data
+      
     else
       $scope.employees = []
     $scope.search()
@@ -26,6 +30,9 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   $scope.filter_on_id = true
   $scope.test = (expected, actual) ->
     return unless actual == '' then parseInt(actual) == parseInt(expected) else true
+    
+  $scope.here = (obj) ->
+    console.log(obj)
 
   searchMatch = (haystack, needle) ->
     return false unless haystack
