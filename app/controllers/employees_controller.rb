@@ -43,12 +43,26 @@ class EmployeesController < ApplicationController
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
     respond_to do |format|
-      format.json {render json: current_user.all_subordinates.to_json({
+      format.json {all_employees = current_user.all_subordinates.as_json({
         include: [
-          {:manager => {:only => [:first_name,:last_name]}}, 
+          {:manager => {:only => [:id,:first_name,:last_name]}}, 
           {:project => {:only => :name}}], 
         only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
-      })}
+      }).map do |e| 
+           e = e.merge("first_name"=>e['first_name'].capitalize,
+                       "last_name"=>e['last_name'].capitalize)
+           e = e.merge("project"=>{"name"=>"Not billable"}) if e['project'].blank?
+           unless e['manager'].nil?
+             e.merge("manager"=>e['manager'].merge({
+               "first_name"=>e['manager']['first_name'].capitalize,
+               "last_name"=>e['manager']['last_name'].capitalize
+             })) 
+           else 
+             e 
+           end 
+        end
+        render json: all_employees.to_json
+      }
       format.html
     end
   end

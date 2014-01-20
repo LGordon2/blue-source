@@ -127,12 +127,9 @@ calc_business_days = (_start_date, _end_date, half_day_set) ->
 employee_list_ctrl = ($scope, $http, $filter) ->
   $http.get('employees.json').success (data) ->
     if (angular.isObject(data))
-      data.forEach (value, key) ->
-        value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
-        value.last_name = (value.last_name.split(' ').map (name) -> (name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-").join " "
+      data.forEach (value,key) ->
         value.display_name = "#{value.first_name} #{value.last_name}"
-        value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
-        value.project = {"name": "Not billable"} if typeof value.project == 'undefined'
+        value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
       $scope.employees = data
     else
       $scope.employees = []
@@ -159,7 +156,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       searchMatch(employee.display_name, $scope.query) ||
       searchMatch(employee.role, $scope.query) || 
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
-      searchMatch(employee.manager.last_name, $scope.query))) || 
+      searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
       (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
       searchMatch(employee.location, $scope.query))
     manager_id = $scope.manager_id
