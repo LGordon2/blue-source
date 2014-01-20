@@ -1,5 +1,4 @@
 <% content_for :table do %>
-<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <tr ng-init="role='<%=current_user.role%>';filteredDepartment=''">
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
@@ -9,9 +8,6 @@
 	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "IM Name", "#", 'ng-click' => "predicate='im_name'; reverse=!reverse; search()"%></th>
 </tr>
-  <script type="text/javascript">
-    show_skype = function () {}
-  </script>
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
 	<td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>
 	<td><a href="mailto:{{employee.email}}">{{employee.last_name}}</a></td>
@@ -21,7 +17,7 @@
 	<td>{{employee.cell_phone}}</td>
 	<td>{{employee.im_name}} 
 		<span ng-show='employee.im_client'>
-			<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client_full}}" src="/assets/<%= asset_path "{{employee.im_client}}.png" %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="{{employee.im_client_url}}" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
 		</span>
 	</td>
 </tr>

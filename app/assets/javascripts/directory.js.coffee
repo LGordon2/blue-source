@@ -14,7 +14,6 @@ employee_list_ctrl = ($scope, $http, $filter) ->
         value.display_name = "#{value.first_name} #{value.last_name}"
         value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
         if typeof value.im_client == 'string'
-          value.im_client_full = value.im_client
           value.im_client = value.im_client.toLowerCase().split(' ')[0]
       $scope.employees = data
       
