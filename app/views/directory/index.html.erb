@@ -1,4 +1,9 @@
 <% content_for :table do %>
+
+<% skype_pic = asset_path "skype.png" %>
+<% google_pic = asset_path "google talk.png" %>
+<% windows_pic = asset_path "windows messenger.png" %>
+
 <tr ng-init="role='<%=current_user.role%>';filteredDepartment=''">
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
@@ -11,13 +16,21 @@
 <tr ng-repeat="employee in pagedEmployees[currentPage]">
 	<td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>
 	<td><a href="mailto:{{employee.email}}">{{employee.last_name}}</a></td>
-	<td><a href="mailto:{{employee.manager.email}}">{{employee.manager_name}}</a></td>
+	<td><a href="mailto:{{employee.manager.email}}">{{employee.manager.display_name}}</a></td>
 	<td ng-show='filteredDepartment==""'>{{employee.department}}</td>
 	<td>{{employee.office_phone}}</td>
 	<td>{{employee.cell_phone}}</td>
 	<td>{{employee.im_name}} 
 		<span ng-show='employee.im_client'>
-			<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="{{employee.im_client_url}}" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			<span ng-if="employee.im_client=='Skype'">
+				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= skype_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			</span>
+			<span ng-if="employee.im_client=='Google Talk'">
+				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= google_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			</span>
+			<span ng-if="employee.im_client=='Windows Messenger'">
+				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= windows_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			</span>
 		</span>
 	</td>
 </tr>

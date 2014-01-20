@@ -4,11 +4,25 @@ class DirectoryController < ApplicationController
   
   def employees
     respond_to do |format|
-      format.json {render json: Employee.all.as_json({
-        include: [
-          {manager: {only: [:first_name, :last_name, :email]}}
-        ], only: [:id, :first_name, :last_name, :office_phone, :cell_phone, :status, :department, :manager_id, :email, :im_name, :im_client]
-      }).map {|e| e.merge("im_client_url"=>"/assets"+asset_path("#{e['im_client'].downcase unless e['im_client'].blank?}.png"))}.to_json}
+      format.json {
+        all_employees = Employee.all.as_json({
+            include: [
+            {manager: {only: [:id, :first_name, :last_name, :email]}}
+          ], only: [:id, :first_name, :last_name, :office_phone, :cell_phone, :status, :department, :manager_id, :email, :im_name, :im_client]
+        }).map do |e| 
+           e = e.merge("first_name"=>e['first_name'].capitalize,
+                              "last_name"=>e['last_name'].capitalize)
+           unless e['manager'].nil? 
+             e.merge("manager"=>e['manager'].merge({
+               "first_name"=>e['manager']['first_name'].capitalize,
+               "last_name"=>e['manager']['last_name'].capitalize
+             })) 
+           else
+             e
+           end 
+        end
+        render json: all_employees.to_json
+      }
     end
   end
   
