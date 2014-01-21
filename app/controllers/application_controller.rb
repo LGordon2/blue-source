@@ -34,4 +34,10 @@ class ApplicationController < ActionController::Base
       redirect_to view_vacation_path(current_user)
     end
   end
+  
+  def require_login
+    if current_user.nil?
+      redirect_to :login
+    end
+  end
 end

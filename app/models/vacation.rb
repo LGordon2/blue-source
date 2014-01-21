@@ -15,7 +15,7 @@ class Vacation < ActiveRecord::Base
   validate :end_date_cannot_be_before_start_date
   validate :manager_is_above_employee
   validate :vacation_not_already_included
-  validate :pdo_days_taken #also calculates business days taken
+  #validate :pdo_days_taken #also calculates business days taken
   validate :reason_present_if_other
   
   def self.types

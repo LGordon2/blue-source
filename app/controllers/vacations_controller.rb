@@ -1,11 +1,20 @@
-class VacationController < ApplicationController
+class VacationsController < ApplicationController
   before_action :require_manager_login
   
   before_action :set_vacation, only: [:destroy, :update]
   before_action :set_employee
   before_action :validate_user_is_above_employee
   
-  def new
+  def index
+    @fyear = params['fy'].blank? ? Vacation.calculate_fiscal_year : params['fy'].to_i
+    @fy_options = (Date.current.year-5..Date.current.year+1).collect {|date| ["FY#{date}",date]}.reverse
+    respond_to do |format|
+      format.json {render json: @employee.vacations}
+      format.html
+    end
+  end
+  
+  def create
     @vacation = Vacation.new(vacation_params)
     respond_to do |format|
       if @vacation.save
@@ -50,7 +59,7 @@ class VacationController < ApplicationController
   end
   
   def set_employee
-    @employee = if params[:vacation] and params[:vacation][:employee_id] then Employee.find(params[:vacation][:employee_id]) else @vacation.employee end
+    @employee = Employee.find(params[:employee_id])#if params[:vacation] and params[:vacation][:employee_id] then Employee.find(params[:vacation][:employee_id]) else @vacation.employee end
   end
   
   def vacation_params

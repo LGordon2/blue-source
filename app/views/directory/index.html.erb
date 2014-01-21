@@ -3,6 +3,8 @@
 <% skype_pic = asset_path "skype.png" %>
 <% google_pic = asset_path "google talk.png" %>
 <% windows_pic = asset_path "windows messenger.png" %>
+<% aim_pic = asset_path "aim.png" %>
+<% irc_pic = asset_path "irc.png" %>
 
 <tr ng-init="role='<%=current_user.role%>';filteredDepartment=''">
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
@@ -30,6 +32,12 @@
 			</span>
 			<span ng-if="employee.im_client=='Windows Messenger'">
 				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= windows_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			</span>
+			<span ng-if="employee.im_client=='AIM'">
+				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= aim_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
+			</span>
+			<span ng-if="employee.im_client=='IRC'">
+				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= irc_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
 			</span>
 		</span>
 	</td>

@@ -67,13 +67,6 @@ class EmployeesController < ApplicationController
     end
   end
   
-  def vacation
-    respond_to do |format|
-      format.json {render json: @employee.vacations}
-      format.html
-    end
-  end
-  
   def update
     if @employee.update(employee_params)
       redirect_to @employee, flash: {notice: "Employee successfully updated.", project: !employee_params[:project_id].nil?}

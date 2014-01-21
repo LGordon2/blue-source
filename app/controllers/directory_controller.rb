@@ -2,6 +2,8 @@ class DirectoryController < ApplicationController
   layout "resource"
   include ActionView::Helpers::AssetUrlHelper #Just for assets path
   
+  before_action :require_login
+  
   def employees
     respond_to do |format|
       format.json {

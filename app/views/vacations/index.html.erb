@@ -1,9 +1,14 @@
 <div>
+	<%= form_tag employee_vacations_path(@employee), method: :get do %>
 	<h1>Time Off Details for <%= @employee.display_name %></h1>
+	<%=select_tag "fy", options_for_select(@fy_options,@fyear), onchange: "submit();" %>
+	<% end %>
 	<div class="vacation-summary-table">
-		<span><%= "#{@employee.sick_days_taken.prettify}/#{@employee.max_sick_days}" %> Sick Days</span>
-		<span><%= "#{@employee.vacation_days_taken.prettify}/#{@employee.max_vacation_days}" %> Vacation Days</span>
-		<span><%= "#{@employee.floating_holidays_taken.prettify}/#{@employee.max_floating_holidays}" %> Floating Holidays</span>
+		<span>Estimated Time off for <%= "FY#{@fyear}"%>:</span>
+		<% ["Sick","Vacation","Floating Holiday"].each do |vacation_type| %>
+			<span data-toggle="tooltip" data-placement="top" title="<%= "#{pluralize(@employee.max_days(vacation_type) - @employee.pdo_taken(Date.new(@fyear),vacation_type).prettify,'day')} left."%> "><%= "#{@employee.pdo_taken(Date.new(@fyear),vacation_type).prettify}/#{@employee.max_days(vacation_type,Date.new(@fyear))}" %> <%= vacation_type + if vacation_type=='Floating Holiday' then "s" else " Days" end %></span>
+		<% end %>
+		<%= link_to "Details", "#", data: {toggle: "modal", target: "#modal_1"} %>
 		<% if current_user.is_upper_management? %>
 		<div class="pull-right">
 			<%= form_for @employee, html: {class: "form-inline", role: "form"} do |f| %>
@@ -23,11 +28,11 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
-			<th><%= link_to 'Date Requested',employee_vacation_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
-			<th><%= link_to 'Start Date',employee_vacation_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
-			<th><%= link_to 'End Date',employee_vacation_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
-			<th><%= link_to 'Total Business Days',employee_vacation_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
-			<th><%= link_to 'Type',employee_vacation_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Date Requested',employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Start Date',employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'End Date',employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Total Business Days',employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Type',employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
 			<th>Half Day</th>
 			<% if @employee.vacations.count > 0 %>
 			<th>Edit</th>
@@ -35,8 +40,8 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 			<% end %>
 		</tr>
 		<div id="all_vacations">
-			<% @employee.vacations.order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
-			<%= form_for vacation do |f| %>
+			<% @employee.vacations.where("start_date >= ? and start_date < ?",Vacation.fiscal_new_year_date(Date.new(@fyear-1)),Vacation.fiscal_new_year_date(Date.new(@fyear))).order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}").each do |vacation| %>
+			<%= form_for vacation, url: employee_vacation_path(@employee, vacation) do |f| %>
 			<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 				<%= f.hidden_field :business_days, id: "hidden_business_days-#{vacation.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
 				<%= f.hidden_field :reason %>
@@ -47,12 +52,12 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 				<td class="edit-field"><span data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>"><%= vacation.vacation_type%></span><%= f.select :vacation_type, Vacation.types, {}, data: {title: "Reason", content: "<input onkeyup=\"window.setEvent();\" value='#{html_escape(vacation.reason)}'>", placement: 'top', html: true, animation: false}, class:"vacation-type hidden" %></td>
 				<td class="check-field"><%= f.check_box :half_day, {class: "hidden"}, "true", "false"  %></td>
 				<td><%= link_to "#", id: vacation.id, class: "edit-btn" do %><%= f.submit "Update Time Off", class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
-				<td><%= link_to vacation, method: :delete do %> <span class="glyphicon glyphicon-trash"></span> <% end %> </td>
+				<td><%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete do %> <span class="glyphicon glyphicon-trash"></span> <% end %> </td>
 			</tr>
 			<%end%>
 			<% end %>
 		</div>
-		<%= form_for :vacation, url: {controller: "vacation", action: "new"} do |f| %>
+		<%= form_for :vacation, url: employee_vacations_path(@employee) do |f| %>
 		<tr id="vacation-new" class="vacation-row">
 			<%= f.hidden_field :business_days, id: "hidden_business_days-new", value: "{{calc_business_days(start_date, end_date)}}" %>
 			<%= f.hidden_field :manager_id, value: "#{current_user.id}" %>
@@ -70,3 +75,46 @@ If you simply want to give a person compensation, bereavement, paternity or mate
 	<%= f.submit "Save Time Off", class: "btn btn-primary" %>
 	<% end %>
 </div>
+<% content_for "modal_header_1" do %>
+	Time off details for <%= "FY#{@fyear}"%>
+<% end %>
+<% content_for "modal_content_1" do %>
+	<table class="table table-bordered table-hover table-responsive">
+		<tr>
+			<td>Estimated vacation days that will accrue for current fiscal year</td>
+			<td><%= @employee.max_vacation_days(Date.new(@fyear)) %></td>
+		</tr>
+		<tr>
+			<td>Vacation days taken</td>
+			<td><%= @employee.vacation_days_taken(Date.new(@fyear),false).prettify %></td>
+		</tr>
+		<tr>
+			<td>Vacation days accrued to date</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Vacation surplus or deficit</td>
+			<td><%= @employee.vacation_days_taken(Date.new(@fyear)).prettify - @employee.vacation_days_taken(Date.new(@fyear),false).prettify %></td>
+		</tr>
+		<tr>
+			<td>Total Floating holidays given</td>
+			<td><%= @employee.max_floating_holidays %></td>
+		</tr>
+		<tr>
+			<td>Total Floating holidays taken</td>
+			<td><%= @employee.floating_holidays_taken(Date.new(@fyear),false).prettify %></td>
+		</tr>
+		<tr>
+			<td>Total sick days allowed</td>
+			<td><%= @employee.max_sick_days %></td>
+		</tr>
+		<tr>
+			<td>Total sick days taken</td>
+			<td><%= @employee.sick_days_taken(Date.new(@fyear),false).prettify %></td>
+		</tr>
+	</table>
+	<div class="form-group modal-footer">
+		<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>
+	</div>
+<% end %>
+<%= render "modals/modal_group"%>
