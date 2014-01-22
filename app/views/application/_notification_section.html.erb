@@ -5,7 +5,7 @@
 	</button>
 	<% [flash[:notice],flash[:error]].each do |flash_msg| %>
 		<% if flash_msg.kind_of?(Array) %>
-			<%= "The following [#{flash_msg.count}] errors occured:" %>
+			<%= "The following #{'['+flash_msg.count.to_s+']' if flash_msg.count > 1} #{'error'.pluralize(flash_msg.count)} occured:" %>
 		    <ul>
 			<% flash_msg.each do |msg| %>
 			<li>

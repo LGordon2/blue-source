@@ -8,7 +8,11 @@ ManagerPortal::Application.routes.draw do
  
   #Employees stuff
   resources :employees do
-    resources :vacations, only: [:index,:create,:update,:destroy]
+    resources :vacations, only: [:index,:create,:update,:destroy] do
+      collection do
+        get 'view'
+      end
+    end
   end
   #get "employees/vacation/:id", to: "employees#vacation", as: :employee_vacation
   #get "employees/vacation/:id/view", to: "employees#view_vacation", as: :view_vacation

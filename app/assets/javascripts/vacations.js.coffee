@@ -1,12 +1,16 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
-window.setEvent = ->
-  $(".popover input").each (index) ->
-    $(this).parentsUntil("tr").last().parent().find("#vacation_reason").val($(this).val())
-
-$(document).ready ->
+$ ->
+  $("[data-method],[data-form-action]").click ->
+    $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
+    $('#vacation_form').attr('action',$(this).data("form-action")) if $(this).data("form-action")
+    console.log($(this).data("method"))
+    if $(this).data("method")
+      vacation_id = if $(this).data("vacation-id") then $(this).data("vacation-id") else "new"
+      for field in ["date_requested","start_date","end_date","business_days","vacation_type","half_day","reason"]
+        $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").val())
+        $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").prop('checked')) if field == "half_day"
   $("div.vacation-summary-table span").tooltip()
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
@@ -14,11 +18,13 @@ $(document).ready ->
       $(this).children().toggleClass("hidden")
   $(".vacation-row").each (index) ->
     set_business_days($(this))
-  $(".date-field,input#vacation_half_day[type=checkbox]").on "change", ->
+  $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this).parents(".vacation-row"))
   $("#start_date-new").on "change", ->
     $("#end_date-new").val($(this).val())
     set_business_days($(this).parents(".vacation-row"))
+    
+  #Other...
   $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
     $(this).popover('show') if $(this).siblings(".popover").length == 0
     $(this).siblings(".popover").show()

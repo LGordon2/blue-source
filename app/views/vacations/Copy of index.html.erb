@@ -1,0 +1,62 @@
+<div>
+	<h1>Time Off Details for <%= @employee.display_name %></h1>
+	<%= render "vacation_summary"%>
+
+	<%= render "notification_section" %>
+
+	<table class="table table-responsive table-bordered table-hover table-condensed">
+		<tr>
+			<th><%= link_to 'Date Requested',employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Start Date',employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'End Date',employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Total Business Days',employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
+			<th><%= link_to 'Type',employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
+			<th>Half Day</th>
+			<% if @fy_vacations.count > 0 %>
+			<th>Edit</th>
+			<th>Delete</th>
+			<% end %>
+		</tr>
+		<div id="all_vacations">
+			<% @fy_vacations.each do |vacation| %>
+			<%= form_for vacation, url: employee_vacation_path(@employee, vacation) do |f| %>
+			<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %>">
+				<%= f.hidden_field :business_days, id: "hidden_business_days-#{vacation.id}", value: "{{calc_business_days(start_date, end_date)}}" %>
+				<%= f.hidden_field :reason %>
+				<td class="edit-field"><span><%= vacation.date_requested%></span><%= f.date_field :date_requested, class: "hidden" %></td>
+				<td class="edit-field"><span><%= vacation.start_date %></span><%= f.date_field :start_date, id: "start_date-#{vacation.id}", class:"hidden date-field" %></td>
+				<td class="edit-field"><span><%= vacation.end_date %></span><%= f.date_field :end_date, id: "end_date-#{vacation.id}", class:"hidden date-field" %></td>
+				<td id="<%= "business_days-#{vacation.id}" %>"><strong></strong></td>
+				<td class="edit-field"><span data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>"><%= vacation.vacation_type%></span><%= f.select :vacation_type, Vacation.types, {}, data: {title: "Reason", content: "<input onkeyup=\"window.setEvent();\" value='#{html_escape(vacation.reason)}'>", placement: 'top', html: true, animation: false}, class:"vacation-type hidden" %></td>
+				<td class="check-field"><%= f.check_box :half_day, {class: "hidden"}, "true", "false"  %></td>
+				<td><%= link_to "#", id: vacation.id, class: "edit-btn" do %><%= f.submit "Update Time Off", class: "hidden btn btn-xs btn-primary" %> <span class="glyphicon glyphicon-pencil"></span> <% end %> </td>
+				<td><%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete do %> <span class="glyphicon glyphicon-trash"></span> <% end %> </td>
+			</tr>
+			<%end%>
+			<% end %>
+		</div>
+		<%= form_for :vacation, url: employee_vacations_path(@employee) do |f| %>
+		<tr id="vacation-new" class="vacation-row">
+			<%= f.hidden_field :business_days, id: "hidden_business_days-new", value: "{{calc_business_days(start_date, end_date)}}" %>
+			<%= f.hidden_field :manager_id, value: "#{current_user.id}" %>
+			<%= f.hidden_field :employee_id, value: "#{@employee.id}" %>
+			<%= f.hidden_field :reason %>
+			<td><%= f.text_field :date_requested, value: Time.now.strftime("%F"), type: "date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td><%= f.date_field :start_date, id:"start_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td><%= f.date_field :end_date, id:"end_date-new", class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", required: true %></td>
+			<td id="business_days-new"><strong></strong></td>
+			<td><%= f.select :vacation_type, Vacation.types, {}, data: {title: "Reason", content: "<input onkeyup=\"window.setEvent();\">", placement: 'bottom', html: true, animation: false}, id: "vacation_type-new", class: "vacation-type" %></td>
+			<td><%= f.check_box :half_day %></td>
+		</tr>
+	</table>
+	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" %>
+	<%= f.submit "Save Time Off", class: "btn btn-primary" %>
+	<% end %>
+</div>
+<% content_for "modal_header_1" do %>
+	Time off details for <%= "FY#{@fyear}"%>
+<% end %>
+<% content_for "modal_content_1" do %>
+	<%= render "details" %>
+<% end %>
+<%= render "modals/modal_group"%>

@@ -1,0 +1,10 @@
+<div class="vacation-summary-table well">
+	<%= form_tag({controller: controller_name, action: action_name}, method: :get, style: "padding-bottom:10px", class: "pull-right") do %>
+		<%=select_tag "fy", options_for_select(@fy_options,@fyear), onchange: "submit();" %>
+	<% end %>
+	<span>Estimated Time off for <%= "Fiscal Year #{@fyear}"%>:</span>
+	<% ["Sick","Vacation","Floating Holiday"].each do |vacation_type| %>
+		<span data-toggle="tooltip" data-placement="bottom" title="<%= "#{pluralize(@employee.max_days(vacation_type,Date.new(@fyear)) - @employee.pdo_taken(Date.new(@fyear),vacation_type).prettify,'day')} left."%> "><%= "#{@employee.pdo_taken(Date.new(@fyear),vacation_type).prettify}/#{@employee.max_days(vacation_type,Date.new(@fyear))}" %> <%= vacation_type + if vacation_type=='Floating Holiday' then "s" else " Days" end %></span>
+	<% end %>
+	<%= link_to "Details", "#", data: {toggle: "modal", target: "#modal_1"} %>
+</div>
