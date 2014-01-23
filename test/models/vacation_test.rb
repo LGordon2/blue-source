@@ -67,11 +67,12 @@ class VacationTest < ActiveSupport::TestCase
     assert v3.save, "Vacation should have been saved"
     assert_equal 0.5, v2.business_days, "Business days calculation"
     assert_equal 10, e1.vacation_days_taken(v2.start_date), "Vacation days taken"
+    assert_equal (7*0.83+5*1.25).round, e1.max_vacation_days(v2.start_date)
     v4 = Vacation.create({start_date: "2013-12-17", end_date: "2013-12-17", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
-    assert_not v4.save, "Vacation should not have been saved"
     assert v1.destroy
     assert v2.destroy
     assert v3.destroy
+    assert v4.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date), "Reset"
     
     v1 = Vacation.create({start_date: "2013-12-05", end_date: "2013-12-19", vacation_type: "Vacation", employee: e1, manager: manager})
@@ -82,9 +83,8 @@ class VacationTest < ActiveSupport::TestCase
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
     v1 = Vacation.create({start_date: "2013-12-05", end_date: "2013-12-23", vacation_type: "Vacation", employee: e1, manager: manager})
-    assert_not v1.save, "Vacation should not have been saved"
+    assert v1.save, "Vacation should have been saved"
     assert_equal 13, v1.business_days
-    assert_equal 0, e1.vacation_days_taken(v1.start_date)
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
@@ -104,9 +104,8 @@ class VacationTest < ActiveSupport::TestCase
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
     v1 = Vacation.create({start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: e1, manager: manager})
-    assert_not v1.save, "Vacation should not have been saved"
+    assert v1.save, "Vacation should have been saved"
     assert_equal 26, v1.business_days
-    assert_equal 0, e1.vacation_days_taken(v1.start_date)
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
   end

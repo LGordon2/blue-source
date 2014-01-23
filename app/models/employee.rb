@@ -30,7 +30,7 @@ class Employee < ActiveRecord::Base
   end
   
   def accrued_vacation_days(on_date)
-    self.accrued_vacation_days_on_date(on_date,self.start_date)
+    accrued_vacation_days_on_date(on_date,self.start_date)
   end
   
   def validate_against_ad(password)
@@ -120,11 +120,30 @@ class Employee < ActiveRecord::Base
   end
   
   def vacation_days_taken(on_date=Date.current, id=nil)
-    surplus = 0
-    max_days_prev_year = max_vacation_days(on_date.previous_fiscal_new_year-1)
-    days_taken_prev_year = _pdo_taken(on_date.previous_fiscal_new_year-1, "Vacation", id)
-    surplus = days_taken_prev_year - max_days_prev_year if days_taken_prev_year > max_days_prev_year
-    _pdo_taken(on_date, "Vacation", id) + surplus
+    _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
+  end
+  
+  def surplus_vacation_taken(on_date=Date.current)
+    all_vacations = self.vacations.order(start_date: :asc)
+    return 0.0 if all_vacations.count == 0
+    year_range = (all_vacations.first.start_date.year..on_date.year)
+    
+    surplus_days = year_range.inject(0.0) do |surplus,year| 
+      days_taken = _pdo_taken(Date.new(year),"Vacation")
+      max_days = max_vacation_days(Date.new(year))
+      
+      #Add to build surplus of days
+      if days_taken and max_days and days_taken > max_days
+        surplus + days_taken - max_days
+      #If there is a surplus start widdling it down.
+      elsif surplus > 0.0
+        surplus + days_taken - max_days
+      #Otherwise, ignore it.
+      else
+        surplus + 0.0
+      end
+    end
+    surplus_days <= 0.0 ? 0.0 : surplus_days
   end
   
   def floating_holidays_taken(on_date=Date.current, id=nil)

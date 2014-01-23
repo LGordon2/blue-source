@@ -25,3 +25,10 @@
 <%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
 <div class="clearfix"></div>
 <%= link_to "Back", :back, style: "margin-top: 10px" unless current_user.role == "Consultant"%>
+<% content_for "modal_header_1" do %>
+	Time off details for <%= "FY#{@fyear}"%>
+<% end %>
+<% content_for "modal_content_1" do %>
+	<%= render "details" %>
+<% end %>
+<%= render "modals/modal_group"%>

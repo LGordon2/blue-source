@@ -14,8 +14,14 @@
 	</tr>
 	<% end %>
 	<tr>
-		<td>Vacation surplus or deficit</td>
-		<td><%= @employee.vacation_days_taken(Date.new(@fyear)).prettify - @employee.vacation_days_taken(Date.new(@fyear),false).prettify %></td>
+		<% vacation_surplus_or_deficit = @employee.vacation_days_taken(Date.new(@fyear)) - @employee.max_vacation_days(Date.new(@fyear))%>
+		<% if vacation_surplus_or_deficit > 0.0 %>
+		<td>Vacation deficit</td>
+		<td><%= vacation_surplus_or_deficit.abs.prettify %></td>
+		<% elsif vacation_surplus_or_deficit < 0.0 %>
+		<td>Vacation surplus</td>
+		<td><%= vacation_surplus_or_deficit.abs.prettify %></td>
+		<% end %>
 	</tr>
 	<tr>
 		<td>Total Floating holidays given</td>

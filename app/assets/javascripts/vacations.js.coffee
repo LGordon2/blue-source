@@ -86,11 +86,9 @@ calc_non_business_days = (start_date, end_date) ->
   days = 0
   temp_date = new Date(start_date)
   while temp_date.getTime() != end_date.getTime()
-    days += 1 if temp_date.isWeekend()
-    days += 1 if temp_date.isOrasiHoliday()
+    days += 1 if temp_date.isOrasiHoliday() or temp_date.isWeekend()
     temp_date.addDays(1)
-  days += 1 if temp_date.isWeekend()
-  days += 1 if temp_date.isOrasiHoliday()
+  days += 1 if temp_date.isOrasiHoliday() or temp_date.isWeekend()
   return days
 
 calc_business_days = (_start_date, _end_date, half_day_set) ->

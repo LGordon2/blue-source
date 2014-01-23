@@ -16,12 +16,19 @@ class Vacation < ActiveRecord::Base
   validate :manager_is_above_employee
   validate :vacation_not_already_included
   validate :reason_present_if_other
+  validate :vacation_not_added_before_start_date
   
   def self.types
     ["Sick","Vacation","Floating Holiday","Other"]
   end
   
   private
+  
+  def vacation_not_added_before_start_date
+    unless self.employee.start_date.blank? or (self.employee.start_date <= self.start_date)
+      errors.add(:start_date, "is before employee's start date.")
+    end
+  end
   
   def reason_present_if_other
     if self.reason.blank? and self.vacation_type == "Other"

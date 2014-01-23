@@ -37,7 +37,7 @@ class VacationsController < ApplicationController
   def destroy
     respond_to do |format|
       @vacation.destroy
-      format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
+      format.html{redirect_to employee_vacations_path(@employee), flash: {notice: "Vacation successfully deleted."}}
     end
   end
   
@@ -49,7 +49,8 @@ class VacationsController < ApplicationController
   
   def set_fiscal_year_and_vacations
     @fyear = params['fy'].blank? ? Vacation.calculate_fiscal_year : params['fy'].to_i
-    @fy_options = (Date.current.year-5..Date.current.year+1).collect {|date| ["Fiscal Year #{date}",date]}.reverse
+    starting_year = @employee.start_date.blank? ? Date.current.year : @employee.start_date.fiscal_new_year.year
+    @fy_options = (starting_year..Date.current.year+1).collect {|date| ["Fiscal Year #{date}",date]}.reverse
     @fy_vacations = @employee.vacations
       .where("start_date >= ? and start_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)
       .order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}")
@@ -57,7 +58,7 @@ class VacationsController < ApplicationController
   
   def validate_user_is_above_employee
     unless current_user.admin? or current_user.above? @employee
-      redirect_to :back, flash: {error: "You have insufficient privileges to edit vacations for this employee."}
+      redirect_to :root, flash: {error: "You have insufficient privileges to edit vacations for this employee."}
     end
   end  
     

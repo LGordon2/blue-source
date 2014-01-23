@@ -34,9 +34,13 @@ module EmployeeHelper
       if anniversary_date >= date.previous_fiscal_new_year
         months = date.distance_in_months(anniversary_date)
       end
+      
+      
 
       #Calculate the years the employee has been with Orasi
       years_with_orasi = date.distance_in_years(anniversary_date)
+      
+      years_with_orasi = 1 if years_with_orasi <= 0
       
       #Calculate anniversary date for this year.
       anniversary_date = anniversary_date.change(day:1,year: date.current_fiscal_year - (anniversary_date.month >= 5 ? 1 : 0))
