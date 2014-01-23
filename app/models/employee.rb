@@ -1,5 +1,7 @@
 require 'net/ldap'
 class Employee < ActiveRecord::Base
+  include EmployeeHelper
+  
   has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
   has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations
@@ -18,7 +20,6 @@ class Employee < ActiveRecord::Base
   validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
-  validate :pto_day_limit
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
   
@@ -28,28 +29,8 @@ class Employee < ActiveRecord::Base
     end 
   end
   
-  def pto_day_limit
-    #Calculates the correct anniversary date for this fiscal year.
-    return if self.start_date.blank?
-    anniversary_date = self.start_date
-    anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
-    correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year else Vacation.calculate_fiscal_year-1 end
-    anniversary_date = Date.new(correct_year_for_fiscal_year, anniversary_date.month, anniversary_date.day)
-    
-    last_fiscal_new_year=Date.new(Vacation.calculate_fiscal_year-1,5,1)
-    
-    #Calculate days already taken from start of fiscal year to anniversary - 1
-    days_taken_from_start_to_anniv = self.pdo_taken_in_range(last_fiscal_new_year,anniversary_date-1,"Vacation")
-    
-    #Calculate days taken from anniversary to end of fiscal year
-    days_taken_from_anniv_to_end = self.pdo_taken_in_range(anniversary_date,Vacation.fiscal_new_year_date-1,"Vacation")
-    
-    vacation_days_are_correct = days_taken_from_start_to_anniv <= self.max_days("Vacation", last_fiscal_new_year) &&
-    days_taken_from_start_to_anniv + days_taken_from_anniv_to_end <= self.max_days("Vacation", anniversary_date)
-
-    unless vacation_days_are_correct and sick_days_taken <= max_sick_days and floating_holidays_taken <= max_floating_holidays
-      errors.add(:time_off, 'saved for this fiscal year is preventing this employee from being saved.')
-    end
+  def accrued_vacation_days(on_date)
+    accrued_vacation_days_on_date(on_date,self.start_date)
   end
   
   def validate_against_ad(password)
@@ -126,37 +107,7 @@ class Employee < ActiveRecord::Base
   end
   
   def max_vacation_days(on_date = Date.current)
-    adjusted_days = self.additional_days.blank? ? 0 : self.additional_days
-    return 10 + adjusted_days if self.start_date.blank?
-    anniversary_date = self.start_date
-    anniversary_date = Date.new(self.start_date.year,2,28) if self.start_date.leap? and self.start_date.month == 2 and self.start_date.day==29
-    #Correct year to put in for fiscal year.
-    correct_year_for_fiscal_year = if anniversary_date >= Date.new(anniversary_date.year,1,1) and anniversary_date < Date.new(anniversary_date.year,5,1) then Vacation.calculate_fiscal_year(on_date) else Vacation.calculate_fiscal_year(on_date)-1 end
-    #m is days from anniversary date (day of year hired) to fiscal new year year (May 1st)
-    m = (Vacation.fiscal_new_year_date(on_date) - Date.new(correct_year_for_fiscal_year,anniversary_date.month,anniversary_date.day)).to_i
-    #p is days from fiscal new year year to anniversary date+
-    p = (Date.new(correct_year_for_fiscal_year+1,anniversary_date.month,anniversary_date.day) - Vacation.fiscal_new_year_date(on_date)).to_i
-    #n is days of vacation given before upcoming anniversary. 0-3 years = 10 | 3-6 years = 15 | 6+ years = 20
-    
-    years_with_orasi_on_anniversary = correct_year_for_fiscal_year - anniversary_date.year
-    if years_with_orasi_on_anniversary < 0
-      return 10 + adjusted_days
-    end
-    n = case (years_with_orasi_on_anniversary)
-    when 0 then 0
-    when 1..3 then 10
-    when 4..6 then 15
-    else 20
-    end
-    #d is days of vacation given after upcoming anniversary. 0-3 years = 10 | 3-6 years = 15 | 6+ years = 20
-    d = case (years_with_orasi_on_anniversary)
-    when 0 then 10
-    when 1..2 then 10
-    when 3..5 then 15
-    else 20
-    end
-    
-    if on_date >= Date.new(correct_year_for_fiscal_year,anniversary_date.month,anniversary_date.day) then ((p/365.0)*n+(m/365.0)*d).round + adjusted_days else n + adjusted_days end
+    return self.accrued_vacation_days(on_date.fiscal_new_year-1).round
   end
   
   def max_floating_holidays
@@ -165,15 +116,38 @@ class Employee < ActiveRecord::Base
   
   #days taken minus the time taken in the vacation with id = id.
   def sick_days_taken(on_date=Date.current, id=nil)
-    pdo_taken(on_date, "Sick", id)
+    _pdo_taken(on_date, "Sick", id)
   end
   
   def vacation_days_taken(on_date=Date.current, id=nil)
-    pdo_taken(on_date, "Vacation", id)
+    _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
+  end
+  
+  def surplus_vacation_taken(on_date=Date.current)
+    all_vacations = self.vacations.order(start_date: :asc)
+    return 0.0 if all_vacations.count == 0
+    year_range = (all_vacations.first.start_date.year..on_date.year)
+    
+    surplus_days = year_range.inject(0.0) do |surplus,year| 
+      days_taken = _pdo_taken(Date.new(year),"Vacation")
+      max_days = max_vacation_days(Date.new(year))
+      
+      #Add to build surplus of days
+      if days_taken and max_days and days_taken > max_days
+        surplus + days_taken - max_days
+      #If there is a surplus start widdling it down.
+      elsif surplus > 0.0
+        surplus + days_taken - max_days
+      #Otherwise, ignore it.
+      else
+        surplus + 0.0
+      end
+    end
+    surplus_days <= 0.0 ? 0.0 : surplus_days
   end
   
   def floating_holidays_taken(on_date=Date.current, id=nil)
-    pdo_taken(on_date, "Floating Holiday", id)
+    _pdo_taken(on_date, "Floating Holiday", id)
   end
   
   def is_manager_or_higher?
@@ -237,11 +211,22 @@ class Employee < ActiveRecord::Base
   end
   
   def pdo_taken(on_date, type, id=nil)
+    case type
+    when "Vacation" then vacation_days_taken(on_date, id=nil)
+    when "Floating Holiday" then floating_holidays_taken(on_date, id=nil)
+    when "Sick" then sick_days_taken(on_date, id=nil)
+    else raise Exception
+    end
+  end
+  
+  private
+  
+  def _pdo_taken(on_date, type, id=nil)
     on_date = Date.new(self.start_date.year,2,28) if on_date.leap? and on_date.month == 2 and on_date.day==29
     
     year = Vacation.calculate_fiscal_year(on_date)
     pdo_days = 0.0
-    self.vacations.where(vacation_type: type).where("start_date >= ?", Date.new(year-1,05,01).to_s).each do |vacation|
+    self.vacations.where(vacation_type: type).where("start_date >= ? and start_date < ?", on_date.previous_fiscal_new_year, on_date.fiscal_new_year).each do |vacation|
       next if !id.nil? and vacation.id == id
       date_range = (vacation.start_date..vacation.end_date)
       unless Vacation.fiscal_new_year_date(on_date).in?(date_range)
@@ -259,10 +244,8 @@ class Employee < ActiveRecord::Base
           pdo_days += Vacation.calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
         end
       end
-      return pdo_days
+    return pdo_days
   end
-  
-  private
   
   def roll_off_date_cannot_be_before_roll_on_date
     unless roll_off_date.blank? or roll_on_date.blank? or roll_off_date >= roll_on_date

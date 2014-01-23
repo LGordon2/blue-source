@@ -1,0 +1,34 @@
+<h1>Time Off Details for <%= @employee.display_name %></h1>
+<%= render "vacation_summary" %>
+<% if @fy_vacations.count > 0 %>
+<table class="table table-responsive table-bordered">
+	<tr>
+		<th><%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Start Date',view_employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'End Date',view_employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Total Business Days',view_employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Type',view_employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
+	</tr>
+	<% @fy_vacations.each do |vacation| %>
+	<tr>
+		<td><%= vacation.date_requested %></td>
+		<td><%= vacation.start_date %></td>
+		<td><%= vacation.end_date %></td>
+		<td><%= vacation.business_days.prettify %></td>
+		<td><%= vacation.vacation_type %></td>
+	</tr>
+	<% end %>
+</table>
+<% else %>
+<h5>No PDO used.</h5>
+<% end %>
+<%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
+<div class="clearfix"></div>
+<%= link_to "Back", :back, style: "margin-top: 10px" unless current_user.role == "Consultant"%>
+<% content_for "modal_header_1" do %>
+	Time off details for <%= "FY#{@fyear}"%>
+<% end %>
+<% content_for "modal_content_1" do %>
+	<%= render "details" %>
+<% end %>
+<%= render "modals/modal_group"%>

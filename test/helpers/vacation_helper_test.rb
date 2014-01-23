@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class VacationHelperTest < ActionView::TestCase
-  include VacationHelper::PTO
   
   test "should work for holidays in 2014" do
     assert_equal 0,calc_business_days_for_range(Date.new(2014,1,1),Date.new(2014,1,1)) #new years

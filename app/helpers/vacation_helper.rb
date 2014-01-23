@@ -1,5 +1,5 @@
 module VacationHelper
-  module Holidays
+  class ::Date
     def thanksgiving?
       year = self.year
       first = Date.new(year, 11, 1)
@@ -47,40 +47,53 @@ module VacationHelper
     def new_years_day?
       self.month == 1 and self.day == 1
     end
-  end
-  
-  module PTO
-    include VacationHelper
     
-    #Calculates the fiscal year of the given date.
-    def calculate_fiscal_year(date = Date.current)
-      date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
+    def distance_in_months(from_date)
+      self.month - from_date.month + (self.year - from_date.year)*12
     end
     
-    #Calculates the next fiscal new year date for the given date.
-    def fiscal_new_year_date(date = Date.current)
-      Date.new(calculate_fiscal_year(date),05,01)
+    def distance_in_years(from_date)
+      from_date = from_date.change(day: 28) if from_date.month == 2 and from_date.day == 29
+      updated_for_year = from_date.change(year: self.year)
+      self.year - from_date.year - (updated_for_year <= self ? 0 : 1)
     end
     
-    #Calculates the number of business days used for a date range.
-    def calc_business_days_for_range(start_date, end_date)
-      total = 0
-      return total if start_date.blank? or end_date.blank?
-      (start_date..end_date).each do |date|
-        total += 1 unless date.saturday? or date.sunday? or 
-        date.thanksgiving? or date.labor_day? or date.memorial_day? or
-        date.christmas? or date.christmas_eve? or date.independence_day? or
-        date.black_friday? or date.new_years_day?
-      end
-      return total
+    def fiscal_new_year
+      self.change(month: 5,day: 1,year: self.year + (self.month >= 5 ? 1 : 0)) 
+    end
+    
+    def previous_fiscal_new_year
+      self.change(month: 5,day: 1,year: self.year + (self.month >= 5 ? 0 : -1)) 
+    end
+    
+    def current_fiscal_year
+      self.month >= 5 ? self.year+1 : self.year
     end
   end
   
+  #Calculates the fiscal year of the given date.
+  def calculate_fiscal_year(date = Date.current)
+    date >= Date.new(date.year, 05, 01) ? date.year+1 : date.year
+  end
+  
+  #Calculates the next fiscal new year date for the given date.
+  def fiscal_new_year_date(date = Date.current)
+    Date.new(calculate_fiscal_year(date),05,01)
+  end
+  
+  #Calculates the number of business days used for a date range.
+  def calc_business_days_for_range(start_date, end_date)
+    total = 0
+    return total if start_date.blank? or end_date.blank?
+    (start_date..end_date).each do |date|
+      total += 1 unless date.saturday? or date.sunday? or 
+      date.thanksgiving? or date.labor_day? or date.memorial_day? or
+      date.christmas? or date.christmas_eve? or date.independence_day? or
+      date.black_friday? or date.new_years_day?
+    end
+    return total
+  end
   def self.included(base)
-    base.extend(PTO)
+    base.extend(VacationHelper)
   end
-end
-
-class Date
-  include VacationHelper::Holidays
 end

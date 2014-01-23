@@ -2,13 +2,20 @@ ManagerPortal::Application.routes.draw do
   
   get "directory/index"
   #Vacation
-  delete "/vacation/:id", to: "vacation#destroy", as: :vacation
-  post "/vacation/new", to: "vacation#new"
-  patch "/vacation/:id", to: "vacation#update"
+  #delete "/vacation/:id", to: "vacation#destroy", as: :vacation
+  #post "/vacation/new", to: "vacation#new"
+  #patch "/vacation/:id", to: "vacation#update"
  
   #Employees stuff
-  get "employees/vacation/:id", to: "employees#vacation", as: :employee_vacation
-  get "employees/vacation/:id/view", to: "employees#view_vacation", as: :view_vacation
+  resources :employees do
+    resources :vacations, only: [:index,:create,:update,:destroy] do
+      collection do
+        get 'view'
+      end
+    end
+  end
+  #get "employees/vacation/:id", to: "employees#vacation", as: :employee_vacation
+  #get "employees/vacation/:id/view", to: "employees#view_vacation", as: :view_vacation
   resources :employees, only: [:index,:show,:create,:update,:edit]
   
   #Projects
