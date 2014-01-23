@@ -9,7 +9,7 @@
 		<% tooltip_title = "#{pluralize(@employee.max_days(vacation_type,Date.new(@fyear)) - @employee.pdo_taken(Date.new(@fyear),vacation_type).prettify,'day')} left." %>
 		<% if vacation_type == "Vacation" %>
 			<% surplus_days = @employee.surplus_vacation_taken(Date.new(@fyear-1)) %>
-			<% tooltip_title += " (#{pluralize(surplus_days.prettify,'day')}" + " from deficit vacation days.)" unless surplus_days == 0 %>
+			<% tooltip_title += " (#{pluralize(surplus_days.prettify,'day')}" + " carried over from FY#{@fyear-1}.)" unless surplus_days == 0 %>
 		<% end %>
 		<span data-toggle="tooltip" data-placement="bottom" title="<%= tooltip_title %>" >
 			<%= "#{days_taken}/#{max_days}" %>

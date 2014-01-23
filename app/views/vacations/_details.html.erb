@@ -1,7 +1,7 @@
 <table class="table table-bordered table-hover table-responsive">
 	<tr>
-		<td>Estimated vacation days that will accrue for current fiscal year</td>
-		<td><%= @employee.accrued_vacation_days(Vacation.fiscal_new_year_date(Date.new(@fyear,1,1))-1).round %></td>
+		<td>Estimated vacation days that will accrue for fiscal year <%=@fyear%></td>
+		<td><%= @employee.accrued_vacation_days(Date.new(@fyear,1,1).fiscal_new_year-1).round %></td>
 	</tr>
 	<tr>
 		<td>Vacation days taken</td>
@@ -12,27 +12,27 @@
 		<td>Vacation days accrued to date</td>
 		<td><%= @employee.accrued_vacation_days(Date.current).prettify %></td>
 	</tr>
-	<% end %>
 	<tr>
-		<% vacation_surplus_or_deficit = @employee.vacation_days_taken(Date.new(@fyear)) - @employee.max_vacation_days(Date.new(@fyear))%>
+		<% vacation_surplus_or_deficit = (@employee.vacation_days_taken(Date.current) - @employee.accrued_vacation_days(Date.current)).round(2) %>
 		<% if vacation_surplus_or_deficit > 0.0 %>
-		<td>Vacation deficit</td>
-		<td><%= vacation_surplus_or_deficit.abs.prettify %></td>
+		<td class="danger">Vacation deficit</td>
+		<td class="danger"><%= vacation_surplus_or_deficit.abs.prettify %></td>
 		<% elsif vacation_surplus_or_deficit < 0.0 %>
-		<td>Vacation surplus</td>
-		<td><%= vacation_surplus_or_deficit.abs.prettify %></td>
+		<td class="warning">Vacation surplus</td>
+		<td class="warning"><%= vacation_surplus_or_deficit.abs.prettify %></td>
 		<% end %>
 	</tr>
+	<% end %>
 	<tr>
-		<td>Total Floating holidays given</td>
+		<td>Total floating holidays given</td>
 		<td><%= @employee.max_floating_holidays %></td>
 	</tr>
 	<tr>
-		<td>Total Floating holidays taken</td>
+		<td>Total floating holidays taken</td>
 		<td><%= @employee.floating_holidays_taken(Date.new(@fyear),false).prettify %></td>
 	</tr>
 	<tr>
-		<td>Total sick days allowed</td>
+		<td>Total sick days given</td>
 		<td><%= @employee.max_sick_days %></td>
 	</tr>
 	<tr>

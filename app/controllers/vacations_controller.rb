@@ -41,10 +41,6 @@ class VacationsController < ApplicationController
     end
   end
   
-  def edit
-    
-  end
-  
   private
   
   def set_fiscal_year_and_vacations

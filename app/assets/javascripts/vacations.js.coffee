@@ -5,7 +5,6 @@ $ ->
   $("[data-method],[data-form-action]").click ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
     $('#vacation_form').attr('action',$(this).data("form-action")) if $(this).data("form-action")
-    console.log($(this).data("method"))
     if $(this).data("method")
       vacation_id = if $(this).data("vacation-id") then $(this).data("vacation-id") else "new"
       for field in ["date_requested","start_date","end_date","business_days","vacation_type","half_day","reason"]
