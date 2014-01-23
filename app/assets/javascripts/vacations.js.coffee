@@ -17,11 +17,12 @@ $ ->
       $(this).children().toggleClass("hidden")
   $(".vacation-row").each (index) ->
     set_business_days($(this))
-  $(".date-field,input[type=checkbox]").on "change", ->
-    set_business_days($(this).parents(".vacation-row"))
   $("#start_date-new").on "change", ->
     $("#end_date-new").val($(this).val())
-    set_business_days($(this).parents(".vacation-row"))
+  $(".date-field,input[type=checkbox]").on "change", ->
+    set_business_days($(this))
+  
+    
     
   #Other...
   $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
@@ -42,7 +43,7 @@ set_business_days = (object) ->
   id = object.attr("id").split("-")[1]
   $start_date = $("#start_date-#{id}")
   $end_date = $("#end_date-#{id}")
-  bsn_days = calc_business_days($start_date.val(),$end_date.val(),object.find("input:checked").length==1)
+  bsn_days = calc_business_days($start_date.val(),$end_date.val(),$("#half_day-#{id}").prop("checked"))
   $("#business_days-#{id}").children().text(bsn_days)
   $("#hidden_business_days-#{id}").val(bsn_days)
 

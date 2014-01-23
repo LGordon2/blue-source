@@ -41,6 +41,17 @@ class VacationsController < ApplicationController
     end
   end
   
+  def requests
+    @vacation = Vacation.new(vacation_params)
+    respond_to do |format|
+      if @vacation.save
+        format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
+      else
+        format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
+      end
+    end
+  end
+  
   private
   
   def set_fiscal_year_and_vacations

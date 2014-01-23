@@ -23,6 +23,7 @@
 <h5>No PDO used.</h5>
 <% end %>
 <%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
+<%= button_tag "Request time off", class: "btn btn-primary", data: {target: "#modal_2", toggle: "modal"} %>
 <div class="clearfix"></div>
 <%= link_to "Back", :back, style: "margin-top: 10px" unless current_user.role == "Consultant"%>
 <% content_for "modal_header_1" do %>
@@ -30,5 +31,11 @@
 <% end %>
 <% content_for "modal_content_1" do %>
 	<%= render "details" %>
+<% end %>
+<% content_for "modal_header_2" do %>
+	Request PDO
+<% end %>
+<% content_for "modal_content_2" do %>
+	<%= render "form_request" %>
 <% end %>
 <%= render "modals/modal_group"%>

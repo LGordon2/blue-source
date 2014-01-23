@@ -1,0 +1,26 @@
+<%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form"} do |f| %>
+  <div class="form-group">
+    <strong>Requested on <%=Date.current%></strong>
+  </div>
+  <div class="form-group">
+    <%= f.label :start_date %>
+    <%= f.date_field :start_date, class: "date-field form-control", id: "start_date-new" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :end_date %>
+    <%= f.date_field :end_date, class: "date-field form-control", id: "end_date-new" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :vacation_type %>
+    <%= f.select :vacation_type, Vacation.types - ["Other"], {}, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :half_day %>
+    <%= f.check_box :half_day, id: "half_day-new" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :business_days %>
+    <div id="business_days-new"><strong></strong></div>
+  </div>
+  <%= f.submit class: "btn btn-primary"%>
+<% end %>

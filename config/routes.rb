@@ -11,6 +11,7 @@ ManagerPortal::Application.routes.draw do
     resources :vacations, only: [:index,:create,:update,:destroy] do
       collection do
         get 'view'
+        post "requests"
       end
     end
   end
