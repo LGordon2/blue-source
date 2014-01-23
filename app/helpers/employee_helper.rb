@@ -35,8 +35,6 @@ module EmployeeHelper
         months = date.distance_in_months(anniversary_date)
       end
       
-      
-
       #Calculate the years the employee has been with Orasi
       years_with_orasi = date.distance_in_years(anniversary_date)
       
@@ -48,7 +46,9 @@ module EmployeeHelper
       anniversary_months = date.distance_in_months(anniversary_date) + 1
       
       if anniversary_months > 0
-        return ((accrual_rates(years_with_orasi-1)*(months - anniversary_months)) + (accrual_rates(years_with_orasi)*anniversary_months)).round(2) 
+        return ((accrual_rates(years_with_orasi-1)*(months - anniversary_months)) + (accrual_rates(years_with_orasi)*anniversary_months)).round(2)
+      elsif anniversary_months == 0 
+        years_with_orasi -= 1
       end
     end
     (accrual_rates(years_with_orasi)*(months)).round(2)
