@@ -36,7 +36,7 @@
 <h5>No PDO used.</h5>
 <% end %>
 <div>
-	<%= link_to "Back", :back, class: "btn btn-default" unless current_user.role == "Consultant"%>
+	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" unless current_user.role == "Consultant"%>
 	<% if current_user == @employee %>
 	<%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
 	<%= button_tag "Request time off", class: "btn btn-primary", data: {target: "#modal_2", toggle: "modal"} %>

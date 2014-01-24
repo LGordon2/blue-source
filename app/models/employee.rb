@@ -199,7 +199,7 @@ class Employee < ActiveRecord::Base
   
   def pdo_taken_in_range(start_date, end_date, type, except_id=nil)
     pdo_days = 0.0
-    self.vacations.where.not(status: "Pending").where(vacation_type: type).where("start_date >= ? and start_date <= ?",start_date.to_s,end_date.to_s).where.not(id: except_id).each do |vacation|
+    self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date >= ? and start_date <= ?",start_date.to_s,end_date.to_s).where.not(id: except_id).each do |vacation|
       if vacation.end_date <= end_date
         pdo_days += vacation.business_days
       else
@@ -226,7 +226,7 @@ class Employee < ActiveRecord::Base
     
     year = Vacation.calculate_fiscal_year(on_date)
     pdo_days = 0.0
-    self.vacations.where.not(status: "Pending").where(vacation_type: type).where("start_date >= ? and start_date < ?", on_date.previous_fiscal_new_year, on_date.fiscal_new_year).each do |vacation|
+    self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date >= ? and start_date < ?", on_date.previous_fiscal_new_year, on_date.fiscal_new_year).each do |vacation|
       next if !id.nil? and vacation.id == id
       date_range = (vacation.start_date..vacation.end_date)
       unless Vacation.fiscal_new_year_date(on_date).in?(date_range)
@@ -237,7 +237,7 @@ class Employee < ActiveRecord::Base
     end
     
     last_fiscal_new_year = Vacation.fiscal_new_year_date(Date.new(on_date.year-1,on_date.month,on_date.day))
-    self.vacations.where.not(status: "Pending").where(vacation_type: type).where("start_date < ?", Date.new(year-1,05,01).to_s).each do |vacation|
+    self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date < ?", Date.new(year-1,05,01).to_s).each do |vacation|
         next if !id.nil? and vacation.id == id
         date_range = (vacation.start_date..vacation.end_date)
         if last_fiscal_new_year.in?(date_range)
