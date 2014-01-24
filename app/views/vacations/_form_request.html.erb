@@ -1,4 +1,5 @@
 <%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form"} do |f| %>
+  <%=f.hidden_field :date_requested, value: Date.current%>
   <div class="form-group">
     <strong>Requested on <%=Date.current%></strong>
   </div>

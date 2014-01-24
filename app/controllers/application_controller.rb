@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
     if current_user.nil?
       redirect_to :login
     elsif !current_user.is_manager_or_higher?
-      redirect_to view_employee_vacations_path(current_user)
+      redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view that page."}
     end
   end
   

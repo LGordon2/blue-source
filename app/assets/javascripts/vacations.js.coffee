@@ -10,6 +10,9 @@ $ ->
       for field in ["date_requested","start_date","end_date","business_days","vacation_type","half_day","reason"]
         $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").val())
         $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").prop('checked')) if field == "half_day"
+      if $(this).hasClass('approval-btn')
+        $("[name=vacation\\[status\\]]").val("")
+        $("#vacation_form").submit()
   $("div.vacation-summary-table span").tooltip()
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
@@ -21,9 +24,8 @@ $ ->
     $("#end_date-new").val($(this).val())
   $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this))
+
   
-    
-    
   #Other...
   $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
     $(this).popover('show') if $(this).siblings(".popover").length == 0

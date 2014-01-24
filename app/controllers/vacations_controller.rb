@@ -1,10 +1,10 @@
 class VacationsController < ApplicationController
-  before_action :require_manager_login, except: [:view]
+  before_action :require_manager_login, except: [:view, :requests, :destroy]
   
   before_action :set_vacation, only: [:destroy, :update]
   before_action :set_employee
   before_action :set_fiscal_year_and_vacations, only: [:view, :index]
-  before_action :validate_user_is_above_employee, except: [:view]
+  before_action :validate_user_is_above_employee, except: [:view, :requests, :destroy]
   
   def index
     respond_to do |format|
@@ -35,14 +35,22 @@ class VacationsController < ApplicationController
   end
   
   def destroy
+    if (@vacation.status.blank? and (!current_user.above? @vacation.employee and !current_user.admin?))
+      redirect_to :back, flash: {error: "Vacation is accepted.  You cannot modify the vacation from here.  Please speak with your manager."}
+      return
+    end
     respond_to do |format|
-      @vacation.destroy
-      format.html{redirect_to employee_vacations_path(@employee), flash: {notice: "Vacation successfully deleted."}}
+      if @vacation.destroy
+        format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
+      else
+        format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
+      end
     end
   end
   
   def requests
-    @vacation = Vacation.new(vacation_params)
+    @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
+    
     respond_to do |format|
       if @vacation.save
         format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
@@ -61,6 +69,7 @@ class VacationsController < ApplicationController
     @fy_vacations = @employee.vacations
       .where("start_date >= ? and start_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)
       .order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}")
+    @any_with_pending_status = @fy_vacations.where(status: "Pending").count > 0
   end
   
   def validate_user_is_above_employee
@@ -70,7 +79,13 @@ class VacationsController < ApplicationController
   end  
     
   def set_vacation
-    @vacation = Vacation.find(params[:id])
+    begin
+      @vacation = Vacation.find(params[:id])
+    rescue
+      respond_to do |format|
+        format.html {redirect_to :back, flash: {error: "Vacation not found in BlueSource."}}
+      end
+    end
   end
   
   def set_employee
@@ -78,7 +93,7 @@ class VacationsController < ApplicationController
   end
   
   def vacation_params
-     all_params = params.require(:vacation).permit(:date_requested,:start_date,:end_date,:vacation_type,:business_days,:employee_id,:half_day,:reason)
+     all_params = params.require(:vacation).permit(:date_requested,:start_date,:end_date,:vacation_type,:business_days,:employee_id,:half_day,:reason,:status)
      all_params[:manager_id]=current_user.id
      return all_params
   end 

@@ -1,4 +1,5 @@
 <h1>Time Off Details for <%= @employee.display_name %></h1>
+<%= render "notification_section" %>
 <%= render "vacation_summary" %>
 <% if @fy_vacations.count > 0 %>
 <table class="table table-responsive table-bordered">
@@ -8,6 +9,10 @@
 		<th><%= link_to 'End Date',view_employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
 		<th><%= link_to 'Total Business Days',view_employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
 		<th><%= link_to 'Type',view_employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
+		<% if @any_with_pending_status %>
+		<th><%= link_to "Status",view_employee_vacations_path(@employee, sort: :status, rev: params[:rev]!='true')%></th>
+		<th>Cancel</th>
+		<% end %>
 	</tr>
 	<% @fy_vacations.each do |vacation| %>
 	<tr>
@@ -16,6 +21,14 @@
 		<td><%= vacation.end_date %></td>
 		<td><%= vacation.business_days.prettify %></td>
 		<td><%= vacation.vacation_type %></td>
+		<% if @any_with_pending_status %>
+		<td><%= vacation.status %></td>
+		<td>
+			<%= link_to employee_vacation_path(current_user, vacation), method: :delete do %>
+				<span class="glyphicon glyphicon-remove"></span>
+			<% end %>
+		</td>
+		<% end %>
 	</tr>
 	<% end %>
 </table>

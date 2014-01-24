@@ -1,8 +1,8 @@
 <div>
 	<h1>Time Off Details for <%= @employee.display_name %></h1>
-	<%= render "vacation_summary"%>
-
 	<%= render "notification_section" %>
+	<%= render "vacation_summary"%>
+	
 	<%= form_tag employee_vacations_path(@employee), method: :post, id: "vacation_form" do %>
 	<%= hidden_field :vacation, :date_requested %>
 	<%= hidden_field :vacation, :start_date %>
@@ -12,6 +12,7 @@
 	<%= hidden_field :vacation, :reason %>
 	<%= hidden_field :vacation, :manager_id, value: "#{current_user.id}" %>
 	<%= hidden_field :vacation, :employee_id, value: "#{@employee.id}" %>
+	<%= hidden_field :vacation, :status %>
 	<input name="_method" type="hidden" />
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
@@ -24,6 +25,9 @@
 			<% if @fy_vacations.count > 0 %>
 			<th>Edit</th>
 			<th>Delete</th>
+			<% if @any_with_pending_status %>
+			<th>Accept?</th>
+			<% end %>
 			<% end %>
 		</tr>
 		<% @fy_vacations.each do |vacation| %>
@@ -63,6 +67,16 @@
 					<span class="glyphicon glyphicon-trash"></span>
 				<% end %>
 			</td>
+			<% if vacation.status == "Pending" %>
+			<td>
+				
+				<span class="approval-btn glyphicon glyphicon-ok pull-left" style="color:green" data-method="patch" data-form-action='<%=employee_vacation_path(@employee,vacation)%>' data-vacation-id="<%=vacation.id%>"></span>
+				<%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete do %>
+					<span class="glyphicon glyphicon-remove pull-right"></span>
+				<% end %>
+				
+			</td>
+			<% end %>
 		</tr>
 		<% end %>
 		<tr id="vacation-new" class="vacation-row">

@@ -54,8 +54,8 @@ class Vacation < ActiveRecord::Base
   
   #Validate that the person who requested the vacation is above the employee.
   def manager_is_above_employee
-    unless manager.admin? or manager.above? employee
-      errors.add(:end_date, "does not have permission to modify vacation for this employee.")
+    unless manager.admin? or manager.above? employee or status=="Pending" 
+      errors.add(:base, "You do not have permission to modify vacation for this employee.")
     end
   end
   

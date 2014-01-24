@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140109221600) do
+ActiveRecord::Schema.define(version: 20140124134511) do
 
   create_table "employees", force: true do |t|
     t.string   "username"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20140109221600) do
     t.integer  "employee_id"
     t.boolean  "half_day"
     t.string   "reason"
+    t.string   "status"
   end
 
 end
