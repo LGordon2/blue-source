@@ -1,5 +1,6 @@
-<% if flash[:notice] or flash[:error] %>
-<div class="alert <%= flash[:notice].blank? ? "alert-danger" : "alert-success" %> alert-dismissable">
+<% if flash.to_hash.size > 0 %>
+<% alert_type = if flash[:notice] then "alert-success" else "alert-danger" end %>
+<div class="alert <%= alert_type %> alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 		&times;
 	</button>

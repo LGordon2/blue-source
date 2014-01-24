@@ -35,7 +35,7 @@
 							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
 						</li>
 						<li>
-							<%= link_to current_user.role == 'Consultant' ? "My Information" : "Employees", :root %>
+							<%= link_to current_user.role == 'Consultant' ? "My Information" : "Employees", current_user.role == 'Consultant' ? view_employee_vacations_path(current_user) : :root %>
 						</li>
 						<li>
 							<%= link_to "Logout", :logout %>

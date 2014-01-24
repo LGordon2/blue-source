@@ -69,12 +69,10 @@
 			</td>
 			<% if vacation.status == "Pending" %>
 			<td>
-				
-				<span class="approval-btn glyphicon glyphicon-ok pull-left" style="color:green" data-method="patch" data-form-action='<%=employee_vacation_path(@employee,vacation)%>' data-vacation-id="<%=vacation.id%>"></span>
-				<%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete do %>
+				<span class="approval-btn glyphicon glyphicon-ok pull-left" style="color:green" data-method="patch" data-form-action='<%=employee_vacation_path(@employee,vacation,:confirm => true)%>' data-vacation-id="<%=vacation.id%>"></span>
+				<%= link_to employee_vacation_path(vacation.employee, vacation, :confirm => true), method: :delete do %>
 					<span class="glyphicon glyphicon-remove pull-right"></span>
 				<% end %>
-				
 			</td>
 			<% end %>
 		</tr>

@@ -8,6 +8,7 @@ class VacationsController < ApplicationController
   before_action :validate_user_is_employee_or_above, only: [:view]
   
   def index
+    flash = {}
     respond_to do |format|
       format.json {render json: @employee.vacations}
       format.html
@@ -28,6 +29,7 @@ class VacationsController < ApplicationController
   def update
     respond_to do |format|
       if @vacation.update(vacation_params)
+        VacationRequestMailer.confirm_email(current_user, @employee.email, vacation_params, params["confirm"]=="true").deliver unless params["confirm"].blank?
         format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: @vacation.id}}
       else
         format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
@@ -42,6 +44,7 @@ class VacationsController < ApplicationController
     end
     respond_to do |format|
       if @vacation.destroy
+        VacationRequestMailer.confirm_email(current_user, @employee.email, @vacation.attributes, params["confirm"]=="true").deliver unless params["confirm"].blank?
         format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
@@ -51,9 +54,10 @@ class VacationsController < ApplicationController
   
   def requests
     @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
-    
     respond_to do |format|
       if @vacation.save
+        cc_mail = params["cc"] == "1" ? current_user.email : nil 
+        VacationRequestMailer.request_email(current_user, current_user.manager.email, cc_mail, vacation_params).deliver
         format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
