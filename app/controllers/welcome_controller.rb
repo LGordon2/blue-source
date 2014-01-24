@@ -14,7 +14,11 @@ class WelcomeController < ApplicationController
     
     if @employee.save
       session[:current_user_id] = @employee.id
-      redirect_to :root
+      if @employee.role == "Consultant"
+        redirect_to view_employee_vacations_path(@employee)
+      else
+        redirect_to :root
+      end
     else
       render action: :login
     end
@@ -34,9 +38,6 @@ class WelcomeController < ApplicationController
   def index
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
-  end
-  
-  def sorry
   end
   
   def issue

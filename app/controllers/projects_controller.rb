@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :require_manager_login
-  before_action :set_project, only: [:show, :edit, :update, :all_leads]
+  before_action :set_project, only: [:show, :edit, :update, :leads]
   
   before_action :validate_start_date, only: [:new, :update]
   before_action :validate_end_date, only: [:new, :update]
@@ -20,7 +20,7 @@ class ProjectsController < ApplicationController
     end
   end
   
-  def all_leads
+  def leads
     respond_to do |format|
       format.json {render json: @project.leads.order(first_name: :asc), only: [:first_name,:last_name,:id]}
       format.html
@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
   private
   
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:project_id] || params[:id])
     @title = @project.name
   end
   

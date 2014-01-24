@@ -6,10 +6,8 @@
 		<%= stylesheet_link_tag params[:controller], media: "all"%>
 		<%= javascript_include_tag "application" %>
 		<%= javascript_include_tag params[:controller]%>
-		<!--[if lte IE 8]>
-		<%= asset_path "json2.js" %>
-		<![endif]-->
 		<!--[if lt IE 9]>
+		<script src="/assets/json2.js"></script>
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 		<![endif]-->

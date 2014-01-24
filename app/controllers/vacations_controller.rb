@@ -5,6 +5,7 @@ class VacationsController < ApplicationController
   before_action :set_employee
   before_action :set_fiscal_year_and_vacations, only: [:view, :index]
   before_action :validate_user_is_above_employee, except: [:view, :requests, :destroy]
+  before_action :validate_user_is_employee_or_above, only: [:view]
   
   def index
     respond_to do |format|
@@ -74,9 +75,15 @@ class VacationsController < ApplicationController
   
   def validate_user_is_above_employee
     unless current_user.admin? or current_user.above? @employee
-      redirect_to :root, flash: {error: "You have insufficient privileges to edit vacations for this employee."}
+      redirect_to :root, flash: {error: "You have insufficient privileges to edit vacations for that employee."}
     end
   end  
+  
+  def validate_user_is_employee_or_above
+    unless current_user.admin? or current_user.above? @employee or current_user == @employee
+      redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view vacations for that employee."}
+    end
+  end
     
   def set_vacation
     begin

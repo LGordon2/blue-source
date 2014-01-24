@@ -126,10 +126,9 @@
 <% content_for 'panel_title_3' do %>Time Off Info<% end %>
 <% content_for 'panel_heading_3' do %>
 <div class="pull-right">
+	<%= link_to "View", view_employee_vacations_path(@employee), class: "btn btn-default btn-xs" %>
 	<% if current_user.above? @employee or current_user.admin? %>
 	<%= link_to "Manage", employee_vacations_path(@employee), class: "btn btn-default btn-xs"  %>
-	<% else %>
-	<%= link_to "View", view_employee_vacations_path(@employee), class: "btn btn-default btn-xs" %>
 	<% end %>
 </div>
 <% end %>

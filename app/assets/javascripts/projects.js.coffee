@@ -27,7 +27,6 @@ project_list_ctrl = ($scope, $http, $filter) ->
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
   $scope.search = ->
-    console.log($scope.predicate)
     $scope.filteredProjects = $filter('filter')($scope.projects, (project) ->
       return searchMatch(project.name, $scope.query) || searchMatch(project.all_leads, $scope.query) || searchMatch(project.status, $scope.query) 
     )

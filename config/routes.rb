@@ -1,10 +1,5 @@
 ManagerPortal::Application.routes.draw do
-  
-  get "directory/index"
   #Vacation
-  #delete "/vacation/:id", to: "vacation#destroy", as: :vacation
-  #post "/vacation/new", to: "vacation#new"
-  #patch "/vacation/:id", to: "vacation#update"
  
   #Employees stuff
   resources :employees do
@@ -20,20 +15,21 @@ ManagerPortal::Application.routes.draw do
   resources :employees, only: [:index,:show,:create,:update,:edit]
   
   #Projects
-  get "projects/:id/leads", to: "projects#all_leads", as: :leads
-  resources :projects, only: [:index,:show,:create,:update,:edit]
-  
+  #get "projects/:id/leads", to: "projects#all_leads", as: :leads
+  resources :projects, only: [:index,:show,:create,:update,:edit] do
+    get 'leads'
+  end
   
   #Welcome (login)
-  get "sorry", to: 'welcome#sorry', as: :sorry
   get "login", to: 'welcome#login', as: :login
   get "logout", to: "welcome#logout", as: :logout
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
   
   #Directory
-  get 'directory', to: 'directory#index', as: :directory
-  get "directory/employees", to: "directory#employees"
+  resource :directory, only: [:show], controller: "directory" do
+    resources :employees, only: [:index], action: "directory"
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
