@@ -118,9 +118,9 @@ class EmployeesController < ApplicationController
   def all_employees_for_directory
     Employee.all.as_json({
       include: [
-        {manager: {only: [:id,:first_name,:last_name]}}
+        {manager: {only: [:id,:first_name,:last_name, :email]}}
       ],
-      only: [:id, :first_name, :last_name, :department, :office_phone, :cell_phone, :im_name, :im_client]
+      only: [:id, :first_name, :last_name, :email, :department, :office_phone, :cell_phone, :im_name, :im_client]
     }).map do |e|
       capitalize_names_and_projects(e)
     end
