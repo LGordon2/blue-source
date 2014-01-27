@@ -1,6 +1,7 @@
 <% content_for :content do %>
 <section id="ng-app" ng-app="<%= @resource_for_angular %>_list_app" ng-controller="<%= @resource_for_angular %>_list_ctrl" class="center-block">
 	<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.pluralize.capitalize %></h1>
+	<%= yield :header_msgs %>
 	<%= render 'notification_section' %>
 	<div class>
 		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">

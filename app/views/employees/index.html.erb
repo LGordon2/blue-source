@@ -20,6 +20,9 @@
 
 <% content_for :welcome_msg do %>
 <%= t(:welcome) %>, <%= link_to current_user.first_name.capitalize, current_user %>.
+<% end %>
+
+<% content_for :header_msgs do %>
 <%= render "vacation_notification"%>
 <% end %>
 

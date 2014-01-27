@@ -77,6 +77,7 @@ class VacationsController < ApplicationController
   private
   
   def check_vacation_days
+    return nil unless @vacation.vacation_type == "Vacation"
     fiscal_year_of_start_date = @vacation.start_date.current_fiscal_year
     fiscal_year_of_end_date = @vacation.end_date.current_fiscal_year
     warnings = []
