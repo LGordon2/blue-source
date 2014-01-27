@@ -1,9 +1,29 @@
-<p>Hi,</p>
-<p><%= @current_user.display_name %> has requested the following time off:</p>
-<p><%= @vacation_params[:vacation_type] + " - from #{@vacation_params[:start_date]} until #{@vacation_params[:end_date]}."%></p>
-<p>At your earliest convenience, please log into <a href="https://bluesource.orasi.com/">BlueSource</a> and acknowledge this request.</p>
-
-<p>Thank you,</p>
-BlueSource
-
-Please disregard this email.  If you are receiving this email incorrectly, please send all angry emails to lewis.gordon@orasi.com.
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>
+			Hi,
+		</p>
+		<p>
+			<%= @current_user.display_name %> has requested the following time off:
+		</p>
+		<p>
+			<%= @vacation_params[:vacation_type] + " - from #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)} until #{Date.parse(@vacation_params[:end_date]).to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<p>
+			At your earliest convenience, please log into <a href="https://bluesource.orasi.com/">BlueSource</a> and acknowledge this request.
+		</p>
+		<p>
+			Thank you,
+		</p>
+		<%= image_tag attachments['logo.png'].url, width: 137, height: 47 -%>
+		<% unless Rails.env.production? %>
+		<p>
+			Please disregard this email.  If you are receiving this email incorrectly, please send all angry emails to <%= mail_to "lewis.gordon@orasi.com" %>.
+		</p>
+		<% end %>
+	</body>
+</html>

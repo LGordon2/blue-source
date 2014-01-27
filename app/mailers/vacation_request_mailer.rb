@@ -13,6 +13,7 @@ class VacationRequestMailer < ActionMailer::Base
     
     @current_user = current_user
     @vacation_params = vacation_params
+    attachments.inline['logo.png'] = File.read(Rails.root.to_path+"/app/assets/images/logo.png")
     mail(to: to, cc: cc, subject: "[BlueSource] #{current_user.display_name}, #{vacation_params[:vacation_type]} Request")
   end
   
