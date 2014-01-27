@@ -29,7 +29,7 @@ class VacationsController < ApplicationController
   def update
     respond_to do |format|
       if @vacation.update(vacation_params)
-        VacationRequestMailer.confirm_email(current_user, @employee.email, vacation_params, params["confirm"]=="true").deliver unless params["confirm"].blank?
+        send_confirmation_email
         format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: @vacation.id}}
       else
         format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
@@ -44,7 +44,7 @@ class VacationsController < ApplicationController
     end
     respond_to do |format|
       if @vacation.destroy
-        VacationRequestMailer.confirm_email(current_user, @employee.email, @vacation.attributes, params["confirm"]=="true").deliver unless params["confirm"].blank?
+        send_confirmation_email
         format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
@@ -56,8 +56,7 @@ class VacationsController < ApplicationController
     @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
     respond_to do |format|
       if @vacation.save
-        cc_mail = params["cc"] == "1" ? current_user.email : nil 
-        VacationRequestMailer.request_email(current_user, current_user.manager.email, cc_mail, vacation_params).deliver
+        VacationRequestMailer.request_email(current_user, current_user.manager, vacation_params, params["cc"] == "1" ? current_user.email : nil).deliver
         format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
@@ -66,6 +65,10 @@ class VacationsController < ApplicationController
   end
   
   private
+  
+  def send_confirmation_email
+     VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver unless params["confirm"].blank?
+  end
   
   def set_fiscal_year_and_vacations
     @fyear = params['fy'].blank? ? Vacation.calculate_fiscal_year : params['fy'].to_i
