@@ -36,7 +36,7 @@ class EmployeesController < ApplicationController
   def create
     @employee = Employee.new(employee_params)
     if @employee.save
-      redirect_to :root, flash: {notice: "Employee added successfully."}
+      redirect_to :root, flash: {success: "Employee added successfully."}
     else
       redirect_to :root, flash: {error: @employee.errors.full_messages}
     end 
@@ -55,7 +55,7 @@ class EmployeesController < ApplicationController
   
   def update
     if @employee.update(employee_params)
-      redirect_to @employee, flash: {notice: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
+      redirect_to @employee, flash: {success: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
     else
       redirect_to @employee, flash: {error: @employee.errors.full_messages.first}
     end

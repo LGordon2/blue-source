@@ -8,7 +8,7 @@
 			<%= @to_manager.first_name.capitalize %>,
 		</p>
 		<p>
-			<%= @from_user.display_name %> has requested the following time off:
+			<%= mail_to @from_user.email, @from_user.display_name %> has requested the following time off:
 		</p>
 		<% unless @vacation_params[:start_date] == @vacation_params[:end_date] %>
 		<p>

@@ -23,15 +23,17 @@
 			<th><%= link_to 'Type',employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
 			<th>Half Day</th>
 			<% if @fy_vacations.count > 0 %>
+			<% unless @fy_vacations.count == @fy_vacations.where(status: "Pending").count %>
 			<th>Edit</th>
 			<th>Delete</th>
+			<% end %>
 			<% if @any_with_pending_status %>
 			<th>Accept?</th>
 			<% end %>
 			<% end %>
 		</tr>
 		<% @fy_vacations.each do |vacation| %>
-		<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= "success" if !flash[:created].blank? and vacation.id == flash[:created]  %> <%= "danger" if !flash[:updated].blank? and vacation.id == flash[:updated]  %>">
+		<tr id="<%= "vacation-#{vacation.id}" %>" class="vacation-row <%= if flash[:success] then "success" elsif flash[:warning] then "warning" else "danger" end if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 			<td class="edit-field">
 				<span><%= vacation.date_requested%></span>
 				<%= date_field_tag nil, vacation.date_requested, class: "hidden", id: "date_requested-#{vacation.id}" %>
@@ -56,17 +58,23 @@
 			<td class="check-field">
 				<%= check_box_tag nil, false, vacation.half_day, class: "hidden", id: "half_day-#{vacation.id}" %>
 			</td>
+			<% unless @fy_vacations.count == @fy_vacations.where(status: "Pending").count %>
 			<td>
+				<% unless vacation.status == "Pending" %>
 				<%= link_to "#", id: vacation.id, class: "edit-btn" do %>
 					<%= submit_tag "Update Time Off", class: "hidden btn btn-xs btn-primary", data: {method: :patch, "form-action" => employee_vacation_path(@employee,vacation), "vacation-id" => vacation.id} %>
 					<span class="glyphicon glyphicon-pencil"></span>
 				<% end %>
+				<% end %>
 			</td>
 			<td>
+				<% unless vacation.status == "Pending" %>
 				<%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete do %>
 					<span class="glyphicon glyphicon-trash"></span>
 				<% end %>
+				<% end %>
 			</td>
+			<% end %>
 			<% if @any_with_pending_status %>
 			<td>
 				<% if vacation.status == "Pending" %>

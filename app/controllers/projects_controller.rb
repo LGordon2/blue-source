@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
   
   def update
     if @project.update(project_params)
-      redirect_to @project, flash: {notice: "Project successfully updated."}
+      redirect_to @project, flash: {success: "Project successfully updated."}
     else
       redirect_to :back, flash: {error: @project.errors.full_messages.first}
     end
@@ -50,7 +50,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     if @project.save
-      redirect_to :back, flash: {notice: "Project saved successfully."}
+      redirect_to :back, flash: {success: "Project saved successfully."}
     else
       redirect_to :back, flash: {error: @project.errors.full_messages.first}
     end 

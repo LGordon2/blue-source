@@ -8,7 +8,6 @@ class VacationsController < ApplicationController
   before_action :validate_user_is_employee_or_above, only: [:view]
   
   def index
-    flash = {}
     respond_to do |format|
       format.json {render json: @employee.vacations}
       format.html
@@ -17,11 +16,17 @@ class VacationsController < ApplicationController
   
   def create
     @vacation = Vacation.new(vacation_params)
+    
     respond_to do |format|
       if @vacation.save
-        format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
+        warning_msg = check_vacation_days
+        unless warning_msg.blank?
+          format.html {redirect_to employee_vacations_path(@employee), flash: {warning: warning_msg, created: @vacation.id}}
+        else
+          format.html {redirect_to employee_vacations_path(@employee), flash: {success: "Time off successfully saved.", created: @vacation.id}}
+        end
       else
-        format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
+        format.html{redirect_to employee_vacations_path(@employee), flash: {error: @vacation.errors.full_messages}}
       end
     end
   end
@@ -30,9 +35,14 @@ class VacationsController < ApplicationController
     respond_to do |format|
       if @vacation.update(vacation_params)
         send_confirmation_email
-        format.html {redirect_to :back, flash: {notice: "Time off successfully updated.", created: @vacation.id}}
+        warning_msg = check_vacation_days
+        unless warning_msg.blank?
+          format.html {redirect_to employee_vacations_path(@employee), flash: {warning: warning_msg, created: @vacation.id}}
+        else
+          format.html {redirect_to :back, flash: {success: "Time off successfully updated.", created: @vacation.id}}
+        end
       else
-        format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
+        format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}
       end
     end
   end
@@ -45,9 +55,9 @@ class VacationsController < ApplicationController
     respond_to do |format|
       if @vacation.destroy
         send_confirmation_email
-        format.html{redirect_to :back, flash: {notice: "Vacation successfully deleted."}}
+        format.html{redirect_to :back, flash: {success: "Vacation successfully deleted."}}
       else
-        format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, updated: @vacation.id}}
+        format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}
       end
     end
   end
@@ -57,7 +67,7 @@ class VacationsController < ApplicationController
     respond_to do |format|
       if @vacation.save
         VacationRequestMailer.request_email(current_user, current_user.manager, vacation_params, params["cc"] == "1" ? current_user.email : nil).deliver
-        format.html {redirect_to :back, flash: {notice: "Time off successfully saved.", created: @vacation.id}}
+        format.html {redirect_to :back, flash: {success: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
       end
@@ -65,6 +75,20 @@ class VacationsController < ApplicationController
   end
   
   private
+  
+  def check_vacation_days
+    fiscal_year_of_start_date = @vacation.start_date.current_fiscal_year
+    fiscal_year_of_end_date = @vacation.end_date.current_fiscal_year
+    warnings = []
+    
+    if @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_start_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_start_date))
+      warnings << "Vacation saved, but this is borrowing days from fiscal year #{fiscal_year_of_start_date}."
+    end 
+    if fiscal_year_of_start_date != fiscal_year_of_end_date and @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_end_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_end_date))
+      warnings << "Vacation saved, but this is borrowing days from fiscal year #{fiscal_year_of_end_date}."
+    end
+    warnings
+  end
   
   def send_confirmation_email
      VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver unless params["confirm"].blank?

@@ -22,6 +22,20 @@ class Vacation < ActiveRecord::Base
     ["Sick","Vacation","Floating Holiday","Other"]
   end
   
+  def pdo_taken(fiscal_year=Date.current.year)
+    if fiscal_year > end_date.current_fiscal_year or fiscal_year < start_date.current_fiscal_year
+      return 0.0
+    end
+    date_range = (start_date..end_date)
+    if Date.new(fiscal_year).fiscal_new_year.in? date_range
+      return Vacation.calc_business_days_for_range(start_date,start_date.fiscal_new_year-1)
+    elsif Date.new(fiscal_year).previous_fiscal_new_year.in? date_range
+      return Vacation.calc_business_days_for_range(end_date.previous_fiscal_new_year,end_date) - (half_day==true ? 0.5 : 0)
+    else
+      return business_days
+    end
+  end
+  
   private
   
   def vacation_not_added_before_start_date
