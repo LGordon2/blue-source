@@ -25,7 +25,7 @@ class Vacation < ActiveRecord::Base
   private
   
   def vacation_not_added_before_start_date
-    unless self.employee.start_date.blank? or (self.employee.start_date <= self.start_date)
+    if !(self.employee.start_date.blank? or self.start_date.blank?) and (self.employee.start_date > self.start_date)
       errors.add(:start_date, "is before employee's start date.")
     end
   end
