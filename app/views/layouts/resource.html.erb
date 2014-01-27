@@ -33,6 +33,9 @@
 			</li>
 		</ul>
 	</div>
+	<div>
+		<p>{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+paged<%= @resource_for_angular.pluralize.capitalize %>[currentPage].length}} of {{resourcesPerPage*(paged<%= @resource_for_angular.pluralize.capitalize %>.length-1) + paged<%= @resource_for_angular.pluralize.capitalize %>[paged<%= @resource_for_angular.pluralize.capitalize %>.length-1].length}} </p>
+	</div>
 	<%= yield :footer %>
 </section>
 
