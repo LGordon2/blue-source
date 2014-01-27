@@ -23,7 +23,7 @@ class VacationsController < ApplicationController
         unless warning_msg.blank?
           format.html {redirect_to employee_vacations_path(@employee), flash: {warning: warning_msg, created: @vacation.id}}
         else
-          format.html {redirect_to employee_vacations_path(@employee), flash: {success: "Time off successfully saved.", created: @vacation.id}}
+          format.html {redirect_to employee_vacations_path(@employee, "fy" => @vacation.start_date.current_fiscal_year), flash: {success: "Time off successfully saved.", created: @vacation.id}}
         end
       else
         format.html{redirect_to employee_vacations_path(@employee), flash: {error: @vacation.errors.full_messages}}
@@ -37,9 +37,9 @@ class VacationsController < ApplicationController
         send_confirmation_email
         warning_msg = check_vacation_days
         unless warning_msg.blank?
-          format.html {redirect_to employee_vacations_path(@employee), flash: {warning: warning_msg, created: @vacation.id}}
+          format.html {redirect_to employee_vacations_path(@employee, "fy" => @vacation.start_date.current_fiscal_year), flash: {warning: warning_msg, created: @vacation.id}}
         else
-          format.html {redirect_to :back, flash: {success: "Time off successfully updated.", created: @vacation.id}}
+          format.html {redirect_to employee_vacations_path(@employee, "fy" => @vacation.start_date.current_fiscal_year), flash: {success: "Time off successfully updated.", created: @vacation.id}}
         end
       else
         format.html {redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}
@@ -67,7 +67,7 @@ class VacationsController < ApplicationController
     respond_to do |format|
       if @vacation.save
         VacationRequestMailer.request_email(current_user, current_user.manager, vacation_params, params["cc"] == "1" ? current_user.email : nil).deliver
-        format.html {redirect_to :back, flash: {success: "Time off successfully saved.", created: @vacation.id}}
+        format.html {redirect_to view_employee_vacations_path(current_user, "fy" => @vacation.start_date.current_fiscal_year), flash: {success: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
       end
@@ -100,7 +100,7 @@ class VacationsController < ApplicationController
     starting_year = @employee.start_date.blank? ? Date.current.year : @employee.start_date.fiscal_new_year.year
     @fy_options = (starting_year..Date.current.year+1).collect {|date| ["Fiscal Year #{date}",date]}.reverse
     @fy_vacations = @employee.vacations
-      .where("start_date >= ? and start_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)
+      .where("start_date >= ? and start_date < ? or end_date >= ? and end_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year,Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)
       .order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}")
     @any_with_pending_status = @fy_vacations.where(status: "Pending").count > 0
   end

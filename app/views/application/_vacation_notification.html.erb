@@ -6,9 +6,9 @@
 	</button>
 	<h5>The following employees have pending time off requests:</h5>
 	<ul>
-	<% Vacation.select("count(employee_id) as vacation_count, employee_id").where(manager: current_user, status: "Pending").group(:employee_id).each do |vacation| %>
-	<% employee = Employee.find(vacation.employee_id) %>
-	<li><%= link_to employee.display_name, employee_vacations_path(employee) %> (<%= vacation.vacation_count %>)</li>
+	<% Vacation.select("count(employee_id) as vacation_count, employee_id, start_date").where(manager: current_user, status: "Pending").group(:employee_id).each do |vacation| %>
+		<% employee = Employee.find(vacation.employee_id) %>
+		<li><%= link_to employee.display_name, employee_vacations_path(employee, "fy" => vacation.start_date.current_fiscal_year) %> (<%= vacation.vacation_count %>)</li>
 	<% end %>	
 	</ul>
 </div>
