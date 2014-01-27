@@ -10,6 +10,7 @@ project_list_ctrl = ($scope, $http, $filter) ->
     data.forEach (value, key) ->
       all_leads = ("#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}" for lead in value.leads)
       value.all_leads = all_leads.sort().join(", ")
+      value.client_partner.display_name = value.client_partner.first_name[0].toUpperCase()+value.client_partner.first_name[1..-1].toLowerCase() + " " + value.client_partner.last_name[0].toUpperCase()+value.client_partner.last_name[1..-1].toLowerCase() if value.client_partner
     $scope.projects = data
     $scope.search()
   $scope.show_inactive=false

@@ -8,13 +8,22 @@ class ProjectsController < ApplicationController
   
   layout :set_layout
   
+  def show
+    @all_leads = []
+    @project.leads.each do |lead|
+      @all_leads << lead.display_name unless lead.blank?
+    end
+    @all_leads = @all_leads.sort.join(", ")
+  end
+  
   def index
     @modal_title = "Add Project"
     @resource_for_angular = "project"
     respond_to do |format|
       format.json {render json: Project.all.to_json({
         include: [
-          {:leads => {:only => [:id, :first_name,:last_name]}}
+          {:leads => {:only => [:id, :first_name,:last_name]}},
+          {:client_partner => {:only => [:id, :first_name, :last_name]}}
         ], only: [:id, :name, :status]})}
       format.html {render action: :index}
     end
@@ -23,7 +32,6 @@ class ProjectsController < ApplicationController
   def leads
     respond_to do |format|
       format.json {render json: @project.leads.order(first_name: :asc), only: [:first_name,:last_name,:id]}
-      format.html
     end
   end
   
@@ -82,6 +90,6 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :start_date, :leads, :end_date, :status) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :start_date, :leads, :end_date, :status, :client_partner_id) if current_user.is_upper_management?
   end
 end
