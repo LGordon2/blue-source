@@ -5,14 +5,20 @@
 	</head>
 	<body>
 		<p>
-			Hi,
+			<%= @to_manager.first_name.capitalize %>,
 		</p>
 		<p>
-			<%= @current_user.display_name %> has requested the following time off:
+			<%= @from_user.display_name %> has requested the following time off:
 		</p>
+		<% unless @vacation_params[:start_date] == @vacation_params[:end_date] %>
 		<p>
 			<%= @vacation_params[:vacation_type] + " - from #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)} until #{Date.parse(@vacation_params[:end_date]).to_formatted_s(:long_ordinal)}."%>
 		</p>
+		<% else %>
+		<p>
+			<%= @vacation_params[:vacation_type] + " - on #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% end %>
 		<p>
 			At your earliest convenience, please log into <a href="https://bluesource.orasi.com/">BlueSource</a> and acknowledge this request.
 		</p>
