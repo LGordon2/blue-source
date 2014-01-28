@@ -9,6 +9,8 @@ BlueSource Team:
     Perry Thomas - Project Management
     Adam Thomas - Business Analysis, Design
     John Martin - Functional Testing
-    Lateef Livers - Functional Testing
+    Lateef Livers - Automation/Functional Testing
+    Kevin Hedgecock - Functional Testing
+    Jason Trogdon - Functional Testing
     Linley Love - Data Entry, User Acceptance Testing
 
