@@ -2,9 +2,9 @@ class ProjectsController < ApplicationController
   before_action :require_manager_login
   before_action :set_project, only: [:show, :edit, :update, :leads]
   
-  before_action :validate_start_date, only: [:new, :update]
-  before_action :validate_end_date, only: [:new, :update]
-  before_action :update_leads, only: [:new, :update]
+  before_action :validate_start_date, only: [:create, :update]
+  before_action :validate_end_date, only: [:create, :update]
+  after_action :update_leads, only: [:create, :update]
   
   layout :set_layout
   
@@ -73,11 +73,11 @@ class ProjectsController < ApplicationController
   end
   
   def update_leads
-    Employee.where(project_id: params[:id]).update_all(project_lead: false)
+    Employee.where(project: @project).update_all(project_lead: false)
     return unless params[:project][:leads]
     params[:project][:leads].each do |lead_id|
       next if lead_id.blank?
-      Employee.find(lead_id).update(project_id: params[:id], project_lead: true)
+      Employee.find(lead_id).update(project: @project, project_lead: true)
     end
   end
   

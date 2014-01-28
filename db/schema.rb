@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140127150137) do
+ActiveRecord::Schema.define(version: 20140128181100) do
 
   create_table "employees", force: true do |t|
     t.string   "username"
@@ -32,11 +32,10 @@ ActiveRecord::Schema.define(version: 20140127150137) do
     t.date     "roll_off_date"
     t.string   "email"
     t.string   "office_phone"
-    t.boolean  "project_lead"
     t.integer  "team_lead_id"
     t.string   "location"
     t.string   "department"
-    t.integer  "additional_days"
+    t.boolean  "project_lead"
   end
 
   create_table "projects", force: true do |t|
