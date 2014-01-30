@@ -14,6 +14,7 @@
 	<%= hidden_field :vacation, :employee_id, value: "#{@employee.id}" %>
 	<%= hidden_field :vacation, :status %>
 	<input name="_method" type="hidden" />
+	<div class="table-responsive">
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
 			<th><%= link_to 'Date Requested',employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
@@ -96,6 +97,7 @@
 			<td><%= check_box_tag nil, false, false, id: "half_day-new" %></td>
 		</tr>
 	</table>
+	</div>
 	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" %>
 	<%= submit_tag "Save Time Off", class: "btn btn-primary", data: {"form-action" => employee_vacations_path(@employee), method: :post} %>
 	<% end %>

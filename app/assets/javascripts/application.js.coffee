@@ -19,5 +19,5 @@
 $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
-  $("#contact-form").submit ->
-  	$("[data-loading-text]").button('loading')
+  $("form").submit ->
+  	$(this).find("[data-loading-text]").button('loading')

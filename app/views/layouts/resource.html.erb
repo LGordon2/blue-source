@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div ng-show='loaded'>
-		<div>
+		<div class="table-responsive">
 			<table ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
 				<%= yield :table %>
 			</table>

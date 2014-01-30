@@ -122,7 +122,6 @@ a
 .glyphicon.glyphicon-plus,.glyphicon.glyphicon-remove,.approval-btn
 {
   cursor:pointer;
-  
 }
 .glyphicon.glyphicon-plus
 {
@@ -132,8 +131,15 @@ a
 {
   color:red;
 }
-.additional-lead-field
+.team-lead-section
 {
-  width:96.7%;
-  display:inline;
+  .additional-lead-field{
+    width: 95%;
+    display: inline;
+  }
+  .glyphicon.glyphicon-remove{
+    width: 2%;
+    padding: 2px;
+  }
 }
+

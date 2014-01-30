@@ -2,6 +2,7 @@
 <%= render "notification_section" %>
 <%= render "vacation_summary" %>
 <% if @fy_vacations.count > 0 %>
+<div class="table-responsive">
 <table class="table table-responsive table-bordered">
 	<tr>
 		<th><%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
@@ -34,6 +35,7 @@
 	</tr>
 	<% end %>
 </table>
+</div>
 <% else %>
 <h5>No PDO used.</h5>
 <% end %>

@@ -26,8 +26,6 @@ $ ->
     $("#end_date-new").val($(this).val())
   $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this))
-  $("#request-form").submit ->
-    $("[data-loading-text]").button('loading')
 
   #Other...
   $("select.vacation-type").on "mouseenter mouseover mouseleave change", (event) ->
