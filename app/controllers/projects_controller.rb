@@ -73,11 +73,11 @@ class ProjectsController < ApplicationController
   end
   
   def update_leads
-    Employee.where(project: @project).update_all(project_lead: false)
-    return unless params[:project][:leads]
-    params[:project][:leads].each do |lead_id|
-      next if lead_id.blank?
-      Employee.find(lead_id).update(project: @project, project_lead: true)
+    ProjectLead.where(project: @project).delete_all
+    unless project_lead_ids[:leads].blank?
+      project_lead_ids[:leads].each do |lead_id|
+        ProjectLead.create(project: @project, employee: Employee.find(lead_id))
+      end
     end
   end
   
@@ -90,6 +90,10 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :start_date, :leads, :end_date, :status, :client_partner_id) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :start_date, :end_date, :status, :client_partner_id) if current_user.is_upper_management?
+  end
+  
+  def project_lead_ids
+    params.require(:project).permit(leads: []) if current_user.is_upper_management?
   end
 end

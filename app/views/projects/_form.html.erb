@@ -8,7 +8,7 @@
 	<%= f.select :client_partner_id, Employee.where(role: ["Manager","Director","AVP"]).order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}, class: "form-control" %>	
 </div>
 <%= f.label 'Team Lead(s)', class: "control-label team-lead-section" %>
-<% Employee.where(project_id: @project.id, project_lead: true).order(first_name: :asc).each do |lead| %>
+<% @project.leads.order(first_name: :asc).each do |lead| %>
 <div class="form-group team-lead-section">
 <%= f.select :leads, Employee.where(role: ["Consultant","Manager","Director","AVP"]).order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true, selected: lead.id},  name: "project[leads][]", class: "form-control additional-lead-field"%>
 <span class="glyphicon glyphicon-remove"></span>
