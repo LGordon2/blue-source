@@ -1,4 +1,4 @@
-<%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form"} do |f| %>
+<%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form", id: "request-form"} do |f| %>
   <%=f.hidden_field :date_requested, value: Date.current%>
   <div class="form-group">
     <strong>Requested on <%=Date.current%></strong>
@@ -23,9 +23,13 @@
     <%= f.label :business_days %>
     <div id="business_days-new"><strong></strong></div>
   </div>
+  <div>
+  	<%= f.label :memo %>
+  	<%= text_area_tag :memo, nil, class: "form-control" %>
+  </div>
   <div class="form-group">
     <label for="cc_check_box">CC me on this email.</label>
     <input id="cc_check_box" name="cc" type="checkbox" value="1">
   </div>
-  <%= f.submit class: "btn btn-primary"%>
+  <%= f.submit "Request time off", class: "btn btn-primary", "data-loading-text" => "Requesting..."%>
 <% end %>

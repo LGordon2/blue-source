@@ -1,11 +1,11 @@
 <% if flash.to_hash.size > 0 %>
-<% alert_type = if flash[:success] then "alert-success" elsif flash[:warning] then "alert-warning" else "alert-danger" end %>
+<% alert_type = if flash[:success] then "alert-success" elsif flash[:warning] then "alert-warning" elsif flash[:info] then "alert-info" else "alert-danger" end %>
 <div class="alert <%= alert_type %> alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 		&times;
 	</button>
 	<% msg_type = flash[:warning] ? "warning" : "error" %>
-	<% [flash[:success],flash[:error],flash[:warning]].each do |flash_msg| %>
+	<% [flash[:success],flash[:error],flash[:warning],flash[:info]].each do |flash_msg| %>
 		<% if flash_msg.kind_of?(Array) %>
 			<%= "The following #{'['+flash_msg.count.to_s+']' if flash_msg.count > 1} #{msg_type.pluralize(flash_msg.count)} occured:" %>
 		    <ul>

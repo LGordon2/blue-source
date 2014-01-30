@@ -3,7 +3,7 @@ class VacationRequestMailer < ActionMailer::Base
   
   before_action :attach_logo
   
-  def request_email(from_user, to_manager, vacation_params, cc=nil)
+  def request_email(from_user, to_manager, vacation_params, memo, cc=nil)
     if Rails.env.development?
       to_manager.email = "lewis.gordon@orasi.com"
       cc = "lewis.gordon@orasi.com"
@@ -12,6 +12,7 @@ class VacationRequestMailer < ActionMailer::Base
       to_manager.email = "bluesourceqa@gmail.com"
       cc = "bluesourceqa@gmail.com"
     end
+    @memo = memo
     @from_user = from_user
     @to_manager = to_manager
     @vacation_params = vacation_params

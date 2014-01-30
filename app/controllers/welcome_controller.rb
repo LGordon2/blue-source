@@ -43,7 +43,7 @@ class WelcomeController < ApplicationController
   def issue
     email = HelpMailer.comments_email(issue_params[:from],issue_params[:email],issue_params[:comments],issue_params[:type])
     email.deliver
-    redirect_to :back, flash: {email: "#{issue_params[:type].capitalize} email sent."}
+    redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
   
   private 

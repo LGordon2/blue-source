@@ -1,4 +1,4 @@
-<%= form_for :issue, method:"post",url:"/issue", html: {class: "form-horizontal", role: "form"} do |f| %>
+<%= form_for :issue, method:"post",url:"/issue", html: {class: "form-horizontal", role: "form", id: "contact-form"} do |f| %>
 <div class="form-group">
 	<%= f.hidden_field :from, value: current_user.display_name %>
 	<%= f.hidden_field :email, value: current_user.email %>
@@ -23,6 +23,6 @@
 </div>
 <div class="form-group modal-footer">
 <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
-<%= submit_tag "Send", class: "btn btn-primary"%>
+<%= submit_tag "Send", class: "btn btn-primary", "data-loading-text" => "Sending..."%>
 </div>
 <% end %>

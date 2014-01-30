@@ -19,6 +19,11 @@
 			<%= @vacation_params[:vacation_type] + " - on #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)}."%>
 		</p>
 		<% end %>
+		<% unless @memo.blank? %>
+		<p>
+			Memo from employee: <%= @memo %>
+		</p>
+		<% end %>
 		<p>
 			At your earliest convenience, please log into <a href="https://bluesource.orasi.com/">BlueSource</a> and acknowledge this request.
 		</p>
