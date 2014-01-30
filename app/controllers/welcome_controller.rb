@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_by(employee_params)
+    @employee = Employee.find_by(username: params[:employee][:username].downcase)
     
     unless !@employee.blank? and @employee.validate_against_ad(params[:employee][:password])
       additional_errors = @employee.blank? ? [] : @employee.errors.full_messages
@@ -50,9 +50,5 @@ class WelcomeController < ApplicationController
   
   def issue_params
     params.require(:issue).permit(:from, :email, :comments, :type)
-  end
-  
-  def employee_params
-    params.require(:employee).permit(:username)
   end
 end

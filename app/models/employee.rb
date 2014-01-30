@@ -12,7 +12,7 @@ class Employee < ActiveRecord::Base
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
   
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true, uniqueness: {case_sensitive: false}
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
