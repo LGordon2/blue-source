@@ -37,6 +37,9 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     else
       $scope.employees = []
     $scope.search()
+    $scope.loaded=true
+  $scope.loaded=false
+  $scope.loadProgress=100
   $scope.show_inactive=false
   $scope.predicate = 'last_name'
   $scope.reverse = false

@@ -13,6 +13,8 @@ project_list_ctrl = ($scope, $http, $filter) ->
       value.client_partner.display_name = value.client_partner.first_name[0].toUpperCase()+value.client_partner.first_name[1..-1].toLowerCase() + " " + value.client_partner.last_name[0].toUpperCase()+value.client_partner.last_name[1..-1].toLowerCase() if value.client_partner
     $scope.projects = data
     $scope.search()
+    $scope.loaded=true
+  $scope.loaded=false
   $scope.show_inactive=false
   $scope.predicate = 'name'
   $scope.reverse = false

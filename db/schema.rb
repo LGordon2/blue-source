@@ -32,10 +32,10 @@ ActiveRecord::Schema.define(version: 20140128181100) do
     t.date     "roll_off_date"
     t.string   "email"
     t.string   "office_phone"
+    t.boolean  "project_lead"
     t.integer  "team_lead_id"
     t.string   "location"
     t.string   "department"
-    t.boolean  "project_lead"
   end
 
   create_table "projects", force: true do |t|
