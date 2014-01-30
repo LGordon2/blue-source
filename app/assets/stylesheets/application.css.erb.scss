@@ -14,6 +14,19 @@
  *= require_self
  */
 $orasi_blue: #357bb9;
+.notification-list-group
+{
+  width: 25%;
+  a
+  {
+    color: $orasi_blue;
+  }
+}
+.badge-sm
+{
+  padding: 1px 7px;
+  background-color: $orasi_blue;
+}
 .table
 {
   td.logo-row
