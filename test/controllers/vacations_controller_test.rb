@@ -58,13 +58,13 @@ class VacationsControllerTest < ActionController::TestCase
 
   test "consultant's manager should be able to delete consultant's vacation" do
     delete :destroy, {employee_id: @consultant.id, id: @vacation.id}, {current_user_id: @manager.id} 
-    assert_redirected_to employee_vacations_path(@consultant.id)
+    assert_redirected_to :root
     assert_nil flash[:error]
   end
   
   test "consultant's manager's manager should be able to delete consultant's vacation" do
     delete :destroy, {employee_id: @consultant.id,id: @vacation.id}, {current_user_id: @director.id}
-    assert_redirected_to employee_vacations_path(@consultant.id)
+    assert_redirected_to :root
     assert_nil flash[:error]
   end
     
@@ -76,7 +76,7 @@ class VacationsControllerTest < ActionController::TestCase
   
   test "admin should be able to delete consultant's vacation" do
     delete :destroy, {employee_id: @consultant.id, id: @vacation.id}, {current_user_id: @admin.id} 
-    assert_redirected_to employee_vacations_path(@consultant.id)
+    assert_redirected_to :root
     assert_nil flash[:error]
   end
   

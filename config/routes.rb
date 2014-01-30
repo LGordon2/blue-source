@@ -10,12 +10,11 @@ ManagerPortal::Application.routes.draw do
       end
     end
   end
-  #get "employees/vacation/:id", to: "employees#vacation", as: :employee_vacation
-  #get "employees/vacation/:id/view", to: "employees#view_vacation", as: :view_vacation
+
   resources :employees, only: [:index,:show,:create,:update,:edit]
   
   #Projects
-  #get "projects/:id/leads", to: "projects#all_leads", as: :leads
+
   resources :projects, only: [:index,:show,:create,:update,:edit] do
     get 'leads'
   end
@@ -30,6 +29,8 @@ ManagerPortal::Application.routes.draw do
   resource :directory, only: [:show], controller: "directory" do
     resources :employees, only: [:index], action: "directory"
   end
+  
+  get 'absent', to: 'absent#index'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

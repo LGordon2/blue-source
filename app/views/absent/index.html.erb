@@ -1,0 +1,19 @@
+<h1>Who's out today?</h1>
+<ul>
+	<% @all_absent_today.each do |vacation| %>
+	<li><%= vacation.employee.display_name %> - <strong><%= vacation.vacation_type %></strong></li>
+	<% end %>
+</ul>
+<h1>Who's out this week?</h1>
+<ul>
+	<% @all_absent_this_week.each do |vacation_info| %>
+	<% unless vacation_info[:days_taken].blank? %>
+	<li><%= vacation_info[:name] %></li>
+	<ul>
+		<% vacation_info[:days_taken].each do |vacation_day| %>
+		<li><%= vacation_day[:vacation_type] %> -  <%= vacation_day[:vacation_days] %></li>
+		<% end %>
+	</ul>
+	<% end %>
+	<% end %>
+</ul>
