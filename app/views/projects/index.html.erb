@@ -13,13 +13,17 @@
 </tr>
 <% end %>
 <% content_for :header_btns do %>
+<% unless Project.where(status: "Inactive").count == 0 %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
 </div>
+<% end %>
+<% unless current_user.role.downcase == 'manager' %>
 <div class="btn-group">
-	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} unless current_user.role.downcase == 'manager' %>
+	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
 </div>
+<% end %>
 <% end %>
 <% content_for :footer do %>
 	<% content_for "modal_header_1" do %>
