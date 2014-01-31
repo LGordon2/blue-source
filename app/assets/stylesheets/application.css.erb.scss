@@ -20,12 +20,15 @@ $orasi_blue: #357bb9;
 }
 .notification-list-group
 {
-  width: 75%;
+  width: 100%;
   @media (min-width: 468px){
-    width: 50%;
+    width: 60%;
   }
   
   @media (min-width: 768px) {
+    width: 40%;
+  }
+  @media (min-width: 1200px){
     width: 30%;
   }
   a
