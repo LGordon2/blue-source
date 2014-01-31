@@ -8,24 +8,28 @@
 employee_list_ctrl = ($scope, $http, $filter) ->
   $http.get('/directory/employees.json').success (data) ->
     if (angular.isObject(data))
-      data.forEach (value, key) ->
-        value.first_name = value.first_name[0].toUpperCase() + value.first_name[1..-1]
-        value.last_name = (value.last_name.split(' ').map (name) -> (name.split("-").map (name) -> (name.split("'").map (word) -> word[0].toUpperCase() + word[1..-1].toLowerCase()).join "'").join "-").join " "
+      data.forEach (value,key) ->
         value.display_name = "#{value.first_name} #{value.last_name}"
-        value.manager_name = value.manager.first_name[0].toUpperCase() + value.manager.first_name[1..-1] + " " + value.manager.last_name[0].toUpperCase() + value.manager.last_name[1..-1] if value.manager
+        value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
       $scope.employees = data
     else
       $scope.employees = []
     $scope.search()
+    $scope.loaded=true
+  $scope.loaded=false
   $scope.predicate = 'last_name'
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name'
   employeesPerPage = 10
+  $scope.resourcesPerPage = employeesPerPage
   
   $scope.filter_on_id = true
   $scope.test = (expected, actual) ->
     return unless actual == '' then parseInt(actual) == parseInt(expected) else true
+    
+  $scope.here = (obj) ->
+    console.log(obj)
 
   searchMatch = (haystack, needle) ->
     return false unless haystack
@@ -39,7 +43,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       searchMatch(employee.display_name, $scope.query) ||
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
-      searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager_name, $scope.query))) || 
+      searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
       searchMatch(employee.department, $scope.query) ||
       searchMatch(employee.office_phone, $scope.query) ||
       searchMatch(employee.cell_phone, $scope.query)

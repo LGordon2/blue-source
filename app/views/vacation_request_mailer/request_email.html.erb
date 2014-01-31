@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>
+			<%= @to_manager.first_name.capitalize %>,
+		</p>
+		<p>
+			<%= mail_to @from_user.email, @from_user.display_name %> has requested the following time off:
+		</p>
+		<% unless @vacation_params[:start_date] == @vacation_params[:end_date] %>
+		<p>
+			<%= @vacation_params[:vacation_type] + " - from #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)} until #{Date.parse(@vacation_params[:end_date]).to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% else %>
+		<p>
+			<%= @vacation_params[:vacation_type] + " - on #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% end %>
+		<% unless @memo.blank? %>
+		<p>
+			Memo from employee: <%= @memo %>
+		</p>
+		<% end %>
+		<p>
+			At your earliest convenience, please log into <a href="https://bluesource.orasi.com/">BlueSource</a> and acknowledge this request.
+		</p>
+		<p>
+			Thank you,
+		</p>
+		<%= image_tag attachments['logo.png'].url, width: 137, height: 47 -%>
+		<% unless Rails.env.production? %>
+		<p>
+			Please disregard this email.  If you are receiving this email incorrectly, please send all angry emails to <%= mail_to "lewis.gordon@orasi.com" %>.
+		</p>
+		<% end %>
+	</body>
+</html>

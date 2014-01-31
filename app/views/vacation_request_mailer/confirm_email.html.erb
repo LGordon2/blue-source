@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<p><%= @to_employee.first_name.capitalize %>,</p>
+		
+		<% if @accepted %>
+		<p><%= mail_to @from_manager.email, @from_manager.display_name %><%= " has approved your request for the following time off:" %></p>
+		<% else %>
+		<p>Unfortunately, <%= mail_to @from_manager.email, "your manager" %> was unable to approve the time you requested:</p>
+		<% end %>
+		
+		<% unless @vacation.start_date == @vacation.end_date %>
+		<p><%= @vacation.vacation_type + " - from #{@vacation.start_date.to_formatted_s(:long_ordinal)} until #{@vacation.end_date.to_formatted_s(:long_ordinal)}"%></p>
+		<% else %>
+		<p><%= @vacation.vacation_type + " - on #{@vacation.start_date.to_formatted_s(:long_ordinal)}"%></p>
+		<% end %>
+		
+		<p>Please log into <%= link_to "BlueSource", "https://bluesource.orasi.com" %> to view your new time off summary.</p>
+		<p>Thank you,</p>
+		<%= image_tag attachments['logo.png'].url, width: 137, height: 47 -%>
+		
+		
+		<% unless Rails.env.production? %>
+		<p>
+			Please disregard this email.  If you are receiving this email incorrectly, please send all angry emails to <%= mail_to "lewis.gordon@orasi.com" %>.
+		</p>
+		<% end %>
+	</body>
+</html>

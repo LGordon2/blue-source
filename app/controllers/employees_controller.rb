@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action :require_manager_login, except: :view_vacation
+  before_action :require_manager_login, except: [:view_vacation,:directory]
   before_action :set_user, only: [:show, :edit, :vacation, :update, :view_vacation]
   
   #Only manager of employee can edit vacation, employee info, or update info.
@@ -27,13 +27,16 @@ class EmployeesController < ApplicationController
     end
   end
   
-  def edit
+  def directory
+    respond_to do |format|
+      format.json {render json: all_employees_for_directory.to_json}
+    end
   end
   
   def create
     @employee = Employee.new(employee_params)
     if @employee.save
-      redirect_to :root, flash: {notice: "Employee added successfully."}
+      redirect_to :root, flash: {success: "Employee added successfully."}
     else
       redirect_to :root, flash: {error: @employee.errors.full_messages}
     end 
@@ -43,28 +46,18 @@ class EmployeesController < ApplicationController
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
     respond_to do |format|
-      format.json {render json: current_user.all_subordinates.to_json({
-        include: [
-          {:manager => {:only => [:first_name,:last_name]}}, 
-          {:project => {:only => :name}}], 
-        only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
-      })}
-      format.html
-    end
-  end
-  
-  def vacation
-    respond_to do |format|
-      format.json {render json: @employee.vacations}
+      format.json {
+        render json: subordinates_hash.to_json
+      }
       format.html
     end
   end
   
   def update
     if @employee.update(employee_params)
-      redirect_to @employee, flash: {notice: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
+      redirect_to @employee, flash: {success: "Employee successfully updated.", project: !employee_params[:project_id].nil?}
     else
-      redirect_to :back, flash: {error: @employee.errors.full_messages.first}
+      redirect_to @employee, flash: {error: @employee.errors.full_messages.first}
     end
   end
   
@@ -80,7 +73,7 @@ class EmployeesController < ApplicationController
   end
   
   def check_employee_is_current_user_or_manager
-    redirect_to :root unless current_user == @employee or current_user.above? @employee or current_user.is_upper_management?
+    redirect_to :root, flash: {error: "You do not have permission to view this employee."} unless current_user == @employee or current_user.above? @employee or current_user.is_upper_management?
   end
   
   def set_layout
@@ -109,5 +102,41 @@ class EmployeesController < ApplicationController
     allowed_params += [:role, :manager_id, :status, :additional_days] if current_user.is_upper_management?
     param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
+  end
+  
+  def subordinates_hash
+    current_user.all_subordinates.as_json({
+    include: [
+      {:manager => {:only => [:id,:first_name,:last_name]}}, 
+      {:project => {:only => :name}}], 
+    only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
+  }).map do |e| 
+      capitalize_names_and_projects(e)
+    end
+  end
+  
+  def all_employees_for_directory
+    Employee.all.as_json({
+      include: [
+        {manager: {only: [:id,:first_name,:last_name, :email]}}
+      ],
+      only: [:id, :first_name, :last_name, :email, :department, :office_phone, :cell_phone, :im_name, :im_client]
+    }).map do |e|
+      capitalize_names_and_projects(e)
+    end
+  end
+  
+  def capitalize_names_and_projects(employee)
+     employee = employee.merge("first_name"=>employee['first_name'].capitalize,
+             "last_name"=>employee['last_name'].capitalize)
+     employee = employee.merge("project"=>{"name"=>"Not billable"}) if employee['project'].blank?
+     unless employee['manager'].nil?
+       employee.merge("manager"=>employee['manager'].merge({
+         "first_name"=>employee['manager']['first_name'].capitalize,
+         "last_name"=>employee['manager']['last_name'].capitalize
+       })) 
+     else 
+       employee 
+     end 
   end
 end

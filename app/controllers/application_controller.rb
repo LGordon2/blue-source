@@ -5,7 +5,13 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user
   
+  before_action :set_locale
+ 
   private
+  
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
  
   # Finds the Employee with the ID stored in the session with the key
   # :current_user_id This is a common way to handle user login in
@@ -31,7 +37,13 @@ class ApplicationController < ActionController::Base
     if current_user.nil?
       redirect_to :login
     elsif !current_user.is_manager_or_higher?
-      redirect_to view_vacation_path(current_user)
+      redirect_to view_employee_vacations_path(current_user)
+    end
+  end
+  
+  def require_login
+    if current_user.nil?
+      redirect_to :login
     end
   end
 end

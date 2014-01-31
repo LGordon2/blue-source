@@ -1,11 +1,13 @@
-<% if flash[:notice] or flash[:error] %>
-<div class="alert <%= flash[:notice].blank? ? "alert-danger" : "alert-success" %> alert-dismissable">
+<% if flash.to_hash.size > 0 %>
+<% alert_type = if flash[:success] then "alert-success" elsif flash[:warning] then "alert-warning" elsif flash[:info] then "alert-info" else "alert-danger" end %>
+<div class="alert <%= alert_type %> alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 		&times;
 	</button>
-	<% [flash[:notice],flash[:error]].each do |flash_msg| %>
+	<% msg_type = flash[:warning] ? "warning" : "error" %>
+	<% [flash[:success],flash[:error],flash[:warning],flash[:info]].each do |flash_msg| %>
 		<% if flash_msg.kind_of?(Array) %>
-			<%= "The following [#{flash_msg.count}] errors occured:" %>
+			<%= "The following #{'['+flash_msg.count.to_s+']' if flash_msg.count > 1} #{msg_type.pluralize(flash_msg.count)} occured:" %>
 		    <ul>
 			<% flash_msg.each do |msg| %>
 			<li>

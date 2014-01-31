@@ -1,0 +1,63 @@
+<h1>Time Off Details for <%= @employee.display_name %></h1>
+<%= render "notification_section" %>
+<%= render "vacation_summary" %>
+<% if @fy_vacations.count > 0 %>
+<div class="table-responsive">
+<table class="table table-responsive table-bordered">
+	<tr>
+		<th><%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Start Date',view_employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'End Date',view_employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Total Business Days',view_employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true')  %></th>
+		<th><%= link_to 'Type',view_employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true')  %></th>
+		<% if @any_with_pending_status %>
+		<th><%= link_to "Status",view_employee_vacations_path(@employee, sort: :status, rev: params[:rev]!='true')%></th>
+		<th>Cancel</th>
+		<% end %>
+	</tr>
+	<% @fy_vacations.each do |vacation| %>
+	<tr>
+		<td><%= vacation.date_requested %></td>
+		<td><%= vacation.start_date %></td>
+		<td><%= vacation.end_date %></td>
+		<td><%= vacation.business_days.prettify %></td>
+		<td><%= vacation.vacation_type %></td>
+		<% if @any_with_pending_status %>
+		<td><%= vacation.status %></td>
+		<td>
+			<% if vacation.status == "Pending" %>
+			<%= link_to employee_vacation_path(current_user, vacation), method: :delete do %>
+				<span class="glyphicon glyphicon-remove"></span>
+			<% end %>
+			<% end %>
+		</td>
+		<% end %>
+	</tr>
+	<% end %>
+</table>
+</div>
+<% else %>
+<h5>No PDO used.</h5>
+<% end %>
+<div>
+	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" unless current_user.role == "Consultant"%>
+	<% if current_user == @employee %>
+	<%= mail_to @employee.manager.email, "Email manager", class: "btn btn-default" unless @employee.manager.blank? %>
+	<%= button_tag "Request time off", class: "btn btn-primary", data: {target: "#modal_2", toggle: "modal"} %>
+	<% end %>
+</div>
+
+<%# Modal stuff %>
+<% content_for "modal_header_1" do %>
+	Time off details for <%= "FY#{@fyear}"%>
+<% end %>
+<% content_for "modal_content_1" do %>
+	<%= render "details" %>
+<% end %>
+<% content_for "modal_header_2" do %>
+	Request PDO
+<% end %>
+<% content_for "modal_content_2" do %>
+	<%= render "form_request" %>
+<% end %>
+<%= render "modals/modal_group"%>

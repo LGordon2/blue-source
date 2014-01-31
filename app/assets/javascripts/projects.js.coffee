@@ -10,14 +10,18 @@ project_list_ctrl = ($scope, $http, $filter) ->
     data.forEach (value, key) ->
       all_leads = ("#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}" for lead in value.leads)
       value.all_leads = all_leads.sort().join(", ")
+      value.client_partner.display_name = value.client_partner.first_name[0].toUpperCase()+value.client_partner.first_name[1..-1].toLowerCase() + " " + value.client_partner.last_name[0].toUpperCase()+value.client_partner.last_name[1..-1].toLowerCase() if value.client_partner
     $scope.projects = data
     $scope.search()
+    $scope.loaded=true
+  $scope.loaded=false
   $scope.show_inactive=false
   $scope.predicate = 'name'
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
   projectsPerPage = 10;
+  $scope.resourcesPerPage = projectsPerPage;
   
   $scope.filter_on_id = true
 
@@ -27,7 +31,6 @@ project_list_ctrl = ($scope, $http, $filter) ->
     return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
     
   $scope.search = ->
-    console.log($scope.predicate)
     $scope.filteredProjects = $filter('filter')($scope.projects, (project) ->
       return searchMatch(project.name, $scope.query) || searchMatch(project.all_leads, $scope.query) || searchMatch(project.status, $scope.query) 
     )

@@ -1,0 +1,20 @@
+<div class="vacation-summary-table well">
+	<%= form_tag({controller: controller_name, action: action_name}, method: :get, style: "padding-bottom:10px", class: "pull-right") do %>
+		<%=select_tag "fy", options_for_select(@fy_options,@fyear), onchange: "submit();" %>
+	<% end %>
+	<span>Estimated Time off for <%= "Fiscal Year #{@fyear}"%>:</span>
+	<% ["Sick","Vacation","Floating Holiday"].each do |vacation_type| %>
+		<% days_taken = @employee.pdo_taken(Date.new(@fyear),vacation_type).prettify %>
+		<% max_days = @employee.max_days(vacation_type,Date.new(@fyear)) %>
+		<% tooltip_title = "#{pluralize(@employee.max_days(vacation_type,Date.new(@fyear)) - @employee.pdo_taken(Date.new(@fyear),vacation_type).prettify,'day')} left." %>
+		<% if vacation_type == "Vacation" %>
+			<% surplus_days = @employee.surplus_vacation_taken(Date.new(@fyear-1)) %>
+			<% tooltip_title += " (#{pluralize(surplus_days.prettify,'day')}" + " carried over from FY#{@fyear-1}.)" unless surplus_days == 0 %>
+		<% end %>
+		<span data-toggle="tooltip" data-placement="bottom" title="<%= tooltip_title %>" >
+			<%= "#{days_taken}/#{max_days}" %>
+			<%= vacation_type + if vacation_type=='Floating Holiday' then "s" else " Days" end %>
+		</span>
+	<% end %>
+	<%= link_to "Details", "#", data: {toggle: "modal", target: "#modal_1"} %>
+</div>

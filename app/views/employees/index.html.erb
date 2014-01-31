@@ -11,7 +11,7 @@
 	<td><%= link_to '{{employee.first_name}}', "employees/{{employee.id}}"%></td>
 	<td><%= link_to '{{employee.last_name}}', "employees/{{employee.id}}"%></td>
 	<td>{{employee.role}}</td>
-	<td><%= link_to '{{employee.manager_name}}', "employees/{{employee.manager_id}}"%></td>
+	<td><%= link_to '{{employee.manager.display_name}}', "employees/{{employee.manager.id}}"%></td>
 	<td ng-show="employee.project.name!='Not billable'"><%= link_to '{{employee.project.name}}', "projects/{{employee.project_id}}"%></td>
 	<td ng-hide="employee.project.name!='Not billable'">Not billable</td>
 	<td>{{employee.location}}</td>
@@ -19,10 +19,15 @@
 <% end %>
 
 <% content_for :welcome_msg do %>
-Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
+<%= t(:welcome) %>, <%= link_to current_user.first_name.capitalize, current_user %>.
+<% end %>
+
+<% content_for :header_msgs do %>
+<%= render "vacation_notification"%>
 <% end %>
 
 <% content_for :header_btns do %>
+
 <% if !current_user.subordinates.blank? and current_user.subordinates.count > 0 and current_user.subordinates.count != current_user.all_subordinates.count %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary active" ng-click="current_id='';search()">
@@ -33,13 +38,20 @@ Welcome, <%= link_to current_user.first_name.capitalize, current_user %>.
 		Filtered </label>
 </div>
 <% end %>
+
+<% unless current_user.all_subordinates.where(status: "Inactive").count == 0 %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
 </div>
+<% end %>
+
+<% unless current_user.role.downcase == 'manager' %>
 <div class="btn-group">
-	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} unless current_user.role.downcase == 'manager' %>
+	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
 </div>
+<% end %>
+
 <% end %>
 
 <% content_for :footer do %>

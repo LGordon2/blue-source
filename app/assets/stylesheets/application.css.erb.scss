@@ -14,6 +14,34 @@
  *= require_self
  */
 $orasi_blue: #357bb9;
+.bs-docs-nav .navbar-toggle .icon-bar
+{
+  background-color: $orasi_blue;
+}
+.notification-list-group
+{
+  width: 100%;
+  @media (min-width: 468px){
+    width: 60%;
+  }
+  
+  @media (min-width: 768px) {
+    width: 40%;
+  }
+  @media (min-width: 1200px){
+    width: 30%;
+  }
+  a
+  {
+    color: $orasi_blue;
+  }
+}
+
+.badge-sm
+{
+  padding: 1px 7px;
+  background-color: $orasi_blue;
+}
 .table
 {
   td.logo-row
@@ -74,6 +102,11 @@ $orasi_blue: #357bb9;
     padding:10px;
   }
 }
+
+.container > .navbar-header
+{
+  margin: 0px;
+}
 .panel-group
 {
   margin-bottom: 20px;
@@ -84,9 +117,9 @@ $orasi_blue: #357bb9;
   }
 }
 
-a:hov
 textarea
 {
+  min-height: 54px;
   resize: none;  
 }
 .container.login-form
@@ -98,18 +131,9 @@ a
 {
   color:$orasi_blue;
 }
-.vacation-summary-table
-{
-  padding:10px;
-  span
-  {
-    padding:10px;
-  }
-}
-.glyphicon.glyphicon-plus,.glyphicon.glyphicon-remove
+.glyphicon.glyphicon-plus,.glyphicon.glyphicon-remove,.approval-btn
 {
   cursor:pointer;
-  
 }
 .glyphicon.glyphicon-plus
 {
@@ -119,8 +143,15 @@ a
 {
   color:red;
 }
-.additional-lead-field
+.team-lead-section
 {
-  width:96.7%;
-  display:inline;
+  .additional-lead-field{
+    width: 95%;
+    display: inline;
+  }
+  .glyphicon.glyphicon-remove{
+    width: 2%;
+    padding: 2px;
+  }
 }
+

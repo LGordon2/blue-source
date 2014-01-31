@@ -5,12 +5,12 @@
 <% content_for 'panel_body_1' do %>
 <table class="table table-responsive">
 	<tr>
+	<td>Client Partner</td>
+	<td><%= @project.client_partner.display_name unless @project.client_partner.blank? %></td>
+	</tr>
+	<tr>
 		<td>Team Leads</td>
-		<% @all_leads = [] %>
-		<% @project.leads.each do |lead| %>
-		<% @all_leads << lead.display_name unless lead.blank? %>
-		<% end %>
-		<td><%= @all_leads.sort.join(", ") %></td>
+		<td><%= @all_leads %></td>
 	</tr>
 	<tr>
 		<td>Start Date</td>
