@@ -63,6 +63,11 @@ class VacationsController < ApplicationController
   end
   
   def requests
+    if current_user.manager.blank?
+      redirect_to :back, flash: {error: "You don't have a manager, so you cannot request time off."}
+      return
+    end
+    
     @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
     respond_to do |format|
       if @vacation.save
