@@ -20,4 +20,11 @@ $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
   $("form").submit ->
-  	$(this).find("[data-loading-text]").button('loading')
+    valid = "true"
+    $(this).find("[required]").each (index) ->
+      if $(this).val() == ""
+        $(this).parent("div.form-group").addClass("has-error")
+        valid = "false"
+      else
+        $(this).parent("div.form-group").removeClass("has-error")
+    $(this).find("[data-loading-text]").button('loading') if valid == "true"
