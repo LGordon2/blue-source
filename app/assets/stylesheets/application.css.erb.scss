@@ -20,12 +20,16 @@ $orasi_blue: #357bb9;
 }
 .notification-list-group
 {
-  width: 25%;
+  width: 50%;
+  @media (min-width: 768px) {
+    width: 25%;
+  }
   a
   {
     color: $orasi_blue;
   }
 }
+
 .badge-sm
 {
   padding: 1px 7px;
