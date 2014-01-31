@@ -18,6 +18,8 @@
   <div class="form-group">
     <%= f.label :half_day %>
     <%= f.check_box :half_day, id: "half_day-new" %>
+    <label for="cc_check_box">CC me on this email.</label>
+    <input id="cc_check_box" name="cc" type="checkbox" value="1">
   </div>
   <div class="form-group">
     <%= f.label :business_days %>
@@ -26,10 +28,6 @@
   <div>
   	<%= f.label :memo %>
   	<%= text_area_tag :memo, nil, class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <label for="cc_check_box">CC me on this email.</label>
-    <input id="cc_check_box" name="cc" type="checkbox" value="1">
   </div>
   <%= f.submit "Request time off", class: "btn btn-primary", "data-loading-text" => "Requesting..."%>
 <% end %>
