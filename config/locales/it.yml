@@ -1,0 +1,10 @@
+it:
+  welcome: "Benvenuto"
+  first_name: "Nome"
+  last_name: "Cognome"
+  supervisor: "Supervisore"
+  project: "Progetto"
+  location: "Posizione"
+  search_placeholder: "Cerca qui..."
+  not_billable: "Non fatturabile"
+  role: "Ruolo"

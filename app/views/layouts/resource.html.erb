@@ -4,7 +4,7 @@
 	<%= yield :header_msgs %>
 	<%= render 'notification_section' %>
 	<div class>
-		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
+		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="<%= t(:search_placeholder) %>">
 	</div>
 	<div>
 		<div class="radio-btn-section">
