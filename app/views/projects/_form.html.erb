@@ -5,7 +5,7 @@
 </div>
 <div class="form-group">
 	<%= f.label :client_partner, class: "control-label" %>
-	<%= f.select :client_partner_id, Employee.where(role: ["Manager","Director","AVP"]).order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}, class: "form-control" %>	
+	<%= f.select :client_partner_id, Employee.where(role: ["Consultant","Manager","Director","AVP"]).order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {include_blank: true}, class: "form-control" %>	
 </div>
 <%= f.label 'Team Lead(s)', class: "control-label team-lead-section" %>
 <% @project.leads.order(first_name: :asc).each do |lead| %>
