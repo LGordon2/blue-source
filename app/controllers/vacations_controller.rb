@@ -71,7 +71,7 @@ class VacationsController < ApplicationController
     @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
     respond_to do |format|
       if @vacation.save
-        VacationRequestMailer.request_email(current_user, current_user.manager, vacation_params, params[:memo], params["cc"] == "1" ? current_user.email : nil).deliver
+        VacationRequestMailer.request_email(current_user, current_user.manager, @vacation, params[:memo], params["cc"] == "1" ? current_user.email : nil).deliver
         format.html {redirect_to view_employee_vacations_path(current_user, "fy" => @vacation.start_date.current_fiscal_year), flash: {success: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
