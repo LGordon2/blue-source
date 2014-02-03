@@ -14,6 +14,7 @@
 	<%= hidden_field :vacation, :employee_id, value: "#{@employee.id}" %>
 	<%= hidden_field :vacation, :status %>
 	<input name="_method" type="hidden" />
+	<div class="table-responsive">
 	<table class="table table-responsive table-bordered table-hover table-condensed">
 		<tr>
 			<th><%= link_to 'Date Requested',employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
@@ -50,7 +51,7 @@
 				<strong></strong>
 			</td>
 			<td class="edit-field">
-				<span data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>">
+				<span id="vacation_reason-<%= vacation.id%>" data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>">
 					<%= vacation.vacation_type%>
 				</span>
 				<%= select_tag nil, options_for_select(Vacation.types,vacation.vacation_type), data: {title: "Reason", content: "<input id='reason-#{vacation.id}' value='#{vacation.reason}'>", placement: 'top', html: true, animation: false}, class:"vacation-type hidden", id: "vacation_type-#{vacation.id}" %>
@@ -96,6 +97,7 @@
 			<td><%= check_box_tag nil, false, false, id: "half_day-new" %></td>
 		</tr>
 	</table>
+	</div>
 	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" %>
 	<%= submit_tag "Save Time Off", class: "btn btn-primary", data: {"form-action" => employee_vacations_path(@employee), method: :post} %>
 	<% end %>

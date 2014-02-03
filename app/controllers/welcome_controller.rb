@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_by(employee_params)
+    @employee = Employee.find_by(username: params[:employee][:username].downcase)
     
     unless !@employee.blank? and @employee.validate_against_ad(params[:employee][:password])
       additional_errors = @employee.blank? ? [] : @employee.errors.full_messages
@@ -43,16 +43,12 @@ class WelcomeController < ApplicationController
   def issue
     email = HelpMailer.comments_email(issue_params[:from],issue_params[:email],issue_params[:comments],issue_params[:type])
     email.deliver
-    redirect_to :back, flash: {email: "#{issue_params[:type].capitalize} email sent."}
+    redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
   
   private 
   
   def issue_params
     params.require(:issue).permit(:from, :email, :comments, :type)
-  end
-  
-  def employee_params
-    params.require(:employee).permit(:username)
   end
 end

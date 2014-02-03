@@ -10,13 +10,23 @@
 		<p>
 			<%= mail_to @from_user.email, @from_user.display_name %> has requested the following time off:
 		</p>
-		<% unless @vacation_params[:start_date] == @vacation_params[:end_date] %>
+		<% unless @vacation.reason.blank? %>
+		<% reason_msg = "(#{@vacation.reason})"%>
+		<% else %>
+		<% reason_msg = "" %>
+		<% end%>
+		<% unless @vacation.start_date == @vacation.end_date %>
 		<p>
-			<%= @vacation_params[:vacation_type] + " - from #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)} until #{Date.parse(@vacation_params[:end_date]).to_formatted_s(:long_ordinal)}."%>
+			<%= @vacation.vacation_type + reason_msg + " - from #{@vacation.start_date.to_formatted_s(:long_ordinal)} until #{@vacation.end_date.to_formatted_s(:long_ordinal)}."%>
 		</p>
 		<% else %>
 		<p>
-			<%= @vacation_params[:vacation_type] + " - on #{Date.parse(@vacation_params[:start_date]).to_formatted_s(:long_ordinal)}."%>
+			<%= @vacation.vacation_type + reason_msg + " - on #{@vacation.start_date.to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% end %>
+		<% unless @memo.blank? %>
+		<p>
+			Memo from employee: <%= @memo %>
 		</p>
 		<% end %>
 		<p>

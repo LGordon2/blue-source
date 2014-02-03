@@ -1,31 +1,33 @@
-<%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form"} do |f| %>
-  <%=f.hidden_field :date_requested, value: Date.current%>
+<%= form_for :vacation, url: requests_employee_vacations_path(@employee), html: {role: "form", id: "request-form"} do |f| %>
+  <%=f.hidden_field :date_requested, value: Date.current %>
   <div class="form-group">
     <strong>Requested on <%=Date.current%></strong>
   </div>
   <div class="form-group">
-    <%= f.label :start_date %>
+    <%= f.label :start_date, class: "control-label" %>
     <%= f.date_field :start_date, class: "date-field form-control", id: "start_date-new", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
   </div>
   <div class="form-group">
-    <%= f.label :end_date %>
+    <%= f.label :end_date, class: "control-label" %>
     <%= f.date_field :end_date, class: "date-field form-control", id: "end_date-new", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
   </div>
   <div class="form-group">
     <%= f.label :vacation_type %>
-    <%= f.select :vacation_type, Vacation.types - ["Other"], {}, class: "form-control" %>
+    <%= f.select :vacation_type, @employee.status != "Contractor" ? Vacation.types - ["Other"] : Vacation.types - ["Other","Floating Holiday"], {}, class: "form-control" %>
   </div>
   <div class="form-group">
     <%= f.label :half_day %>
     <%= f.check_box :half_day, id: "half_day-new" %>
+    <label for="cc_check_box">CC me on this email.</label>
+    <input id="cc_check_box" name="cc" type="checkbox" value="1">
   </div>
   <div class="form-group">
     <%= f.label :business_days %>
     <div id="business_days-new"><strong></strong></div>
   </div>
-  <div class="form-group">
-    <label for="cc_check_box">CC me on this email.</label>
-    <input id="cc_check_box" name="cc" type="checkbox" value="1">
+  <div>
+  	<%= f.label :memo %>
+  	<%= text_area_tag :memo, nil, class: "form-control" %>
   </div>
-  <%= f.submit class: "btn btn-primary"%>
+  <%= f.submit "Request time off", class: "btn btn-primary", "data-loading-text" => "Requesting..."%>
 <% end %>

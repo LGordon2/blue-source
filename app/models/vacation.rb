@@ -17,9 +17,20 @@ class Vacation < ActiveRecord::Base
   validate :vacation_not_already_included
   validate :reason_present_if_other
   validate :vacation_not_added_before_start_date
+  validate :pdo_type_must_be_other_if_contractor
   
   def self.types
     ["Sick","Vacation","Floating Holiday","Other"]
+  end
+  
+  def pdo_type_must_be_other_if_contractor
+    if self.employee.status == "Contractor" and !self.vacation_type.in? ["Sick", "Vacation", "Other"]
+      errors.add(:base, "Contractors can only take sick or vacation time.")
+    elsif self.employee.status == "Contractor" and self.vacation_type != "Other"
+      self.reason = "Contractor #{self.vacation_type}"
+      self.vacation_type = "Other"
+      self.save
+    end
   end
   
   def pdo_taken(fiscal_year=Date.current.year)

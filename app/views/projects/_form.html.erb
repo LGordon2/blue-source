@@ -18,7 +18,7 @@
 	<script type="text/javascript">
 	$(document).on("ready", function() {
 	  $("#add-team-lead").on("click", function() {
-	    $(".team-lead-section").last().after('<div class="form-group team-lead-section"><%= f.select(:leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {}, name: "project[leads][]", class: "form-control additional-lead-field", style: "margin-right:5px;").tr_s("\n","").html_safe %><span class="glyphicon glyphicon-remove"></span></div>');
+	    $(".team-lead-section").last().after('<div class="form-group team-lead-section"><%= f.select(:leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {}, name: "project[leads][]", class: "form-control additional-lead-field").tr_s("\n","").html_safe %><span class="glyphicon glyphicon-remove"></span></div>');
 	    return $(".glyphicon-remove").on("click", function() {
 	      return $(this).parent().remove();
 	    });
@@ -45,6 +45,6 @@
 </div>
 <div class="form-group modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
-	<%= f.submit class: "btn btn-primary"%>
+	<%= f.submit class: "btn btn-primary", "data-loading-text" => "Saving..."%>
 </div>
 <% end %>

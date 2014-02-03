@@ -2,6 +2,7 @@
 <%= render "notification_section" %>
 <%= render "vacation_summary" %>
 <% if @fy_vacations.count > 0 %>
+<div class="table-responsive">
 <table class="table table-responsive table-bordered">
 	<tr>
 		<th><%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true')  %></th>
@@ -20,7 +21,11 @@
 		<td><%= vacation.start_date %></td>
 		<td><%= vacation.end_date %></td>
 		<td><%= vacation.business_days.prettify %></td>
-		<td><%= vacation.vacation_type %></td>
+		<td>
+			<span data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>">
+				<%= vacation.vacation_type%>
+			</span>
+		</td>
 		<% if @any_with_pending_status %>
 		<td><%= vacation.status %></td>
 		<td>
@@ -34,6 +39,7 @@
 	</tr>
 	<% end %>
 </table>
+</div>
 <% else %>
 <h5>No PDO used.</h5>
 <% end %>

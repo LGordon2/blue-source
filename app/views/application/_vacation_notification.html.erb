@@ -1,15 +1,17 @@
-<% all_vacations = Vacation.select("count(employee_id) as vacation_count, employee_id").where(manager: current_user, status: "Pending").group(:employee_id) %>
+<% all_vacations = Vacation.select("count(employee_id) as vacation_count, employee_id, start_date").where(manager: current_user, status: "Pending").group(:employee_id) %>
 <% unless all_vacations.blank? %>
 <div class="alert alert-info alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
 		&times;
 	</button>
 	<h5>The following employees have pending time off requests:</h5>
-	<ul>
-	<% Vacation.select("count(employee_id) as vacation_count, employee_id, start_date").where(manager: current_user, status: "Pending").group(:employee_id).each do |vacation| %>
+	<div class="list-group notification-list-group">
+	<% all_vacations.each do |vacation| %>
 		<% employee = Employee.find(vacation.employee_id) %>
-		<li><%= link_to employee.display_name, employee_vacations_path(employee, "fy" => vacation.start_date.current_fiscal_year) %> (<%= vacation.vacation_count %>)</li>
+		<%= link_to employee_vacations_path(employee, "fy" => vacation.start_date.current_fiscal_year), class: "list-group-item list-group-item-success" do %>
+		  <strong><%= employee.display_name%></strong><span class="badge badge-sm"><%= vacation.vacation_count %></span>
+		<% end %>
 	<% end %>	
-	</ul>
+	</div>
 </div>
 <% end %>

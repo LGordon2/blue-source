@@ -12,7 +12,7 @@ class Employee < ActiveRecord::Base
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
   
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true, uniqueness: {case_sensitive: false}
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
@@ -107,7 +107,8 @@ class Employee < ActiveRecord::Base
   end
   
   def max_vacation_days(on_date = Date.current)
-    return self.accrued_vacation_days(on_date.fiscal_new_year-1).round
+    _max_days = self.accrued_vacation_days(on_date.fiscal_new_year-1).round
+    _max_days > 0 ? _max_days : 0
   end
   
   def max_floating_holidays
@@ -120,7 +121,7 @@ class Employee < ActiveRecord::Base
   end
   
   def vacation_days_taken(on_date=Date.current, id=nil)
-    _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
+    _days_taken = _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
   end
   
   def surplus_vacation_taken(on_date=Date.current)
@@ -133,7 +134,7 @@ class Employee < ActiveRecord::Base
       max_days = max_vacation_days(Date.new(year))
       
       #Add to build surplus of days
-      if days_taken and max_days and days_taken > max_days
+      if days_taken and max_days and max_days > 0.0 and days_taken > max_days
         surplus + days_taken - max_days
       #If there is a surplus start widdling it down.
       elsif surplus > 0.0
