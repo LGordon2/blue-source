@@ -31,20 +31,20 @@ module EmployeeHelper
     
     #Calculate total months from anniversary to date.
     unless anniversary_date.nil?
-      if anniversary_date >= date.previous_fiscal_new_year
+      if anniversary_date > date.previous_fiscal_new_year
         months = date.distance_in_months(anniversary_date)
+        months += 1 if anniversary_date.day == 1
       end
-      
       #Calculate the years the employee has been with Orasi
       years_with_orasi = date.distance_in_years(anniversary_date)
       
       years_with_orasi = 1 if years_with_orasi <= 0
       
       #Calculate anniversary date for this year.
-      months += 1 if anniversary_date.day==1
       anniversary_date = anniversary_date.change(day:1,year: date.current_fiscal_year - (anniversary_date.month >= 5 ? 1 : 0))
       anniversary_date = anniversary_date + 1.month
       anniversary_months = date.distance_in_months(anniversary_date) + 1
+      #raise Exception, months
       if anniversary_months > 0
         return ((accrual_rates(years_with_orasi-1)*(months - anniversary_months)) + (accrual_rates(years_with_orasi)*anniversary_months)).round(2)
       elsif anniversary_months == 0 
