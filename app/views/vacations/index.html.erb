@@ -51,7 +51,7 @@
 				<strong></strong>
 			</td>
 			<td class="edit-field">
-				<span data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>">
+				<span id="vacation_reason-<%= vacation.id%>" data-title="Reason" data-content="<%= vacation.reason %>" data-placement="left" class="<%= "reason-show" if vacation.vacation_type == 'Other' %>">
 					<%= vacation.vacation_type%>
 				</span>
 				<%= select_tag nil, options_for_select(Vacation.types,vacation.vacation_type), data: {title: "Reason", content: "<input id='reason-#{vacation.id}' value='#{vacation.reason}'>", placement: 'top', html: true, animation: false}, class:"vacation-type hidden", id: "vacation_type-#{vacation.id}" %>

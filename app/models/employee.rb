@@ -107,7 +107,8 @@ class Employee < ActiveRecord::Base
   end
   
   def max_vacation_days(on_date = Date.current)
-    return self.accrued_vacation_days(on_date.fiscal_new_year-1).round
+    _max_days = self.accrued_vacation_days(on_date.fiscal_new_year-1).round
+    _max_days > 0 ? _max_days : 0
   end
   
   def max_floating_holidays
@@ -120,7 +121,7 @@ class Employee < ActiveRecord::Base
   end
   
   def vacation_days_taken(on_date=Date.current, id=nil)
-    _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
+    _days_taken = _pdo_taken(on_date, "Vacation", id) + surplus_vacation_taken(on_date.change(year: on_date.year-1))
   end
   
   def surplus_vacation_taken(on_date=Date.current)
