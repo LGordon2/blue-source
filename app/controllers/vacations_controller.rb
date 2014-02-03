@@ -71,7 +71,7 @@ class VacationsController < ApplicationController
     @vacation = Vacation.new(vacation_params.merge({employee_id: current_user.id,manager_id: current_user.manager.id, status: "Pending"}))
     respond_to do |format|
       if @vacation.save
-        VacationRequestMailer.request_email(current_user, current_user.manager, vacation_params, params[:memo], params["cc"] == "1" ? current_user.email : nil).deliver
+        VacationRequestMailer.request_email(current_user, current_user.manager, @vacation, params[:memo], params["cc"] == "1" ? current_user.email : nil).deliver
         format.html {redirect_to view_employee_vacations_path(current_user, "fy" => @vacation.start_date.current_fiscal_year), flash: {success: "Time off successfully saved.", created: @vacation.id}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages}}
@@ -103,6 +103,10 @@ class VacationsController < ApplicationController
   def set_fiscal_year_and_vacations
     @fyear = params['fy'].blank? ? Vacation.calculate_fiscal_year : params['fy'].to_i
     starting_year = @employee.start_date.blank? ? Date.current.year : @employee.start_date.fiscal_new_year.year
+    unless @employee.vacations.count == 0
+      first_logged_vacation_year = @employee.vacations.order(start_date: :asc).first.start_date.year
+      starting_year = first_logged_vacation_year < starting_year ? first_logged_vacation_year : starting_year
+    end 
     @fy_options = (starting_year..Date.current.year+1).collect {|date| ["Fiscal Year #{date}",date]}.reverse
     @fy_vacations = @employee.vacations
       .where("start_date >= ? and start_date < ? or end_date >= ? and end_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year,Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)

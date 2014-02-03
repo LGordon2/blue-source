@@ -9,6 +9,7 @@ $ ->
       vacation_id = if $(this).data("vacation-id") then $(this).data("vacation-id") else "new"
       for field in ["date_requested","start_date","end_date","business_days","vacation_type","half_day","reason"]
         $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").val())
+        $("[name=vacation\\[#{field}\\]]").val($("span#vacation_reason-#{vacation_id}").attr("data-content")) if field == "reason" and typeof($("##{field}-#{vacation_id}").val()) == "undefined"
         $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").prop('checked')) if field == "half_day"
       if $(this).hasClass('approval-btn')
         $("[name=vacation\\[status\\]]").val("")
