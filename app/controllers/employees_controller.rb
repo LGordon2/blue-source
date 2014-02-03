@@ -116,7 +116,7 @@ class EmployeesController < ApplicationController
   end
   
   def all_employees_for_directory
-    Employee.all.as_json({
+    Employee.where.not(status: "Inactive").as_json({
       include: [
         {manager: {only: [:id,:first_name,:last_name, :email]}}
       ],
