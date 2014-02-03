@@ -191,7 +191,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.departments
-    ["Rural", "PSO", "MPT", "Mobile", "SAP"]
+    ["Rural", "PSO", "MPT", "Mobile", "SAP", "Services"]
   end
   
   def admin?

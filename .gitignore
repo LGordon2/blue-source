@@ -39,3 +39,4 @@ pickle-email-*.html
 .DS_Store
 public/assets
 .settings
+config/initializers/secret_token.rb

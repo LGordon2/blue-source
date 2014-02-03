@@ -20,7 +20,7 @@ project_list_ctrl = ($scope, $http, $filter) ->
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
-  projectsPerPage = 10;
+  projectsPerPage = 15;
   $scope.resourcesPerPage = projectsPerPage;
   
   $scope.filter_on_id = true

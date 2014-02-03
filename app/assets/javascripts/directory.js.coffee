@@ -21,7 +21,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name'
-  employeesPerPage = 10
+  employeesPerPage = 15
   $scope.resourcesPerPage = employeesPerPage
   
   $scope.filter_on_id = true
