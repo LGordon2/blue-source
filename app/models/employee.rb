@@ -133,7 +133,7 @@ class Employee < ActiveRecord::Base
       max_days = max_vacation_days(Date.new(year))
       
       #Add to build surplus of days
-      if days_taken and max_days and days_taken > max_days
+      if days_taken and max_days and max_days > 0.0 and days_taken > max_days
         surplus + days_taken - max_days
       #If there is a surplus start widdling it down.
       elsif surplus > 0.0
