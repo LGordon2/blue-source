@@ -246,8 +246,10 @@ class Employee < ActiveRecord::Base
         date_range = (vacation.start_date..vacation.end_date)
         if last_fiscal_new_year.in?(date_range)
           pdo_days += Vacation.calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
+          pdo_days -= 0.5 if vacation.half_day?
         end
       end
+    
     return pdo_days
   end
   
