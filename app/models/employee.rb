@@ -152,11 +152,11 @@ class Employee < ActiveRecord::Base
   end
   
   def is_manager_or_higher?
-    self.role.downcase.in? ["manager","director","avp","admin"]
+    self.role.in? Employee.roles - ["Base"]
   end
   
   def is_upper_management?
-    self.role.downcase.in? ["director", "avp", "admin"]
+    self.role.in? ["Department Head", "Area Head", "Area Admin", "Company Admin"]
   end
   
   def self.locations
@@ -179,7 +179,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.roles
-    ["Consultant","Manager","Director","AVP", "Admin"]
+    ["Base","Management","Upper Management","Department Head", "Area Head", "Area Admin", "Company Admin"]
   end
   
   def self.im_client_types
@@ -195,7 +195,7 @@ class Employee < ActiveRecord::Base
   end
   
   def admin?
-    return self.role == "Admin"
+    return self.role == "Area Admin"
   end
   
   def pdo_taken_in_range(start_date, end_date, type, except_id=nil)
