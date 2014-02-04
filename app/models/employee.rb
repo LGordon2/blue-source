@@ -18,11 +18,16 @@ class Employee < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true
+  validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
   validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
+  
+  def is_department_area_head_or_admin
+    self.role.in? ["Upper Management", "Department Head", "Area Head", "Area Admin"]
+  end
   
   def manager_cannot_be_subordinate
     if self.manager and self.above?(self.manager)
@@ -191,10 +196,6 @@ class Employee < ActiveRecord::Base
   
   def self.statuses
     ["Permanent", "Contractor", "Inactive"]
-  end
-  
-  def self.departments
-    ["Rural", "PSO", "MPT", "Mobile", "SAP", "Services"]
   end
   
   def admin?
