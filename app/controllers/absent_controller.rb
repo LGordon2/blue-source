@@ -19,4 +19,13 @@ class AbsentController < ApplicationController
     end
   end
   
+  def calendar
+    unless params[:year].blank? or params[:month].blank?
+      @starting_date = Date.new(params[:year].to_i,params[:month].to_i,1)
+    else
+      @starting_date = Date.current.change(day: 1)
+    end
+    @pdo_times = Vacation.where("start_date >= ? and start_date <= ?",@starting_date.beginning_of_month,@starting_date.end_of_month)
+  end
+  
 end

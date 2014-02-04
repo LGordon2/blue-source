@@ -30,7 +30,7 @@ ManagerPortal::Application.routes.draw do
     resources :employees, only: [:index], action: "directory"
   end
   
-  get 'absent', to: 'absent#index'
+  get 'absent', to: 'absent#calendar'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

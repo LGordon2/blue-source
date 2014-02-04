@@ -1,0 +1,29 @@
+<h1><%= @starting_date.strftime("%B %Y") %></h1>
+<table class="table table-responsive">	
+	<tr>
+		<th>S</th>
+		<th>M</th>
+		<th>T</th>
+		<th>W</th>
+		<th>T</th>
+		<th>F</th>
+		<th>S</th>
+	</tr>
+	<% (@starting_date.beginning_of_month.beginning_of_week-1..@starting_date.end_of_month.end_of_week-1).each_slice(7) do |week_slice| %>
+	<tr>
+		<% week_slice.each do |day| %>
+		<td style="border: 1px solid; width: 248px; height: 100px;">
+			<div><%= day.day if day.month == @starting_date.month %></div>
+			<div>
+				<ul class="list-group">
+					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
+					<li class="list-group-item" style="border: 0px;"><%= "#{pdo_date.employee.display_name} #{pdo_date.vacation_type == 'Other' ? 'OOO' : pdo_date.vacation_type.downcase}" %></li>
+					<% end %>
+				</ul>
+			</div>
+		</td>
+		<% end %>
+	</tr>
+	
+	<% end %>
+</table>

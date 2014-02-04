@@ -49,13 +49,13 @@ class VacationsController < ApplicationController
   
   def destroy
     if (@vacation.status.blank? and (!current_user.above? @vacation.employee and !current_user.admin?))
-      redirect_to :back, flash: {error: "Vacation is accepted.  You cannot modify the vacation from here.  Please speak with your manager."}
+      redirect_to :back, flash: {error: "Time off is accepted.  You cannot modify the vacation from here.  Please speak with your manager."}
       return
     end
     respond_to do |format|
       if @vacation.destroy
         send_confirmation_email
-        format.html{redirect_to :back, flash: {success: "Vacation successfully deleted."}}
+        format.html{redirect_to :back, flash: {success: "Time off successfully deleted."}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}
       end
@@ -88,10 +88,10 @@ class VacationsController < ApplicationController
     warnings = []
     
     if @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_start_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_start_date))
-      warnings << "Vacation saved, but this is borrowing days from fiscal year #{fiscal_year_of_start_date+1}."
+      warnings << "Time off saved, but this is borrowing days from fiscal year #{fiscal_year_of_start_date+1}."
     end 
     if fiscal_year_of_start_date != fiscal_year_of_end_date and @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_end_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_end_date))
-      warnings << "Vacation saved, but this is borrowing days from fiscal year #{fiscal_year_of_end_date+1}."
+      warnings << "Time off saved, but this is borrowing days from fiscal year #{fiscal_year_of_end_date+1}."
     end
     warnings
   end
@@ -122,7 +122,7 @@ class VacationsController < ApplicationController
   
   def validate_user_is_employee_or_above
     unless current_user.admin? or current_user.above? @employee or current_user == @employee
-      redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view vacations for that employee."}
+      redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view time off for that employee."}
     end
   end
     
@@ -131,7 +131,7 @@ class VacationsController < ApplicationController
       @vacation = Vacation.find(params[:id])
     rescue
       respond_to do |format|
-        format.html {redirect_to :back, flash: {error: "Vacation not found in BlueSource."}}
+        format.html {redirect_to :back, flash: {error: "Time off not found in BlueSource."}}
       end
     end
   end
