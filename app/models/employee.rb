@@ -77,7 +77,7 @@ class Employee < ActiveRecord::Base
   def all_subordinates
     return Employee.all if role == "Company Admin"
     return Area.find(self.department.area).employees if role == "Area Admin" or role == "Area Head"
-    return Department.find(self.department).employees if !self.department.blank? and role == "Department Head"
+    return Department.find(self.department).employees if !self.department.blank? and (role == "Department Head" or role == "Upper Management")
     return if self.subordinates.empty?
     all_subordinates = self.subordinates
     self.subordinates.each do |employee|
