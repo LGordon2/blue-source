@@ -69,7 +69,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     manager_id = $scope.manager_id
 
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{status:"!Inactive"}) unless $scope.show_inactive
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role in ["Area Admin"]
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role in ["Area Admin", "Company Admin"]
     
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
     

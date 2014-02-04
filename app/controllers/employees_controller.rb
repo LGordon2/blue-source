@@ -98,7 +98,7 @@ class EmployeesController < ApplicationController
   end
   
   def employee_params
-    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :department, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date]
+    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :department_id, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date]
     allowed_params += [:role, :manager_id, :status, :additional_days] if current_user.is_upper_management?
     param_hash = params.require(:employee).permit(allowed_params)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
@@ -118,7 +118,8 @@ class EmployeesController < ApplicationController
   def all_employees_for_directory
     Employee.where.not(status: "Inactive").as_json({
       include: [
-        {manager: {only: [:id,:first_name,:last_name, :email]}}
+        {manager: {only: [:id,:first_name,:last_name, :email]}},
+        {department: {only: [:name]}}
       ],
       only: [:id, :first_name, :last_name, :email, :department, :office_phone, :cell_phone, :im_name, :im_client]
     }).map do |e|

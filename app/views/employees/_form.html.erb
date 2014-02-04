@@ -61,7 +61,7 @@
 </div>
 <div class="form-group">
 	<%= f.label :department, 'Department', class: "control-label" %>
-	<%= f.select :department, Employee.departments, {include_blank: true}, class: "form-control" %>
+	<%= f.select :department_id, options_from_collection_for_select(Department.all, 'id', 'name', @employee.department.blank? ? nil : @employee.department.id), {include_blank: true}, class: "form-control" %>
 </div>
 <div class="form-group modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>

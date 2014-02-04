@@ -2,7 +2,7 @@
 <div>
 	<%= form_tag('/calendar',method: :get) do %>
 		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]) %>
-		<%= select_tag :year, options_for_select([2013,2014,2015], params[:year].blank? ? Date.current.year : params[:year]) %>
+		<%= select_tag :year, options_for_select([2013,2014,2015,2016], params[:year].blank? ? Date.current.year : params[:year]) %>
 		<%= submit_tag :Set %>
 	<% end %>
 </div>

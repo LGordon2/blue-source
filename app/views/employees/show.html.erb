@@ -72,7 +72,7 @@
 	</tr>
 	<tr>
 		<td>Department:</td>
-		<td><%= @employee.department %></td>
+		<td><%= @employee.department.name unless @employee.department.blank? %></td>
 	</tr>
 </table>
 <% end %>

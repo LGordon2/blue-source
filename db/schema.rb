@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130160922) do
+ActiveRecord::Schema.define(version: 20140204180406) do
+
+  create_table "areas", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "departments", force: true do |t|
+    t.string   "name"
+    t.integer  "area_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "departments", ["area_id"], name: "index_departments_on_area_id"
 
   create_table "employees", force: true do |t|
     t.string   "username"
@@ -34,7 +49,7 @@ ActiveRecord::Schema.define(version: 20140130160922) do
     t.string   "office_phone"
     t.integer  "team_lead_id"
     t.string   "location"
-    t.string   "department"
+    t.integer  "department_id"
   end
 
   create_table "project_leads", force: true do |t|

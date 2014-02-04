@@ -8,6 +8,7 @@ class Employee < ActiveRecord::Base
   belongs_to :manager, class_name: "Employee"
   belongs_to :team_lead, class_name: "Employee"
   belongs_to :project
+  belongs_to :department
   
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
@@ -74,7 +75,9 @@ class Employee < ActiveRecord::Base
   end
   
   def all_subordinates
-    return Employee.all if self.is_upper_management?
+    return Employee.all if role == "Company Admin"
+    return Area.find(self.department.area).employees if role == "Area Admin" or role == "Area Head"
+    return Department.find(self.department).employees if !self.department.blank? and role == "Department Head"
     return if self.subordinates.empty?
     all_subordinates = self.subordinates
     self.subordinates.each do |employee|
@@ -195,7 +198,7 @@ class Employee < ActiveRecord::Base
   end
   
   def admin?
-    return self.role == "Area Admin"
+    return (self.role == "Area Admin" or self.role == "Company Admin")
   end
   
   def pdo_taken_in_range(start_date, end_date, type, except_id=nil)

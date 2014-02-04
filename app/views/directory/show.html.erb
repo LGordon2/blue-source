@@ -19,7 +19,7 @@
 	<td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>
 	<td><a href="mailto:{{employee.email}}">{{employee.last_name}}</a></td>
 	<td><a href="mailto:{{employee.manager.email}}">{{employee.manager.display_name}}</a></td>
-	<td ng-show='filteredDepartment==""'>{{employee.department}}</td>
+	<td ng-show='filteredDepartment==""'>{{employee.department.name}}</td>
 	<td>{{employee.office_phone}}</td>
 	<td>{{employee.cell_phone}}</td>
 	<td>{{employee.im_name}} 
@@ -46,15 +46,15 @@
 
 <% content_for :welcome_msg do %>
 <span ng-show="filteredDepartment==''">Orasi Directory</span>
-<span ng-hide="filteredDepartment==''"><%= current_user.department unless current_user.department.blank? %> Directory</span>
+<span ng-hide="filteredDepartment==''"><%= current_user.department.name unless current_user.department.blank? %> Directory</span>
 <% end %>
 
 <% content_for :header_btns do %>
 <% unless current_user.department.blank? %>
 <div class="btn-group" data-toggle="buttons">
 	
-	<%= label_tag :department, class: "btn btn-primary", 'ng-click' => "filteredDepartment='#{current_user.department}';search()" do %>
-		<input type="radio" name="options" id="option1"><%= current_user.department %>
+	<%= label_tag :department, class: "btn btn-primary", 'ng-click' => "filteredDepartment='#{current_user.department.name}';search()" do %>
+		<input type="radio" name="options" id="option1"><%= current_user.department.name %>
 	<% end %>
 	
 	<%= label_tag :department, class: "btn btn-primary active", 'ng-click' => "filteredDepartment='';search()" do %>
