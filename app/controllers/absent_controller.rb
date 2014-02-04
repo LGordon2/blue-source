@@ -20,6 +20,7 @@ class AbsentController < ApplicationController
   end
   
   def calendar
+    @all_months = (1..12).collect {|month_no| [Date.new(2014,month_no,1).strftime("%B"), month_no]}
     unless params[:year].blank? or params[:month].blank?
       @starting_date = Date.new(params[:year].to_i,params[:month].to_i,1)
     else

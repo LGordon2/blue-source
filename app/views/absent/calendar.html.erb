@@ -1,13 +1,20 @@
 <h1><%= @starting_date.strftime("%B %Y") %></h1>
+<div>
+	<%= form_tag('/absent',method: :get) do %>
+		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]) %>
+		<%= select_tag :year, options_for_select([2013,2014,2015], params[:year].blank? ? Date.current.year : params[:year]) %>
+		<%= submit_tag :Set %>
+	<% end %>
+</div>
 <table class="table table-responsive">	
 	<tr>
-		<th>S</th>
-		<th>M</th>
-		<th>T</th>
-		<th>W</th>
-		<th>T</th>
-		<th>F</th>
-		<th>S</th>
+		<th>Sunday</th>
+		<th>Monday</th>
+		<th>Tuesday</th>
+		<th>Wednesday</th>
+		<th>Thursday</th>
+		<th>Friday</th>
+		<th>Saturday</th>
 	</tr>
 	<% (@starting_date.beginning_of_month.beginning_of_week-1..@starting_date.end_of_month.end_of_week-1).each_slice(7) do |week_slice| %>
 	<tr>
