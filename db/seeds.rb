@@ -148,8 +148,8 @@ employee.each do |e|
 end
 
 #Projects
-Area.create(name: "Services")
-Department.create(name: "Rural", area: Area.first)
+#Area.create(name: "Services")
+Department.create(name: "Rural")
 
 paul = Employee.create(username: "paul.wysosky", first_name: "paul", last_name: "wysosky", role: "Upper Management", department_id: Department.first.id)
 paul.update(email: "#{paul.username}@orasi.com")

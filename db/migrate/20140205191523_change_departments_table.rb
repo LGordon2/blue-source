@@ -1,0 +1,8 @@
+class ChangeDepartmentsTable < ActiveRecord::Migration
+  def change
+    change_table :departments do |t|
+      t.references :department, index: true
+      t.remove :area_id
+    end
+  end
+end
