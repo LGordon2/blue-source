@@ -38,7 +38,6 @@
 		Filtered </label>
 </div>
 <% end %>
-
 <% if !current_user.subordinates.blank? and current_user.all_subordinates.where(status: "Inactive").count > 0 %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
@@ -46,7 +45,7 @@
 </div>
 <% end %>
 
-<% unless current_user.role.downcase == 'manager' %>
+<% unless current_user.role.downcase == 'management' %>
 <div class="btn-group">
 	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
 </div>

@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20140205192134) do
   end
 
   add_index "departments", ["department_id"], name: "index_departments_on_department_id"
-
+  
   create_table "employees", force: true do |t|
     t.string   "username"
     t.string   "first_name"
