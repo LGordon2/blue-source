@@ -142,15 +142,17 @@ class Employee < ActiveRecord::Base
   # * We are an area head/admin and are in the same area as the employee
   # * We are a company admin
   def can_edit? other_employee
+    if self == other_employee and !self.role.in? ["Company Admin", "Department Admin"]
+      return false
+    end
+    
     if self.above? other_employee
       return true
     end
     
     #We are a upper manager/department/area head/admin in the same department/area of the employee
     if !other_employee.department.blank? 
-      if other_employee.department == self.department and self.role.in? ["Upper Management"]
-        return true
-      elsif (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
+      if (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
         return true
       end
     end

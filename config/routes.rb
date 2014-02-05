@@ -11,6 +11,10 @@ ManagerPortal::Application.routes.draw do
     end
   end
 
+  resources :departments do
+    get 'sub_departments'
+  end
+
   resources :employees, only: [:index,:show,:create,:update]
   
   #Projects

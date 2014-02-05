@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_focus_search
+#= require auto_add_departments
 #= require auto_set_levels
 #= require angular_helpers
 
@@ -12,7 +13,6 @@ window.setEvent = ->
 $(document).ready ->
   $("#employee_project_id").on "change", ->
     set_team_leads()
-
 set_team_leads = ->
   employee_project_id = $("#employee_project_id")
   team_leads_select = $("select#employee_team_lead_id")
