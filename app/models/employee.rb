@@ -82,14 +82,13 @@ class Employee < ActiveRecord::Base
   
   def all_subordinates
     return Employee.all if role == "Company Admin"
-    return Area.find(self.department.area).employees if role == "Area Admin" or role == "Area Head"
-    return Department.find(self.department).employees if !self.department.blank? and (role == "Department Head" or role == "Upper Management")
+    return self.department.employees if !self.department.blank? and (role.in? ["Upper Management", "Department Head", "Department Admin"])
     return if self.subordinates.empty?
     all_subordinates_ids = self.subordinates.pluck(:id)
     self.subordinates.each do |employee|
       all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
     end
-    return Employee.where(id: all_subordinates_ids.to_set.to_a)
+    return Employee.where(id: all_subordinates_ids.uniq)
   end
   
   def above? other_employee
@@ -122,9 +121,9 @@ class Employee < ActiveRecord::Base
     
     #We are a upper manager/department/area head/admin in the same department/area of the employee
     if !other_employee.department.blank? 
-      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+      if other_employee.department == self.department and self.role.in? ["Upper Management"]
         return true
-      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+      elsif (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
         return true
       end
     end
@@ -149,9 +148,9 @@ class Employee < ActiveRecord::Base
     
     #We are a upper manager/department/area head/admin in the same department/area of the employee
     if !other_employee.department.blank? 
-      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+      if other_employee.department == self.department and self.role.in? ["Upper Management"]
         return true
-      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+      elsif (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
         return true
       end
     end
@@ -172,9 +171,9 @@ class Employee < ActiveRecord::Base
     
     #We are a upper manager/department/area head/admin in the same department/area of the employee
     if !other_employee.department.blank? 
-      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+      if other_employee.department == self.department and self.role.in? ["Upper Management"]
         return true
-      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+      elsif (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
         return true
       end
     end
@@ -252,7 +251,7 @@ class Employee < ActiveRecord::Base
   end
   
   def is_upper_management?
-    self.role.in? ["Upper Management","Department Head", "Area Head", "Area Admin", "Company Admin"]
+    self.role.in? ["Upper Management","Department Head", "Department Admin", "Company Admin"]
   end
   
   def self.locations
@@ -275,7 +274,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.roles
-    ["Base","Management","Upper Management","Department Head", "Area Head", "Area Admin", "Company Admin"]
+    ["Base","Management","Upper Management","Department Head", "Department Admin", "Company Admin"]
   end
   
   def self.im_client_types
@@ -287,7 +286,7 @@ class Employee < ActiveRecord::Base
   end
   
   def admin?
-    return (self.role == "Area Admin" or self.role == "Company Admin")
+    return (self.role == "Department Admin" or self.role == "Company Admin")
   end
   
   def pdo_taken_in_range(start_date, end_date, type, except_id=nil)
