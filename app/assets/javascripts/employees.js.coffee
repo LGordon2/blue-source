@@ -3,6 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_focus_search
 #= require auto_set_levels
+#= require angular_helpers
 
 window.setEvent = ->
   $(".popover input").each (index) ->
@@ -38,10 +39,12 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       $scope.employees = []
     $scope.search()
     $scope.loaded=true
+  $scope.current_id = 57
   $scope.loaded=false
   $scope.loadProgress=100
   $scope.show_inactive=false
   $scope.predicate = 'last_name'
+  $scope.directReports = false
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
@@ -49,13 +52,8 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   $scope.resourcesPerPage = employeesPerPage;
   
   $scope.filter_on_id = true
-  $scope.test = (expected, actual) ->
-    return unless actual == '' then parseInt(actual) == parseInt(expected) else true
-
-  searchMatch = (haystack, needle) ->
-    return false unless haystack
-    return true unless needle
-    return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
+    
+  searchMatch = AngularHelpers.searchMatch
     
   $scope.search = ->
     $scope.filteredEmployees = $filter('filter')($scope.employees, (employee) ->
@@ -69,8 +67,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     manager_id = $scope.manager_id
 
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{status:"!Inactive"}) unless $scope.show_inactive
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id:$scope.current_id},$scope.test) unless $scope.role in ["Area Admin", "Company Admin"]
-    
+    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id: parseInt($scope.current_id)},true) if $scope.current_id != ''
     $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
     
     $scope.currentPage = 0;

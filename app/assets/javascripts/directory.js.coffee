@@ -40,11 +40,12 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     $scope.filteredEmployees = $filter('filter')($scope.employees,{status: "!Inactive"})
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{department: $scope.filteredDepartment}) unless $scope.filteredDepartment == ''
     $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees, (employee) ->
+      
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       searchMatch(employee.display_name, $scope.query) ||
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
       searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
-      searchMatch(employee.department, $scope.query) ||
+      (employee.department? && searchMatch(employee.department.name, $scope.query)) ||
       searchMatch(employee.office_phone, $scope.query) ||
       searchMatch(employee.cell_phone, $scope.query)
       )

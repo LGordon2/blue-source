@@ -3,44 +3,50 @@ manager:
   username: bob.barker
   first_name: bob
   last_name: barker
-  role: "Manager"
+  role: "Management"
   manager: director
   status: "Permanent"
+  department: departments(:rural)
 
 consultant:
   username: john.doe
   first_name: john
   last_name: doe
-  role: "Consultant"
+  role: "Base"
   manager: manager
   status: "Permanent"
   start_date: "2010-12-19"
+  department: departments(:rural)
   
 manager2:
   username: bob.ross
   first_name: bob
   last_name: ross
-  role: "Manager"
+  role: "Management"
   status: "Permanent"
+  department: departments(:rural)
   
 consultant2:
   username: drew.carey
   first_name: drew
   last_name: carey
-  role: "Consultant"
+  role: "Base"
   manager: manager2
   status: "Permanent"
+  department: departments(:rural)
 
 director:
   username: steve.jobs
   first_name: steve
   last_name: jobs
-  role: "Director"
+  role: "Upper Management"
   status: "Permanent"
+  department: departments(:rural)
 
 admin:
   username: bill.gates
   first_name: bill
   last_name: gates
-  role: "Admin"
+  role: "Area Admin"
   status: "Permanent"
+  department: departments(:rural)

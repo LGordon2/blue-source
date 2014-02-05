@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_focus_search
+#= require angular_helpers
 
 @project_list_app = angular.module('project_list_app', []);
 
@@ -25,10 +26,7 @@ project_list_ctrl = ($scope, $http, $filter) ->
   
   $scope.filter_on_id = true
 
-  searchMatch = (haystack, needle) ->
-    return false unless haystack
-    return true unless needle
-    return haystack.toLowerCase().indexOf(needle.toLowerCase()) != -1
+  searchMatch = AngularHelpers.searchMatch
     
   $scope.search = ->
     $scope.filteredProjects = $filter('filter')($scope.projects, (project) ->

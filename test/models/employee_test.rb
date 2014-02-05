@@ -43,28 +43,6 @@ class EmployeeTest < ActiveSupport::TestCase
     assert_not consultant.above? director
   end
   
-  test "all subordinates" do
-    consultant = employees(:consultant)
-    consultant2 = employees(:consultant2)
-    manager2 = employees(:manager2)
-    manager = employees(:manager)
-    director = employees(:director)
-    
-    #Test nothing
-    assert_nil consultant.all_subordinates
-    
-    #Test simple case
-    assert_equal 1, manager.all_subordinates.count
-    assert_equal consultant.id, manager.all_subordinates.first.id
-    
-    #Test a little more complex
-    assert_equal 6, director.all_subordinates.count
-    assert director.all_subordinates.include?(manager),  "manager is not included in all subordinates for director"
-    assert director.all_subordinates.include?(consultant),  "consultant is not included in all subordinates for director"
-    assert director.all_subordinates.include?(manager2),  "manager2 is not included in all subordinates for director"
-    assert director.all_subordinates.include?(consultant2),  "consultant2 is not included in all subordinates for director"
-  end
-  
   test "max vacation days" do
     employee = employees(:consultant)
     

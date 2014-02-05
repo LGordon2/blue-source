@@ -41,6 +41,12 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def require_upper_management
+    if !current_user.is_upper_management?
+      redirect_to :back, flash: {error: "You do not have permissions to edit this employee."}
+    end
+  end
+  
   def require_login
     if current_user.nil?
       redirect_to :login

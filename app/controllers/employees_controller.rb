@@ -1,12 +1,11 @@
 class EmployeesController < ApplicationController
-  before_action :require_manager_login, except: [:view_vacation,:directory]
-  before_action :set_user, only: [:show, :edit, :vacation, :update, :view_vacation]
+  #Sets the employee 
+  before_action :set_employee, only: [:show, :update]
   
-  #Only manager of employee can edit vacation, employee info, or update info.
-  before_action :check_manager_status, only: [:edit, :vacation, :update]
+  before_action :require_manager_login
   
-  #Manager of employee or employee can view themselves.
-  before_action :check_employee_is_current_user_or_manager, only: [:show, :view_vacation, :update]
+  before_action :can_edit, only: [:update]
+  before_action :can_view, only: [:show]
   
   #Validate date parameters.
   before_action :validate_start_date, only: [:create, :update]
@@ -35,6 +34,11 @@ class EmployeesController < ApplicationController
   
   def create
     @employee = Employee.new(employee_params)
+    unless current_user.can_add? @employee
+      redirect_to :root, flash: {error: "You do not have permission to add this employee."}
+      return
+    end
+    
     if @employee.save
       redirect_to :root, flash: {success: "Employee added successfully."}
     else
@@ -63,17 +67,9 @@ class EmployeesController < ApplicationController
   
   private
   
-  def set_user
+  def set_employee
     @employee = Employee.find(params[:id])
     @title = @employee.display_name
-  end
-  
-  def check_manager_status
-    redirect_to :root unless current_user.above? @employee or current_user.admin?
-  end
-  
-  def check_employee_is_current_user_or_manager
-    redirect_to :root, flash: {error: "You do not have permission to view this employee."} unless current_user == @employee or current_user.above? @employee or current_user.is_upper_management?
   end
   
   def set_layout
@@ -139,5 +135,19 @@ class EmployeesController < ApplicationController
      else 
        employee 
      end 
+  end
+  
+  #Permissions
+
+  def can_view
+    unless current_user.can_view? @employee
+      redirect_to :root, flash: {error: "You do not have permission to view this employee."}
+    end
+  end
+  
+  def can_edit
+    unless current_user.can_edit? @employee
+      redirect_to :root, flash: {error: "You do not have permission to edit this employee."}
+    end
   end
 end

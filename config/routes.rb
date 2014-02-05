@@ -11,7 +11,7 @@ ManagerPortal::Application.routes.draw do
     end
   end
 
-  resources :employees, only: [:index,:show,:create,:update,:edit]
+  resources :employees, only: [:index,:show,:create,:update]
   
   #Projects
 

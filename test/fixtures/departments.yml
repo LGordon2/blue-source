@@ -1,7 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  area_id: 
-
-two:
-  area_id: 
+rural:
+  name: "Rural"
+  area_id: areas(:services).id

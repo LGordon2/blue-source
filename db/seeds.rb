@@ -148,24 +148,29 @@ employee.each do |e|
 end
 
 #Projects
+Area.create(name: "Services")
+Department.create(name: "Rural", area: Area.first)
 
-paul = Employee.create({username: "paul.wysosky", first_name: "paul", last_name: "wysosky", role: "Upper Management"})
+paul = Employee.create(username: "paul.wysosky", first_name: "paul", last_name: "wysosky", role: "Upper Management", department_id: Department.first.id)
 paul.update(email: "#{paul.username}@orasi.com")
 Employee.find_by(username: "alissa.taylor").update(manager: paul)
 Employee.find_by(username: "adam.thomas").update(manager: paul)
 Employee.find_by(username: "eric.trout").update(manager: paul)
 Employee.find_by(username: "julia.walser").update(manager: paul)
 
-kristi = Employee.create({username: "kristi.collins", first_name: "kristi", last_name: "collins", role: "Upper Management"})
+kristi = Employee.create(username: "kristi.collins", first_name: "kristi", last_name: "collins", role: "Upper Management", department_id: Department.first.id)
 kristi.update(email: "#{kristi.username}@orasi.com")
 Employee.find_by(username: "perry.thomas").update(manager: kristi)
 Employee.find_by(username: "waightstill.avery").update(manager: kristi)
 Employee.find_by(username: "jessica.marshall").update(manager: kristi)
 Employee.find_by(username: "hope.isley").update(manager: kristi)
 
-virginia = Employee.create({username: "virginia.vestal", first_name: "virginia", last_name: "vestal", role: "Area Head"})
+virginia = Employee.create({username: "virginia.vestal", first_name: "virginia", last_name: "vestal", role: "Area Head", department_id: Department.first.id})
 virginia.update(email: "#{virginia.username}@orasi.com")
-linley = Employee.create({username: "linley.love", first_name: "linley", last_name: "love", role: "Area Admin"})
+linley = Employee.create({username: "linley.love", first_name: "linley", last_name: "love", role: "Area Admin", })
 linley.update(email: "#{linley.username}@orasi.com")
 paul.update(manager: virginia)
 kristi.update(manager: virginia)
+
+
+Employee.update_all(department_id: Department.first)

@@ -84,19 +84,106 @@ class Employee < ActiveRecord::Base
     return Area.find(self.department.area).employees if role == "Area Admin" or role == "Area Head"
     return Department.find(self.department).employees if !self.department.blank? and (role == "Department Head" or role == "Upper Management")
     return if self.subordinates.empty?
-    all_subordinates = self.subordinates
+    all_subordinates_ids = self.subordinates.pluck(:id)
     self.subordinates.each do |employee|
-      all_subordinates += employee.all_subordinates unless employee.all_subordinates.nil?
+      all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
     end
-    return all_subordinates
+    return Employee.where(id: all_subordinates_ids.to_set.to_a)
   end
   
   def above? other_employee
+    if other_employee.manager.blank?
+      return false
+    end
+    
     if other_employee.manager == self
       return true
     end
     
-    self.above? other_employee.manager unless other_employee.manager.nil?
+    self.above? other_employee.manager
+  end
+  
+  #We can view the employee if:
+  # * We are the employee
+  # * We are above the employee
+  # * We are a upper manager/department/area head/admin in the same department/area of the employee
+  # * We are a company admin
+  def can_view? other_employee
+    #We are the employee
+    if other_employee == self
+      return true
+    end
+    
+    #We are above the employee
+    if self.above? other_employee
+      return true
+    end
+    
+    #We are a upper manager/department/area head/admin in the same department/area of the employee
+    if !other_employee.department.blank? 
+      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+        return true
+      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+        return true
+      end
+    end
+    
+    #We are a company admin
+    if self.role == "Company Admin"
+      return true
+    end
+    
+    false
+  end
+  
+  #We can view the employee if:
+  # * We are above the employee
+  # * We are upper management/department head and are in the same department as the employee
+  # * We are an area head/admin and are in the same area as the employee
+  # * We are a company admin
+  def can_edit? other_employee
+    if self.above? other_employee
+      return true
+    end
+    
+    #We are a upper manager/department/area head/admin in the same department/area of the employee
+    if !other_employee.department.blank? 
+      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+        return true
+      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+        return true
+      end
+    end
+    
+    #We are a company admin
+    if self.role == "Company Admin"
+      return true
+    end
+    
+    false
+  end
+  
+  #We can add the employee if:
+  # * We are upper management/department head and are in the same department as the employee
+  # * We are an area head/admin and are in the same area as the employee
+  # * We are a company admin
+  def can_add? other_employee
+    
+    #We are a upper manager/department/area head/admin in the same department/area of the employee
+    if !other_employee.department.blank? 
+      if other_employee.department == self.department and self.role.in? ["Upper Management","Department Head"]
+        return true
+      elsif other_employee.department.area == self.department.area and self.role.in? ["Area Head", "Area Admin"]
+        return true
+      end
+    end
+    
+    #We are a company admin
+    if self.role == "Company Admin"
+      return true
+    end
+    
+    false
   end
   
   def max_days(vacation_type,on_date=Date.current)
@@ -164,7 +251,7 @@ class Employee < ActiveRecord::Base
   end
   
   def is_upper_management?
-    self.role.in? ["Department Head", "Area Head", "Area Admin", "Company Admin"]
+    self.role.in? ["Upper Management","Department Head", "Area Head", "Area Admin", "Company Admin"]
   end
   
   def self.locations
