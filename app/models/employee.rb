@@ -9,6 +9,7 @@ class Employee < ActiveRecord::Base
   belongs_to :team_lead, class_name: "Employee"
   belongs_to :project
   belongs_to :department
+  has_one :area, through: :department
   
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
