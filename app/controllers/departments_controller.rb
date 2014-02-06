@@ -10,7 +10,7 @@ class DepartmentsController < ApplicationController
 
   def employees
     respond_to do |format|
-      format.json { render json: @department.employees.as_json({
+      format.json { render json: @department.employees.where.not(status: "Inactive").as_json({
       include: [
         {manager: {only: [:id,:first_name,:last_name, :email]}},
         {department: {only: [:name]}}
