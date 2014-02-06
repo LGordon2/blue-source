@@ -45,7 +45,7 @@
 </div>
 <% end %>
 
-<% unless current_user.role.downcase == 'management' %>
+<% if current_user.can_add_to_system? %>
 <div class="btn-group">
 	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
 </div>

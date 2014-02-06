@@ -63,11 +63,17 @@
 	<%= f.label :department, 'Department', class: "control-label" %>
 	<% unless current_user.department.blank? %>
 		<% if @employee.department.blank? %>
-			<% unless current_user.department.blank? %>
-				<%= f.select :department_id, options_from_collection_for_select([current_user.department], 'id', 'name'), {}, class: "form-control", name: "employee[department_id][]" %>
-				<% unless current_user.department.sub_departments.blank? %>
-						<%= f.select :department_id, options_from_collection_for_select(current_user.department.sub_departments, 'id', 'name'), {include_blank: true}, class: "form-control", name: "employee[department_id][]" %>
-				<% end %>
+			<% path_to_highest_dept = current_user.department.find_path_to_highest_department %>
+	 		<% path_to_highest_dept.reverse.each do |dept_id| %>
+	 			<% dept = Department.find(dept_id) %>
+	 			<% if dept == current_user.department or dept.above?(current_user.department) %>
+	 			  <%= f.select :department_id, options_from_collection_for_select(Department.where(id: dept_id), 'id', 'name', dept_id), {}, class: "form-control", name: "employee[department_id][]" %>
+	 			<% else %>
+	 			  <%= f.select :department_id, options_from_collection_for_select(Department.where(department_id: dept.parent_department), 'id', 'name', dept_id), {include_blank: true}, class: "form-control", name: "employee[department_id][]" %>
+	 			<% end %>
+	 		<% end %>
+			<% unless current_user.department.sub_departments.blank? %>
+					<%= f.select :department_id, options_from_collection_for_select(current_user.department.sub_departments, 'id', 'name'), {include_blank: true}, class: "form-control", name: "employee[department_id][]" %>
 			<% end %>
 		<% else %>
 			<% path_to_highest_dept = @employee.department.find_path_to_highest_department %>

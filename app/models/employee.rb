@@ -165,17 +165,22 @@ class Employee < ActiveRecord::Base
     false
   end
   
+  def can_add_to_system?
+    self.role.in? ["Department Head", "Department Admin", "Company Admin"]
+  end
+  
   #We can add the employee if:
   # * We are upper management/department head and are in the same department as the employee
   # * We are an area head/admin and are in the same area as the employee
   # * We are a company admin
   def can_add? other_employee
+    unless self.can_add_to_system?
+      return false
+    end
     
     #We are a upper manager/department/area head/admin in the same department/area of the employee
     if !other_employee.department.blank? 
-      if other_employee.department == self.department and self.role.in? ["Upper Management"]
-        return true
-      elsif (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
+      if (!self.department.blank? and self.department.above? other_employee.department) and self.role.in? ["Department Head", "Department Admin"]
         return true
       end
     end
