@@ -13,6 +13,7 @@ ManagerPortal::Application.routes.draw do
 
   resources :departments do
     get 'sub_departments'
+    get 'employees'
   end
 
   resources :employees, only: [:index,:show,:create,:update]

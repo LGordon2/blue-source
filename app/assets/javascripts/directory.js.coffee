@@ -6,16 +6,20 @@
 @employee_list_app = angular.module('employee_list_app', []);
 
 employee_list_ctrl = ($scope, $http, $filter) ->
-  $http.get('/directory/employees.json').success (data) ->
-    if (angular.isObject(data))
-      data.forEach (value,key) ->
-        value.display_name = "#{value.first_name} #{value.last_name}"
-        value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
-      $scope.employees = data
-    else
-      $scope.employees = []
-    $scope.search()
-    $scope.loaded=true
+  $scope.getAllEmployees = (fromDepartment) ->
+    $scope.loaded=false
+    url = if typeof(fromDepartment) == 'undefined' then '/directory/employees.json' else "/departments/#{fromDepartment}/employees.json"
+    $http.get(url).success (data) ->
+      if (angular.isObject(data))
+        data.forEach (value,key) ->
+          value.display_name = "#{value.first_name} #{value.last_name}"
+          value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
+        $scope.employees = data
+      else
+        $scope.employees = []
+      $scope.search()
+      $scope.loaded=true
+  $scope.getAllEmployees()
   $scope.loaded=false
   $scope.predicate = 'last_name'
   $scope.reverse = false
