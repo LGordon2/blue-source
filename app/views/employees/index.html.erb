@@ -38,7 +38,7 @@
 		Filtered </label>
 </div>
 <% end %>
-<% if !current_user.subordinates.blank? and current_user.all_subordinates.where(status: "Inactive").count > 0 %>
+<% if !current_user.all_subordinates.blank? and current_user.all_subordinates.where(status: "Inactive").count > 0 %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary" ng-click="show_inactive=!show_inactive;search()">
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
