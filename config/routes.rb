@@ -1,5 +1,9 @@
 ManagerPortal::Application.routes.draw do
-  #Vacation
+  get "admin/index"
+  #Admin
+  namespace :admin do
+    resources :departments, only: :index
+  end
  
   #Employees stuff
   resources :employees do
@@ -11,7 +15,7 @@ ManagerPortal::Application.routes.draw do
     end
   end
 
-  resources :departments do
+  resources :departments, only: [:destroy, :new, :create, :update, :edit] do
     get 'sub_departments'
     get 'employees'
   end

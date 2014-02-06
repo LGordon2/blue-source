@@ -1,5 +1,5 @@
 class Department < ActiveRecord::Base
-  has_many :sub_departments, class_name: "Department" 
+  has_many :sub_departments, class_name: "Department", dependent: :nullify
   belongs_to :parent_department, class_name: "Department", foreign_key: "department_id"
   has_many :top_level_employees, class_name: "Employee"
   

@@ -34,6 +34,11 @@
 				<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation">
 					<% unless current_user.blank? %>
 					<ul class="nav navbar-nav navbar-right">
+						<% if current_user.role == "Company Admin" %>
+						<li>
+							<%= link_to 'Admin', :admin_departments %>
+						</li>
+						<% end %>
 						<li>
 							<%= link_to 'Calendar', :calendar %>
 						</li>

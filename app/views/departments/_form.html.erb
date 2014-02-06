@@ -1,0 +1,15 @@
+<%= render "notification_section" %>
+<%= form_for @department do |f| %>
+<%= f.hidden_field :department_id %>
+<div class="form-group">
+	<%= f.label :name %>
+	<%= f.text_field :name, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.label :parent_department %>
+	<%= f.select :department_id, options_from_collection_for_select(Department.all, "id", "name", @department.department_id), {include_blank: true}, class: "form-control" %>
+</div>
+<div class="form-group">
+	<%= f.submit %>
+</div>
+<% end %>
