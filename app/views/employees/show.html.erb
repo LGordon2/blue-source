@@ -23,8 +23,12 @@
 		<td><%= @employee.username unless @employee.username.blank? %></td>
 	</tr>
 	<tr>
-		<td>Role:</td>
+		<td class="logo-row"><%= image_tag 'logo.png', class: "image image-responsive", width: "65px"%> role:</td>
 		<td><%= @employee.role unless @employee.role.blank? %></td>
+	</tr>
+	<tr>
+		<td>Title:</td>
+		<td><%= @employee.title unless @employee.title.blank? %></td>
 	</tr>
 	<tr>
 		<td>Level:</td>
