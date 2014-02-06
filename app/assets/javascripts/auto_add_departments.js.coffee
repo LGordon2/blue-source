@@ -17,5 +17,7 @@ addSubDeptSelect = (obj) ->
         select_to_append.on "change", ->
           addSubDeptSelect($(this))
         dropdown.after(select_to_append)
+      else
+        dropdown.nextAll().remove()
   else
     dropdown.nextAll().remove()
