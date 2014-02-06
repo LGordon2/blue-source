@@ -8,10 +8,12 @@
 		<td><%= @employee.vacation_days_taken(Date.new(@fyear),false).prettify %></td>
 	</tr>
 	<% if Vacation.calculate_fiscal_year == @fyear %>
+	<% if @employee.accrued_vacation_days(Date.current).prettify >= 0 %>
 	<tr>
 		<td>Vacation days accrued to date</td>
 		<td><%= @employee.accrued_vacation_days(Date.current).prettify %></td>
 	</tr>
+	<% end %>
 	<tr>
 		<% vacation_surplus_or_deficit = (@employee.vacation_days_taken(Date.current) - @employee.accrued_vacation_days(Date.current)).round(2) %>
 		<% if vacation_surplus_or_deficit > 0.0 %>
