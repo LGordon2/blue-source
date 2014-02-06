@@ -43,6 +43,10 @@
 	<%= f.label :end_date, class: "control-label" %>
 	<%= f.date_field :end_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>	
 </div>
+<div class="form-group">
+	<%= f.label :memo, class: "control-label" %>
+	<%= f.text_area :memo, class: "form-control" %>
+</div>
 <div class="form-group modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
 	<%= f.submit class: "btn btn-primary", "data-loading-text" => "Saving..."%>

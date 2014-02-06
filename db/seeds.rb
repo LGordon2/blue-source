@@ -175,3 +175,4 @@ kristi.update(manager: virginia)
 
 Employee.update_all(department_id: Department.last)
 linley.update(department: Department.first)
+Employee.create(username: "company.admin", first_name: "Company", last_name: "Admin", role: "Company Admin")

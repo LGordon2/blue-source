@@ -90,7 +90,7 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :start_date, :end_date, :status, :client_partner_id) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :start_date, :end_date, :status, :client_partner_id, :memo) if current_user.is_upper_management?
   end
   
   def project_lead_ids
