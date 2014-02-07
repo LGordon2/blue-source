@@ -20,7 +20,7 @@ class WelcomeController < ApplicationController
         redirect_to :root
       end
     else
-      redirect_to :login
+      redirect_to :login, flash: {error: "There is something wrong with this user please see your friendly neighborhood admin."}
     end
   end
   
