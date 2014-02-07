@@ -30,3 +30,12 @@
 {
   background-color: #999;
 }
+div#calendar-date-select
+{
+  margin-bottom: 10px; 
+  width: 20%;
+  select{
+    width:auto;
+    display:inline;
+  }
+}

@@ -1,8 +1,9 @@
-<h1><%= @starting_date.strftime("%B %Y") %></h1>
-<div style="display:inline-block;">
+<div style="display:block;">
 	<%= form_tag(:calendar,method: :get, style: "display:inline;") do %>
-		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]) %>
-		<%= select_tag :year, options_for_select([2013,2014,2015,2016], params[:year].blank? ? Date.current.year : params[:year]) %>
+		<div id="calendar-date-select">
+			<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
+			<%= select_tag :year, options_for_select([2013,2014,2015,2016], params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
+		</div>
 		<div class="btn-group" data-toggle="buttons">
 			<% @filter_types.each do |filter_name| %>
 				<% unless filter_name == 'department' %>
