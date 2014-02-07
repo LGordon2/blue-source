@@ -6,7 +6,7 @@ module EmployeeHelper
     time_array << pluralize(years,'year') unless years == 0
     seconds_left = seconds % (60*60*24*365)
     months = (seconds_left / (60*60*24*31)).floor
-    time_array << pluralize(months,'months') unless months == 0
+    time_array << pluralize(months,'month') unless months == 0
     seconds_left = seconds_left % (60*60*24*31)
     weeks = (seconds_left / (60*60*24*7)).floor
     time_array << pluralize(weeks,'week') unless weeks == 0

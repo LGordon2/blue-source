@@ -1,0 +1,17 @@
+<%= content_tag :li, class: "list-group-item", style: "margin-left: #{@margin*depth}px;" do -%>
+	<%= dept.name %>
+	<%= link_to "Add Subdepartment", new_department_path(parent_dept: dept.id) %>
+	<div class="pull-right">
+	<%= link_to edit_department_path(dept) do %>
+	  <span class="glyphicon glyphicon-pencil"></span>
+	<% end %>
+	<%= link_to department_path(dept), data: {confirm: "Are you sure you want to delete this?"}, method: :delete do %>
+	  <span class="glyphicon glyphicon-trash"></span>
+	<% end %>
+	</div>
+<% end %>
+<% unless dept.sub_departments.blank? %>
+	<% dept.sub_departments.each do |sub_dept| %>
+	<%= render "list_item_dept_layout", depth: depth+1, dept: sub_dept %>
+	<% end %>
+<% end %>

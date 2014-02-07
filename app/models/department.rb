@@ -4,6 +4,7 @@ class Department < ActiveRecord::Base
   has_many :top_level_employees, class_name: "Employee"
   
   validates :name, uniqueness: {case_sensitive: false}
+  validate :department_id_not_equal_to_id
   
   def employees
     Employee.where(id: self.top_level_employees.pluck(:id) + sub_departments.map do |sub_dept|
@@ -29,5 +30,11 @@ class Department < ActiveRecord::Base
     end
     
     [self.id] + self.parent_department.find_path_to_highest_department
+  end
+  
+  def department_id_not_equal_to_id
+    if !department_id.blank? and !id.blank? and department_id == id
+      errors.add(:base, "Department cannot be its own parent department.")
+    end
   end
 end

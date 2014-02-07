@@ -3,19 +3,7 @@
 <div class="block">
 <% Department.where(department_id: nil).each do |dept| %>
 <ul class='list-group'>
-	<%= content_tag :li, class: "list-group-item", style: "margin-left: #{@margin*0}px;" do -%>
-		<%= dept.name %>
-		<%= link_to "Add Subdepartment", new_department_path(parent_dept: dept.id) %>
-		<div class="pull-right">
-		<%= link_to edit_department_path(dept) do %>
-		  <span class="glyphicon glyphicon-pencil"></span>
-		<% end %>
-		<%= link_to department_path(dept), method: :delete do %>
-		  <span class="glyphicon glyphicon-trash"></span>
-		<% end %>
-		</div>
-	<% end %>
-	<%= render "sub_dept_layout", depth: 0, dept: dept %>
+	<%= render "list_item_dept_layout", dept: dept, depth: 0 %>
 </ul>
 <% end %>
 </div>
