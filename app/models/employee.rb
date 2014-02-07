@@ -25,6 +25,7 @@ class Employee < ActiveRecord::Base
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
+  validate :company_admin_cannot_have_a_department
   
   def is_department_area_head_or_admin
     self.role.in? ["Upper Management", "Department Head", "Area Head", "Area Admin"]
@@ -384,6 +385,12 @@ class Employee < ActiveRecord::Base
         clean_number = phone_num.tr_s(" ()", "").tr_s("-","")
         phone_num = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
       end
+    end
+  end
+  
+  def company_admin_cannot_have_a_department
+    if self.role == "Company Admin" and !self.department.blank?
+      errors.add(:department, "must be blank for company admin.")
     end
   end
 end
