@@ -28,7 +28,7 @@
 		<th>Friday</th>
 		<th>Saturday</th>
 	</tr>
-	<% (@starting_date.beginning_of_month.beginning_of_week-1..@starting_date.end_of_month.end_of_week-1).each_slice(7) do |week_slice| %>
+	<% (@starting_date.beginning_of_month.beginning_of_week..@starting_date.end_of_month.end_of_week).each_slice(7) do |week_slice| %>
 	<tr>
 		<% week_slice.each do |day| %>
 		<td style="border: 1px solid; width: 248px; height: 100px;">
