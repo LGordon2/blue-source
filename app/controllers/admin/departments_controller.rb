@@ -1,4 +1,5 @@
 class Admin::DepartmentsController < ApplicationController
+  before_action :require_login
   before_action :must_be_company_admin, except: [:sub_departments, :employees]
   
   def index

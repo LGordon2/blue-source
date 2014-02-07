@@ -1,6 +1,6 @@
 class EmployeesController < ApplicationController
   include ApplicationHelper
-  
+  before_action :require_login
   #Sets the employee 
   before_action :set_employee, only: [:show, :update]
   

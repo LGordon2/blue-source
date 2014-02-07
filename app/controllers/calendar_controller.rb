@@ -1,4 +1,5 @@
 class CalendarController < ApplicationController
+  before_action :require_login
   
   helper_method :get_orasi_holiday
   
