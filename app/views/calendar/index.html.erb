@@ -38,7 +38,7 @@
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
 					<% i += 1 %>
 					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %> <%= "list-group-item-hidden hidden" if i > @max_entries_per_day %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
-						<p class="list-group-item-heading"><%= pdo_date.employee.display_name %></p>
+						<%= pdo_date.employee.display_name %>
 					</li>
 					<% end %>
 					<%= link_to "Load more...", "#", class: "btn btn-link btn-xs load-more-pdo" if i > @max_entries_per_day %>

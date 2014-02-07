@@ -28,7 +28,7 @@ class WelcomeController < ApplicationController
   def logout
     # Remove the user id from the session
     @_current_user = session[:current_user_id] = nil
-    redirect_to :root
+    redirect_to :login
   end
   
   def login
