@@ -12,8 +12,8 @@ addSubDeptSelect = (obj) ->
       for dept in data
         html_to_append += "<option value='#{dept.id}'>#{dept.name}</option>"
       html_to_append += "</select>"
+      dropdown.nextAll().remove()
       if data.length > 0
-        dropdown.nextAll().remove()
         select_to_append = $(html_to_append)
         select_to_append.on "change", ->
           addSubDeptSelect($(this))
