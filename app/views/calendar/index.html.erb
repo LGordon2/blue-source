@@ -2,7 +2,7 @@
 	<%= form_tag(:calendar,method: :get, style: "display:inline;") do %>
 		<div id="calendar-date-select">
 			<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
-			<%= select_tag :year, options_for_select([2013,2014,2015,2016], params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
+			<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
 		</div>
 		<div class="btn-group" data-toggle="buttons">
 			<% @filter_types.each do |filter_name| %>
@@ -32,8 +32,9 @@
 	<tr>
 		<% week_slice.each do |day| %>
 		<td style="border: 1px solid; width: 248px; height: 100px;">
+			<% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
-			<div><%= day.day if day.month == @starting_date.month %> <em><%= orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em></div>
+			<div><%= day.day %> <em><%= orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em></div>
 			<div>
 				<ul class="list-group">
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
@@ -43,6 +44,7 @@
 					<% end %>
 				</ul>
 			</div>
+			<% end %>
 		</td>
 		<% end %>
 	</tr>
