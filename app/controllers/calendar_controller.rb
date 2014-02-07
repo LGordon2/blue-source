@@ -7,8 +7,9 @@ class CalendarController < ApplicationController
       @starting_date = Date.current.change(day: 1)
     end
     @filter_types = ['all']
+    @selected_filter_type = "all"
     
-    unless current_user.all_subordinates.blank?
+    unless current_user.subordinates.blank?
       @filter_types << 'direct'
       @selected_filter_type = 'direct' 
     end
