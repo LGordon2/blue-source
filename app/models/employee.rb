@@ -83,7 +83,10 @@ class Employee < ActiveRecord::Base
   
   def all_subordinates
     return Employee.all if role == "Company Admin"
-    return self.department.employees if !self.department.blank? and (role.in? ["Upper Management", "Department Head", "Department Admin"])
+    if !self.department.blank? and (role.in? ["Upper Management", "Department Head", "Department Admin"])
+      return self.department.employees if self.subordinates.empty?
+      return Employee.where(id: (self.department.employees.pluck(:id) + self.subordinates.pluck(:id)).flatten.uniq)
+    end
     return if self.subordinates.empty?
     all_subordinates_ids = self.subordinates.pluck(:id)
     self.subordinates.each do |employee|
@@ -255,7 +258,7 @@ class Employee < ActiveRecord::Base
   end
   
   def is_manager_or_higher?
-    self.role.in? Employee.roles - ["Base"]
+    self.role.in? Employee.roles - ["Base"] + ["Company Admin"]
   end
   
   def is_upper_management?
@@ -282,7 +285,7 @@ class Employee < ActiveRecord::Base
   end
   
   def self.roles
-    ["Base","Management","Upper Management","Department Head", "Department Admin", "Company Admin"]
+    ["Base","Management","Upper Management","Department Head", "Department Admin"]
   end
   
   def self.im_client_types

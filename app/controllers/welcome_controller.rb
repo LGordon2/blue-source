@@ -20,7 +20,7 @@ class WelcomeController < ApplicationController
         redirect_to :root
       end
     else
-      render action: :login
+      redirect_to :login
     end
   end
   

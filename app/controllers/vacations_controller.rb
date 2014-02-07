@@ -115,13 +115,13 @@ class VacationsController < ApplicationController
   end
   
   def validate_user_is_above_employee
-    unless current_user.admin? or current_user.above? @employee
+    unless current_user.can_edit? @employee
       redirect_to :root, flash: {error: "You have insufficient privileges to edit vacations for that employee."}
     end
   end  
   
   def validate_user_is_employee_or_above
-    unless current_user.admin? or current_user.above? @employee or current_user == @employee
+    unless current_user.can_view? @employee
       redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view time off for that employee."}
     end
   end
