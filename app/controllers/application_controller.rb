@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   # Only allow whitelisted roles.
   def require_manager_login
     if current_user.nil?
-      redirect_to :login
+      redirect_to :login, flash: {error: "You must be logged in to view this section of BlueSource."}
     elsif !current_user.is_manager_or_higher?
       redirect_to view_employee_vacations_path(current_user)
     end
