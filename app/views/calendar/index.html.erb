@@ -28,6 +28,7 @@
 	<% (@starting_date.beginning_of_month.beginning_of_week..@starting_date.end_of_month.end_of_week).each_slice(7) do |week_slice| %>
 	<tr>
 		<% week_slice.each do |day| %>
+		<% i=0 %>
 		<td style="border: 1px solid; width: 248px; height: 100px;">
 			<% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
@@ -35,10 +36,12 @@
 			<div>
 				<ul class="list-group">
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
-					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
+					<% i += 1 %>
+					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %> <%= "list-group-item-hidden hidden" if i > @max_entries_per_day %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
 						<p class="list-group-item-heading"><%= pdo_date.employee.display_name %></p>
 					</li>
 					<% end %>
+					<%= link_to "Load more...", "#", class: "btn btn-link btn-xs load-more-pdo" if i > @max_entries_per_day %>
 				</ul>
 			</div>
 			<% end %>
