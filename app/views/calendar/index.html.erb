@@ -1,8 +1,19 @@
 <h1><%= @starting_date.strftime("%B %Y") %></h1>
-<div>
-	<%= form_tag('/calendar',method: :get) do %>
+<div style="display:inline-block;">
+	<%= form_tag(:calendar,method: :get, style: "display:inline;") do %>
 		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]) %>
 		<%= select_tag :year, options_for_select([2013,2014,2015,2016], params[:year].blank? ? Date.current.year : params[:year]) %>
+		<div class="btn-group" data-toggle="buttons">
+			<% @filter_types.each do |filter_name| %>
+				<% unless filter_name == 'department' %>
+				<label class="btn btn-primary <%= "active" if !params[:filter].blank? and params[:filter] == filter_name %>">
+				<% else %>
+				<label class="btn btn-primary <%= "active" if params[:filter].blank? or params[:filter] == filter_name %>">
+				<% end %>
+					<input type="radio" name="filter" value="<%= filter_name %>" <%= "checked" if !params[:filter].blank? and params[:filter] == filter_name %>> <%= filter_name.capitalize %>
+				</label>
+			<% end %>
+		</div>
 	<% end %>
 </div>
 <table class="table table-responsive">	

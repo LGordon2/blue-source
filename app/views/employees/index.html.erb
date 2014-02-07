@@ -35,7 +35,7 @@
 		All </label>
 	<label class="btn btn-primary" ng-click="current_id='<%= current_user.id %>';search()">
 		<input type="radio" name="options" id="option2">
-		Filtered </label>
+		Direct </label>
 </div>
 <% end %>
 <% if !current_user.all_subordinates.blank? and current_user.all_subordinates.where(status: "Inactive").count > 0 %>

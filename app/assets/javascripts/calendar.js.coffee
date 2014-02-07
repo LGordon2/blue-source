@@ -2,5 +2,5 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $("select#month,select#year").on "change", ->
-    $(this).parent("form").submit()
+  $("select#month,select#year,input[type=radio]").on "change", ->
+    $(this).parents("form").submit()
