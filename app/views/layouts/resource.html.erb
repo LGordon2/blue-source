@@ -19,8 +19,10 @@
 			<h2 ng-show="<%= @resource_for_angular.pluralize %>.length==0">No <%= @resource_for_angular.pluralize %> found.</h2>
 			<h2 ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length<=0 && <%= @resource_for_angular.pluralize %>.length>0 ">No rows found for '{{query}}'</h2>
 		</div>
-		<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>1">
+		<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0">
 			<p class="pull-right">{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+paged<%= @resource_for_angular.pluralize.capitalize %>[currentPage].length}} of {{resourcesPerPage*(paged<%= @resource_for_angular.pluralize.capitalize %>.length-1) + paged<%= @resource_for_angular.pluralize.capitalize %>[paged<%= @resource_for_angular.pluralize.capitalize %>.length-1].length}} </p>
+		</div>
+		<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>1">
 			<ul class="pagination">
 				<li ng-class="{disabled: currentPage == 0}">
 					<a href ng-click="prevPage()">&laquo;</a>
