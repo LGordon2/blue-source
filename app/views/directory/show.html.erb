@@ -23,7 +23,7 @@
 	<td>{{employee.office_phone}}</td>
 	<td>{{employee.cell_phone}}</td>
 	<td>{{employee.im_name}} 
-		<span ng-show='employee.im_client'>
+		<span ng-show='employee.im_client && employee.im_name'>
 			<span ng-if="employee.im_client=='Skype'">
 				<img data-toggle="tooltip" data-placement="right" title="{{employee.im_client}}" src="<%= skype_pic %>" class="im-client-logo pull-right" width="20px" onload="$(this).tooltip();">
 			</span>
