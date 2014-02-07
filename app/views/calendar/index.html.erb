@@ -31,7 +31,8 @@
 	<tr>
 		<% week_slice.each do |day| %>
 		<td style="border: 1px solid; width: 248px; height: 100px;">
-			<div><%= day.day if day.month == @starting_date.month %></div>
+			<% orasi_holiday = get_orasi_holiday(day) %>
+			<div><%= day.day if day.month == @starting_date.month %> <em><%= orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em></div>
 			<div>
 				<ul class="list-group">
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>

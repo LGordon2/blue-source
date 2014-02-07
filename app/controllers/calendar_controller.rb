@@ -1,4 +1,7 @@
 class CalendarController < ApplicationController
+  
+  helper_method :get_orasi_holiday
+  
   def index
     @all_months = (1..12).collect {|month_no| [Date.new(2014,month_no,1).strftime("%B"), month_no]}
     unless params[:year].blank? or params[:month].blank?
@@ -35,4 +38,26 @@ class CalendarController < ApplicationController
     @pdo_times = @pdo_times.where.not(status: "Pending").where("start_date >= ? and start_date <= ?",@starting_date.beginning_of_month,@starting_date.end_of_month)
   end
   
+  private
+  
+  def get_orasi_holiday(day)
+    case
+    when (day.month == 5 and day.day == 1)
+      "Fiscal New Year"
+    when day.new_years_day?
+      "New Year's Day"
+    when day.memorial_day?
+      "Memorial Day"
+    when day.independence_day?
+      "Independence Day"
+    when day.labor_day?
+      "Labor Day"
+    when day.thanksgiving?
+      "Thanksgiving Day"
+    when day.christmas_eve?
+      "Christmas Eve"
+    when day.christmas?
+      "Christmas Day"
+    end
+  end
 end
