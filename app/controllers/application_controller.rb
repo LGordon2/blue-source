@@ -48,8 +48,10 @@ class ApplicationController < ActionController::Base
   end
   
   def require_login
-    if current_user.nil?
+    if current_user.blank? and request.referer.blank?
       redirect_to :login
+    elsif current_user.blank?
+      redirect_to :login, flash: {error: "You must be logged in to view this section of BlueSource."}
     end
   end
 end
