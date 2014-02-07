@@ -20,13 +20,10 @@
 
 <table class="table table-responsive" id="vacation-calendar">	
 	<tr>
-		<th>Sunday</th>
-		<th>Monday</th>
-		<th>Tuesday</th>
-		<th>Wednesday</th>
-		<th>Thursday</th>
-		<th>Friday</th>
-		<th>Saturday</th>
+		<%# Auto update on starting day. %>
+		<% (Date.current.beginning_of_week..Date.current.end_of_week).each do |date| %>
+		<th><%= date.strftime("%A") %></th>
+		<% end %>
 	</tr>
 	<% (@starting_date.beginning_of_month.beginning_of_week..@starting_date.end_of_month.end_of_week).each_slice(7) do |week_slice| %>
 	<tr>
