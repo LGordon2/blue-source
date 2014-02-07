@@ -16,7 +16,8 @@
 		</div>
 	<% end %>
 </div>
-<table class="table table-responsive">	
+
+<table class="table table-responsive" id="vacation-calendar">	
 	<tr>
 		<th>Sunday</th>
 		<th>Monday</th>
@@ -34,7 +35,9 @@
 			<div>
 				<ul class="list-group">
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
-					<li class="list-group-item" style="border: 0px;"><%= "#{pdo_date.employee.display_name} #{pdo_date.vacation_type == 'Other' ? 'OOO' : pdo_date.vacation_type.downcase}" %></li>
+					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
+						<p class="list-group-item-heading"><%= pdo_date.employee.display_name %></p>
+					</li>
 					<% end %>
 				</ul>
 			</div>

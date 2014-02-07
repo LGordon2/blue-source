@@ -4,3 +4,4 @@
 $ ->
   $("select#month,select#year,input[type=radio]").on "change", ->
     $(this).parents("form").submit()
+  $(".list-group-item").tooltip()
