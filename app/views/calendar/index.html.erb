@@ -41,7 +41,8 @@
 						<%= pdo_date.employee.display_name %>
 					</li>
 					<% end %>
-					<%= link_to "Load more...", "#", class: "btn btn-link btn-xs load-more-pdo" if i > @max_entries_per_day %>
+					<%= link_to "#{i - @max_entries_per_day} more #{'item'.pluralize(i-@max_entries_per_day)}...", "#", class: "btn btn-link btn-xs more-pdo" if i > @max_entries_per_day %>
+					<%= link_to "Collapse", "#", class: "btn btn-link btn-xs more-pdo hidden" if i > @max_entries_per_day %>
 				</ul>
 			</div>
 			<% end %>

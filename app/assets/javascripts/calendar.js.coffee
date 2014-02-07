@@ -5,9 +5,7 @@ $ ->
   $("select#month,select#year,input[type=radio]").on "change", ->
     $(this).parents("form").submit()
   $(".list-group-item").tooltip()
-  $(".load-more-pdo").on "click", ->
+  $(".more-pdo").on "click", ->
     $(this).siblings(".list-group-item-hidden").toggleClass("hidden")
-    if $(this).text() == "Hide"
-      $(this).text("Load more...")
-    else if $(this).text() == "Load more..."
-      $(this).text("Hide")
+    $(this).toggleClass("hidden")
+    $(this).siblings(".more-pdo").toggleClass("hidden")
