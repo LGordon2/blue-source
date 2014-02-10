@@ -13,7 +13,6 @@ class Vacation < ActiveRecord::Base
   validates :manager, presence: true
   validates :business_days, presence: true, numericality: {greater_than: 0}
   validate :end_date_cannot_be_before_start_date
-  validate :manager_is_above_employee
   validate :vacation_not_already_included
   validate :reason_present_if_other
   validate :vacation_not_added_before_start_date
@@ -75,13 +74,6 @@ class Vacation < ActiveRecord::Base
     
     self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
     self.business_days -= 0.5 if self.half_day
-  end
-  
-  #Validate that the person who requested the vacation is above the employee.
-  def manager_is_above_employee
-    unless manager.admin? or manager.above? employee or status=="Pending" 
-      errors.add(:base, "You do not have permission to modify vacation for this employee.")
-    end
   end
   
   def vacation_not_already_included
