@@ -11,13 +11,17 @@
 				<% else %>
 				<label class="btn btn-primary <%= "active" if @selected_filter_type == filter_name %>">
 				<% end %>
-					<input type="radio" name="filter" value="<%= filter_name %>" <%= "checked" if @selected_filter_type == filter_name %>> <%= filter_name.capitalize %>
+					<input type="radio" name="filter" value="<%= filter_name %>" <%= "checked" if @selected_filter_type == filter_name %>>
+					<% if filter_name == "department" %>
+					<%= current_user.department.name.capitalize %>
+					<% else %>
+					<%= filter_name.capitalize %>
+					<% end%>
 				</label>
 			<% end %>
 		</div>
 	<% end %>
 </div>
-
 <table class="table table-responsive" id="vacation-calendar">	
 	<tr>
 		<%# Auto update on starting day. %>
@@ -52,3 +56,22 @@
 	
 	<% end %>
 </table>
+<div>
+	<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_1">Legend</a>
+</div>
+<% content_for "modal_header_1" do %>
+	Legend
+<% end %>
+
+<% content_for "modal_content_1" do %>
+<ul class="list-group">
+  <li class="list-group-item sick">Sick</li>
+  <li class="list-group-item vacation">Vacation</li>
+  <li class="list-group-item floating-holiday">Floating Holiday</li>
+  <li class="list-group-item other">Other</li>
+</ul>
+<div class="modal-footer">
+	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>
+</div>
+<% end %>
+<%= render 'modals/modal_group' %>
