@@ -5,7 +5,7 @@ class Department < ActiveRecord::Base
   
   before_destroy :associate_with_parent
   
-  validates :name, uniqueness: {case_sensitive: false}
+  validates :name, uniqueness: {case_sensitive: false}, presence: true
   validate :department_id_not_equal_to_id
   
   def employees

@@ -27,6 +27,10 @@ class Employee < ActiveRecord::Base
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
   
+  def title
+    Title.find(self.title_id).name unless self.title_id.blank?
+  end
+  
   def is_department_area_head_or_admin
     self.role.in? ["Upper Management", "Department Head", "Area Head", "Area Admin"]
   end

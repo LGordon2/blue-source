@@ -1,0 +1,27 @@
+<h1>Listing titles</h1>
+<% unless @titles.count == 0 %>
+<table class="table table-responsive table-bordered">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @titles.each do |title| %>
+      <tr>
+        <td><%= title.name %></td>
+        <td><%= link_to 'Show', admin_title_path(title) %></td>
+        <td><%= link_to 'Edit', edit_admin_title_path(title) %></td>
+        <td><%= link_to 'Destroy', admin_title_path(title), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+<br>
+
+<%= link_to 'New Title', new_admin_title_path %>

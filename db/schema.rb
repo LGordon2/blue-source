@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140210162848) do
+ActiveRecord::Schema.define(version: 20140210214546) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20140210162848) do
     t.string   "location"
     t.string   "department"
     t.integer  "department_id"
-    t.string   "title"
+    t.integer  "title_id",              limit: 255
     t.text     "project_comments"
     t.time     "scheduled_hours_start"
     t.time     "scheduled_hours_end"
@@ -71,6 +71,12 @@ ActiveRecord::Schema.define(version: 20140210162848) do
     t.integer  "client_partner_id"
     t.time     "scheduled_hours_start"
     t.time     "scheduled_hours_end"
+  end
+
+  create_table "titles", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "vacations", force: true do |t|

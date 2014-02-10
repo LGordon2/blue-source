@@ -1,8 +1,11 @@
 ManagerPortal::Application.routes.draw do
+  resources :titles
+
   get "admin/index"
   #Admin
   namespace :admin do
     resources :departments, only: :index
+    resources :titles
   end
  
   #Employees stuff

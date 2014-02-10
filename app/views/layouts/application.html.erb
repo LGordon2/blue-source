@@ -35,8 +35,14 @@
 					<% unless current_user.blank? %>
 					<ul class="nav navbar-nav navbar-right">
 						<% if current_user.role == "Company Admin" %>
-						<li>
-							<%= link_to 'Admin', :admin_departments %>
+						<li class="dropdown">
+							<a data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+								<li role="presentation">
+									<%= link_to "Departments", :admin_departments, role: "menuitem" %>
+									<%= link_to "Titles", :admin_titles, role: "menuitem" %>
+								</li>
+							</ul>
 						</li>
 						<% end %>
 						<li>
