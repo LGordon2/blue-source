@@ -16,6 +16,7 @@
 #= require jquery_ujs
 #= require bootstrap
 #= require jquery.autosize.min
+#= require expand_collapse_panels
 $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
