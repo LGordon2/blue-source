@@ -21,6 +21,14 @@
     <%= f.label :roll_off_date, 'Roll Off Date', class: "control-label" %>
     <%= f.date_field :roll_off_date, class: "form-control", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 </div>
+<div class="form-group">
+    <%= f.label :project_scheduled_hours, 'Project Scheduled Hours', class: "control-label" %>
+    <%= f.time_field :scheduled_hours_start, class: "form-control" %> to <%= f.time_field :scheduled_hours_end, class: "form-control" %>
+</div>
+<div class="form-group">
+    <%= f.label :project_comments, 'Project Comments', class: "control-label" %>
+    <%= f.text_area :project_comments, class: "form-control" %>
+</div>
 <div class="form-group modal-footer">
     <%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
     <%= f.submit class: "btn btn-primary", "data-loading-text" => "Saving..."%>

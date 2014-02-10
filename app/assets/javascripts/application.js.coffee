@@ -17,6 +17,8 @@
 #= require bootstrap
 #= require jquery.autosize.min
 #= require expand_collapse_panels
+#= require modernizr
+
 $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
@@ -29,3 +31,14 @@ $(document).ready ->
       else
         $(this).parent("div.form-group").removeClass("has-error")
     $(this).find("[data-loading-text]").button('loading') if valid == "true"
+  unless Modernizr.inputtypes.time
+    $("input[type=time]").each (index) ->
+      match = /(\d{2}):(\d{2}):\d{2}\.\d{3}/.exec(String($(this).val()))
+      if match
+        match[1] = parseInt(match[1])
+        amorpm = if (match[1] >= 12 and match != 24) then "PM" else "AM"
+        if match[1] > 12
+          match[1] -= 12
+        else if parseInt(match[1]) == 0
+          match[1] = 12
+        $(this).val("#{match[1]}:#{match[2]} #{amorpm}")

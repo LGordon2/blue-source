@@ -96,7 +96,7 @@ class EmployeesController < ApplicationController
   end
   
   def employee_params
-    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date]
+    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date, :scheduled_hours_start, :scheduled_hours_end, :project_comments]
     allowed_params += [:role, :manager_id, :status, :additional_days] if current_user.is_upper_management?
     param_hash = params.require(:employee).permit(allowed_params, department_id: [])
     param_hash[:department_id] = param_hash[:department_id].reject {|val| val == ""}.last if param_hash.has_key?(:department_id)

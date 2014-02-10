@@ -1,7 +1,8 @@
 class ProjectsController < ApplicationController
   before_action :require_manager_login
-  before_action :set_project, only: [:show, :edit, :update, :leads]
+  before_action :set_project, only: [:show, :update, :leads]
   
+  before_action :validate_can_edit_projects, only: [:create, :update]
   before_action :validate_start_date, only: [:create, :update]
   before_action :validate_end_date, only: [:create, :update]
   after_action :update_leads, only: [:create, :update]
@@ -96,4 +97,11 @@ class ProjectsController < ApplicationController
   def project_lead_ids
     params.require(:project).permit(leads: []) if current_user.is_upper_management?
   end
+  
+  def validate_can_edit_projects
+    unless current_user.is_upper_management?
+      redirect_to :back, flash: {error: "You do not have permission to edit projects."}
+      return
+    end
+  end  
 end

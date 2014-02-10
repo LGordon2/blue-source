@@ -120,6 +120,16 @@
 		<td>Roll Off Date:</td>
 		<td><%= @employee.roll_off_date %></td>
 	</tr>
+	<% unless @employee.scheduled_hours_start.blank? or @employee.scheduled_hours_end.blank? %>
+	<tr>
+		<td>Project Scheduled Hours:</td>
+		<td><%= @employee.scheduled_hours_start.to_s(:scheduled_time) %> - <%= @employee.scheduled_hours_end.to_s(:scheduled_time) %></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td>Project Comments:</td>
+		<td><%= @employee.project_comments%></td>
+	</tr>
 </table>
 <% end %>
 <!-- /Project info body -->
