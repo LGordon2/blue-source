@@ -42,7 +42,7 @@
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
 					<% i += 1 %>
 					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %> <%= "list-group-item-hidden hidden" if i > @max_entries_per_day %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
-						<%= pdo_date.employee.display_name %>
+						<%= pdo_date.employee.display_name %> <%= "1/2" if day == pdo_date.end_date and pdo_date.half_day %>
 					</li>
 					<% end %>
 					<%= link_to "#{i - @max_entries_per_day} more #{'item'.pluralize(i-@max_entries_per_day)}...", "#", class: "btn btn-link btn-xs more-pdo" if i > @max_entries_per_day %>
