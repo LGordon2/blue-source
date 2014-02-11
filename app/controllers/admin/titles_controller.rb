@@ -6,7 +6,7 @@ class Admin::TitlesController < ApplicationController
   # GET /titles
   # GET /titles.json
   def index
-    @titles = Title.all
+    @titles = Title.order(name: :asc)
   end
 
   # GET /titles/1

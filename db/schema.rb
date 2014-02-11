@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20140211192052) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
+    t.integer  "departments_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "department_id"
@@ -45,7 +46,7 @@ ActiveRecord::Schema.define(version: 20140211192052) do
     t.string   "location"
     t.string   "department"
     t.integer  "department_id"
-    t.integer  "title_id"
+    t.integer  "title_id",              limit: 255
     t.text     "project_comments"
     t.time     "scheduled_hours_start"
     t.time     "scheduled_hours_end"
@@ -69,8 +70,6 @@ ActiveRecord::Schema.define(version: 20140211192052) do
     t.datetime "updated_at"
     t.string   "status"
     t.integer  "client_partner_id"
-    t.time     "scheduled_hours_start"
-    t.time     "scheduled_hours_end"
   end
 
   create_table "sessions", force: true do |t|
@@ -80,9 +79,7 @@ ActiveRecord::Schema.define(version: 20140211192052) do
   end
 
   create_table "titles", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name"
   end
 
   create_table "vacations", force: true do |t|
