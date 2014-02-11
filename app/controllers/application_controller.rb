@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
     Session.sweep("24 hours")
     if session.blank? or session[:session_id].blank? or Session.find_by(session_id: session[:session_id]).blank?
       @_current_user = session[:current_user_id] = nil
+      redirect_to :login, flash: {error: "Your session has expired, you must relogin to BlueSource."} unless request.original_url == login_url
     end
   end
  
