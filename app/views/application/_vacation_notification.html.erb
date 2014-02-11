@@ -8,7 +8,7 @@
 	<div class="list-group notification-list-group">
 	<% all_vacations.each do |vacation| %>
 		<% employee = Employee.find(vacation.employee_id) %>
-		<% vacation_count = Vacation.find_by(employee: employee).where(status: "Pending").count %>
+		<% vacation_count = Vacation.where(employee: employee, status: "Pending").count %>
 		<%= link_to employee_vacations_path(employee, "fy" => vacation.start_date.current_fiscal_year), class: "list-group-item list-group-item-success" do %>
 		  <strong><%= employee.display_name %></strong><span class="badge badge-sm"><%= vacation_count %></span>
 		<% end %>
