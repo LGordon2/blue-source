@@ -6,11 +6,19 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   
   before_action :set_locale
+  before_action :set_session_expiry
  
   private
   
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
+  end
+  
+  def set_session_expiry
+    Session.sweep("24 hours")
+    if session.blank? or session[:session_id].blank? or Session.find_by(session_id: session[:session_id]).blank?
+      @_current_user = session[:current_user_id] = nil
+    end
   end
  
   # Finds the Employee with the ID stored in the session with the key

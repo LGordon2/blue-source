@@ -14,6 +14,7 @@ class WelcomeController < ApplicationController
     
     if @employee.save
       session[:current_user_id] = @employee.id
+      Session.create(session_id: session[:session_id])
       if @employee.role == "Base"
         redirect_to view_employee_vacations_path(@employee)
       else
