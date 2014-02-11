@@ -45,7 +45,7 @@ gem 'bcrypt-ruby'
 gem 'net-ldap'
 
 #Encryption
-#gem 'symmetric-encryption'
+gem 'symmetric-encryption', group: :production
 
 # Use unicorn as the app server
 gem 'unicorn', group: :heroku
