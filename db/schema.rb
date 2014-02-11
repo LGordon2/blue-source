@@ -28,10 +28,10 @@ ActiveRecord::Schema.define(version: 20140210214546) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "manager_id"
+    t.numeric  "manager_id", precision: 0
     t.string   "role"
     t.date     "start_date"
-    t.integer  "project_id"
+    t.numeric  "project_id", precision: 0
     t.string   "level"
     t.string   "cell_phone"
     t.string   "im_name"
@@ -41,11 +41,11 @@ ActiveRecord::Schema.define(version: 20140210214546) do
     t.date     "roll_off_date"
     t.string   "email"
     t.string   "office_phone"
-    t.integer  "team_lead_id"
+    t.numeric  "team_lead_id", precision: 0
     t.string   "location"
     t.string   "department"
-    t.integer  "department_id"
-    t.integer  "title_id",              limit: 255
+    t.numeric  "department_id", precision: 0
+    t.numeric  "title_id",              precision: 0
     t.text     "project_comments"
     t.time     "scheduled_hours_start"
     t.time     "scheduled_hours_end"
