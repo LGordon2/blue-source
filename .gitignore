@@ -23,7 +23,6 @@ capybara-*.html
 .rspec
 .rvmrc
 /.bundle
-/vendor/bundle
 /log/*
 /tmp/*
 /db/*.sqlite3
@@ -34,7 +33,6 @@ capybara-*.html
 rerun.txt
 pickle-email-*.html
 .project
-/vendor
 /log
 .DS_Store
 public/assets
