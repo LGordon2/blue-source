@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(version: 20140211192052) do
     t.string   "location"
     t.string   "department"
     t.integer  "department_id"
-    t.integer  "title_id",              limit: 255
     t.text     "project_comments"
     t.time     "scheduled_hours_start"
     t.time     "scheduled_hours_end"
+    t.integer  "title_id"
   end
 
   create_table "project_leads", force: true do |t|

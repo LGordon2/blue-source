@@ -1,11 +1,7 @@
 class ChangeTypeOfTitle < ActiveRecord::Migration
-  def self.up
-   change_column :employees, :title, :integer
-   rename_column :employees, :title, :title_id
-  end
-
-  def self.down
-   change_column :employees, :title, :string
+  def change
+   remove_column :employees, :title, :string
+   add_column :employees, :title_id, :integer
   end
 
 end
