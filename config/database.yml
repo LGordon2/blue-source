@@ -25,12 +25,6 @@ production:
   timeout: 5000
 
 staging:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
-
-heroku:
   adapter: postgresql
   encoding: unicode
   database: my_database_production

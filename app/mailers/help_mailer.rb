@@ -13,7 +13,7 @@ class HelpMailer < ActionMailer::Base
   
   def default_emails
     return "lewis.gordon@orasi.com" if Rails.env.development?
-    return ["bluesourceqa@gmail.com"] if Rails.env.staging?
+    return ["bluesourceqa@gmail.com"] if Rails.env.staging? or Rails.env.heroku?
     ["lewis.gordon@orasi.com","perry.thomas@orasi.com","adam.thomas@orasi.com"]
   end
 end

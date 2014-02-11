@@ -4,11 +4,11 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :group => [:development, :test, :staging, :production]
+gem 'sqlite3', :group => [:development, :test, :production]
 
-# Use postgres for heroku
-gem 'pg', :group => :heroku
-gem 'rails_12factor', group: :heroku
+# Use postgres for staging
+gem 'pg', :group => :staging
+gem 'rails_12factor', group: :staging
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -48,7 +48,7 @@ gem 'net-ldap'
 gem 'symmetric-encryption', group: :production
 
 # Use unicorn as the app server
-gem 'unicorn', group: :heroku
+gem 'unicorn', group: :staging
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
