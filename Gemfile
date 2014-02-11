@@ -48,7 +48,7 @@ gem 'net-ldap'
 #gem 'symmetric-encryption'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn', group: :heroku
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
