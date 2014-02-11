@@ -22,16 +22,15 @@
 $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
-  unless Modernizr.input.required
-    $("form").submit ->
-      valid = "true"
-      $(this).find("[required]").each (index) ->
-        if $(this).val() == ""
-          $(this).parent("div.form-group").addClass("has-error")
-          valid = "false"
-        else
-          $(this).parent("div.form-group").removeClass("has-error")
-      $(this).find("[data-loading-text]").button('loading') if valid == "true"
+  $("form").submit ->
+    valid = "true"
+    $(this).find("[required]").each (index) ->
+      if $(this).val() == ""
+        $(this).parent("div.form-group").addClass("has-error")
+        valid = "false"
+      else
+        $(this).parent("div.form-group").removeClass("has-error")
+    $(this).find("[data-loading-text]").button('loading') if valid == "true"
   unless Modernizr.inputtypes.time
     $("input[type=time]").each (index) ->
       match = /(\d{2}):(\d{2}):\d{2}\.\d{3}/.exec(String($(this).val()))
