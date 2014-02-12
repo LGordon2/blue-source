@@ -23,7 +23,9 @@ ManagerPortal::Application.routes.draw do
     get 'employees'
   end
 
-  resources :employees, only: [:index,:show,:create,:update]
+  resources :employees, only: [:index,:show,:create,:update] do
+    patch 'preferences'
+  end
   
   #Projects
 

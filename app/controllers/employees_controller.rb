@@ -1,9 +1,10 @@
 class EmployeesController < ApplicationController
   include ApplicationHelper
   before_action :require_login
-  #Sets the employee 
-  before_action :set_employee, only: [:show, :update]
   
+  #Sets the employee 
+  before_action :set_employee, only: [:show, :update, :preferences]
+  before_action :employee_must_be_current_user, only: :preferences
   before_action :require_manager_login, except: [:directory]
   
   before_action :can_edit, only: [:update]
@@ -31,6 +32,15 @@ class EmployeesController < ApplicationController
   def directory
     respond_to do |format|
       format.json {render json: all_employees_for_directory.to_json}
+    end
+  end
+  
+  def preferences
+    preferences = params.require(:employee).permit(preferences: :resourcesPerPage)
+    if @employee.update(preferences)
+      redirect_to @employee, flash: {success: "Employee successfully updated."}
+    else
+      redirect_to @employee, flash: {error: @employee.errors.full_messages.first}
     end
   end
   
@@ -70,7 +80,7 @@ class EmployeesController < ApplicationController
   private
   
   def set_employee
-    @employee = Employee.find(params[:id])
+    @employee = Employee.find(params[:id] || params[:employee_id])
     @title = @employee.display_name
   end
   
@@ -98,7 +108,7 @@ class EmployeesController < ApplicationController
   def employee_params
     allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date, :scheduled_hours_start, :scheduled_hours_end, :project_comments, :title_id]
     allowed_params += [:role, :manager_id, :status, :additional_days] if current_user.is_upper_management?
-    param_hash = params.require(:employee).permit(allowed_params, department_id: [], preferences: :resourcesPerPage)
+    param_hash = params.require(:employee).permit(allowed_params, department_id: [])
     param_hash[:department_id] = param_hash[:department_id].reject {|val| val == ""}.last if param_hash.has_key?(:department_id)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
   end
@@ -139,6 +149,12 @@ class EmployeesController < ApplicationController
   def can_edit
     unless current_user.can_edit? @employee
       redirect_to :root, flash: {error: "You do not have permission to edit this employee."}
+    end
+  end
+  
+  def employee_must_be_current_user
+    unless current_user == @employee
+      redirect_to :root, flash: {error: "You do not have permission to edit preferences for this employee."}
     end
   end
 end
