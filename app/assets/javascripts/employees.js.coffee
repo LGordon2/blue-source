@@ -26,36 +26,28 @@ set_team_leads = ->
       team_leads_select.append("<option value=\"#{lead.id}\">"+name+'</option>')
     if data.length > 1 then team_lead_section.removeClass("hidden") else team_lead_section.addClass("hidden")
     
-@employee_list_app = angular.module('employee_list_app', []);
+@employees_list_app = angular.module('employees_list_app', []);
 
-employee_list_ctrl = ($scope, $http, $filter) ->
+employees_list_ctrl = ($scope, $http, $filter) ->
   $http.get('employees.json').success (data) ->
     if (angular.isObject(data))
       data.forEach (value,key) ->
         value.display_name = "#{value.first_name} #{value.last_name}"
         value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
-      $scope.employees = data
+      $scope.resources = data
     else
-      $scope.employees = []
+      $scope.resources = []
     $scope.search()
     $scope.currentPage = $scope.initialPage if $scope.initialPage
-    $scope.loaded=true
-  $scope.loaded=false
-  $scope.loadProgress=100
-  $scope.show_inactive=false
-  $scope.predicate = 'last_name'
-  $scope.directReports = false
-  $scope.reverse = false
-  $scope.current_id = ''
-  $scope.sortingOrder = 'name';
-  $scope.resourcesPerPage = 10;
+    AngularHelpers.doneLoading($scope)
+  AngularHelpers.initializeResource($scope)
   
   $scope.filter_on_id = true
     
   searchMatch = AngularHelpers.searchMatch
     
   $scope.search = ->
-    $scope.filteredEmployees = $filter('filter')($scope.employees, (employee) ->
+    $scope.filteredResources = $filter('filter')($scope.resources, (employee) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       searchMatch(employee.display_name, $scope.query) ||
       searchMatch(employee.role, $scope.query) || 
@@ -64,44 +56,18 @@ employee_list_ctrl = ($scope, $http, $filter) ->
       (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
       searchMatch(employee.location, $scope.query))
     manager_id = $scope.manager_id
-
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{status:"!Inactive"}) unless $scope.show_inactive
-    $scope.filteredEmployees = $filter('filter')($scope.filteredEmployees,{manager_id: parseInt($scope.current_id)},true) if $scope.current_id != ''
-    $scope.filteredEmployees = $filter('orderBy')($scope.filteredEmployees,$scope.predicate,$scope.reverse)
+    
+    $scope.filteredResources = $filter('filter')($scope.filteredResources,{status:"!Inactive"}) unless $scope.show_inactive
+    $scope.filteredResources = $filter('filter')($scope.filteredResources,{manager_id: parseInt($scope.current_id)},true) if $scope.current_id != ''
+    $scope.filteredResources = $filter('orderBy')($scope.filteredResources,$scope.predicate,$scope.reverse)
     
     $scope.currentPage = 0;
     $scope.groupToPages()
+    console.log($scope.pagedResources)
   
-  previousEmployee = ->
-    match = /\/employees\/(\d+)/.exec(document.referrer)
-    if match
-      match[1]
-    
-  $scope.groupToPages = () ->
-    $scope.pagedEmployees = []
-    return if $scope.filteredEmployees.length==0
-    for i in [0..$scope.filteredEmployees.length-1]
-      if i % $scope.resourcesPerPage == 0
-        $scope.pagedEmployees[Math.floor(i / $scope.resourcesPerPage)] = [ $scope.filteredEmployees[i] ]
-      else
-        $scope.pagedEmployees[Math.floor(i / $scope.resourcesPerPage)].push($scope.filteredEmployees[i])
-      $scope.initialPage = $scope.pagedEmployees.length-1 if String($scope.filteredEmployees[i].id) == previousEmployee()
+  
+employees_list_ctrl.$inject = ['$scope', '$http', '$filter'];
 
-  $scope.range = (start,end) ->
-    [start..end-1]
-  
-  $scope.setPage = ->
-    $scope.currentPage = this.n;
-    
-  $scope.nextPage = ->
-    $scope.currentPage++ if ($scope.currentPage < $scope.pagedEmployees.length - 1)
-    
-  $scope.prevPage = ->
-    $scope.currentPage-- if ($scope.currentPage > 0)
-  
-  
-employee_list_ctrl.$inject = ['$scope', '$http', '$filter'];
-
-@employee_list_app.controller 'employee_list_ctrl', employee_list_ctrl
+@employees_list_app.controller 'employees_list_ctrl', employees_list_ctrl
   
   

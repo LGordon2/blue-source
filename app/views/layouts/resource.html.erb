@@ -1,45 +1,56 @@
 <% content_for :content do %>
-<section id="ng-app" ng-app="<%= @resource_for_angular %>_list_app" ng-controller="<%= @resource_for_angular %>_list_ctrl" class="center-block">
-	<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.pluralize.capitalize %></h1>
+<section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
+	<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
 	<%= yield :header_msgs %>
 	<%= render 'notification_section' %>
-	<div class>
-		<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here...">
-	</div>
-	<div>
-		<div class="radio-btn-section">
-			<%= yield :header_btns %>
+	<div id="content" ng-show="resources.length>0">
+		<div id="search-bar">
+			<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here..." autofocus>
+		</div>
+		<div class="header-btn-section">
+			<div class="radio-btn-section">
+				<%= yield :header_btns %>
+				<div class="pull-right inline-label-input">
+					<label style="display:inline;"><%= controller_name.capitalize %> per page</label>
+					<input type="number" class="form-control" style="display:inline;width:inherit;" ng-model="resourcesPerPage" ng-change="search()" min="5" max="20">
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div>
+			<div class="table-responsive">
+				<table ng-show="pagedResources.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
+					<%= yield :table %>
+				</table>
+				<h2 ng-show="pagedResources.length<=0 && resources.length>0 ">No rows found for '{{query}}'</h2>
+			</div>
+			<div ng-show="pagedResources.length>0">
+				<p class="pull-right">
+					{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+pagedResources[currentPage].length}} of {{resourcesPerPage*(pagedResources.length-1) + pagedResources[pagedResources.length-1].length}}
+				</p>
+			</div>
+			<div ng-show="pagedResources.length>1">
+				<ul class="pagination">
+					<li ng-class="{disabled: currentPage == 0}">
+						<a href ng-click="prevPage()">&laquo;</a>
+					</li>
+					<li ng-repeat="n in range(0,pagedResources.length)" ng-class="{active: n == currentPage}" ng-click="setPage()">
+						<a href ng-bind="n + 1">{{n}}</a>
+					</li>
+					<li ng-class="{disabled: currentPage == pagedResources.length - 1}">
+						<a href ng-click="nextPage()">&raquo;</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
-	<div ng-show='loaded'>
-		<div class="table-responsive">
-			<table ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
-				<%= yield :table %>
-			</table>
-			<h2 ng-show="<%= @resource_for_angular.pluralize %>.length==0">No <%= @resource_for_angular.pluralize %> found.</h2>
-			<h2 ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length<=0 && <%= @resource_for_angular.pluralize %>.length>0 ">No rows found for '{{query}}'</h2>
-		</div>
-		<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>0">
-			<p class="pull-right">{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+paged<%= @resource_for_angular.pluralize.capitalize %>[currentPage].length}} of {{resourcesPerPage*(paged<%= @resource_for_angular.pluralize.capitalize %>.length-1) + paged<%= @resource_for_angular.pluralize.capitalize %>[paged<%= @resource_for_angular.pluralize.capitalize %>.length-1].length}} </p>
-		</div>
-		<div ng-show="paged<%= @resource_for_angular.pluralize.capitalize %>.length>1">
-			<ul class="pagination">
-				<li ng-class="{disabled: currentPage == 0}">
-					<a href ng-click="prevPage()">&laquo;</a>
-				</li>
-				<li ng-repeat="n in range(0,paged<%= @resource_for_angular.pluralize.capitalize %>.length)" ng-class="{active: n == currentPage}" ng-click="setPage()">
-					<a href ng-bind="n + 1">{{n}}</a>
-				</li>
-				<li ng-class="{disabled: currentPage == paged<%= @resource_for_angular.pluralize.capitalize %>.length - 1}">
-					<a href ng-click="nextPage()">&raquo;</a>
-				</li>
-			</ul>
-		</div>
+	<div id="no-employees" ng-show="resources.length==0">
+		<h2>No <%= controller_name%> found.</h2>
 	</div>
 	<div id="loading-section" ng-show='never-show' class='hidden'>
 		<h1>Loading...</h1>
 		<div class="progress progress-striped active">
-		  	
+
 			<div class="progress-bar"  role="progressbar" aria-valuenow="{{loadProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
 				<span class="sr-only">{{loadProgress}}% Complete</span>
 			</div>
