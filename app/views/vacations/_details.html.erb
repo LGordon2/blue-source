@@ -1,7 +1,7 @@
 <table class="table table-bordered table-hover table-responsive">
 	<tr>
 		<td>Estimated vacation days that will accrue for fiscal year <%=@fyear%></td>
-		<td><%= @employee.accrued_vacation_days(Date.new(@fyear,1,1).fiscal_new_year-1).round %></td>
+		<td><%= @employee.accrued_vacation_days(Date.new(@fyear,1,1).fiscal_new_year-1) %></td>
 	</tr>
 	<tr>
 		<td>Vacation days taken</td>
