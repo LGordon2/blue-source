@@ -5,7 +5,7 @@ class EmployeesController < ApplicationController
   #Sets the employee 
   before_action :set_employee, only: [:show, :update, :preferences]
   before_action :employee_must_be_current_user, only: :preferences
-  before_action :require_manager_login, except: [:directory]
+  before_action :require_manager_login, except: [:directory, :preferences]
   
   before_action :can_edit, only: [:update]
   before_action :can_view, only: [:show]
