@@ -13,7 +13,7 @@
 				<div class="pull-right inline-label-input">
 					<%= form_for current_user, url: employee_preferences_path(current_user), method: :patch, html: {id: "resources-per-page"}, remote: true do |f| %>
 					<label style="display:inline;"><%= @resource_for_angular.pluralize.capitalize %> per page</label>
-					<%= number_field_tag "employee[preferences][resourcesPerPage]", nil, "ng-model" => "resourcesPerPage", "ng-change" => "search()", min: 5, max: 20, class: "form-control", style: "display:inline;width:inherit" %>
+					<%= select_tag "employee[preferences][resourcesPerPage]", options_for_select([ 5, 10, 15, 20 ], current_user.preferences['resourcesPerPage']), "ng-model" => "resourcesPerPage", "ng-change" => "search()", min: 5, max: 20, class: "form-control", style: "display:inline;width:inherit" %>
 					<% end %>
 				</div>
 				<div class="clearfix"></div>
