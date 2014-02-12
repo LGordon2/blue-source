@@ -11,13 +11,15 @@
 			<div class="radio-btn-section">
 				<%= yield :header_btns %>
 				<div class="pull-right inline-label-input">
+					<%= form_for current_user, html: {id: "resources-per-page"}, remote: true do |f| %>
 					<label style="display:inline;"><%= @resource_for_angular.pluralize.capitalize %> per page</label>
-					<input type="number" class="form-control" style="display:inline;width:inherit;" ng-model="resourcesPerPage" ng-change="search()" min="5" max="20">
+					<%= number_field_tag "employee[preferences][resourcesPerPage]", nil, "ng-model" => "resourcesPerPage", "ng-change" => "search()", min: 5, max: 20, class: "form-control", style: "display:inline;width:inherit" %>
+					<% end %>
 				</div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
-		<div>
+		<div id="content" ng-init="resourcesPerPage=<%= current_user.preferences[:resourcesPerPage].blank? ? 15 : current_user.preferences[:resourcesPerPage]%>">
 			<div class="table-responsive">
 				<table ng-show="pagedResources.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
 					<%= yield :table %>

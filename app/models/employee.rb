@@ -2,6 +2,8 @@ require 'net/ldap'
 class Employee < ActiveRecord::Base
   include EmployeeHelper
   
+  serialize :preferences, Hash
+  
   has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
   has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations

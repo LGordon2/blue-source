@@ -20,6 +20,8 @@
 #= require modernizr
 
 $(document).ready ->
+  $("form#resources-per-page input[type=number]").on "change", ->
+    $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
   $("form").submit ->
