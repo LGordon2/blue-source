@@ -1,6 +1,6 @@
 <% content_for :content do %>
 <section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
-	<div id="content" class="center-block ng-cloak" ng-cloak ng-show="loaded">
+	<div id="all-content">
 		<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
 		<%= yield :header_msgs %>
 		<%= render 'notification_section' %>
@@ -19,7 +19,7 @@
 				<div class="clearfix"></div>
 			</div>
 		</div>
-		<div id="content" ng-init="resourcesPerPage=<%= current_user.preferences[:resourcesPerPage].blank? ? 15 : current_user.preferences[:resourcesPerPage]%>">
+		<div id="resource-content" ng-init="resourcesPerPage=<%= current_user.preferences[:resourcesPerPage].blank? ? 15 : current_user.preferences[:resourcesPerPage]%>" class="ng-cloak" ng-cloak ng-show="loaded">
 			<div class="table-responsive">
 				<table ng-show="pagedResources.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
 					<%= yield :table %>
