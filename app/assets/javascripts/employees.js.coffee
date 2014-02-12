@@ -63,7 +63,6 @@ employees_list_ctrl = ($scope, $http, $filter) ->
     
     $scope.currentPage = 0;
     $scope.groupToPages()
-    console.log($scope.pagedResources)
   
   
 employees_list_ctrl.$inject = ['$scope', '$http', '$filter'];

@@ -15,7 +15,7 @@
 	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "IM Name", "#", 'ng-click' => "predicate='im_name'; reverse=!reverse; search()"%></th>
 </tr>
-<tr ng-repeat="employee in pagedEmployees[currentPage]">
+<tr ng-repeat="employee in pagedResources[currentPage]">
 	<td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>
 	<td><a href="mailto:{{employee.email}}">{{employee.last_name}}</a></td>
 	<td><a href="mailto:{{employee.manager.email}}">{{employee.manager.display_name}}</a></td>

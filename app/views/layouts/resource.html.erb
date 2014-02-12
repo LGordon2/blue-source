@@ -11,7 +11,7 @@
 			<div class="radio-btn-section">
 				<%= yield :header_btns %>
 				<div class="pull-right inline-label-input">
-					<label style="display:inline;"><%= controller_name.capitalize %> per page</label>
+					<label style="display:inline;"><%= @resource_for_angular.pluralize.capitalize %> per page</label>
 					<input type="number" class="form-control" style="display:inline;width:inherit;" ng-model="resourcesPerPage" ng-change="search()" min="5" max="20">
 				</div>
 				<div class="clearfix"></div>
