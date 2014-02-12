@@ -89,12 +89,13 @@ class Employee < ActiveRecord::Base
   
   def all_subordinates
     return Employee.all if role == "Company Admin"
+    all_subordinates_ids = []
     if !self.department.blank? and (role.in? ["Upper Management", "Department Head", "Department Admin"])
       return self.department.employees if self.subordinates.empty?
-      return Employee.where(id: (self.department.employees.pluck(:id) + self.subordinates.pluck(:id)).flatten.uniq)
+      all_subordinates_ids += Employee.where(id: (self.department.employees.pluck(:id) + self.subordinates.pluck(:id)).flatten.uniq)
     end
     return if self.subordinates.empty?
-    all_subordinates_ids = self.subordinates.pluck(:id)
+    all_subordinates_ids += self.subordinates.pluck(:id)
     self.subordinates.each do |employee|
       all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
     end
