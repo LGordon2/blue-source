@@ -27,7 +27,10 @@
 <% end %>
 
 <% content_for :header_btns do %>
-
+<div class="pull-right inline-label-input">
+	<label style="display:inline;">Employees per page</label>
+	<input type="number" class="form-control" style="display:inline;width:inherit;" ng-model="resourcesPerPage" ng-change="search()" min="5" max="20">
+</div>
 <% if !current_user.subordinates.blank? and current_user.subordinates.count > 0 and current_user.subordinates.count != current_user.all_subordinates.count %>
 <div class="btn-group" data-toggle="buttons">
 	<label class="btn btn-primary active" ng-click="current_id='';search()">
@@ -44,7 +47,6 @@
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
 </div>
 <% end %>
-
 <% if current_user.can_add_to_system? %>
 <div class="btn-group">
 	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>

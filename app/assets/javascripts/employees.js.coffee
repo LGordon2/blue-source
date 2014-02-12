@@ -48,8 +48,7 @@ employee_list_ctrl = ($scope, $http, $filter) ->
   $scope.reverse = false
   $scope.current_id = ''
   $scope.sortingOrder = 'name';
-  employeesPerPage = 15;
-  $scope.resourcesPerPage = employeesPerPage;
+  $scope.resourcesPerPage = 10;
   
   $scope.filter_on_id = true
     
@@ -82,10 +81,10 @@ employee_list_ctrl = ($scope, $http, $filter) ->
     $scope.pagedEmployees = []
     return if $scope.filteredEmployees.length==0
     for i in [0..$scope.filteredEmployees.length-1]
-      if i % employeesPerPage == 0
-        $scope.pagedEmployees[Math.floor(i / employeesPerPage)] = [ $scope.filteredEmployees[i] ]
+      if i % $scope.resourcesPerPage == 0
+        $scope.pagedEmployees[Math.floor(i / $scope.resourcesPerPage)] = [ $scope.filteredEmployees[i] ]
       else
-        $scope.pagedEmployees[Math.floor(i / employeesPerPage)].push($scope.filteredEmployees[i])
+        $scope.pagedEmployees[Math.floor(i / $scope.resourcesPerPage)].push($scope.filteredEmployees[i])
       $scope.initialPage = $scope.pagedEmployees.length-1 if String($scope.filteredEmployees[i].id) == previousEmployee()
 
   $scope.range = (start,end) ->
