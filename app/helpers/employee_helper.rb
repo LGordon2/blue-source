@@ -55,4 +55,13 @@ module EmployeeHelper
     (accrual_rates(years_with_orasi)*(months)).round(2)
     
   end
+  
+  def special_vacation_round(days)
+    _split_max_days = days.divmod(1)
+    if _split_max_days.last >= 0.5
+      return _split_max_days.first + 0.5
+    end
+    
+    _split_max_days.first
+  end
 end

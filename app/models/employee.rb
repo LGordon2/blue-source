@@ -219,12 +219,7 @@ class Employee < ActiveRecord::Base
   def max_vacation_days(on_date = Date.current)
     _max_days = self.accrued_vacation_days(on_date.fiscal_new_year-1)
     return 0 if _max_days <= 0.0
-    _split_max_days = _max_days.divmod(1)
-    if _split_max_days.last >= 0.5
-      return _split_max_days.first + 0.5
-    end
-    
-    _split_max_days.first
+    special_vacation_round(_max_days)
   end
   
   def max_floating_holidays
