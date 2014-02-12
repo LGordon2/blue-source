@@ -3,7 +3,7 @@
 	<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
 	<%= yield :header_msgs %>
 	<%= render 'notification_section' %>
-	<div id="content" ng-show="resources.length>0">
+	<div id="content" ng-cloak class="ng-cloak" ng-show="resources.length>0">
 		<div id="search-bar">
 			<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here..." autofocus>
 		</div>
