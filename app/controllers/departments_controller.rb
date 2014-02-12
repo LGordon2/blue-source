@@ -34,9 +34,9 @@ class DepartmentsController < ApplicationController
   
   def destroy
     if @department.destroy
-      redirect_to :back, flash: {success: "Department successfully deleted."}
+      redirect_to admin_departments_path, flash: {success: "Department successfully deleted."}
     else
-      redirect_to :back, flash: {error: @department.errors.full_messages}
+      redirect_to admin_departments_path, flash: {error: @department.errors.full_messages}
     end
   end
   

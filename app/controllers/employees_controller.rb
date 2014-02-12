@@ -118,8 +118,9 @@ class EmployeesController < ApplicationController
       current_user.all_subordinates.as_json({
       include: [
         {:manager => {:only => [:id,:first_name,:last_name]}}, 
-        {:project => {:only => :name}}], 
-      only: [:id, :first_name, :last_name, :role, :manager_id, :project_id, :location, :status]
+        {:project => {:only => :name}},
+        {:employee_title => {:only => :name}}], 
+      only: [:id, :first_name, :last_name, :title, :manager_id, :project_id, :location, :status]
     }).map do |e| 
         capitalize_names_and_projects(e)
       end

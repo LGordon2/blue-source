@@ -11,6 +11,7 @@ class Employee < ActiveRecord::Base
   belongs_to :team_lead, class_name: "Employee"
   belongs_to :project
   belongs_to :department
+  belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
   has_one :area, through: :department
   
   before_validation :set_standards_for_user
