@@ -53,7 +53,7 @@
 <% unless current_user.department.blank? %>
 <div class="btn-group" data-toggle="buttons">
 	
-	<%= label_tag :department, class: "btn btn-primary", 'ng-click' => "filteredDepartment = #{current_user.department.name};getAllEmployees(#{current_user.department.id})" do %>
+	<%= label_tag :department, class: "btn btn-primary", 'ng-click' => "filteredDepartment = '#{current_user.department.name}';getAllEmployees(#{current_user.department.id})" do %>
 		<input type="radio" name="options" id="option1"><%= current_user.department.name %>
 	<% end %>
 	
