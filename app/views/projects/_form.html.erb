@@ -18,7 +18,7 @@
 	<script type="text/javascript">
 	$(document).on("ready", function() {
 	  $("#add-team-lead").on("click", function() {
-	    $(".team-lead-section").last().after('<div class="form-group team-lead-section"><%= f.select(:leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {}, name: "project[leads][]", class: "form-control additional-lead-field").tr_s("\n","").html_safe %><span class="glyphicon glyphicon-remove"></span></div>');
+	    $(".team-lead-section").last().after('<div class="form-group team-lead-section"><%= f.select(:leads, Employee.all.order(first_name: :asc).collect {|p| [p.display_name, p.id] }, {}, name: "project[leads][]", class: "form-control additional-lead-field").tr_s("\n","").html_safe %><span class="glyphicon glyphicon-remove" style="width:5%;"></span></div>');
 	    return $(".glyphicon-remove").on("click", function() {
 	      return $(this).parent().remove();
 	    });
