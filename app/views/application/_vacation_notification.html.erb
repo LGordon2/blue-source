@@ -1,5 +1,4 @@
-<% all_employees_with_pending_vacations = Vacation.select(:employee_id).where(status: "Pending").distinct %>
-<% all_employees_with_pending_vacations = Employee.select(:id).where(id: all_employees_with_pending_vacations, manager: current_user) %>
+<% all_employees_with_pending_vacations = Employee.select(:id).where(id: Vacation.select(:employee_id).where(status: "Pending").distinct, manager: current_user) %>
 <% unless all_employees_with_pending_vacations.blank? %>
 <div class="alert alert-info alert-dismissable">
 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">

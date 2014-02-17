@@ -75,7 +75,7 @@ class Admin::TitlesController < ApplicationController
     end
     
     def must_be_company_admin
-      unless current_user.role == "Company Admin"
+      unless current_user.role == "Company Admin" or current_user.sys_admin?
         redirect_to :root, flash: {error: "WTF are you doing..."}
       end
     end
