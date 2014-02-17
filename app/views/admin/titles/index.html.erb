@@ -1,25 +1,27 @@
 <h1>Listing titles</h1>
 <% unless @titles.count == 0 %>
 <table class="table table-responsive table-bordered">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+	<thead>
+		<tr>
+			<th>Title</th>
+		</tr>
+	</thead>
 
-  <tbody>
-    <% @titles.each do |title| %>
-      <tr>
-        <td><%= title.name %></td>
-        <td><%= link_to 'Show', admin_title_path(title) %></td>
-        <td><%= link_to 'Edit', edit_admin_title_path(title) %></td>
-        <td><%= link_to 'Destroy', admin_title_path(title), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
+	<tbody>
+		<% @titles.each do |title| %>
+		<tr>
+			<td> <%= title.name %>
+			<div class="pull-right">
+				<%= link_to edit_admin_title_path(title) do %>
+					<span class="glyphicon glyphicon-pencil"></span>
+				<% end %>
+				<%= link_to admin_title_path(title), method: :delete, data: { confirm: 'Are you sure?' } do %>
+					<span class="glyphicon glyphicon-trash"></span>
+				<% end %>
+			</div></td>
+		</tr>
+		<% end %>
+	</tbody>
 </table>
 <% end %>
 <br>

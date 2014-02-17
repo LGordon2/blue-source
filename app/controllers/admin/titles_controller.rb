@@ -9,7 +9,6 @@ class Admin::TitlesController < ApplicationController
     @titles = Title.order(name: :asc)
   end
 
-  # GET /titles/1
   # GET /titles/1.json
   def show
   end
@@ -30,7 +29,7 @@ class Admin::TitlesController < ApplicationController
 
     respond_to do |format|
       if @title.save
-        format.html { redirect_to admin_title_path(@title), notice: 'Title was successfully created.' }
+        format.html { redirect_to admin_titles_path, notice: 'Title was successfully created.' }
         format.json { render action: 'show', status: :created, location: @title }
       else
         format.html { render action: 'new' }
@@ -44,7 +43,7 @@ class Admin::TitlesController < ApplicationController
   def update
     respond_to do |format|
       if @title.update(title_params)
-        format.html { redirect_to admin_title_path(@title), notice: 'Title was successfully updated.' }
+        format.html { redirect_to admin_titles_path(@title), notice: 'Title was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
