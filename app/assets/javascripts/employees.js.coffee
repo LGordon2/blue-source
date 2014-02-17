@@ -18,7 +18,7 @@ set_team_leads = ->
   team_leads_select = $("select#employee_team_lead_id")
   team_lead_section = $("#team_lead_section")
   return team_lead_section.addClass("hidden") if employee_project_id.val() == ""
-  $.getJSON "/project/#{employee_project_id.val()}/leads.json", (data) ->
+  $.getJSON "/projects/#{employee_project_id.val()}/leads.json", (data) ->
     team_leads_select.empty()
     team_leads_select.append('<option value></option>') unless data.length == 1
     for lead in data
