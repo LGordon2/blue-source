@@ -9,6 +9,7 @@
 directory_list_ctrl = ($scope, $http, $filter) ->
   $scope.getAllEmployees = (fromDepartment) ->
     AngularHelpers.loading($scope)
+    console.log(fromDepartment)
     url = if typeof(fromDepartment) == 'undefined' then '/directory/employees.json' else "/departments/#{fromDepartment}/employees.json"
     $http.get(url).success (data) ->
       if (angular.isObject(data))
@@ -20,6 +21,7 @@ directory_list_ctrl = ($scope, $http, $filter) ->
         $scope.resources = []
       $scope.search()
       AngularHelpers.doneLoading($scope)
+      console.log(data)
   AngularHelpers.initializeResource($scope)
   $scope.getAllEmployees()
 
@@ -27,7 +29,6 @@ directory_list_ctrl = ($scope, $http, $filter) ->
     
   $scope.search = ->
     $scope.filteredResources = $filter('filter')($scope.resources,{status: "!Inactive"})
-    $scope.filteredResources = $filter('filter')($scope.filteredResources,{department: $scope.filteredDepartment}) unless $scope.filteredDepartment == ''
     $scope.filteredResources = $filter('filter')($scope.filteredResources, (employee) ->
       
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
