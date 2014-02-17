@@ -5,6 +5,15 @@ class ChangeRoles < ActiveRecord::Migration
     Employee.where(role: "Director").update_all(role: "Upper Management")
     Employee.where(role: "AVP").update_all(role: "Department Head")
     Employee.where(role: "Admin").update_all(role: "Company Admin")
+    
+    d = Department.create({name: "Services"})
+    Department.create([
+      {name: "Rural", department_id: d.id},
+      {name: "Delivery", department_id: d.id},
+      {name: "Mobile", department_id: d.id}, 
+      {name: "PSO", department_id: d.id}, 
+      {name: "SAP", department_id: d.id}
+    ])
   end
   
   def down
@@ -14,4 +23,6 @@ class ChangeRoles < ActiveRecord::Migration
     Employee.where(role: "Department Head").update_all(role: "AVP")
     Employee.where(role: "Company Admin").update_all(role: "Admin")
   end
+  
+  Department.destroy_all
 end
