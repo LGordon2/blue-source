@@ -30,7 +30,7 @@
 </div>
 <div class="form-group">
 	<%= f.label :manager, nil, class: "control-label" %>
-	<%= select :employee, :manager_id, Employee.all.order(:first_name).where.not(id: @employee).find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control", required: true %>
+	<%= select :employee, :manager_id, Employee.all.order(:first_name).where.not(id: @employee).find_all {|f| f.is_manager_or_higher? }.collect {|f| [f.display_name, f.id]}, { include_blank: true }, class: "form-control" %>
 </div>
 <div class="form-group">
 	<%= f.label :status, nil, class: "control-label" %>
