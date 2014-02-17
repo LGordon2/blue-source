@@ -10,7 +10,7 @@
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
-	<th ng-show='filteredDepartment==""'><%= link_to "Department", "#", "ng-click" => "predicate='department'; reverse=!reverse; search()"%></th>
+	<th ng-show='filteredDepartment==""'><%= link_to "Department", "#", "ng-click" => "predicate='department.name'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Office Phone", "#", 'ng-click' => "predicate='office_phone'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "IM Name", "#", 'ng-click' => "predicate='im_name'; reverse=!reverse; search()"%></th>
