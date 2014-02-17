@@ -2,7 +2,7 @@ class ChangeDepartment < ActiveRecord::Migration
   def up
     rename_column :employees, :department, :old_department
     Employee.all.each {|e| e.update(department: Department.find_by(name: e.old_department)) unless e.old_department.blank?}
-    remove_column :employees, :deparment
+    remove_column :employees, :old_department
   end
   
   def down
