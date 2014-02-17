@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140217165542) do
+ActiveRecord::Schema.define(version: 20140217204332) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20140217165542) do
     t.string   "office_phone"
     t.integer  "team_lead_id"
     t.string   "location"
-    t.string   "department"
     t.integer  "department_id"
     t.text     "project_comments"
     t.time     "scheduled_hours_start"
