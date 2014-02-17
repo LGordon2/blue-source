@@ -1,5 +1,5 @@
-<div style="display:block;">
-	<%= form_tag(:calendar,method: :get, style: "display:inline;") do %>
+<div class="calendar-header">
+	<%= form_tag(:calendar,method: :get) do %>
 		<div id="calendar-date-select">
 			<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
 			<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
