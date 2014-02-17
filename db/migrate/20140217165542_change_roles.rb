@@ -22,7 +22,7 @@ class ChangeRoles < ActiveRecord::Migration
     Employee.where(role: "Upper Management").update_all(role: "Director")
     Employee.where(role: "Department Head").update_all(role: "AVP")
     Employee.where(role: "Company Admin").update_all(role: "Admin")
+    
+    Department.destroy_all
   end
-  
-  Department.destroy_all
 end
