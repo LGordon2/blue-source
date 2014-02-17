@@ -31,10 +31,6 @@
 		<td><%= @employee.title unless @employee.title.blank? %></td>
 	</tr>
 	<tr>
-		<td>Level:</td>
-		<td><%= @employee.level unless @employee.level.blank? %></td>
-	</tr>
-	<tr>
 		<td>Manager:</td>
 		<td><%= link_to @employee.manager.display_name, "#{@employee.manager.id}" unless @employee.manager.blank? %></td>
 	</tr>
