@@ -18,7 +18,7 @@ class EmployeesController < ApplicationController
   layout :set_layout
   
   def show
-    if request.referer == root_url+"employee/vacation/#{@employee.id}"
+    if request.referer == root_url+"employees/#{@employee.id}/vacations"
       @prev_page = 3
     end
     @prev_page = 2 if flash[:project] == true
