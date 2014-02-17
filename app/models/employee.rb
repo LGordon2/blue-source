@@ -212,7 +212,7 @@ class Employee < ActiveRecord::Base
     when "Vacation"
       return max_vacation_days(on_date)
     when "Floating Holiday"
-      return max_floating_holidays
+      return max_floating_holidays(on_date)
     end
   end
   
@@ -226,12 +226,12 @@ class Employee < ActiveRecord::Base
     special_vacation_round(_max_days)
   end
   
-  def max_floating_holidays
+  def max_floating_holidays(on_date = Date.current)
     if self.start_date.blank?
       return 2
     end
     
-    if self.start_date >= Vacation.fiscal_new_year_date(Date.current) - 90.days
+    if self.start_date >= Vacation.fiscal_new_year_date(on_date) - 90.days
       return 1
     end
     
