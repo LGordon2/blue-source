@@ -227,6 +227,14 @@ class Employee < ActiveRecord::Base
   end
   
   def max_floating_holidays
+    if self.start_date.blank?
+      return 2
+    end
+    
+    if self.start_date >= Vacation.fiscal_new_year_date(Date.current) - 90.days
+      return 1
+    end
+    
     return 2
   end
   
