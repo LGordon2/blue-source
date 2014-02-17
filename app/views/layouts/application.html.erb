@@ -34,7 +34,7 @@
 				<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation">
 					<% unless current_user.blank? %>
 					<ul class="nav navbar-nav navbar-right">
-						<% if current_user.role == "Company Admin" or current_user.sys_admin? %>
+						<% if current_user.role == "Company Admin" or current_user.sys_admin %>
 						<li class="dropdown">
 							<a data-toggle="dropdown" href="#">Admin <b class="caret"></b></a>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
