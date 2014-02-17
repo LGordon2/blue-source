@@ -13,6 +13,9 @@ class HelpMailer < ActionMailer::Base
   
   def default_emails
     return "lewis.gordon@orasi.com" if Rails.env.development?
-    ["lewis.gordon@orasi.com","perry.thomas@orasi.com","adam.thomas@orasi.com"]
+    ["lewis.gordon@orasi.com","perry.thomas@orasi.com",
+      "adam.thomas@orasi.com","john.martin@orasi.com",
+      "lateef.livers@orasi.com","kevin.hedgecock@orasi.com",
+      "jason.trogdon@orasi.com"]
   end
 end
