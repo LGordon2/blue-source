@@ -1,5 +1,5 @@
 class HelpMailer < ActionMailer::Base
-  default from: "mailer@orasi.com"
+  default from: "bluesource@orasi.com"
   
   def comments_email(from, email, comments, type)
     @from = from

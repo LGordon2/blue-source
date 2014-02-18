@@ -48,6 +48,10 @@ a.month-changer:hover
 div#calendar-date-select
 {
   margin-bottom: 10px; 
+  display:inline-block;
+  text-align:center;
+  margin-left: auto;
+  margin-right: auto;
   select{
     width:auto;
   }
@@ -61,8 +65,4 @@ div#calendar-date-select
   display:block;
   margin-top: 10px;
   
-  form
-  {
-    display:inline;
-  }
 }

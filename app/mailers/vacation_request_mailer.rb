@@ -1,5 +1,5 @@
 class VacationRequestMailer < ActionMailer::Base
-  default from: "mailer@orasi.com"
+  default from: "bluesource@orasi.com"
   
   before_action :attach_logo
   
