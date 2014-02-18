@@ -43,7 +43,7 @@ class CalendarController < ApplicationController
       @selectable_years = (Date.current.year-2..Date.current.year+2)
     end
     
-    @pdo_times = @pdo_times.where.not(status: "Pending").where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)
+    @pdo_times = @pdo_times.where(status: [nil, ""]).where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)
     
   end
   
