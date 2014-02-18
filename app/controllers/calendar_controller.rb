@@ -53,7 +53,7 @@ class CalendarController < ApplicationController
   def change_month(no_months)
     months_to_add = no_months.months
     if params[:month].blank? or params[:year].blank?
-      prev_date = Date.current + months_to_add
+      prev_date = Date.current
     else
       prev_date = Date.new(params[:year].to_i, params[:month].to_i, 1)
     end
