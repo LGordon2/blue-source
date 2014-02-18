@@ -1,5 +1,15 @@
 <div class="calendar-header">
 	<%= form_tag(:calendar,method: :get, id: "calendar-params") do %>
+	<div id="calendar-date-select">
+		<%= link_to calendar_path(change_month(-1)), class: "month-changer #{'disabled' if @disabled_prev_month}" do %>
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		<% end %>
+		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
+		<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
+		<%= link_to calendar_path(change_month(1)), class: "month-changer #{'disabled' if @disabled_next_month}" do %>
+		<span class="glyphicon glyphicon-chevron-right"></span>
+		<% end %>
+	</div>
 	<div class="btn-group" data-toggle="buttons">
 		<% @filter_types.each do |filter_name| %>
 		<% unless filter_name == 'department' %>
@@ -12,16 +22,7 @@
 				<% end %> </label> 
 		<% end %>
 	</div>
-	<div id="calendar-date-select">
-		<%= link_to calendar_path(change_month(-1)), class: "month-changer #{'disabled' if @disabled_prev_month}" do %>
-			<span class="glyphicon glyphicon-chevron-left"></span>
-		<% end %>
-		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
-		<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
-		<%= link_to calendar_path(change_month(1)), class: "month-changer #{'disabled' if @disabled_next_month}" do %>
-		<span class="glyphicon glyphicon-chevron-right"></span>
-		<% end %>
-	</div>
+	
 	<% end %>
 </div>
 <div class="table-responsive">
