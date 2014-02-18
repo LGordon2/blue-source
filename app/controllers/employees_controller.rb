@@ -17,7 +17,6 @@ class EmployeesController < ApplicationController
   layout :set_layout
   
   def show
-    raise Exception
     if request.referer == employee_vacations_url(@employee.id)
       @prev_page = 3
     end
