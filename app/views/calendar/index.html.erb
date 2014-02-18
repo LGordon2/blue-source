@@ -1,8 +1,14 @@
 <div class="calendar-header">
-	<%= form_tag(:calendar,method: :get) do %>
+	<%= form_tag(:calendar,method: :get, id: "calendar-params") do %>
 	<div id="calendar-date-select">
+		<%= link_to calendar_path(change_month(-1)), class: "month-changer #{'disabled' if @disabled_prev_month}" do %>
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		<% end %>
 		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
 		<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
+		<%= link_to calendar_path(change_month(1)), class: "month-changer #{'disabled' if @disabled_next_month}" do %>
+		<span class="glyphicon glyphicon-chevron-right"></span>
+		<% end %>
 	</div>
 	<div class="btn-group" data-toggle="buttons">
 		<% @filter_types.each do |filter_name| %>
@@ -13,7 +19,8 @@
 				<%= current_user.department.name.capitalize %>
 				<% else %>
 				<%= filter_name.capitalize %>
-				<% end%> </label> <% end %>
+				<% end %> </label> 
+		<% end %>
 	</div>
 	<% end %>
 </div>
@@ -32,7 +39,7 @@
 			<td style="border: 1px solid; width: 248px; height: 100px;"> <% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
 			<div>
-				<span class="<%= "today" if day == Date.current %>"><%= day.day %></span><em><%= orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em>
+				<span class="<%= "today" if day == Date.current %>"><%= day.day %></span><em><%= " " + orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em>
 			</div>
 			<div>
 				<ul class="list-group">
