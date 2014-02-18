@@ -22,24 +22,14 @@ set_team_leads = ->
     team_leads_select.empty()
     team_leads_select.append('<option value></option>') unless data.length == 1
     for lead in data
-      name = "#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}"
+      name = lead.display_name
       team_leads_select.append("<option value=\"#{lead.id}\">"+name+'</option>')
     if data.length > 1 then team_lead_section.removeClass("hidden") else team_lead_section.addClass("hidden")
     
 @employees_list_app = angular.module('employees_list_app', []);
 
 employees_list_ctrl = ($scope, $http, $filter) ->
-  $http.get('employees.json').success (data) ->
-    if (angular.isObject(data))
-      data.forEach (value,key) ->
-        value.display_name = "#{value.first_name} #{value.last_name}"
-        value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
-      $scope.resources = data
-    else
-      $scope.resources = []
-    $scope.search()
-    $scope.currentPage = $scope.initialPage if $scope.initialPage
-    AngularHelpers.doneLoading($scope)
+  AngularHelpers.getResources($scope,$http,'employees.json')
   AngularHelpers.initializeResource($scope)
   
   $scope.filter_on_id = true

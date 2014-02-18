@@ -16,6 +16,18 @@ AngularHelpers.doneLoading = ($scope) ->
 AngularHelpers.loading = ($scope) ->
   $scope.loaded = false
   
+AngularHelpers.getResources = ($scope, $http,json_file) ->
+  AngularHelpers.loading($scope)
+  $http.get(json_file).success (data) ->
+    if (angular.isObject(data))
+      $scope.resources = data
+    else
+      $scope.resources = []
+    $scope.search()
+    $scope.currentPage = $scope.initialPage if $scope.initialPage
+    AngularHelpers.doneLoading($scope)
+  
+  
 AngularHelpers.initializeResource = ($scope) ->
   $scope.resourcesPerPage = 15;
   $scope.loaded=false

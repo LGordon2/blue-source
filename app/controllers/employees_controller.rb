@@ -1,5 +1,4 @@
 class EmployeesController < ApplicationController
-  include ApplicationHelper
   before_action :require_login
   
   #Sets the employee 
@@ -18,7 +17,8 @@ class EmployeesController < ApplicationController
   layout :set_layout
   
   def show
-    if request.referer == root_url+"employees/#{@employee.id}/vacations"
+    raise Exception
+    if request.referer == employee_vacations_url(@employee.id)
       @prev_page = 3
     end
     @prev_page = 2 if flash[:project] == true

@@ -9,19 +9,8 @@
 directory_list_ctrl = ($scope, $http, $filter) ->
   $scope.getAllEmployees = (fromDepartment) ->
     AngularHelpers.loading($scope)
-    console.log(fromDepartment)
     url = if typeof(fromDepartment) == 'undefined' then '/directory/employees.json' else "/departments/#{fromDepartment}/employees.json"
-    $http.get(url).success (data) ->
-      if (angular.isObject(data))
-        data.forEach (value,key) ->
-          value.display_name = "#{value.first_name} #{value.last_name}"
-          value.manager.display_name = "#{value.manager.first_name} #{value.manager.last_name}" if value.manager?
-        $scope.resources = data
-      else
-        $scope.resources = []
-      $scope.search()
-      AngularHelpers.doneLoading($scope)
-      console.log(data)
+    AngularHelpers.getResources($scope, $http,url)
   AngularHelpers.initializeResource($scope)
   $scope.getAllEmployees()
 
@@ -37,7 +26,9 @@ directory_list_ctrl = ($scope, $http, $filter) ->
       searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
       (employee.department? && searchMatch(employee.department.name, $scope.query)) ||
       searchMatch(employee.office_phone, $scope.query) ||
-      searchMatch(employee.cell_phone, $scope.query)
+      searchMatch(employee.cell_phone, $scope.query) ||
+      (employee.im_name? && searchMatch(employee.im_name, $scope.query)) ||
+      (employee.im_client && searchMatch(employee.im_client, $scope.query))
       )
     manager_id = $scope.manager_id
     $scope.filteredResources = $filter('orderBy')($scope.filteredResources,$scope.predicate,$scope.reverse)

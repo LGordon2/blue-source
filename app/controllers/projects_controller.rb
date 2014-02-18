@@ -21,18 +21,14 @@ class ProjectsController < ApplicationController
     @modal_title = "Add Project"
     @resource_for_angular = "project"
     respond_to do |format|
-      format.json {render json: Project.all.to_json({
-        include: [
-          {:leads => {:only => [:id, :first_name,:last_name]}},
-          {:client_partner => {:only => [:id, :first_name, :last_name]}}
-        ], only: [:id, :name, :status]})}
+      format.json
       format.html {render action: :index}
     end
   end
   
   def leads
     respond_to do |format|
-      format.json {render json: @project.leads.order(first_name: :asc), only: [:first_name,:last_name,:id]}
+      format.json
     end
   end
   
