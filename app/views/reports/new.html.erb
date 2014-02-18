@@ -1,0 +1,17 @@
+<h1>New report</h1>
+<%= form_for :report, url: reports_path do |f| %>
+<table class="table">
+	<tr>
+		<th>Column Name</th>
+		<th>Operator</th>
+		<th>Text</th>
+	</tr>
+	<tr>
+		<td><%= f.select :column_name, options_for_select(Employee.column_names), {}, class: "form-control" %></td>
+		<td><%= f.select :operator, options_for_select(["EQUALS"]), {}, class: "form-control" %></td>
+		<td><%= f.text_field :text, class: "form-control" %></td>
+	</tr>
+</table>
+<%= f.submit class: "btn btn-primary"%>
+<% end %>
+<%= link_to :Back, :back %>
