@@ -5,9 +5,20 @@
 		<tr>
 			<th>Report Name</th>
 		</tr>
+		<% @reports.each do |report| %>
 		<tr>
-			<td>Test</td>
+			<td><%= link_to report.name, report_path(report) %>
+			<div class="pull-right">
+				<%= link_to edit_report_path(report) do %>
+					<span class="glyphicon glyphicon-pencil"></span>
+				<% end %>
+				<%= link_to report_path(report), method: :delete, data: { confirm: 'Are you sure?' } do %>
+					<span class="glyphicon glyphicon-trash"></span>
+				<% end %>
+			</div>
+			</td>
 		</tr>
+		<% end %>
 	</table>
 </div>
 <%= link_to "Create new report", new_report_path, class: "btn btn-primary" %>
