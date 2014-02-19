@@ -1,0 +1,19 @@
+var disable_text_fields;
+
+$("tr:last").after($("<%= escape_javascript(render partial: 'form_section', locals: {selected_column: nil, selected_operator: nil, text: nil})%>"));
+
+$(".operator-dropdown").on("change", function() {
+  return disable_text_fields(this);
+});
+
+$(".glyphicon.glyphicon-remove").on("click", function() {
+  return $(this).parents("tr").remove();
+});
+
+disable_text_fields = function(row_obj) {
+  if ($(row_obj).val().toLowerCase() === 'all') {
+    return $(row_obj).parents("tr").find(".data-input-field").attr("disabled", true);
+  } else {
+    return $(row_obj).parents("tr").find(".data-input-field").attr("disabled", false);
+  }
+};
