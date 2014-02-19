@@ -1,6 +1,28 @@
-var disable_text_fields;
-
 $("tr:last").after($("<%= escape_javascript(render partial: 'form_section', locals: {selected_column: nil, selected_operator: nil, text: nil})%>"));
+
+var disable_text_fields, set_data_field_type;
+
+disable_text_fields = function(row_obj) {
+  if ($(row_obj).val().toLowerCase() === 'all') {
+    return $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true);
+  } else {
+    return $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false);
+  }
+  $(row_obj).parents("tr").find(".data-input-field:hidden").each(function(index){
+  	$(this).attr("disabled", true);
+  });  
+};
+
+set_data_field_type = function(row_obj) {
+  if ($(row_obj).val().toLowerCase() === 'projects') {
+    $(row_obj).parents("tr").find("select.data-input-field").removeClass("hidden");
+    $(row_obj).parents("tr").find("input.data-input-field").addClass("hidden");
+  } else {
+    $(row_obj).parents("tr").find("select.data-input-field").addClass("hidden");
+    $(row_obj).parents("tr").find("input.data-input-field").removeClass("hidden");
+  }
+  return disable_text_fields($(row_obj).parents("tr").find(".operator-dropdown"));
+};
 
 $(".operator-dropdown").on("change", function() {
   return disable_text_fields(this);
@@ -10,10 +32,6 @@ $(".glyphicon.glyphicon-remove").on("click", function() {
   return $(this).parents("tr").remove();
 });
 
-disable_text_fields = function(row_obj) {
-  if ($(row_obj).val().toLowerCase() === 'all') {
-    return $(row_obj).parents("tr").find(".data-input-field").attr("disabled", true);
-  } else {
-    return $(row_obj).parents("tr").find(".data-input-field").attr("disabled", false);
-  }
-};
+$(".column-name-dropdown").on("change", function() {
+  return set_data_field_type(this);
+});

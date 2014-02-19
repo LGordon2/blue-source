@@ -69,11 +69,17 @@ class ReportsController < ApplicationController
   def get_all_data
     @table_data = Employee.all
     @report.query_data.each do |data|
+      if data["column_name"] == "Projects"
+        column_name = "project_id"
+      else
+        column_name = data["column_name"]
+      end
+      
       case data['operator'].downcase
       when "equals"
-        @table_data = @table_data.report_equals(data["column_name"], data["text"])
+        @table_data = @table_data.report_equals(column_name, data["text"])
       when "less_than"
-        @table_data = @table_data.report_less_than(data["column_name"], data["text"])
+        @table_data = @table_data.report_less_than(column_name, data["text"])
       end
     end
   end

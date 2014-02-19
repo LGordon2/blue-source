@@ -9,7 +9,11 @@
 		<% @table_data.each do |employee| %>
 		<tr>
 			<% @report.query_data.collect {|r| r["column_name"]}.each do |key| %>
+			<% if employee.methods.include? key.to_sym %>
 			<td><%= employee.send(key) %></td>
+			<% else %>
+			<td><%= employee.project.name unless employee.project.blank? %></td>
+			<% end %>
 			<% end %>
 		</tr>
 		<% end %>
