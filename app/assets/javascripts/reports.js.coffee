@@ -6,7 +6,7 @@ $ ->
     disable_text_fields(this)
   $(".operator-dropdown").on "change", ->
     disable_text_fields(this)
-  $(".glyphicon.glyphicon").on "click", ->
+  $(".glyphicon.glyphicon-remove").on "click", ->
     $(this).parents("tr").remove()
     
 
