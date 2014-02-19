@@ -46,7 +46,8 @@ class CalendarController < ApplicationController
     @disabled_prev_month = (@starting_date - 1.month).year < @selectable_years.first
     @disabled_next_month = (@starting_date + 1.month).year > @selectable_years.last
     
-    @pdo_times = @pdo_times.where.not(status: "Pending").where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)
+    @pdo_times = @pdo_times.where.not(status: "Pending")
+    .where("(start_date >= :start_date and start_date <= :end_date) or (end_date >= :start_date and end_date <= :end_date)",{start_date: @starting_date.beginning_of_month,end_date: @starting_date.end_of_month})
     
   end
   

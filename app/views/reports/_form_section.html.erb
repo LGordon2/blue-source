@@ -1,0 +1,11 @@
+<tr>
+	<td><%= select_tag 'report[query_data][][column_name]', options_for_select(Employee.column_names, selected_column), class: "form-control" %></td>
+	<td><%= select_tag 'report[query_data][][operator]', options_for_select(["ALL","EQUALS","LESS_THAN"], selected_operator), class: "form-control operator-dropdown" %></td>
+	<td>
+		<%= text_field_tag 'report[query_data][][text]', text.blank? ? nil : text, class: "form-control data-input-field", disabled: true %>
+		
+	</td>
+	<td>
+		<span class="glyphicon glyphicon-remove pull-right"></span>
+	</td>
+</tr>
