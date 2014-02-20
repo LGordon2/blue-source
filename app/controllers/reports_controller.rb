@@ -80,6 +80,12 @@ class ReportsController < ApplicationController
         @table_data = @table_data.report_equals(column_name, text)
       when "less_than"
         @table_data = @table_data.report_less_than(column_name, text)
+      when "greater_than"
+        @table_data = @table_data.report_greater_than(column_name, text)
+      when "less_than_or_equal"
+        @table_data = @table_data.report_less_than_or_equal(column_name, text)
+      when "greater_than_or_equal"
+        @table_data = @table_data.report_greater_than_or_equal(column_name, text)
       end
     end
   end
