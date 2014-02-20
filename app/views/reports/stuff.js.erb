@@ -1,9 +1,10 @@
-$("tr:last").after($("<%= escape_javascript(render partial: 'form_section', locals: {selected_column: nil, selected_operator: nil, text: nil})%>"));
+$("tr:last").after($("<%= escape_javascript(render partial: 'form_section', locals: {selected_column: nil, selected_operator: nil, text: nil, showing_column: true})%>"));
 
 var disable_text_fields, set_data_field_type;
 
 disable_text_fields = function(row_obj) {
-  if ($(row_obj).val().toLowerCase() === 'all') {
+  var _ref;
+  if ((_ref = $(row_obj).val().toLowerCase()) === 'all' || _ref === 'nil') {
     $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true);
   } else {
     $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false);

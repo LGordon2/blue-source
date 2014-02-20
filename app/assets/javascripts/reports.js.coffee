@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 disable_text_fields = (row_obj) ->
-  if $(row_obj).val().toLowerCase() == 'all'
+  if $(row_obj).val().toLowerCase() in ['all','nil']
     $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true)
   else
     $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false)

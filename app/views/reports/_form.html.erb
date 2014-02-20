@@ -5,13 +5,14 @@
 		<th>Column Name</th>
 		<th>Operator</th>
 		<th>Text</th>
+		<th>Show?</th>
 	</tr>
 	<% unless @report.query_data.blank? %>
 	<% @report.query_data.each do |q| %>
-	<%= render partial: "form_section", locals: {selected_column: q["column_name"], selected_operator: q["operator"], text: q["text"]}  %>
+	<%= render partial: "form_section", locals: {selected_column: q["column_name"], selected_operator: q["operator"], text: q["text"], showing_column: !q["show"].blank?}  %>
 	<% end %>
 	<% else %>
-	<%= render partial: "form_section", locals: {selected_column: nil, selected_operator: nil, text: nil}  %>
+	<%= render partial: "form_section", locals: {selected_column: nil, selected_operator: nil, text: nil, showing_column: true}  %>
 	<% end %>
 </table>
 <div style="margin-bottom: 10px;">

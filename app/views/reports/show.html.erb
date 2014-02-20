@@ -2,13 +2,13 @@
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-hover">
 		<tr>
-			<% @report.query_data.collect {|r| r["column_name"]}.each do |key| %>
+			<% @report.query_data.collect {|r| r["column_name"] if r["show"] }.compact.each do |key| %>
 			<th><%= key %></th>
 			<% end %>
 		</tr>
 		<% @table_data.each do |employee| %>
 		<tr>
-			<% @report.query_data.collect {|r| r["column_name"]}.each do |key| %>
+			<% @report.query_data.collect {|r| r["column_name"] if r["show"]}.compact.each do |key| %>
 			<% if employee.methods.include? key.to_sym %>
 			<td><%= employee.send(key) %></td>
 			<% else %>

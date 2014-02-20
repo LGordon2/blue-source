@@ -19,6 +19,11 @@ class ActiveRecord::Relation
     report_relation(column, data, "<=")
   end
   
+  def report_nil(column)
+    raise ArgumentError, "Column is invalid." unless column.in? self.column_names  
+    self.where("#{column}" => nil)
+  end
+  
   private
   
   def report_relation(column, data, operator)

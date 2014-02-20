@@ -63,7 +63,7 @@ class ReportsController < ApplicationController
   end
   
   def report_params
-    params.require(:report).permit(:name, query_data: [:column_name, :operator, :text]).merge("employee_id" => current_user.id)
+    params.require(:report).permit(:name, query_data: [:column_name, :operator, :text, :show]).merge("employee_id" => current_user.id)
   end
   
   def get_all_data
@@ -86,6 +86,8 @@ class ReportsController < ApplicationController
         @table_data = @table_data.report_less_than_or_equal(column_name, text)
       when "greater_than_or_equal"
         @table_data = @table_data.report_greater_than_or_equal(column_name, text)
+      when "nil"
+        @table_data = @table_data.report_nil(column_name)
       end
     end
   end
