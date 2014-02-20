@@ -418,9 +418,11 @@ class Employee < ActiveRecord::Base
   
   def scheduled_hours_start_end_are_possible_times
     if !scheduled_hours_start.blank? and !scheduled_hours_start.to_time.is_a?(Time)
+      self.scheduled_hours_start = nil
       errors.add(:scheduled_hours_start, "must be valid time.")
     end
     if !scheduled_hours_end.blank? and !scheduled_hours_end.to_time.is_a?(Time)
+      self.scheduled_hours_end = nil
       errors.add(:scheduled_hours_end, "must be valid time.")
     end
   end
