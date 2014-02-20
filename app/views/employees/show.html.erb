@@ -119,7 +119,7 @@
 	<% unless @employee.scheduled_hours_start.blank? or @employee.scheduled_hours_end.blank? %>
 	<tr>
 		<td>Project Scheduled Hours:</td>
-		<td><%= @employee.scheduled_hours_start.to_s(:scheduled_time) %> - <%= @employee.scheduled_hours_end.to_s(:scheduled_time) %></td>
+		<td><%= @employee.scheduled_hours_start.to_time().to_s(:scheduled_time) %> - <%= @employee.scheduled_hours_end.to_time().to_s(:scheduled_time) %></td>
 	</tr>
 	<% end %>
 	<tr>

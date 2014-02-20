@@ -4,22 +4,36 @@ var disable_text_fields, set_data_field_type;
 
 disable_text_fields = function(row_obj) {
   if ($(row_obj).val().toLowerCase() === 'all') {
-    return $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true);
+    $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true);
   } else {
-    return $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false);
+    $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false);
   }
-  $(row_obj).parents("tr").find(".data-input-field:hidden").each(function(index){
-  	$(this).attr("disabled", true);
-  });  
+  return $(row_obj).parents("tr").find(".data-input-field:hidden").each(function(index) {
+    return $(this).attr("disabled", true);
+  });
 };
 
 set_data_field_type = function(row_obj) {
+  var input_field, select_field;
+  input_field = $(row_obj).parents("tr").find("input.data-input-field");
+  select_field = $(row_obj).parents("tr").find("select.data-input-field");
+  switch ($(row_obj).val().toLowerCase()) {
+    case 'start_date':
+      input_field.attr("type", "date");
+      break;
+    case 'scheduled_hours_start':
+    case 'scheduled_hours_end':
+      input_field.attr("type", "time");
+      break;
+    default:
+      input_field.attr("type", "text");
+  }
   if ($(row_obj).val().toLowerCase() === 'projects') {
-    $(row_obj).parents("tr").find("select.data-input-field").removeClass("hidden");
-    $(row_obj).parents("tr").find("input.data-input-field").addClass("hidden");
+    select_field.removeClass("hidden");
+    input_field.addClass("hidden");
   } else {
-    $(row_obj).parents("tr").find("select.data-input-field").addClass("hidden");
-    $(row_obj).parents("tr").find("input.data-input-field").removeClass("hidden");
+    select_field.addClass("hidden");
+    input_field.removeClass("hidden");
   }
   return disable_text_fields($(row_obj).parents("tr").find(".operator-dropdown"));
 };
@@ -27,11 +41,9 @@ set_data_field_type = function(row_obj) {
 $(".operator-dropdown").on("change", function() {
   return disable_text_fields(this);
 });
-
 $(".glyphicon.glyphicon-remove").on("click", function() {
   return $(this).parents("tr").remove();
 });
-
 $(".column-name-dropdown").on("change", function() {
   return set_data_field_type(this);
 });

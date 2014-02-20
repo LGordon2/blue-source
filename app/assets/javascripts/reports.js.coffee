@@ -10,12 +10,20 @@ disable_text_fields = (row_obj) ->
     $(this).attr("disabled", true)
 
 set_data_field_type = (row_obj) ->
+  input_field = $(row_obj).parents("tr").find("input.data-input-field")
+  select_field = $(row_obj).parents("tr").find("select.data-input-field")
+  
+  switch $(row_obj).val().toLowerCase()
+    when 'start_date' then input_field.attr("type","date")
+    when 'scheduled_hours_start', 'scheduled_hours_end' then input_field.attr("type","time")
+    else input_field.attr("type","text")
+  
   if $(row_obj).val().toLowerCase() == 'projects'
-     $(row_obj).parents("tr").find("select.data-input-field").removeClass("hidden")
-     $(row_obj).parents("tr").find("input.data-input-field").addClass("hidden")
+     select_field.removeClass("hidden")
+     input_field.addClass("hidden")
   else
-     $(row_obj).parents("tr").find("select.data-input-field").addClass("hidden")
-     $(row_obj).parents("tr").find("input.data-input-field").removeClass("hidden")
+     select_field.addClass("hidden")
+     input_field.removeClass("hidden")
   disable_text_fields($(row_obj).parents("tr").find(".operator-dropdown"))
 
 $ ->

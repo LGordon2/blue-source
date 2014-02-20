@@ -16,6 +16,7 @@ class Employee < ActiveRecord::Base
   
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
+  after_validation :fix_scheduled_hours
   
   validates :username, presence: true, uniqueness: {case_sensitive: false}
   validates :first_name, presence: true
@@ -29,6 +30,7 @@ class Employee < ActiveRecord::Base
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
+  validate :scheduled_hours_start_end_are_possible_times
   
   def title
     Title.find(self.title_id).name unless self.title_id.blank?
@@ -411,6 +413,24 @@ class Employee < ActiveRecord::Base
   def company_admin_cannot_have_a_department
     if self.role == "Company Admin" and !self.department.blank?
       errors.add(:department, "must be blank for company admin.")
+    end
+  end
+  
+  def scheduled_hours_start_end_are_possible_times
+    unless !scheduled_hours_start.blank? and scheduled_hours_start.to_time.is_a?(Time)
+      errors.add(:scheduled_hours_start, "must be valid time.")
+    end
+    unless !scheduled_hours_end.blank? and scheduled_hours_end.to_time.is_a?(Time)
+      errors.add(:scheduled_hours_end, "must be valid time.")
+    end
+  end
+  
+  def fix_scheduled_hours
+    unless scheduled_hours_start.blank?
+      self.scheduled_hours_start = scheduled_hours_start.to_time.strftime("%H:%M")
+    end
+    unless scheduled_hours_end.blank?
+      self.scheduled_hours_end = scheduled_hours_end.to_time.strftime("%H:%M")
     end
   end
 end
