@@ -50,12 +50,6 @@ class ReportsController < ApplicationController
     end
   end
   
-  def fix_select
-    respond_to do |format|
-      format.js
-    end
-  end
-  
   def create
     report = Report.new(report_params)
     if report.save

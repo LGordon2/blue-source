@@ -1,9 +1,10 @@
 <tr>
 	<td><%= select_tag 'report[query_data][][column_name]', options_for_select(["Employee Name","Projects", "Departments"] - ["project_id"], selected_column), class: "form-control column-name-dropdown" %></td>
 	<td><%= select_tag 'report[query_data][][operator]', options_for_select(["ALL","EQUALS","LESS_THAN","LESS_THAN_OR_EQUAL","GREATER_THAN","GREATER_THAN_OR_EQUAL","NIL"], selected_operator), class: "form-control operator-dropdown" %></td>
-	<td>
-		<%= select_tag 'report[query_data][][text]', options_from_collection_for_select(Project.all, "id", "name"), class: "form-control data-input-field hidden", disabled: true %>
-		<%= text_field_tag 'report[query_data][][text]', text.blank? ? nil : text, class: "form-control data-input-field", disabled: true %>
+	<td class="report-input-fields">
+		<%= select_tag 'report[query_data][][text]', options_from_collection_for_select(Project.all, "id", "name",(!text.blank? and selected_column=="Projects") ? text : nil), class: "form-control data-input-field projects" %>
+		<%= select_tag 'report[query_data][][text]', options_from_collection_for_select(Department.all, "id", "name",(!text.blank? and selected_column=="Departments") ? text : nil), class: "form-control data-input-field departments" %>
+		<%= text_field_tag 'report[query_data][][text]', text.blank? ? nil : text, class: "form-control data-input-field text" %>
 	</td>
 	<td>
 		<%= check_box_tag 'report[query_data][][show]', 'true', showing_column, class: 'form-control' %>

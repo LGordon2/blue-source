@@ -5,52 +5,43 @@ var disable_text_fields, set_data_field_type;
 disable_text_fields = function(row_obj) {
   var _ref;
   if ((_ref = $(row_obj).val().toLowerCase()) === 'all' || _ref === 'nil') {
-    $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", true);
+    return $(row_obj).parents("tr").find(".report-input-fields").children(":visible").each(function(index) {
+      return $(this).attr("disabled", true);
+    });
   } else {
-    $(row_obj).parents("tr").find(".data-input-field:visible").attr("disabled", false);
+    return $(row_obj).parents("tr").find(".report-input-fields").children(":visible").each(function(index) {
+      return $(this).attr("disabled", false);
+    });
   }
-  return $(row_obj).parents("tr").find(".data-input-field:hidden").each(function(index) {
-    return $(this).attr("disabled", true);
-  });
 };
 
 set_data_field_type = function(row_obj) {
-  var input_field, select_field, _ref;
-  input_field = $(row_obj).parents("tr").find("input.data-input-field");
-  select_field = $(row_obj).parents("tr").find("select.data-input-field");
-  switch ($(row_obj).val().toLowerCase()) {
-    case 'start_date':
-      input_field.attr("type", "date");
-      break;
-    case 'scheduled_hours_start':
-    case 'scheduled_hours_end':
-      input_field.attr("type", "time");
-      break;
-    default:
-      input_field.attr("type", "text");
-  }
+  var report_input_fields, _ref;
+  report_input_fields = $(row_obj).parents("tr").find(".report-input-fields");
+  report_input_fields.children().each(function(index) {
+    return $(this).addClass("hidden");
+  });
   if ((_ref = $(row_obj).val().toLowerCase()) === 'projects' || _ref === 'departments') {
-    select_field.removeClass("hidden");
-    input_field.addClass("hidden");
-    select_field.empty();
+    console.log($(row_obj).val().toLowerCase());
+    report_input_fields.find("." + ($(row_obj).val().toLowerCase())).removeClass("hidden");
   } else {
-    select_field.addClass("hidden");
-    input_field.removeClass("hidden");
+    report_input_fields.find(".text").removeClass("hidden");
   }
-  switch ($(row_obj).val().toLowerCase()) {
-    case 'projects':
-      return select_field.prepend("<%= Project.all.collect {|p| "<option value='#{p.id}'>#{p.name}</option>"}.join.html_safe %>");
-    case 'departments':
-      return select_field.prepend("<%= Department.all.collect {|d| "<option value='#{d.id}'>#{d.name}</option>"}.join.html_safe %>");
-  }
+  return disable_text_fields($(row_obj).parents("tr").find(".operator-dropdown"));
 };
 
-$(".operator-dropdown").on("change", function() {
-  return disable_text_fields(this);
+$(".operator-dropdown").each(function(index) {
+  disable_text_fields(this);
+  return $(this).on("change", function() {
+    return disable_text_fields(this);
+  });
 });
 $(".glyphicon.glyphicon-remove").on("click", function() {
   return $(this).parents("tr").remove();
 });
-$(".column-name-dropdown").on("change", function() {
-  return set_data_field_type(this);
+$(".column-name-dropdown").each(function(index) {
+  set_data_field_type(this);
+  return $(this).on("change", function() {
+    return set_data_field_type(this);
+  });
 });
