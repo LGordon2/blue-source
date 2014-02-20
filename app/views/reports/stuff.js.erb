@@ -15,7 +15,7 @@ disable_text_fields = function(row_obj) {
 };
 
 set_data_field_type = function(row_obj) {
-  var input_field, select_field;
+  var input_field, select_field, _ref;
   input_field = $(row_obj).parents("tr").find("input.data-input-field");
   select_field = $(row_obj).parents("tr").find("select.data-input-field");
   switch ($(row_obj).val().toLowerCase()) {
@@ -29,14 +29,20 @@ set_data_field_type = function(row_obj) {
     default:
       input_field.attr("type", "text");
   }
-  if ($(row_obj).val().toLowerCase() === 'projects') {
+  if ((_ref = $(row_obj).val().toLowerCase()) === 'projects' || _ref === 'departments') {
     select_field.removeClass("hidden");
     input_field.addClass("hidden");
+    select_field.empty();
   } else {
     select_field.addClass("hidden");
     input_field.removeClass("hidden");
   }
-  return disable_text_fields($(row_obj).parents("tr").find(".operator-dropdown"));
+  switch ($(row_obj).val().toLowerCase()) {
+    case 'projects':
+      return select_field.prepend("<%= Project.all.collect {|p| "<option value='#{p.id}'>#{p.name}</option>"}.join.html_safe %>");
+    case 'departments':
+      return select_field.prepend("<%= Department.all.collect {|d| "<option value='#{d.id}'>#{d.name}</option>"}.join.html_safe %>");
+  }
 };
 
 $(".operator-dropdown").on("change", function() {

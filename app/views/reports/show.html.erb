@@ -2,17 +2,20 @@
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-hover">
 		<tr>
-			<% @report.query_data.collect {|r| r["column_name"] if r["show"] }.compact.each do |key| %>
+			<% @keys.each do |key| %>
 			<th><%= key %></th>
 			<% end %>
 		</tr>
 		<% @table_data.each do |employee| %>
 		<tr>
-			<% @report.query_data.collect {|r| r["column_name"] if r["show"]}.compact.each do |key| %>
+			
+			<% @keys.each do |key| %>
 			<% if employee.methods.include? key.to_sym %>
 			<td><%= employee.send(key) %></td>
-			<% else %>
-			<td><%= employee.project.name unless employee.project.blank? %></td>
+			<% elsif key == 'Employee Name' %>
+			<td><%= employee.display_name %></td>
+			<% elsif key.in? employee_associations %>
+			<td><%= employee.send(key.downcase.singularize).name unless employee.send(key.downcase.singularize).blank? %></td>
 			<% end %>
 			<% end %>
 		</tr>

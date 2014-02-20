@@ -3,8 +3,9 @@ class ReportsController < ApplicationController
   before_action :set_report, only: [:show, :destroy, :edit, :update]
   before_action :get_all_data, only: :show
   
+  helper_method :employee_associations
+  
   def edit
-    #raise Exception
   end
   
   def index
@@ -40,9 +41,16 @@ class ReportsController < ApplicationController
   end
   
   def show
+    @keys =  @report.query_data.collect {|r| r["column_name"] if r["show"] }.compact
   end
   
   def stuff
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def fix_select
     respond_to do |format|
       format.js
     end
@@ -55,6 +63,10 @@ class ReportsController < ApplicationController
     else
       redirect_to new_report_path, flash: {error: report.errors.full_messages}
     end
+  end
+  
+  def employee_associations
+    ["Projects", "Departments"]
   end
   
   private
@@ -71,8 +83,10 @@ class ReportsController < ApplicationController
     @report.query_data.each do |data|
       column_name = data["column_name"]
       text = data["text"]
-      if data["column_name"] == "Projects"
-        column_name = "project_id"
+      if data["column_name"].in? employee_associations
+        column_name = data["column_name"].downcase.singularize + "_id"
+      elsif data["column_name"] == "Employee Name"
+        column_name = "display_name"
       end
       
       case data['operator'].downcase
