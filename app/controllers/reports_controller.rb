@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
   end
   
   def index
-    @reports = Report.all
+    @reports = Report.where(employee: current_user)
   end
   
   # PATCH/PUT /reports/1
@@ -63,7 +63,7 @@ class ReportsController < ApplicationController
   end
   
   def report_params
-    params.require(:report).permit(:name, query_data: [:column_name, :operator, :text])
+    params.require(:report).permit(:name, query_data: [:column_name, :operator, :text]).merge("employee_id" => current_user.id)
   end
   
   def get_all_data

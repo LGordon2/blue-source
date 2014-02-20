@@ -13,6 +13,7 @@ class Employee < ActiveRecord::Base
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
   has_one :area, through: :department
+  has_many :reports
   
   before_validation :set_standards_for_user
   after_validation :fix_phone_number
