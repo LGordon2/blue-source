@@ -75,14 +75,13 @@ class ReportsController < ApplicationController
   def get_all_data
     @table_data = Employee.all
     @report.query_data.each do |data|
-      column_name = data["column_name"]
       text = data["text"]
       if data["column_name"].in? employee_associations
-        column_name = data["column_name"].downcase.singularize + "_id"
-      elsif data["column_name"] == "Employee Name"
-        column_name = "display_name"
+        column_name = data["column_name"].singularize.foreign_key
+      else
+        data["column_name"] = column_name = data["column_name"].parameterize("_")
       end
-      
+
       case data['operator'].downcase
       when "equals"
         @table_data = @table_data.report_equals(column_name, text)

@@ -3,7 +3,7 @@
 	<table class="table table-bordered table-condensed table-hover">
 		<tr>
 			<% @keys.each do |key| %>
-			<th><%= key %></th>
+			<th><%= key.humanize %></th>
 			<% end %>
 		</tr>
 		<% @table_data.each do |employee| %>
@@ -12,7 +12,7 @@
 			<% @keys.each do |key| %>
 			<% if employee.methods.include? key.to_sym %>
 			<td><%= employee.send(key) %></td>
-			<% elsif key == 'Employee Name' %>
+			<% elsif key == 'Display Name' %>
 			<td><%= employee.display_name %></td>
 			<% elsif key.in? employee_associations %>
 			<td><%= employee.send(key.downcase.singularize).name unless employee.send(key.downcase.singularize).blank? %></td>

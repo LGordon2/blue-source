@@ -1,5 +1,5 @@
 <tr>
-	<td><%= select_tag 'report[query_data][][column_name]', options_for_select(["Employee Name","Projects", "Departments"] - ["project_id"], selected_column), class: "form-control column-name-dropdown" %></td>
+	<td><%= select_tag 'report[query_data][][column_name]', options_for_select(["Display Name","First Name","Last Name","Projects", "Departments"] - ["project_id"], selected_column), class: "form-control column-name-dropdown" %></td>
 	<td><%= select_tag 'report[query_data][][operator]', options_for_select(["ALL","EQUALS","LESS_THAN","LESS_THAN_OR_EQUAL","GREATER_THAN","GREATER_THAN_OR_EQUAL","NIL"], selected_operator), class: "form-control operator-dropdown" %></td>
 	<td class="report-input-fields">
 		<%= select_tag 'report[query_data][][text]', options_from_collection_for_select(Project.all, "id", "name",(!text.blank? and selected_column=="Projects") ? text : nil), class: "form-control data-input-field projects" %>
