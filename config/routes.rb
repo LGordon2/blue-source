@@ -48,9 +48,9 @@ BlueSource::Application.routes.draw do
      get '/', to: 'calendar#index'
   end 
   
-  resources :reports
+  #resources :reports
   
-  get 'stuff', to: 'reports#stuff'
+  #get 'stuff', to: 'reports#stuff'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
