@@ -36,19 +36,16 @@ $(document).ready ->
       else
         $(this).parent("div.form-group").removeClass("has-error")
     $("input[type=tel]").each (index) ->
-      console.log $(this)
       if $(this).val() != "" and !isValidNumber($(this).val(), "US") 
         valid = false
         $(this).addClass("has-error")
         $(this).siblings("span.errormsg").show()
         $(this).siblings("span.errormsg").text("This phone number format is not recognized. Please check the country and number.")
-        
       else
         $(this).removeClass("has-error")
         $(this).siblings("span.errormsg").hide()
         $(this).siblings("span.errormsg").text("This phone number format is not recognized. Please check the country and number.")
         $(this).val(formatLocal("US", $(this).val()))
-      true
     $(this).find("[data-loading-text]").button('loading') if valid
     return valid
   unless Modernizr.inputtypes.time
