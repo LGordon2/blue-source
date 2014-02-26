@@ -18,6 +18,9 @@
 #= require jquery.autosize.min
 #= require expand_collapse_panels
 #= require modernizr
+#= require phoneformat
+#= require_tree ./admin
+
 
 $(document).ready ->
   $("form#resources-per-page select").on "change", ->
@@ -25,14 +28,23 @@ $(document).ready ->
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
   $("form").submit ->
-    valid = "true"
+    valid = true
     $(this).find("[required]").each (index) ->
       if $(this).val() == ""
         $(this).parent("div.form-group").addClass("has-error")
-        valid = "false"
+        valid = false
       else
         $(this).parent("div.form-group").removeClass("has-error")
-    $(this).find("[data-loading-text]").button('loading') if valid == "true"
+    $("input[type=tel]").each (index) ->
+      if $(this).val() != "" and !isValidNumber($(this).val(), "US") 
+        $(this).addClass("has-error")
+        $(this).siblings("span.errormsg").text("This phone number format is not recognized. Please check the country and number.")
+        valid = false
+      else
+        $(this).removeClass("has-error")
+        $(this).val(formatLocal("US", $(this).val()))
+    $(this).find("[data-loading-text]").button('loading') if valid
+    return valid
   unless Modernizr.inputtypes.time
     $("input[type=time]").each (index) ->
       match = /(\d{2}):(\d{2}):\d{2}\.\d{3}/.exec(String($(this).val()))

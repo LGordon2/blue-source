@@ -16,7 +16,6 @@ class Employee < ActiveRecord::Base
   has_many :reports
   
   before_validation :set_standards_for_user
-  after_validation :fix_phone_number
   after_validation :fix_scheduled_hours
   
   validates :username, presence: true, uniqueness: {case_sensitive: false}
@@ -25,7 +24,6 @@ class Employee < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true
   validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
-  validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :roll_off_date_cannot_be_before_roll_on_date
@@ -399,16 +397,6 @@ class Employee < ActiveRecord::Base
       email_num = new_email.last
     end
     return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}.#{email_num.to_i+1}@orasi.com")
-  end
-  
-  #Attempts to correct any type of phone number format (US only) added to a standard format.
-  def fix_phone_number
-    self.cell_phone,self.office_phone = [self.cell_phone,self.office_phone].map do |phone_num|
-      unless phone_num.blank?
-        clean_number = phone_num.tr_s(" ()", "").tr_s("-","")
-        phone_num = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
-      end
-    end
   end
   
   def company_admin_cannot_have_a_department
