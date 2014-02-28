@@ -21,8 +21,8 @@ class ProjectsController < ApplicationController
     @modal_title = "Add Project"
     @resource_for_angular = "project"
     respond_to do |format|
-      format.json
       format.html {render action: :index}
+      format.json
     end
   end
   
