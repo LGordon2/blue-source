@@ -36,7 +36,7 @@
 					<li ng-class="{disabled: currentPage == 0}">
 						<a href ng-click="prevPage()">&laquo;</a>
 					</li>
-					<li ng-repeat="n in range(0,pagedResources.length)" ng-class="{active: n == currentPage}" ng-click="setPage()">
+					<li ng-repeat="n in getPageNumbers()" ng-class="{active: n == currentPage}" ng-click="setPage()">
 						<a href ng-bind="n + 1">{{n}}</a>
 					</li>
 					<li ng-class="{disabled: currentPage == pagedResources.length - 1}">
