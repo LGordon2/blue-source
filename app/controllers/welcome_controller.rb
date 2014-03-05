@@ -34,6 +34,19 @@ class WelcomeController < ApplicationController
   
   def login
     @employee = Employee.new
+    
+    @mybrowser = request.env['HTTP_USER_AGENT']
+    @compatibility_mode = !(request.env['HTTP_USER_AGENT'] =~ /compatible/).nil?
+    case @mybrowser
+    when /Firefox/
+      @browser_name = "Firefox"
+    when /Chrome/
+      @browser_name = "Chrome"
+    when /MSIE\s*\d+\.0/
+      @browser_name = /MSIE\s*\d+\.0/.match(@mybrowser)
+    when /rv:11.0/
+      @browser_name = "IE 11"
+    end
   end
 
   def index

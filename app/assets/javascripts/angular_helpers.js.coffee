@@ -16,8 +16,21 @@ AngularHelpers.doneLoading = ($scope) ->
 AngularHelpers.loading = ($scope) ->
   $scope.loaded = false
   
+AngularHelpers.getResources = ($scope, $http,json_file) ->
+  AngularHelpers.loading($scope)
+  $http.get(json_file).success (data) ->
+    if (angular.isObject(data))
+      $scope.resources = data
+    else
+      $scope.resources = []
+    $scope.search()
+    $scope.currentPage = $scope.initialPage if $scope.initialPage
+    AngularHelpers.doneLoading($scope)
+  
+  
 AngularHelpers.initializeResource = ($scope) ->
   $scope.resourcesPerPage = 15;
+  $scope.numberOfPages = 10;
   $scope.loaded=false
   $scope.loadProgress=100
   $scope.show_inactive=false
@@ -48,4 +61,14 @@ AngularHelpers.initializeResource = ($scope) ->
       else
         $scope.pagedResources[Math.floor(i / $scope.resourcesPerPage)].push($scope.filteredResources[i])
       $scope.initialPage = $scope.pagedResources.length-1 if String($scope.filteredResources[i].id) == previousResource()
+  
+  $scope.getPageNumbers = () ->
+    return if typeof($scope.pagedResources) == "undefined" or typeof($scope.currentPage) == "undefined"
+    if $scope.pagedResources.length > $scope.numberOfPages
+      if $scope.pagedResources.length - $scope.currentPage > $scope.numberOfPages
+        [$scope.currentPage...$scope.currentPage+$scope.numberOfPages]
+      else
+        [$scope.pagedResources.length-$scope.numberOfPages...$scope.pagedResources.length]
+    else  
+      [0...$scope.pagedResources.length]
   

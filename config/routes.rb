@@ -1,4 +1,4 @@
-ManagerPortal::Application.routes.draw do
+BlueSource::Application.routes.draw do
   resources :titles
 
   get "admin/index"
@@ -44,7 +44,9 @@ ManagerPortal::Application.routes.draw do
     resources :employees, only: [:index], action: "directory"
   end
   
-  get 'calendar', to: 'calendar#index'
+  resource :calendar, only: [:index] do 
+     get '/', to: 'calendar#index'
+  end
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

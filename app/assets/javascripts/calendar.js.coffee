@@ -4,6 +4,8 @@
 $ ->
   $("select#month,select#year,input[type=radio]").on "change", ->
     $(this).parents("form").submit()
+  $(".disabled").on "click", ->
+    return false;
   $(".list-group-item").tooltip()
   $(".more-pdo").on "click", ->
     $(this).siblings(".list-group-item-hidden").toggleClass("hidden")

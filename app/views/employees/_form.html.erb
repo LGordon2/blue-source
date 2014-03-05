@@ -44,10 +44,12 @@
 <div class="form-group">
 	<%= f.label :cell_phone, nil, class: "control-label" %>
 	<%= f.phone_field :cell_phone, class: "form-control" %>
+	<span role="alert" class="errormsg"></span>
 </div>
 <div class="form-group">
 	<%= f.label :office_phone, nil, class: "control-label" %>
 	<%= f.phone_field :office_phone, class: "form-control" %>
+	<span role="alert" class="errormsg"></span>
 </div>
 <div class="form-group">
 	<%= f.label :email, nil, class: "control-label" %>

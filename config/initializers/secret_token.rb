@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-ManagerPortal::Application.config.secret_key_base = '67c704d1f5f49aaeec0d00a4920c87cfee45c6a07b1bb1c3c3220126fa13e6dbde078c653a065bf45e968cc5a102750a74c5cdec711ee3882cc05f6350dc786b'
+BlueSource::Application.config.secret_key_base = '2b69fab7a0c156885d47be13afad7b4e253bfdb4250e9b8f109bcd2cd9fbec5d7ec7b7d7106d8bee1580deb48ba6501cf0c8f721f71d20e85dd0d154aba8387c'

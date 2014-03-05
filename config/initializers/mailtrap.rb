@@ -1,6 +1,6 @@
 if ENV['MAILTRAP_HOST'].present?
-  ManagerPortal::Application.config.action_mailer.delivery_method = :smtp
-  ManagerPortal::Application.config.action_mailer.smtp_settings = {
+  BlueSource::Application.config.action_mailer.delivery_method = :smtp
+  BlueSource::Application.config.action_mailer.smtp_settings = {
     :user_name => ENV['MAILTRAP_USER_NAME'],
     :password => ENV['MAILTRAP_PASSWORD'],
     :address => ENV['MAILTRAP_HOST'],

@@ -13,9 +13,10 @@ class Employee < ActiveRecord::Base
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
   has_one :area, through: :department
+  has_many :reports
   
   before_validation :set_standards_for_user
-  after_validation :fix_phone_number
+  after_validation :fix_scheduled_hours
   
   validates :username, presence: true, uniqueness: {case_sensitive: false}
   validates :first_name, presence: true
@@ -23,12 +24,12 @@ class Employee < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true
   validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
-  validates :cell_phone, :office_phone, format: { with: /\A\(?\d\s*\d\s*\d\s*\)?\s*-?\d\s*\d\s*\d\s*-?\d\s*\d\s*\d\s*\d\s*\z/, message: "format is not recognized." }, allow_blank: true
   validates :status, presence: true
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
+  validate :scheduled_hours_start_end_are_possible_times
   
   def title
     Title.find(self.title_id).name unless self.title_id.blank?
@@ -212,7 +213,7 @@ class Employee < ActiveRecord::Base
     when "Vacation"
       return max_vacation_days(on_date)
     when "Floating Holiday"
-      return max_floating_holidays
+      return max_floating_holidays(on_date)
     end
   end
   
@@ -226,7 +227,15 @@ class Employee < ActiveRecord::Base
     special_vacation_round(_max_days)
   end
   
-  def max_floating_holidays
+  def max_floating_holidays(on_date = Date.current)
+    if self.start_date.blank?
+      return 2
+    end
+    
+    if self.start_date >= Vacation.fiscal_new_year_date(on_date) - 90.days
+      return 1
+    end
+    
     return 2
   end
   
@@ -390,19 +399,29 @@ class Employee < ActiveRecord::Base
     return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}.#{email_num.to_i+1}@orasi.com")
   end
   
-  #Attempts to correct any type of phone number format (US only) added to a standard format.
-  def fix_phone_number
-    self.cell_phone,self.office_phone = [self.cell_phone,self.office_phone].map do |phone_num|
-      unless phone_num.blank?
-        clean_number = phone_num.tr_s(" ()", "").tr_s("-","")
-        phone_num = "(#{clean_number[0..2]}) #{clean_number[3..5]}-#{clean_number[6..-1]}"
-      end
-    end
-  end
-  
   def company_admin_cannot_have_a_department
     if self.role == "Company Admin" and !self.department.blank?
       errors.add(:department, "must be blank for company admin.")
+    end
+  end
+  
+  def scheduled_hours_start_end_are_possible_times
+    if !scheduled_hours_start.blank? and !scheduled_hours_start.to_time.is_a?(Time)
+      self.scheduled_hours_start = nil
+      errors.add(:scheduled_hours_start, "must be valid time.")
+    end
+    if !scheduled_hours_end.blank? and !scheduled_hours_end.to_time.is_a?(Time)
+      self.scheduled_hours_end = nil
+      errors.add(:scheduled_hours_end, "must be valid time.")
+    end
+  end
+  
+  def fix_scheduled_hours
+    unless scheduled_hours_start.blank?
+      self.scheduled_hours_start = scheduled_hours_start.to_time.strftime("%H:%M")
+    end
+    unless scheduled_hours_end.blank?
+      self.scheduled_hours_end = scheduled_hours_end.to_time.strftime("%H:%M")
     end
   end
 end

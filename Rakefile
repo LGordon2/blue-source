@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-ManagerPortal::Application.load_tasks
+BlueSource::Application.load_tasks

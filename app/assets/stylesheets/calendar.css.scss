@@ -1,6 +1,18 @@
 // Place all the styles related to the Absent controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+a.disabled
+{
+  color: #999999;
+  cursor: not-allowed;
+  background-color: #ffffff;
+  border-color: #dddddd;
+  text-decoration: none;
+}
+a.month-changer:hover
+{
+  text-decoration: none;
+}
 .list-group-item
 {
   padding: 2px 0px;
@@ -35,10 +47,12 @@
 }
 div#calendar-date-select
 {
-  margin-bottom: 10px; 
-  width: 20%;
+  margin-bottom: 10px;
   select{
     width:auto;
+  }
+  *
+  {
     display:inline;
   }
 }
@@ -47,8 +61,4 @@ div#calendar-date-select
   display:block;
   margin-top: 10px;
   
-  form
-  {
-    display:inline;
-  }
 }

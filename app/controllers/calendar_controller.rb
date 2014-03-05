@@ -1,7 +1,6 @@
 class CalendarController < ApplicationController
   before_action :require_login
-  
-  helper_method :get_orasi_holiday
+  helper_method :get_orasi_holiday, :change_month
   
   def index
     @max_entries_per_day = 4
@@ -11,6 +10,7 @@ class CalendarController < ApplicationController
     else
       @starting_date = Date.current.change(day: 1)
     end
+    
     @filter_types = ['all']
     @selected_filter_type = "all"
     
@@ -43,12 +43,22 @@ class CalendarController < ApplicationController
       @selectable_years = (Date.current.year-2..Date.current.year+2)
     end
     
-    @pdo_times = @pdo_times.where(status: [nil, ""]).where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)
-    
+    @pdo_times = @pdo_times.where(status: [nil, ""]).where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)    
+  end
+  
+  def change_month(no_months)
+    months_to_add = no_months.months
+    if params[:month].blank? or params[:year].blank?
+      prev_date = Date.current
+    else
+      prev_date = Date.new(params[:year].to_i, params[:month].to_i, 1)
+    end
+    new_date = prev_date + months_to_add
+    new_params = params.merge({month: new_date.month, year: new_date.year})
+    return new_params
   end
   
   private
-  
   def get_orasi_holiday(day)
     case
     when (day.month == 5 and day.day == 1)

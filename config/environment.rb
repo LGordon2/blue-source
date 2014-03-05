@@ -2,6 +2,6 @@
 require File.expand_path('../application', __FILE__)
 
 # Initialize the Rails application.
-ManagerPortal::Application.initialize!
+BlueSource::Application.initialize!
 
 Rails.logger = Logger.new(STDOUT)

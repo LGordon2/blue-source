@@ -1,3 +1,3 @@
 # Be sure to restart your server when you modify this file.
 
-ManagerPortal::Application.config.session_store :cookie_store, key: '_bluesource_session'
+BlueSource::Application.config.session_store :cookie_store, key: '_bluesource_session'
