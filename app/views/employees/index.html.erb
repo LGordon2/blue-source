@@ -12,8 +12,8 @@
 	<td><%= link_to '{{employee.last_name}}', "employees/{{employee.id}}"%></td>
 	<td>{{employee.employee_title.name}}</td>
 	<td><%= link_to '{{employee.manager.display_name}}', "employees/{{employee.manager.id}}"%></td>
-	<td ng-show="employee.project.name!='Not billable'"><%= link_to '{{employee.project.name}}', "projects/{{employee.project_id}}"%></td>
-	<td ng-hide="employee.project.name!='Not billable'">Not billable</td>
+	<td ng-show="employee.project.name!=null"><%= link_to '{{employee.project.name}}', "projects/{{employee.project_id}}"%></td>
+	<td ng-hide="employee.project.name!=null">Not billable</td>
 	<td>{{employee.location}}</td>
 </tr>
 <% end %>
