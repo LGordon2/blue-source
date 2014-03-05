@@ -4,6 +4,7 @@ json.array!(current_user.all_subordinates) do |employee|
   json.last_name employee.last_name.capitalize
   json.display_name employee.display_name
   json.location employee.location
+  json.title employee.title
   unless employee.manager.blank?
 	  json.manager do 
 	    json.id employee.manager.id
