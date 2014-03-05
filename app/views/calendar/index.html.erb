@@ -1,42 +1,47 @@
 <div class="calendar-header">
-	<%= form_tag(:calendar,method: :get) do %>
-		<div id="calendar-date-select">
-			<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
-			<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
-		</div>
-		<div class="btn-group" data-toggle="buttons">
-			<% @filter_types.each do |filter_name| %>
-				<% unless filter_name == 'department' %>
-				<label class="btn btn-primary <%= "active" if @selected_filter_type == filter_name %>">
+	<%= form_tag(:calendar,method: :get, id: "calendar-params") do %>
+	<div id="calendar-date-select">
+		<%= link_to calendar_path(change_month(-1)), class: "month-changer #{'disabled' if @disabled_prev_month}" do %>
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		<% end %>
+		<%= select_tag :month, options_for_select(@all_months,params[:month].blank? ? Date.current.month : params[:month]), class: "form-control" %>
+		<%= select_tag :year, options_for_select(@selectable_years, params[:year].blank? ? Date.current.year : params[:year]), class: "form-control" %>
+		<%= link_to calendar_path(change_month(1)), class: "month-changer #{'disabled' if @disabled_next_month}" do %>
+		<span class="glyphicon glyphicon-chevron-right"></span>
+		<% end %>
+	</div>
+	<div class="btn-group" data-toggle="buttons">
+		<% @filter_types.each do |filter_name| %>
+		<% unless filter_name == 'department' %>
+		<label class="btn btn-primary <%= "active" if @selected_filter_type == filter_name %>"> <% else %> <label class="btn btn-primary <%= "active" if @selected_filter_type == filter_name %>"> <% end %>
+				<input type="radio" name="filter" value="<%= filter_name %>" <%= "checked" if @selected_filter_type == filter_name %>>
+				<% if filter_name == "department" %>
+				<%= current_user.department.name.capitalize %>
 				<% else %>
-				<label class="btn btn-primary <%= "active" if @selected_filter_type == filter_name %>">
-				<% end %>
-					<input type="radio" name="filter" value="<%= filter_name %>" <%= "checked" if @selected_filter_type == filter_name %>>
-					<% if filter_name == "department" %>
-					<%= current_user.department.name.capitalize %>
-					<% else %>
-					<%= filter_name.capitalize %>
-					<% end%>
-				</label>
-			<% end %>
-		</div>
+				<%= filter_name.capitalize %>
+				<% end %> </label> 
+		<% end %>
+	</div>
+	
 	<% end %>
 </div>
-<table class="table table-responsive" id="vacation-calendar">	
-	<tr>
-		<%# Auto update on starting day. %>
-		<% (Date.current.beginning_of_week..Date.current.end_of_week).each do |date| %>
-		<th><%= date.strftime("%A") %></th>
-		<% end %>
-	</tr>
-	<% (@starting_date.beginning_of_month.beginning_of_week..@starting_date.end_of_month.end_of_week).each_slice(7) do |week_slice| %>
-	<tr>
-		<% week_slice.each do |day| %>
-		<% i=0 %>
-		<td style="border: 1px solid; width: 248px; height: 100px;">
-			<% if day.month == @starting_date.month %>
+<div class="table-responsive">
+	<table class="table" id="vacation-calendar">
+		<tr>
+			<%# Auto update on starting day. %>
+			<% (Date.current.beginning_of_week..Date.current.end_of_week).each do |date| %>
+			<th><%= date.strftime("%A") %></th>
+			<% end %>
+		</tr>
+		<% (@starting_date.beginning_of_month.beginning_of_week..@starting_date.end_of_month.end_of_week).each_slice(7) do |week_slice| %>
+		<tr>
+			<% week_slice.each do |day| %>
+			<% i=0 %>
+			<td style="border: 1px solid; width: 248px; height: 100px;"> <% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
-			<div><span class="<%= "today" if day == Date.current %>"><%= day.day %></span> <em><%= orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em></div>
+			<div>
+				<span class="<%= "today" if day == Date.current %>"><%= day.day %></span><em><%= " " + orasi_holiday unless orasi_holiday.blank? or day.month != @starting_date.month %></em>
+			</div>
 			<div>
 				<ul class="list-group">
 					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
@@ -48,27 +53,34 @@
 					<%= link_to "#{i - @max_entries_per_day} more #{'item'.pluralize(i-@max_entries_per_day)}...", "#", class: "btn btn-link btn-xs more-pdo" if i > @max_entries_per_day %>
 					<%= link_to "Collapse", "#", class: "btn btn-link btn-xs more-pdo hidden" if i > @max_entries_per_day %>
 				</ul>
-			</div>
+			</div> <% end %> </td>
 			<% end %>
-		</td>
+		</tr>
+
 		<% end %>
-	</tr>
-	
-	<% end %>
-</table>
+	</table>
+</div>
 <div>
 	<a href="#" class="pull-right" data-toggle="modal" data-target="#modal_1">Legend</a>
 </div>
 <% content_for "modal_header_1" do %>
-	Legend
+Legend
 <% end %>
 
 <% content_for "modal_content_1" do %>
 <ul class="list-group">
-  <li class="list-group-item sick">Sick</li>
-  <li class="list-group-item vacation">Vacation</li>
-  <li class="list-group-item floating-holiday">Floating Holiday</li>
-  <li class="list-group-item other">Other</li>
+	<li class="list-group-item sick">
+		Sick
+	</li>
+	<li class="list-group-item vacation">
+		Vacation
+	</li>
+	<li class="list-group-item floating-holiday">
+		Floating Holiday
+	</li>
+	<li class="list-group-item other">
+		Other
+	</li>
 </ul>
 <div class="modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>

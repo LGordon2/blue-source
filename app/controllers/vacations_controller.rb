@@ -87,10 +87,10 @@ class VacationsController < ApplicationController
     fiscal_year_of_end_date = @vacation.end_date.current_fiscal_year
     warnings = []
     
-    if @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_start_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_start_date))
+    if @employee.vacations.where(vacation_type: "Vacation", status: [nil, ""]).inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_start_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_start_date))
       warnings << "Time off saved, but this is borrowing days from fiscal year #{fiscal_year_of_start_date+1}."
     end 
-    if fiscal_year_of_start_date != fiscal_year_of_end_date and @employee.vacations.where(vacation_type: "Vacation").inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_end_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_end_date))
+    if fiscal_year_of_start_date != fiscal_year_of_end_date and @employee.vacations.where(vacation_type: "Vacation", status: [nil, ""]).inject(0.0) {|sum, vacation| sum += vacation.pdo_taken(fiscal_year_of_end_date) } > @employee.max_vacation_days(Date.new(fiscal_year_of_end_date))
       warnings << "Time off saved, but this is borrowing days from fiscal year #{fiscal_year_of_end_date+1}."
     end
     warnings

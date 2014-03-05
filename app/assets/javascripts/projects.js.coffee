@@ -7,14 +7,7 @@
 @projects_list_app = angular.module('projects_list_app', []);
 
 projects_list_ctrl = ($scope, $http, $filter) ->
-  $http.get('projects.json').success (data) ->
-    data.forEach (value, key) ->
-      all_leads = ("#{lead.first_name[0].toUpperCase() + lead.first_name[1..-1].toLowerCase()} #{lead.last_name[0].toUpperCase() + lead.last_name[1..-1].toLowerCase()}" for lead in value.leads)
-      value.all_leads = all_leads.sort().join(", ")
-      value.client_partner.display_name = value.client_partner.first_name[0].toUpperCase()+value.client_partner.first_name[1..-1].toLowerCase() + " " + value.client_partner.last_name[0].toUpperCase()+value.client_partner.last_name[1..-1].toLowerCase() if value.client_partner
-    $scope.resources = data
-    $scope.search()
-    $scope.loaded=true
+  AngularHelpers.getResources($scope,$http,'projects.json')
   AngularHelpers.initializeResource($scope)
   $scope.predicate = 'name'
   

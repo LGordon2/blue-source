@@ -14,6 +14,14 @@
  *= require_self
  */
 $orasi_blue: #357bb9;
+span.errormsg
+{
+  color: red;
+}
+input.has-error
+{
+  border: 1px solid red;
+}
 .navbar
 {
   background-color: white;

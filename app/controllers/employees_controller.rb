@@ -1,5 +1,4 @@
 class EmployeesController < ApplicationController
-  include ApplicationHelper
   before_action :require_login
   
   #Sets the employee 
@@ -18,7 +17,7 @@ class EmployeesController < ApplicationController
   layout :set_layout
   
   def show
-    if request.referer == root_url+"employees/#{@employee.id}/vacations"
+    if request.referer == employee_vacations_url(@employee.id)
       @prev_page = 3
     end
     @prev_page = 2 if flash[:project] == true
@@ -31,7 +30,7 @@ class EmployeesController < ApplicationController
   
   def directory
     respond_to do |format|
-      format.json {render json: all_employees_for_directory.to_json}
+      format.json
     end
   end
   
@@ -62,10 +61,8 @@ class EmployeesController < ApplicationController
     @modal_title = "Add Consultant"
     @resource_for_angular = "employee"
     respond_to do |format|
-      format.json {
-        render json: subordinates_hash.to_json
-      }
       format.html
+      format.json
     end
   end
   
@@ -111,32 +108,6 @@ class EmployeesController < ApplicationController
     param_hash = params.require(:employee).permit(allowed_params, department_id: [])
     param_hash[:department_id] = param_hash[:department_id].reject {|val| val == ""}.last if param_hash.has_key?(:department_id)
     param_hash.each {|key,val| param_hash[key]=val.downcase if key=='first_name' or key=='last_name'} unless param_hash.blank?
-  end
-  
-  def subordinates_hash
-    unless current_user.all_subordinates.blank?
-      current_user.all_subordinates.as_json({
-      include: [
-        {:manager => {:only => [:id,:first_name,:last_name]}}, 
-        {:project => {:only => :name}},
-        {:employee_title => {:only => :name}}], 
-      only: [:id, :first_name, :last_name, :title, :manager_id, :project_id, :location, :status]
-    }).map do |e| 
-        capitalize_names_and_projects(e)
-      end
-    end
-  end
-  
-  def all_employees_for_directory
-    Employee.where.not(status: "Inactive").as_json({
-      include: [
-        {manager: {only: [:id,:first_name,:last_name, :email]}},
-        {department: {only: [:name]}}
-      ],
-      only: [:id, :first_name, :last_name, :email, :department, :office_phone, :cell_phone, :im_name, :im_client]
-    }).map do |e|
-      capitalize_names_and_projects(e)
-    end
   end
   
   #Permissions

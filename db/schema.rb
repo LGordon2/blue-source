@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140217204332) do
+ActiveRecord::Schema.define(version: 20140220154745) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20140217204332) do
     t.string   "location"
     t.integer  "department_id"
     t.text     "project_comments"
-    t.time     "scheduled_hours_start"
-    t.time     "scheduled_hours_end"
+    t.string   "scheduled_hours_start"
+    t.string   "scheduled_hours_end"
     t.integer  "title_id"
     t.text     "preferences"
     t.boolean  "sys_admin"
@@ -72,6 +72,16 @@ ActiveRecord::Schema.define(version: 20140217204332) do
     t.string   "status"
     t.integer  "client_partner_id"
   end
+
+  create_table "reports", force: true do |t|
+    t.string   "name"
+    t.text     "query_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "employee_id"
+  end
+
+  add_index "reports", ["employee_id"], name: "index_reports_on_employee_id"
 
   create_table "sessions", force: true do |t|
     t.string   "session_id"
