@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_session_expiry
+    return if Rails.env.test?
     Session.sweep("24 hours")
     if !session[:current_user_id].blank? and Session.find_by(session_id: session[:session_id]).blank?
       @_current_user = session[:current_user_id] = nil

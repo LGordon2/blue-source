@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TitlesControllerTest < ActionController::TestCase
+class Admin::TitlesControllerTest < ActionController::TestCase
   setup do
     @title = titles(:one)
   end

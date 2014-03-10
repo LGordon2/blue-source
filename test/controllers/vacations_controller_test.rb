@@ -47,8 +47,7 @@ class VacationsControllerTest < ActionController::TestCase
   
   test "should not get error from new if admin" do
     get :index, {employee_id: @consultant.id}, {current_user_id: @admin.id}
-    assert_response :success
-    assert_nil flash[:error]
+    assert_redirected_to view_employee_vacations_path(@admin)
   end
 
   test "consultants can't change each other's vacation" do

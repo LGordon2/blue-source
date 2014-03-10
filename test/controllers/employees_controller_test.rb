@@ -41,7 +41,7 @@ class EmployeesControllerTest < ActionController::TestCase
     assert_redirected_to view_employee_vacations_path(employees(:consultant))
   end
   
-  test "should redirect to sorry if consultant" do
+  test "should redirect to vacations if consultant" do
     get :index, nil, {current_user_id: employees(:consultant).id}
     assert_redirected_to view_employee_vacations_path(employees(:consultant))
   end

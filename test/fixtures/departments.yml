@@ -2,4 +2,7 @@
 
 rural:
   name: "Rural"
-  area_id: areas(:services).id
+  department_id: department(:services).id
+
+services:
+  name: "Services"
