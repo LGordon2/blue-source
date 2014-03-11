@@ -44,7 +44,8 @@ employees_list_ctrl = ($scope, $http, $filter) ->
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
       searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
       (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
-      searchMatch(employee.location, $scope.query))
+      searchMatch(employee.location, $scope.query) ||
+      searchMatch(employee.title, $scope.query))
     manager_id = $scope.manager_id
     
     $scope.filteredResources = $filter('filter')($scope.filteredResources,{status:"!Inactive"}) unless $scope.show_inactive
