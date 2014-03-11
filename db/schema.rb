@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140311132737) do
+ActiveRecord::Schema.define(version: 20140311182300) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20140311132737) do
     t.integer  "title_id"
     t.text     "preferences"
     t.boolean  "sys_admin"
+    t.integer  "extra_months"
   end
 
   create_table "project_leads", force: true do |t|

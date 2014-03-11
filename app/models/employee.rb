@@ -46,7 +46,7 @@ class Employee < ActiveRecord::Base
   end
   
   def accrued_vacation_days(on_date)
-    accrued_vacation_days_on_date(on_date,self.start_date)
+    accrued_vacation_days_on_date(on_date,self.start_date - (self.extra_months.blank? ? 0 : self.extra_months.months))
   end
   
   def validate_against_ad(password)

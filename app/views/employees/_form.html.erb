@@ -33,6 +33,12 @@
 	<%= f.select :status, Employee.statuses, {}, class: "form-control" %>
 </div>
 <% end %>
+<% if current_user.role.in? ["Company Admin", "Department Admin"] %>
+<div class="form-group">
+	<%= f.label :extra_months, nil, class: "control-label" %>
+	<%= f.number_field :extra_months, class: "form-control" %>
+</div>
+<% end %>
 <div class="form-group">
 	<%= f.label :location, class: "control-label"%>
 	<%= f.select :location, Employee.locations, { include_blank: true }, class: "form-control" %>

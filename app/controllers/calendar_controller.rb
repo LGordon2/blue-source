@@ -43,7 +43,10 @@ class CalendarController < ApplicationController
       @selectable_years = (Date.current.year-2..Date.current.year+2)
     end
     
-    @pdo_times = @pdo_times.where(status: [nil, ""]).where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)    
+    @disabled_prev_month = (@starting_date - 1.month).year < @selectable_years.first
+    @disabled_next_month = (@starting_date + 1.month).year > @selectable_years.last
+
+    @pdo_times = @pdo_times.where(status: [nil, ""]).where("(start_date >= ? and start_date <= ?) or (end_date >= ? and end_date <= ?)",@starting_date.beginning_of_month,@starting_date.end_of_month,@starting_date.beginning_of_month,@starting_date.end_of_month)
   end
   
   def change_month(no_months)
