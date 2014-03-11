@@ -418,10 +418,10 @@ class Employee < ActiveRecord::Base
   
   def fix_scheduled_hours
     unless scheduled_hours_start.blank?
-      self.scheduled_hours_start = scheduled_hours_start.to_time.strftime("%H:%M")
+      self.scheduled_hours_start = scheduled_hours_start.to_time.to_s(:form_time)
     end
     unless scheduled_hours_end.blank?
-      self.scheduled_hours_end = scheduled_hours_end.to_time.strftime("%H:%M")
+      self.scheduled_hours_end = scheduled_hours_end.to_time.to_s(:form_time)
     end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140220154745) do
+ActiveRecord::Schema.define(version: 20140311132737) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -78,10 +78,11 @@ ActiveRecord::Schema.define(version: 20140220154745) do
     t.text     "query_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "employee_id_id"
     t.integer  "employee_id"
   end
 
-  add_index "reports", ["employee_id"], name: "index_reports_on_employee_id"
+  add_index "reports", ["employee_id_id"], name: "index_reports_on_employee_id_id"
 
   create_table "sessions", force: true do |t|
     t.string   "session_id"

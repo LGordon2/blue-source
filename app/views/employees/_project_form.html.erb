@@ -24,8 +24,8 @@
 <div class="form-group">
     <%= f.label :project_scheduled_hours, 'Project Scheduled Hours', class: "control-label" %>
     <div id="project-hours">
-    <%= time_field_tag "employee[scheduled_hours_start]", :scheduled_hours_start, class: "form-control", value: (Time.parse(@employee.scheduled_hours_start).to_s(:form_time) unless @employee.scheduled_hours_start.blank?) %> to 
-    <%= time_field_tag "employee[scheduled_hours_end]", :scheduled_hours_end, class: "form-control", value: (Time.parse(@employee.scheduled_hours_end).to_s(:form_time) unless @employee.scheduled_hours_end.blank?) %>
+    <%= time_field_tag "employee[scheduled_hours_start]", :scheduled_hours_start, class: "form-control", value: (@employee.scheduled_hours_start unless @employee.scheduled_hours_start.blank?) %> to 
+    <%= time_field_tag "employee[scheduled_hours_end]", :scheduled_hours_end, class: "form-control", value: (@employee.scheduled_hours_end unless @employee.scheduled_hours_end.blank?) %>
     </div>
 </div>
 <div class="form-group">
