@@ -95,11 +95,11 @@
 			<td id="business_days-new"><strong></strong></td>
 			<td><%= select_tag nil, options_for_select(Vacation.types), data: {title: "Reason", content: "<input id='reason-new'>", placement: 'bottom', html: true, animation: false}, id: "vacation_type-new", class: "vacation-type" %></td>
 			<td><%= check_box_tag nil, false, false, id: "half_day-new" %></td>
+			<td colspan="2" id="save-new-vacation"><%= submit_tag "Save Time Off", class: "btn btn-primary btn-xs", data: {"form-action" => employee_vacations_path(@employee), method: :post} %></td>
 		</tr>
 	</table>
 	</div>
-	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" %>
-	<%= submit_tag "Save Time Off", class: "btn btn-primary", data: {"form-action" => employee_vacations_path(@employee), method: :post} %>
+	<%= link_to "Back", employee_path(@employee) %>
 	<% end %>
 </div>
 <% content_for "modal_header_1" do %>
