@@ -8,6 +8,7 @@ $ ->
     row_tr.find(".data-field").hide()
     $(this).toggle()
   $("button.memo-submit").click ->
+    $(this).text($(this).data("disable-with")).attr("disabled", true)
     modal_number = $(".modal.in").attr("id").split("_")[1]
     $("tr").eq(modal_number).find("input[type=hidden]").val($(".modal.in textarea[name=memo-field]").val())
   $("input[type=submit]").click ->
@@ -16,3 +17,5 @@ $ ->
   $("textarea[name=memo-field]").each ->
     modal_number = $(this).parents("div.modal").attr("id").split("_")[1]
     $(this).val( $("tr").eq(modal_number).find("input[type=hidden]").val())
+  $("textarea[name=memo-field]").on "keyup", ->
+    $(this).parent().siblings().find("button.memo-submit").text("Save").removeAttr("disabled")
