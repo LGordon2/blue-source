@@ -13,10 +13,22 @@
 	<% @employee.projects.each do |employee_project| %>
 	<tr>
 	<%= content_tag :tr, id: "#{employee_project.id}" do -%>
-		<td><span class="data-field"><%= employee_project.project.name %></span><%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name", employee_project.project.id), {include_blank: true}, class: "form-control edit-field", style: "height: 22px;", name: "#{employee_project.id}[project_history][project_id]" %></td>
-		<td><span class="data-field"><%= employee_project.roll_on_date %></span><%= date_field_tag nil, employee_project.roll_on_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_on_date]" %></td>
-		<td><span class="data-field"><%= employee_project.roll_off_date %></span><%= date_field_tag nil, employee_project.roll_off_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_off_date]" %></td>
-		<td><span class="data-field"><%= employee_project.scheduled_hours %></span><%= number_field_tag nil, employee_project.scheduled_hours, class: "edit-field", name: "#{employee_project.id}[project_history][scheduled_hours]", value: employee_project.scheduled_hours %></td>
+		<td>
+			<span class="data-field"><%= employee_project.project.name %></span>
+			<%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name", employee_project.project.id), {include_blank: true}, class: "form-control edit-field", name: "#{employee_project.id}[project_history][project_id]" %>
+		</td>
+		<td>
+			<span class="data-field"><%= employee_project.roll_on_date %></span>
+			<%= date_field_tag nil, employee_project.roll_on_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_on_date]" %>
+		</td>
+		<td>
+			<span class="data-field"><%= employee_project.roll_off_date %></span>
+			<%= date_field_tag nil, employee_project.roll_off_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_off_date]" %>
+		</td>
+		<td>
+			<span class="data-field"><%= employee_project.scheduled_hours %></span>
+			<%= number_field_tag nil, employee_project.scheduled_hours, class: "edit-field", name: "#{employee_project.id}[project_history][scheduled_hours]", value: employee_project.scheduled_hours %>
+		</td>
 		<td>
 			<%= link_to "#", class: 'edit-btn' do %>
 				<span class="glyphicon glyphicon-pencil"></span>	
