@@ -82,7 +82,12 @@
 <!-- Project info head -->
 <% content_for 'panel_title_2' do %>Project Info<% end %>
 <% content_for 'panel_heading_2' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_2"} if current_user.can_edit? @employee %>
+<% if current_user.can_edit? @employee %>
+<div class="pull-right">
+	<%= link_to "History", employee_project_histories_path(@employee), class: "btn btn-default btn-xs" %>
+	<%= button_tag "Manage", class: "btn btn-default btn-xs", data: {toggle: "modal", target: "#modal_2"} %>
+</div>
+<% end %>
 <% end %>
 <!-- /Project info head -->
 

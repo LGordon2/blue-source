@@ -16,15 +16,13 @@ BlueSource::Application.routes.draw do
         post "requests"
       end
     end
+    resources :project_histories, path: 'projects'
+    patch 'preferences'
   end
 
   resources :departments, only: [:destroy, :new, :create, :update, :edit] do
     get 'sub_departments'
     get 'employees'
-  end
-
-  resources :employees, only: [:index,:show,:create,:update] do
-    patch 'preferences'
   end
   
   #Projects

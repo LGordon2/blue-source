@@ -10,6 +10,7 @@ class Employee < ActiveRecord::Base
   belongs_to :manager, class_name: "Employee"
   belongs_to :team_lead, class_name: "Employee"
   belongs_to :project
+  has_many :projects, class_name: "ProjectHistory"
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
   has_one :area, through: :department
