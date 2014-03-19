@@ -1,18 +1,19 @@
 <h1>Project History for <%= @employee.display_name %></h1>
 <%= render "notification_section" %>
 <%= form_for :project_history, method: :patch do |f| %>
-<table class="table table-bordered">
+<table id="project_history" class="table table-bordered">
 	<tr>
 		<th>Project Name</th>
 		<th>Roll On Date</th>
 		<th>Roll Off Date</th>
 		<th>Scheduled Hours</th>
+		<th>Memo</th>
 		<th>Edit</th>
 		<th>Delete</th>
 	</tr>
-	<% @employee.projects.each do |employee_project| %>
-	<tr>
-	<%= content_tag :tr, id: "#{employee_project.id}" do -%>
+	<% @employee.projects.each_with_index do |employee_project, index| %>
+	<%= content_tag :tr do -%>
+		<%= hidden_field_tag "#{employee_project.id}[project_history][memo]", employee_project.memo %>
 		<td>
 			<span class="data-field"><%= employee_project.project.name %></span>
 			<%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name", employee_project.project.id), {include_blank: true}, class: "form-control edit-field", name: "#{employee_project.id}[project_history][project_id]" %>
@@ -30,6 +31,9 @@
 			<%= number_field_tag nil, employee_project.scheduled_hours, class: "edit-field", name: "#{employee_project.id}[project_history][scheduled_hours]", value: employee_project.scheduled_hours %>
 		</td>
 		<td>
+			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"} %>
+		</td>
+		<td>
 			<%= link_to "#", class: 'edit-btn' do %>
 				<span class="glyphicon glyphicon-pencil"></span>	
 			<% end %>
@@ -42,13 +46,32 @@
 		</td>
 	<% end %>
 	<% end %>
-	<tr id="new">
+	<%= content_tag :tr do -%>
+		<%= hidden_field_tag "new[project_history][memo]" %>
 		<td><%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name"), {}, class: "form-control", style: "height: 22px;", name: "new[project_history][project_id]" %></td>
 		<td><%= f.date_field :roll_on_date, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_on_date]" %></td>
 		<td><%= f.date_field :roll_off_date, class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_off_date]" %></td>
 		<td><%= f.number_field :scheduled_hours, name: "new[project_history][scheduled_hours]" %></td>
+		<td>
+			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{@employee.projects.count + 1}"} %>
+		</td>
 		<td colspan="2" id="save-new-project"><%= submit_tag "Save Project", class: "btn btn-primary btn-xs", data: {method: :post} %></td>
-	</tr>
+	<% end %>
 </table>
 <% end %>
 <%= link_to "Back", employee_path(@employee) %>
+<% (@employee.projects.count + 1).times do |num|%>
+<% content_for "modal_header_#{num+1}" do %>
+	Memo
+<% end %>
+<% content_for "modal_content_#{num+1}" do %>
+	<div>
+		<%= text_area_tag 'memo-field', nil, style: "width: 100%;" %>
+	</div>
+	<div class="form-group modal-footer">
+	<%= button_tag 'Save', class: "btn btn-primary memo-submit" %>
+	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} %>
+	</div>
+<% end %>
+<% end %>
+<%= render "modals/modal_group" %>

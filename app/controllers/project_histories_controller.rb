@@ -53,7 +53,7 @@ class ProjectHistoriesController < ApplicationController
   
   def project_history_params
     which_params = params[:id].blank? ? "new" : params[:id]
-    params[which_params].require(:project_history).permit(:project_id,:roll_on_date,:roll_off_date,:scheduled_hours).merge(employee_id: @employee.id)
+    params[which_params].require(:project_history).permit(:project_id,:roll_on_date,:roll_off_date,:scheduled_hours,:memo).merge(employee_id: @employee.id)
   end
   
   def can_edit_employee
