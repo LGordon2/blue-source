@@ -1,6 +1,6 @@
 <div class="vacation-summary-table well">
 	<%= form_tag({controller: controller_name, action: action_name}, method: :get, style: "padding-bottom:10px", class: "pull-right") do %>
-		<%=select_tag "fy", options_for_select(@fy_options,@fyear), onchange: "submit();" %>
+		<%=select_tag "fy", options_for_select(@fy_options,@fyear), onchange: "submit();", class: "form-control" %>
 	<% end %>
 	<span>Estimated Time off for <%= "Fiscal Year #{@fyear}"%>:</span>
 	<% ["Sick","Vacation","Floating Holiday"].each do |vacation_type| %>
