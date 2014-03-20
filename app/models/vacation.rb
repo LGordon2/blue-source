@@ -82,16 +82,14 @@ class Vacation < ActiveRecord::Base
     Rails.logger.error "End date was blank." if self.end_date.blank?
     return if self.start_date.blank? or self.end_date.blank?
     
-    Employee.find(employee_id).vacations.each do |vacation|
-      unless id == vacation.id
-        (vacation.start_date..vacation.end_date).each do |vacation_date|
-
-          (start_date..end_date).each do |date|
-            return errors.add(:date_range, "includes date already included for PDO.") if date == vacation_date
-          end
-        end
+    (start_date..end_date).each do |date|
+      start_date_count = (half_day and date == end_date) ? 0.5 : 1
+      days_taken = Employee.find(employee_id).vacations.where("(start_date >= :date and start_date <= :date) or (end_date >= :date and end_date <= :date)",date: date).where.not(id: id).inject(start_date_count) do |sum, v|
+        sum + ((v.end_date == date and v.half_day) ? 0.5 : 1)
       end
+      return errors.add(:date_range, "includes date already included for PDO.") if days_taken > 1
     end
+    
   end
   
   def pdo_days_taken
