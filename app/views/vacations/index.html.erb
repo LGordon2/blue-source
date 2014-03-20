@@ -48,7 +48,7 @@
 				<%= select_tag "#{vacation.id}[vacation][vacation_type]", options_for_select(Vacation.types,vacation.vacation_type), data: {title: "Reason", content: "<input name='#{vacation.id}[vacation][reason]' value='#{vacation.reason}'>", placement: 'top', html: true, animation: false}, class:"vacation-type hidden" %>
 			</td>
 			<td class="check-field">
-				<%= check_box_tag "#{vacation.id}[vacation][half_day]", false, vacation.half_day, class: "half-day" %>
+				<%= check_box_tag "#{vacation.id}[vacation][half_day]", true, vacation.half_day, class: "half-day hidden" %>
 			</td>
 			<% unless @fy_vacations.count == @fy_vacations.where(status: "Pending").count %>
 			<td>
@@ -85,7 +85,7 @@
 			<td><%= date_field_tag "new[vacation][end_date]", nil, class: "date-field end-date", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %></td>
 			<td class="business-days"><strong></strong></td>
 			<td><%= select_tag "new[vacation][vacation_type]", options_for_select(Vacation.types), data: {title: "Reason", content: "<input name='new[vacation][reason]'>", placement: 'bottom', html: true, animation: false}, class: "vacation-type" %></td>
-			<td><%= check_box_tag "new[vacation][half_day]", false, false, class: "half-day" %></td>
+			<td><%= check_box_tag "new[vacation][half_day]", true, false, class: "half-day" %></td>
 			<td colspan="2"><%= submit_tag "Save Time Off", class: "btn btn-primary btn-xs", data: {"form-action" => employee_vacations_path(@employee), method: :post} %></td>
 		</tr>
 	</table>

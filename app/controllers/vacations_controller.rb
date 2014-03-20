@@ -146,6 +146,7 @@ class VacationsController < ApplicationController
      all_params[:manager_id]=current_user.id
      all_params[:employee_id]=params[:employee_id]
      all_params[:status]=""
+     all_params[:half_day]=false if all_params[:half_day].blank?
      return all_params
   end 
 end
