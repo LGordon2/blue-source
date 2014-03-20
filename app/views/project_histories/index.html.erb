@@ -31,7 +31,7 @@
 			<%= number_field_tag nil, employee_project.scheduled_hours, class: "edit-field", name: "#{employee_project.id}[project_history][scheduled_hours]", value: employee_project.scheduled_hours %>
 		</td>
 		<td>
-			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"} %>
+			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"}, disabled: true, class: "btn btn-link btn-xs memo-link" %>
 		</td>
 		<td>
 			<%= link_to "#", class: 'edit-btn' do %>
@@ -53,7 +53,7 @@
 		<td><%= f.date_field :roll_off_date, class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_off_date]" %></td>
 		<td><%= f.number_field :scheduled_hours, name: "new[project_history][scheduled_hours]" %></td>
 		<td>
-			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{@employee.projects.count + 1}"} %>
+			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{@employee.projects.count + 1}"}, class: "btn btn-link btn-xs memo-link" %>
 		</td>
 		<td colspan="2" id="save-new-project"><%= submit_tag "Save Project", class: "btn btn-primary btn-xs", data: {method: :post} %></td>
 	<% end %>
