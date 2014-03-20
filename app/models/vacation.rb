@@ -7,6 +7,7 @@ class Vacation < ActiveRecord::Base
   before_validation :set_business_days
   
   validates :vacation_type, presence: true
+  validates :date_requested, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :employee, presence: true
