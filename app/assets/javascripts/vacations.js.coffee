@@ -5,15 +5,6 @@ $ ->
   $("[data-method],[data-form-action]").click ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
     $('#vacation_form').attr('action',$(this).data("form-action")) if $(this).data("form-action")
-    if $(this).data("method")
-      vacation_id = if $(this).data("vacation-id") then $(this).data("vacation-id") else "new"
-      for field in ["date_requested","start_date","end_date","business_days","vacation_type","half_day","reason"]
-        $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").val())
-        $("[name=vacation\\[#{field}\\]]").val($("span#vacation_reason-#{vacation_id}").attr("data-content")) if field == "reason" and typeof($("##{field}-#{vacation_id}").val()) == "undefined"
-        $("[name=vacation\\[#{field}\\]]").val($("##{field}-#{vacation_id}").prop('checked')) if field == "half_day"
-      if $(this).hasClass('approval-btn')
-        $("[name=vacation\\[status\\]]").val("")
-        $("#vacation_form").submit()
   $("div.vacation-summary-table span").tooltip()
   
   #Edit button reveals editable fields
@@ -21,10 +12,14 @@ $ ->
     $(this).children().toggleClass("hidden")
     $(this).parent().siblings(".edit-field,.check-field").each (index) ->
       $(this).children().toggleClass("hidden")
-  $(".vacation-row").each (index) ->
+  
+    
+  #Set the end date to the start date.
+  $(".start-date").on "change", ->
+    $(this).parents("tr").find(".end-date").val($(this).val())
+  
+  $(".start-date").each (index) ->
     set_business_days($(this))
-  $("#start_date-new").on "change", ->
-    $("#end_date-new").val($(this).val())
   $(".date-field,input[type=checkbox]").on "change", ->
     set_business_days($(this))
 
@@ -44,12 +39,13 @@ $ ->
     $(this).popover('toggle')
 
 set_business_days = (object) ->
-  id = object.attr("id").split("-")[1]
-  $start_date = $("#start_date-#{id}")
-  $end_date = $("#end_date-#{id}")
-  bsn_days = calc_business_days($start_date.val(),$end_date.val(),$("#half_day-#{id}").prop("checked"))
-  $("#business_days-#{id}").children().text(bsn_days)
-  $("#hidden_business_days-#{id}").val(bsn_days)
+  row_obj = object.parents("tr")
+  $start_date = row_obj.find(".start-date")
+  $end_date = row_obj.find(".end-date")
+  $half_day = row_obj.find("input.half-day")
+  $business_days = row_obj.find(".business-days")
+  bsn_days = calc_business_days($start_date.val(),$end_date.val(),$half_day.prop("checked"))
+  $business_days.children().text(bsn_days)
 
 thanksgivingDayUSA = (_date) ->
   year = _date.getFullYear()

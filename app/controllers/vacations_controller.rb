@@ -141,8 +141,11 @@ class VacationsController < ApplicationController
   end
   
   def vacation_params
-     all_params = params.require(:vacation).permit(:date_requested,:start_date,:end_date,:vacation_type,:business_days,:employee_id,:half_day,:reason,:status)
+     which_params = params[:id].blank? ? "new" : params[:id]
+     all_params = params[which_params].require(:vacation).permit(:date_requested,:start_date,:end_date,:vacation_type,:business_days,:employee_id,:half_day,:reason,:status)
      all_params[:manager_id]=current_user.id
+     all_params[:employee_id]=params[:employee_id]
+     all_params[:status]=""
      return all_params
   end 
 end
