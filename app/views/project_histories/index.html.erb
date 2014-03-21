@@ -60,8 +60,9 @@
 	<% end %>
 	<%= content_tag :tr do -%>
 		<%= hidden_field_tag "new[project_history][memo]" %>
-		<td><%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name"), {}, class: "form-control project-dropdown", name: "new[project_history][project_id]" %></td>
-		<td><%= select_tag "new[project_history][lead_id]", options_from_collection_for_select(Project.first.leads, "id", "display_name"), include_blank: true, class: "form-control lead-dropdown" %></td>
+		<% projects = Project.all %>
+		<td><%= f.select :project_id, options_from_collection_for_select(projects, "id", "name"), {}, class: "form-control project-dropdown", name: "new[project_history][project_id]" %></td>
+		<td><%= select_tag "new[project_history][lead_id]", options_from_collection_for_select(projects.first.leads, "id", "display_name"), include_blank: true, class: "form-control lead-dropdown" %></td>
 		<td><%= f.date_field :roll_on_date, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_on_date]" %></td>
 		<td><%= f.date_field :roll_off_date, class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_off_date]" %></td>
 		<td>
