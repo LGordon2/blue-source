@@ -5,7 +5,7 @@
 {
   display: none;
 }
-.btn.btn-xs
+.btn.btn-xs.save-btn
 {
   width: 100%;
 }
@@ -15,4 +15,8 @@ select.form-control
   line-height: 22px;
   padding: 2px 10px;
   font-size: 12px;
+}
+.scheduled-hours-field
+{
+  width: 45%;
 }

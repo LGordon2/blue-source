@@ -22,6 +22,7 @@ $ ->
     $(this).parent().siblings().find("button.memo-submit").text("Save").removeAttr("disabled")
   $(".project-dropdown").on "change", ->
     set_team_leads($(this))
+  set_team_leads($(".project-dropdown:last"))
 
 set_team_leads = ($project_dropdown_obj) ->
   $team_leads_select = $project_dropdown_obj.parents("tr").find(".lead-dropdown")
