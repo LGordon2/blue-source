@@ -4,6 +4,7 @@
 <table id="project_history" class="table table-bordered">
 	<tr>
 		<th>Project Name</th>
+		<th>Lead</th>
 		<th>Roll On Date</th>
 		<th>Roll Off Date</th>
 		<th>Scheduled Hours</th>
@@ -16,26 +17,37 @@
 		<%= hidden_field_tag "#{employee_project.id}[project_history][memo]", employee_project.memo %>
 		<td>
 			<span class="data-field"><%= employee_project.project.name %></span>
-			<%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name", employee_project.project.id), {include_blank: true}, class: "form-control edit-field", name: "#{employee_project.id}[project_history][project_id]" %>
+			<%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name", employee_project.project.id),{}, class: "form-control edit-field project-dropdown", name: "#{employee_project.id}[project_history][project_id]" %>
 		</td>
 		<td>
-			<span class="data-field"><%= employee_project.roll_on_date %></span>
+			<span class="data-field"><%= employee_project.lead.display_name unless employee_project.lead.blank? %></span>
+			<%= select_tag "#{employee_project.id}[project_history][lead_id]", options_from_collection_for_select(Project.find(employee_project.project.id).leads, "id", "display_name",(employee_project.lead.blank? ? nil : employee_project.lead.id)), include_blank: true, class: "form-control edit-field lead-dropdown" %>
+		</td>
+		<td>
+			<span class="data-field"><%= employee_project.roll_on_date.to_s(:long) unless employee_project.roll_on_date.blank? %></span>
 			<%= date_field_tag nil, employee_project.roll_on_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_on_date]" %>
 		</td>
 		<td>
-			<span class="data-field"><%= employee_project.roll_off_date %></span>
+			<span class="data-field"><%= employee_project.roll_off_date.to_s(:long) unless employee_project.roll_off_date.blank? %></span>
 			<%= date_field_tag nil, employee_project.roll_off_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_off_date]" %>
 		</td>
 		<td>
-			<span class="data-field"><%= employee_project.scheduled_hours %></span>
-			<%= number_field_tag nil, employee_project.scheduled_hours, class: "edit-field", name: "#{employee_project.id}[project_history][scheduled_hours]", value: employee_project.scheduled_hours %>
+			<% unless employee_project.scheduled_hours_start.blank? and employee_project.scheduled_hours_end.blank? %>
+			<span class="data-field">
+				<%= employee_project.scheduled_hours_start.to_s(:scheduled_time) unless employee_project.scheduled_hours_start.blank? %> to <%= employee_project.scheduled_hours_end.to_s(:scheduled_time) unless employee_project.scheduled_hours_end.blank? %>
+			</span>
+			<% end %>
+			<div class="edit-field">
+				<%= time_field_tag nil, employee_project.scheduled_hours_start.blank? ? nil : employee_project.scheduled_hours_start.to_s(:form_time), name: "#{employee_project.id}[project_history][scheduled_hours_start]" %> to
+				<%= time_field_tag nil, employee_project.scheduled_hours_end.blank? ? nil : employee_project.scheduled_hours_end.to_s(:form_time), name: "#{employee_project.id}[project_history][scheduled_hours_end]" %>
+			</div>
 		</td>
 		<td>
 			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"}, disabled: true, class: "btn btn-link btn-xs memo-link" %>
 		</td>
 		<td>
 			<%= link_to "#", class: 'edit-btn' do %>
-				<span class="glyphicon glyphicon-pencil"></span>	
+				<span class="glyphicon glyphicon-pencil"></span>
 			<% end %>
 			<%= submit_tag "Update Project", class: "btn btn-primary btn-xs update-btn", data: {method: :patch, "form-action" => employee_project_history_path(@employee, employee_project)} %>
 		</td>
@@ -48,10 +60,14 @@
 	<% end %>
 	<%= content_tag :tr do -%>
 		<%= hidden_field_tag "new[project_history][memo]" %>
-		<td><%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name"), {}, class: "form-control", style: "height: 22px;", name: "new[project_history][project_id]" %></td>
+		<td><%= f.select :project_id, options_from_collection_for_select(Project.all, "id", "name"), {}, class: "form-control project-dropdown", name: "new[project_history][project_id]" %></td>
+		<td><%= select_tag "new[project_history][lead_id]", options_from_collection_for_select(Project.first.leads, "id", "display_name"), include_blank: true, class: "form-control lead-dropdown" %></td>
 		<td><%= f.date_field :roll_on_date, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_on_date]" %></td>
 		<td><%= f.date_field :roll_off_date, class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_off_date]" %></td>
-		<td><%= f.number_field :scheduled_hours, name: "new[project_history][scheduled_hours]" %></td>
+		<td>
+			<%= time_field_tag "new[project_history][scheduled_hours_start]", Time.parse(@default_scheduled_hours_start).to_s(:form_time) %> to
+			<%= time_field_tag "new[project_history][scheduled_hours_end]", Time.parse(@default_scheduled_hours_end).to_s(:form_time) %>
+		</td>
 		<td>
 			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{@employee.projects.count + 1}"}, class: "btn btn-link btn-xs memo-link" %>
 		</td>

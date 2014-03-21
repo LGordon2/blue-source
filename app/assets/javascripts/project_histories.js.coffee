@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $("a.edit-btn").click -> 
+  $("a.edit-btn").click ->
     row_tr = $(this).parents("tr")
     row_tr.find(".edit-field,.update-btn").show()
     row_tr.find(".data-field").hide()
@@ -20,3 +20,19 @@ $ ->
     $(this).val( $("tr").eq(modal_number).find("input[type=hidden]").val())
   $("textarea[name=memo-field]").on "keyup", ->
     $(this).parent().siblings().find("button.memo-submit").text("Save").removeAttr("disabled")
+  $(".project-dropdown").on "change", ->
+    set_team_leads($(this))
+
+set_team_leads = ($project_dropdown_obj) ->
+  $team_leads_select = $project_dropdown_obj.parents("tr").find(".lead-dropdown")
+  if $project_dropdown_obj.val() == ""
+    $team_leads_select.empty()
+    $team_leads_select.attr("disabled", true)
+    return true
+  $team_leads_select.removeAttr("disabled")
+  $.getJSON "/projects/#{$project_dropdown_obj.val()}/leads.json", (data) ->
+    $team_leads_select.empty()
+    $team_leads_select.append('<option value></option>')
+    for lead in data
+      name = lead.display_name
+      $team_leads_select.append("<option value=\"#{lead.id}\">"+name+'</option>')

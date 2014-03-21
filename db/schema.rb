@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140317171203) do
+ActiveRecord::Schema.define(version: 20140321174221) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -32,22 +32,15 @@ ActiveRecord::Schema.define(version: 20140317171203) do
     t.integer  "manager_id"
     t.string   "role"
     t.date     "start_date"
-    t.integer  "project_id"
     t.string   "level"
     t.string   "cell_phone"
     t.string   "im_name"
     t.string   "im_client"
     t.string   "status"
-    t.date     "roll_on_date"
-    t.date     "roll_off_date"
     t.string   "email"
     t.string   "office_phone"
-    t.integer  "team_lead_id"
     t.string   "location"
     t.integer  "department_id"
-    t.text     "project_comments"
-    t.string   "scheduled_hours_start"
-    t.string   "scheduled_hours_end"
     t.integer  "title_id"
     t.text     "preferences"
     t.boolean  "sys_admin"
@@ -55,14 +48,16 @@ ActiveRecord::Schema.define(version: 20140317171203) do
   end
 
   create_table "project_histories", force: true do |t|
-    t.integer  "project_id",      null: false
-    t.integer  "employee_id",     null: false
+    t.integer  "project_id",            null: false
+    t.integer  "employee_id",           null: false
     t.date     "roll_on_date"
     t.date     "roll_off_date"
-    t.integer  "scheduled_hours"
     t.text     "memo"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.time     "scheduled_hours_start"
+    t.time     "scheduled_hours_end"
+    t.integer  "lead_id"
   end
 
   create_table "project_leads", force: true do |t|

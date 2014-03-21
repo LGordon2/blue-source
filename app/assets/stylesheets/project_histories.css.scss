@@ -9,7 +9,10 @@
 {
   width: 100%;
 }
-table select.form-control
+select.form-control
 {
   height: 22px;
+  line-height: 22px;
+  padding: 2px 10px;
+  font-size: 12px;
 }

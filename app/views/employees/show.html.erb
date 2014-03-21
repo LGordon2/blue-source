@@ -13,7 +13,7 @@
 <% content_for "modal_content_1" do %>
 <%@in_modal=true%>
 <%= render "form" %>
-<% end %> 
+<% end %>
 
 <!-- General info body -->
 <% content_for 'panel_body_1' do %>
@@ -84,52 +84,47 @@
 <% content_for 'panel_heading_2' do %>
 <% if current_user.can_edit? @employee %>
 <div class="pull-right">
-	<%= link_to "History", employee_project_histories_path(@employee), class: "btn btn-default btn-xs" %>
-	<%= button_tag "Manage", class: "btn btn-default btn-xs", data: {toggle: "modal", target: "#modal_2"} %>
+	<%= link_to "Manage", employee_project_histories_path(@employee), class: "btn btn-default btn-xs" %>
 </div>
 <% end %>
 <% end %>
 <!-- /Project info head -->
-
-<!-- Content for modal -->
-<% content_for "modal_header_2" do %>Manage Project<% end %>
-
-<% content_for "modal_content_2" do %>
-<%= render "project_form" %>
-<% end %> 
 
 <!-- Project info body -->
 <% content_for 'panel_body_2' do %>
 <table class="table">
 	<tr>
 		<td>Project:</td>
-		<td><%= @employee.project.blank? ? "Not billable" : @employee.project.name %></td>
+		<td><%= (@current_project.blank? or @current_project.project.blank?) ? "Not billable" : @current_project.project.name %></td>
 	</tr>
 	<tr>
 		<td>Project Lead:</td>
-		<td><%= @employee.team_lead.display_name unless @employee.team_lead.blank? %></td>
+		<td><%= @current_project.lead.display_name unless (@current_project.blank? or @current_project.lead.blank?) %></td>
 	</tr>
 	<tr>
 		<td>Lead Office Phone:</td>
-		<td><%= @employee.team_lead.office_phone unless @employee.team_lead.blank? %></td>
+		<td><%= @current_project.lead.office_phone unless (@current_project.blank? or @current_project.lead.blank?) %></td>
 	</tr>
 	<tr>
 		<td>Roll On Date:</td>
-		<td><%= @employee.roll_on_date %></td>
+		<td><%= @current_project.roll_on_date unless (@current_project.blank? or @current_project.roll_on_date.blank?) %></td>
 	</tr>
 	<tr>
 		<td>Roll Off Date:</td>
-		<td><%= @employee.roll_off_date %></td>
+		<td><%= @current_project.roll_off_date unless (@current_project.blank? or @current_project.roll_off_date.blank?) %></td>
 	</tr>
-	<% unless @employee.scheduled_hours_start.blank? or @employee.scheduled_hours_end.blank? %>
 	<tr>
 		<td>Project Scheduled Hours:</td>
-		<td><%= @employee.scheduled_hours_start.to_time().to_s(:scheduled_time) %> - <%= @employee.scheduled_hours_end.to_time().to_s(:scheduled_time) %></td>
+		<td>
+			<% unless @current_project.blank? or (@current_project.scheduled_hours_start.blank? and @current_project.scheduled_hours_end.blank?) %>
+			<%= @current_project.scheduled_hours_start.to_s(:scheduled_time) unless @current_project.scheduled_hours_start.blank? %> -
+			<%= @current_project.scheduled_hours_end.to_s(:scheduled_time) unless @current_project.scheduled_hours_end.blank? %>
+			<% end %>
+		</td>
 	</tr>
-	<% end %>
 	<tr>
-		<td>Project Comments:</td>
-		<td><%= @employee.project_comments%></td>
+		<td>Project Memo:</td>
+		<td><%= @current_project.memo unless @current_project.blank? %></td>
 	</tr>
 </table>
 <% end %>
@@ -177,4 +172,3 @@
 
 <%= render 'modals/modal_group' %>
 <%= render "panel_group" %>
-
