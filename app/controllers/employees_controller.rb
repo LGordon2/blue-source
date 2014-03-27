@@ -22,7 +22,7 @@ class EmployeesController < ApplicationController
     end
     @prev_page = 2 if flash[:project] == true
 
-    @current_project = ProjectHistory.where(employee: @employee).where("(roll_on_date >= :date and roll_on_date <= :date) or (roll_off_date >= :date and roll_off_date <= :date)",date: Date.current).first
+    @current_project = ProjectHistory.where(employee: @employee).where("roll_on_date <= :date and roll_off_date >= :date",date: Date.current).first
 
     respond_to do |format|
       format.json {render json: @employee}

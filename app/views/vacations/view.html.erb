@@ -44,7 +44,6 @@
 <h5>No PDO used.</h5>
 <% end %>
 <div>
-	<%= link_to "Back", employee_path(@employee), class: "btn btn-default" unless current_user.role == "Consultant"%>
 	<% if current_user == @employee %>
 	<% unless @employee.manager.blank? %>
 	<%= mail_to(@employee.manager.email, class:"btn btn-default") do %>

@@ -29,7 +29,7 @@ class Employee < ActiveRecord::Base
   validate :company_admin_cannot_have_a_department
 
   def current_project
-    all_project_histories = projects.where("(roll_on_date >= :date and roll_on_date <= :date) or (roll_off_date >= :date and roll_off_date <= :date)",date: Date.current)
+    all_project_histories = projects.where("roll_on_date <= :date and roll_off_date >= :date",date: Date.current)
     return nil if all_project_histories.blank?
     all_project_histories.first.project
   end
