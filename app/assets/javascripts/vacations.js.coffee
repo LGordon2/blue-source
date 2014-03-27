@@ -6,18 +6,19 @@ $ ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
     $('#vacation_form').attr('action',$(this).data("form-action")) if $(this).data("form-action")
   $("div.vacation-summary-table span").tooltip()
-  
+
   #Edit button reveals editable fields
   $(".edit-btn").on "click", ->
     $(this).children().toggleClass("hidden")
-    $(this).parent().siblings(".edit-field,.check-field").each (index) ->
+    $(this).parent().siblings(".edit-field,.check-field").each () ->
       $(this).children().toggleClass("hidden")
-  
-    
+    $(this).parent().siblings(".icon-field").each () ->
+      $(this).children("a").children().toggleClass("hidden")
+
   #Set the end date to the start date.
   $(".start-date").on "change", ->
     $(this).parents("tr").find(".end-date").val($(this).val())
-  
+
   $(".start-date").each (index) ->
     set_business_days($(this))
   $(".date-field,input[type=checkbox]").on "change", ->
@@ -77,10 +78,10 @@ Date.prototype.isOrasiHoliday = ->
 
 Date.prototype.addDays = (days) ->
   this.setDate(this.getDate() + days * 1)
-  
+
 Date.prototype.isWeekend = ->
   this.getDay() == 0 or this.getDay() == 6
-  
+
 calc_non_business_days = (start_date, end_date) ->
   return 0 if end_date.getTime() < start_date.getTime()
   days = 0
@@ -98,7 +99,7 @@ calc_business_days = (_start_date, _end_date, half_day_set) ->
   [year,month,day]=_end_date.split("-")
   end_date = new Date(year,month-1,day)
   return if isNaN(end_date - start_date)
-  
+
   non_business_days = calc_non_business_days(start_date, end_date)
   bsn_days = Math.round((end_date - start_date)/1000/60/60/24 + 1 - (non_business_days))
   bsn_days -= 0.5 if half_day_set

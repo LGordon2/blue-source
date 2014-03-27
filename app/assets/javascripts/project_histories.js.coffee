@@ -7,6 +7,8 @@ $ ->
     row_tr.find(".edit-field,.update-btn").show()
     row_tr.find(".data-field").hide()
     row_tr.find(".memo-link").removeAttr("disabled")
+    row_tr.find(".icon-field").each () ->
+      $(this).children("a").children().toggleClass("hidden")
     $(this).toggle()
   $("button.memo-submit").click ->
     $(this).text($(this).data("disable-with")).attr("disabled", true)

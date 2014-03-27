@@ -51,8 +51,9 @@
 			<% end %>
 			<%= submit_tag "Update Project", class: "btn btn-primary btn-xs update-btn", data: {method: :patch, "form-action" => employee_project_history_path(@employee, employee_project)} %>
 		</td>
-		<td>
+		<td class="icon-field">
 			<%= link_to employee_project_history_path(@employee, employee_project), method: :delete, data: {confirm: "Are you sure you want to delete this?"} do %>
+				<button class="hidden edit-field btn btn-xs btn-danger">Remove</button>
 				<span class="glyphicon glyphicon-trash"></span>
 			<% end %>
 		</td>

@@ -66,9 +66,10 @@
 				<% end %>
 				<% end %>
 			</td>
-			<td>
+			<td class="icon-field">
 				<% unless vacation.status == "Pending" %>
 				<%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete, data: {confirm: "Are you sure you want to delete this?"} do %>
+					<button class="hidden edit-field btn btn-xs btn-danger">Remove</button>
 					<span class="glyphicon glyphicon-trash"></span>
 				<% end %>
 				<% end %>
