@@ -24,11 +24,12 @@ AngularHelpers.getResources = ($scope, $http,json_file) ->
     else
       $scope.resources = []
     $scope.search()
-    $scope.currentPage = $scope.initialPage if $scope.initialPage
+    $scope.currentPage = $scope.initialPage if $scope.initialPage and $scope.goToInitialPage
     AngularHelpers.doneLoading($scope))
 
 
 AngularHelpers.initializeResource = ($scope) ->
+  $scope.goToInitialPage = true
   $scope.resourcesPerPage = 15;
   $scope.numberOfPages = 10;
   $scope.loaded=false

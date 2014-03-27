@@ -4,7 +4,7 @@ json.array!(@department.employees.where.not(status: "Inactive")) do |employee|
 	json.last_name employee.last_name.capitalize
 	json.display_name employee.display_name
 
-	unless employee.current_projectx.blank?
+	unless employee.current_project.blank?
 		json.project do
 			json.name employee.current_project.name
 		end

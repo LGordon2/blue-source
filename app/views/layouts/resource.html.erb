@@ -1,5 +1,8 @@
 <% content_for :content do %>
 <section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
+	<% if view_employee_vacations_url(current_user) == request.referer %>
+		<span ng-hide ng-init="goToInitialPage = false"></span>
+	<% end %>
 	<div id="all-content">
 		<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
 		<%= yield :header_msgs %>
