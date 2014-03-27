@@ -24,6 +24,9 @@ $ ->
     $(this).parent().siblings().find("button.memo-submit").text("Save").removeAttr("disabled")
   $(".project-dropdown").on "change", ->
     set_team_leads($(this))
+  $(".modal").on "shown.bs.modal", ->
+    $(this).find("textarea").trigger('autosize.resize')
+  $(".memo-info").popover()
   set_team_leads($(".project-dropdown:last"))
 
 set_team_leads = ($project_dropdown_obj) ->

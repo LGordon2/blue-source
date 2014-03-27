@@ -43,7 +43,12 @@
 			</div>
 		</td>
 		<td>
-			<%= link_to "Memo", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"}, disabled: true, class: "btn btn-link btn-xs memo-link" %>
+			<% unless employee_project.memo.blank? %>
+				<%= link_to "Show", "#", data: {toggle: "popover", placement: "left", content: employee_project.memo}, class: "btn btn-link btn-xs memo-link data-field memo-info" %>
+			<% end %>
+			<div class="edit-field">
+				<%= link_to "Edit", "#", data: {toggle: "modal", target: "#modal_#{index + 1}"}, disabled: true, class: "btn btn-link btn-xs memo-link"%>
+			</div>
 		</td>
 		<td>
 			<%= link_to "#", class: 'edit-btn' do %>
