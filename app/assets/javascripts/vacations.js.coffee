@@ -17,7 +17,7 @@ $ ->
 
   #Set the end date to the start date.
   $(".start-date").on "change", ->
-    $(this).parents("tr").find(".end-date").val($(this).val())
+    $(this).parents("tr,#request-form").find(".end-date").val($(this).val())
 
   $(".start-date").each (index) ->
     set_business_days($(this))
@@ -40,7 +40,8 @@ $ ->
     $(this).popover('toggle')
 
 set_business_days = (object) ->
-  row_obj = object.parents("tr")
+  row_obj = object.parents("tr,#request-form")
+  console.log(row_obj)
   $start_date = row_obj.find(".start-date")
   $end_date = row_obj.find(".end-date")
   $half_day = row_obj.find("input.half-day")

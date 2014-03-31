@@ -5,11 +5,11 @@
   </div>
   <div class="form-group">
     <%= f.label :start_date, class: "control-label" %>
-    <%= f.date_field :start_date, class: "date-field form-control", id: "start_date-new", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+    <%= f.date_field :start_date, class: "date-field form-control start-date", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
   </div>
   <div class="form-group">
     <%= f.label :end_date, class: "control-label" %>
-    <%= f.date_field :end_date, class: "date-field form-control", id: "end_date-new", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
+    <%= f.date_field :end_date, class: "date-field form-control end-date", placeholder: "YYYY-MM-DD", required: true, pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
   </div>
   <div class="form-group">
     <%= f.label :vacation_type %>
@@ -17,13 +17,13 @@
   </div>
   <div class="form-group">
     <%= f.label :half_day %>
-    <%= f.check_box :half_day, id: "half_day-new" %>
+    <%= f.check_box :half_day, class: "half-day" %>
     <label for="cc_check_box">CC me on this email.</label>
     <input id="cc_check_box" name="cc" type="checkbox" value="1">
   </div>
   <div class="form-group">
     <%= f.label :business_days %>
-    <div id="business_days-new"><strong></strong></div>
+    <div class="business-days"><strong></strong></div>
   </div>
   <div>
   	<%= f.label :memo %>
