@@ -10,6 +10,19 @@ class ProjectHistoriesController < ApplicationController
   def index
     @default_scheduled_hours_start = "8:30 AM"
     @default_scheduled_hours_end = "5:30 PM"
+
+    order_field = case params[:sort]
+    when "project_name"
+      "projects.name"
+    else
+      params[:sort]
+    end
+
+    @project_histories = @employee.projects.joins(:project)
+
+    unless order_field.blank?
+      @project_histories = @project_histories.order("#{order_field} #{params[:rev] == 'true' ? "DESC" : "ASC"}")
+    end
   end
 
   def create
