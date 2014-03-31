@@ -19,10 +19,10 @@
 				<%= current_user.department.name.capitalize %>
 				<% else %>
 				<%= filter_name.capitalize %>
-				<% end %> </label> 
+				<% end %> </label>
 		<% end %>
 	</div>
-	
+
 	<% end %>
 </div>
 <div class="table-responsive">
@@ -44,7 +44,7 @@
 			</div>
 			<div>
 				<ul class="list-group">
-					<% @pdo_times.where("? >= start_date and ? <= end_date",day,day).each do |pdo_date| %>
+					<% @pdo_times.where(":day >= vacations.start_date and :day <= vacations.end_date",day: day).joins(:employee).order("vacation_type ASC, employees.first_name ASC").each do |pdo_date| %>
 					<% i += 1 %>
 					<li class="list-group-item <%= pdo_date.vacation_type.downcase.tr_s(" ","-") %> <%= "list-group-item-hidden hidden" if i > @max_entries_per_day %>" data-toggle="tooltip" data-placement="right" title="<%= pdo_date.vacation_type %>">
 						<%= pdo_date.employee.display_name %> <%= "1/2" if day == pdo_date.end_date and pdo_date.half_day %>
