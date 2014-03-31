@@ -41,7 +41,6 @@ $ ->
 
 set_business_days = (object) ->
   row_obj = object.parents("tr,#request-form")
-  console.log(row_obj)
   $start_date = row_obj.find(".start-date")
   $end_date = row_obj.find(".end-date")
   $half_day = row_obj.find("input.half-day")
