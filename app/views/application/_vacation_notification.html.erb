@@ -7,8 +7,9 @@
 	<h5>The following employees have pending time off requests:</h5>
 	<div class="list-group notification-list-group">
 	<% Employee.where(id: all_employees_with_pending_vacations).each do |employee| %>
-		<% vacation_count = employee.vacations.where(status: "Pending").count %>
-		<%= link_to employee_vacations_path(employee, "fy" => employee.vacations.first.start_date.current_fiscal_year), class: "list-group-item list-group-item-success" do %>
+		<% pending_vacations = employee.vacations.where(status: "Pending") %>
+		<% vacation_count = pending_vacations.count %>
+		<%= link_to employee_vacations_path(employee, "fy" => pending_vacations.first.start_date.current_fiscal_year), class: "list-group-item list-group-item-success" do %>
 		  <strong><%= employee.display_name %></strong><span class="badge badge-sm"><%= vacation_count %></span>
 		<% end %>
 	<% end %>
