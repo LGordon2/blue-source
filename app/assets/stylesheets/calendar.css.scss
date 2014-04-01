@@ -9,15 +9,15 @@ td.calendar-day-cell
 }
 .calendar-pending-vacation
 {
-  $opacity-level: .3;
+  $opacity-level: .55;
 
   opacity: $opacity-level;
 
   /* IE 8 */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=55)";
 
    /* IE 5-7 */
-  filter: alpha(opacity=30);
+  filter: alpha(opacity=55);
 
   /* Netscape */
   -moz-opacity: $opacity-level;
