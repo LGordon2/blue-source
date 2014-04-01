@@ -60,8 +60,8 @@
 			<% unless @fy_vacations.count == @fy_vacations.where(status: "Pending").count %>
 			<td>
 				<% unless vacation.status == "Pending" %>
-				<%= link_to "#", id: vacation.id, class: "edit-btn" do %>
-					<%= submit_tag "Update Time Off", class: "hidden btn btn-xs btn-primary", data: {method: :patch, "form-action" => employee_vacation_path(@employee,vacation), "vacation-id" => vacation.id} %>
+				<%= link_to "#", class: "edit-btn" do %>
+					<%= submit_tag "Update Time Off", class: "hidden btn btn-xs btn-primary", data: {method: :patch, "form-action" => employee_vacation_path(@employee,vacation)} %>
 					<span class="glyphicon glyphicon-pencil"></span>
 				<% end %>
 				<% end %>

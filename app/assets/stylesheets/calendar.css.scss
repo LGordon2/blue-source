@@ -1,6 +1,16 @@
 // Place all the styles related to the Absent controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+td.calendar-day-cell
+{
+  border: 1px solid #000000 !important;
+  width: 248px;
+  height: 100px;
+}
+.calendar-pending-vacation
+{
+  opacity: .3;
+}
 a.disabled
 {
   color: #999999;
@@ -60,5 +70,5 @@ div#calendar-date-select
 {
   display:block;
   margin-top: 10px;
-  
+
 }
