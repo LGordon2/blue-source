@@ -78,7 +78,9 @@
 			<% if @any_with_pending_status %>
 			<td>
 				<% if vacation.status == "Pending" %>
-				<span class="approval-btn glyphicon glyphicon-ok pull-left" style="color:green" data-method="patch" data-form-action='<%=employee_vacation_path(@employee,vacation,:confirm => true)%>' data-vacation-id="<%=vacation.id%>"></span>
+				<%= link_to "#" do %>
+					<%= tag :span, class: "approval-btn glyphicon glyphicon-ok pull-left", style: "color:green", data: {method: :patch, "form-action" => employee_vacation_path(vacation.employee, vacation, :confirm => true)} %>
+				<% end %>
 				<%= link_to employee_vacation_path(vacation.employee, vacation, :confirm => false), method: :delete do %>
 					<span class="glyphicon glyphicon-remove pull-right"></span>
 				<% end %>
