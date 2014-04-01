@@ -31,7 +31,7 @@
 			<span class="data-field"><%= employee_project.roll_off_date.to_s(:long) unless employee_project.roll_off_date.blank? %></span>
 			<%= date_field_tag nil, employee_project.roll_off_date, class: "date-field edit-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "#{employee_project.id}[project_history][roll_off_date]" %>
 		</td>
-		<td>
+		<td class="inline-cell">
 			<% unless employee_project.scheduled_hours_start.blank? and employee_project.scheduled_hours_end.blank? %>
 			<span class="data-field">
 				<%= employee_project.scheduled_hours_start.to_s(:scheduled_time) unless employee_project.scheduled_hours_start.blank? %> to <%= employee_project.scheduled_hours_end.to_s(:scheduled_time) unless employee_project.scheduled_hours_end.blank? %>
@@ -72,7 +72,7 @@
 		<td><%= select_tag "new[project_history][lead_id]", nil, class: "form-control lead-dropdown" %></td>
 		<td><%= f.date_field :roll_on_date, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_on_date]" %></td>
 		<td><%= f.date_field :roll_off_date, class: "date-field", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD", name: "new[project_history][roll_off_date]" %></td>
-		<td>
+		<td class="inline-cell">
 			<%= time_field_tag "new[project_history][scheduled_hours_start]", Time.parse(@default_scheduled_hours_start).to_s(:form_time), class: "scheduled-hours-field" %>
 			<span>to</span>
 			<%= time_field_tag "new[project_history][scheduled_hours_end]", Time.parse(@default_scheduled_hours_end).to_s(:form_time), class: "scheduled-hours-field" %>

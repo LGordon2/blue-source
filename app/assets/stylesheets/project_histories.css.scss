@@ -15,9 +15,13 @@ select.form-control
   line-height: 22px;
   padding: 2px 10px;
   font-size: 12px;
-  width: inherit;
+  width: 100%;
 }
 .scheduled-hours-field
 {
   width: 45%;
+}
+td.inline-cell
+{
+  white-space: nowrap;
 }

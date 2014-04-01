@@ -35,10 +35,13 @@ set_team_leads = ($project_dropdown_obj) ->
     $team_leads_select.empty()
     $team_leads_select.attr("disabled", true)
     return true
-  $team_leads_select.removeAttr("disabled")
   $.getJSON "/projects/#{$project_dropdown_obj.val()}/leads.json", (data) ->
     $team_leads_select.empty()
     $team_leads_select.append('<option value></option>')
+    if data.length == 0
+      $team_leads_select.attr("disabled", true)
+      return true
     for lead in data
       name = lead.display_name
       $team_leads_select.append("<option value=\"#{lead.id}\">"+name+'</option>')
+    $team_leads_select.removeAttr("disabled")
