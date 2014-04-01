@@ -34,7 +34,12 @@
 					{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+pagedResources[currentPage].length}} of {{resourcesPerPage*(pagedResources.length-1) + pagedResources[pagedResources.length-1].length}}
 				</p>
 			</div>
+			<div>
+				<%= yield :bottom_button_placement %>
+			</div>
+
 			<div ng-show="pagedResources.length>1">
+
 				<ul class="pagination">
 					<li ng-class="{disabled: currentPage == 0}">
 						<a href ng-click="prevPage()">&laquo;</a>
