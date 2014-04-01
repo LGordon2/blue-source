@@ -9,7 +9,21 @@ td.calendar-day-cell
 }
 .calendar-pending-vacation
 {
-  opacity: .3;
+  $opacity-level: .3;
+
+  opacity: $opacity-level;
+
+  /* IE 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+
+   /* IE 5-7 */
+  filter: alpha(opacity=30);
+
+  /* Netscape */
+  -moz-opacity: $opacity-level;
+
+  /* Safari 1.x */
+  -khtml-opacity: $opacity-level;
 }
 a.disabled
 {
