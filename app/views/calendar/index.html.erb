@@ -56,7 +56,7 @@
 					<% end %>
 					<% end %>
 					<%= link_to "#{i - @max_entries_per_day} more #{'item'.pluralize(i-@max_entries_per_day)}...", "#", class: "btn btn-link btn-xs more-pdo" if i > @max_entries_per_day %>
-					<%= link_to "Collapse", "#", class: "btn btn-link btn-xs more-pdo hidden" if i > @max_entries_per_day %>
+					<%= link_to "Collapse", "javascript:void(0)", class: "btn btn-link btn-xs more-pdo hidden" if i > @max_entries_per_day %>
 				</ul>
 			</div> <% end %> </td>
 			<% end %>

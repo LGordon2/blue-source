@@ -34,7 +34,7 @@ class CalendarController < ApplicationController
     when 'department'
       @pdo_times = Vacation.where(employee_id: current_user.department.employees.pluck(:id))
     when 'direct'
-      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id))
+      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id) + [current_user.id]) 
     end
 
     unless @pdo_times.blank?
