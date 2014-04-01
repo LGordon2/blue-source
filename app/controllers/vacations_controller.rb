@@ -110,7 +110,7 @@ class VacationsController < ApplicationController
     @fy_options = (starting_year..Date.current.year+1).collect {|date| ["Fiscal Year #{date}",date]}.reverse
     @fy_vacations = @employee.vacations
       .where("start_date >= ? and start_date < ? or end_date >= ? and end_date < ?",Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year,Date.new(@fyear).previous_fiscal_new_year,Date.new(@fyear).fiscal_new_year)
-      .order("#{params[:sort].blank? ? :date_requested : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}")
+      .order("#{params[:sort].blank? ? :start_date : params[:sort]} #{params[:rev]!='true' ? 'ASC' : 'DESC'}")
     @any_with_pending_status = @fy_vacations.where(status: "Pending").count > 0
   end
 
