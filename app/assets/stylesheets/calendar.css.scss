@@ -1,29 +1,30 @@
 // Place all the styles related to the Absent controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$vacation-color: #428bca;
+$sick-color: #5cb85c;
+$floating-holiday-color: #f0ad4e;
+
 td.calendar-day-cell
 {
   border: 1px solid #000000 !important;
   width: 248px;
   height: 100px;
 }
-.calendar-pending-vacation
+.calendar-pending-vacation.list-group-item.floating-holiday
 {
-  $opacity-level: .55;
-
-  opacity: $opacity-level;
-
-  /* IE 8 */
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=55)";
-
-   /* IE 5-7 */
-  filter: alpha(opacity=55);
-
-  /* Netscape */
-  -moz-opacity: $opacity-level;
-
-  /* Safari 1.x */
-  -khtml-opacity: $opacity-level;
+  color: $floating-holiday-color;
+  background-color: #FFFFFF;
+}
+.calendar-pending-vacation.list-group-item.vacation
+{
+  color: $vacation-color;
+  background-color: #FFFFFF;
+}
+.calendar-pending-vacation.list-group-item.sick
+{
+  color: $sick-color;
+  background-color: #FFFFFF;
 }
 a.disabled
 {
@@ -55,15 +56,15 @@ a.month-changer:hover
 }
 .list-group-item.floating-holiday
 {
-  background-color: #f0ad4e;
+  background-color: $floating-holiday-color;
 }
 .list-group-item.vacation
 {
-  background-color: #428bca;
+  background-color: $vacation-color;
 }
 .list-group-item.sick
 {
-  background-color: #5cb85c;
+  background-color: $sick-color;
 }
 .list-group-item.other
 {
