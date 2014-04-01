@@ -63,5 +63,5 @@
 <% end %>
 
 <% content_for :bottom_button_placement do %>
-<%= mail_to current_user.subordinates.collect {|s| s.email}.join(", "), "Email team", class: "btn btn-primary" unless current_user.subordinates.count == 0 %>
+<%= mail_to current_user.subordinates.collect {|s| s.email}.join("; "), "Email team", class: "btn btn-primary" unless current_user.subordinates.count == 0 %>
 <% end %>
