@@ -15,6 +15,9 @@ BlueSource::Application.routes.draw do
         get 'view'
         post "requests"
       end
+      member do
+        delete 'cancel'
+      end
     end
     resources :project_histories, path: 'projects'
     patch 'preferences'

@@ -1,11 +1,11 @@
 class VacationsController < ApplicationController
-  before_action :require_manager_login, except: [:view, :requests, :destroy]
+  before_action :require_manager_login, except: [:view, :requests, :cancel]
 
-  before_action :set_vacation, only: [:destroy, :update]
+  before_action :set_vacation, only: [:destroy, :update, :cancel]
   before_action :set_employee
   before_action :set_fiscal_year_and_vacations, only: [:view, :index]
-  before_action :validate_user_is_above_employee, except: [:view, :requests]
-  before_action :validate_user_is_employee_or_above, only: [:view]
+  before_action :check_edit_permissions, only: [:index, :update, :create, :destroy]
+  before_action :check_view_permissions, only: [:view, :requests, :cancel]
 
   def index
     respond_to do |format|
@@ -48,10 +48,6 @@ class VacationsController < ApplicationController
   end
 
   def destroy
-    if (@vacation.status.blank? and (!current_user.above? @vacation.employee and !current_user.admin?))
-      redirect_to :back, flash: {error: "Time off is accepted.  You cannot modify the vacation from here.  Please speak with your manager."}
-      return
-    end
     respond_to do |format|
       if @vacation.destroy
         send_confirmation_email
@@ -60,6 +56,20 @@ class VacationsController < ApplicationController
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}
       end
     end
+  end
+
+  def cancel
+    unless @vacation.employee == current_user
+      redirect_to :back, flash: {error: "You cannot cancel vacations for this employee."}
+      return
+    end
+    
+    unless @vacation.status == "Pending"
+      redirect_to :back, flash: {error: "Time off is accepted.  You cannot modify the vacation from here.  Please speak with your manager."}
+      return
+    end
+    
+    destroy
   end
 
   def requests
@@ -114,15 +124,15 @@ class VacationsController < ApplicationController
     @any_with_pending_status = @fy_vacations.where(status: "Pending").count > 0
   end
 
-  def validate_user_is_above_employee
+  def check_edit_permissions
     unless current_user.can_edit? @employee
-      redirect_to :root, flash: {error: "You have insufficient privileges to edit vacations for that employee."}
+      redirect_to :root, flash: {error: "You have insufficient privileges to edit time off for that employee."}
     end
   end
 
-  def validate_user_is_employee_or_above
+  def check_view_permissions
     unless current_user.can_view? @employee
-      redirect_to view_employee_vacations_path(current_user), flash: {error: "You have insufficient privileges to view time off for that employee."}
+      redirect_to :root, flash: {error: "You have insufficient privileges to view time off for that employee."}
     end
   end
 

@@ -30,7 +30,7 @@
 		<td><%= vacation.status %></td>
 		<td>
 			<% if vacation.status == "Pending" %>
-			<%= link_to employee_vacation_path(current_user, vacation), method: :delete do %>
+			<%= link_to cancel_employee_vacation_path(current_user, vacation), method: :delete do %>
 				<span class="glyphicon glyphicon-remove"></span>
 			<% end %>
 			<% end %>
