@@ -4,7 +4,7 @@ class VacationsController < ApplicationController
   before_action :set_vacation, only: [:destroy, :update]
   before_action :set_employee
   before_action :set_fiscal_year_and_vacations, only: [:view, :index]
-  before_action :validate_user_is_above_employee, except: [:view, :requests, :destroy]
+  before_action :validate_user_is_above_employee, except: [:view, :requests]
   before_action :validate_user_is_employee_or_above, only: [:view]
 
   def index
