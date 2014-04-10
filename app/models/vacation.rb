@@ -13,7 +13,7 @@ class Vacation < ActiveRecord::Base
   validates :employee, presence: true
   validates :manager, presence: true
   validates :business_days, presence: true, numericality: {greater_than: 0}
-  validate :minimum_dates
+  validate :minimum_and_maximum_dates
   validate :end_date_cannot_be_before_start_date
   validate :vacation_not_already_included
   validate :reason_present_if_other
@@ -103,8 +103,10 @@ class Vacation < ActiveRecord::Base
     end
   end
   
-  def minimum_dates
+  def minimum_and_maximum_dates
     minimum_date = Date.new(2000)
+    maximum_date = Date.new(2100)
+    
     unless minimum_date < date_requested
       errors.add(:date_requested, "is before the minimum date of #{minimum_date}.")
     end
@@ -113,6 +115,16 @@ class Vacation < ActiveRecord::Base
     end
     unless minimum_date < end_date
       errors.add(:end_date, "is before the minimum date of #{minimum_date}.")
+    end
+    
+    unless maximum_date > date_requested
+      errors.add(:date_requested, "is after the maximum date of #{maximum_date}.")
+    end
+    unless maximum_date > start_date
+      errors.add(:start_date, "is before the maximum date of #{maximum_date}.")
+    end
+    unless maximum_date > end_date
+      errors.add(:end_date, "is before the maximum date of #{maximum_date}.")
     end
   end
 end
