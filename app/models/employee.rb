@@ -27,6 +27,7 @@ class Employee < ActiveRecord::Base
   validates :location, inclusion: {in: ["Greensboro","Atlanta","Remote"]}, allow_blank: true
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
+  validate :minimum_and_maximum_dates
 
   def current_project
     all_project_histories = projects.where("roll_on_date <= :date and (roll_off_date IS NULL or roll_off_date >= :date)",date: Date.current)
@@ -407,6 +408,20 @@ class Employee < ActiveRecord::Base
   def company_admin_cannot_have_a_department
     if self.role == "Company Admin" and !self.department.blank?
       errors.add(:department, "must be blank for company admin.")
+    end
+  end
+  
+  def minimum_and_maximum_dates
+    minimum_date = Date.new(2000)
+    maximum_date = Date.new(2100)
+    
+    unless start_date.blank?
+      unless minimum_date < start_date
+        errors.add(:start_date, "is before the minimum date of #{minimum_date}.")
+      end
+      unless maximum_date > start_date
+        errors.add(:start_date, "is after the maximum date of #{maximum_date}.")
+      end
     end
   end
 end
