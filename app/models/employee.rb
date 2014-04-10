@@ -35,7 +35,12 @@ class Employee < ActiveRecord::Base
   end
 
   def title
-    Title.find(self.title_id).name unless self.title_id.blank?
+    unless self.title_id.blank?
+      title_found = Title.find_by(id: self.title_id)
+      unless title_found.blank?
+        title_found.name
+      end 
+    end
   end
 
   def is_department_area_head_or_admin
