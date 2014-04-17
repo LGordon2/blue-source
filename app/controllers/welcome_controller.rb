@@ -21,7 +21,7 @@ class WelcomeController < ApplicationController
         redirect_to :root
       end
     else
-      redirect_to :login, flash: {error: "There is something wrong with this user please see your friendly neighborhood admin."}
+      redirect_to :login, flash: {error: @employee.errors.full_messages}
     end
   end
   
@@ -55,7 +55,7 @@ class WelcomeController < ApplicationController
   end
   
   def issue
-    email = HelpMailer.comments_email(issue_params[:from],issue_params[:email],issue_params[:comments],issue_params[:type])
+    email = HelpMailer.comments_email(current_user.display_name,current_user.email,issue_params[:comments],issue_params[:type])
     email.deliver
     redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
@@ -63,6 +63,6 @@ class WelcomeController < ApplicationController
   private 
   
   def issue_params
-    params.require(:issue).permit(:from, :email, :comments, :type)
+    params.require(:issue).permit(:comments, :type)
   end
 end

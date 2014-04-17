@@ -13,6 +13,7 @@ class Vacation < ActiveRecord::Base
   validates :employee, presence: true
   validates :manager, presence: true
   validates :business_days, presence: true, numericality: {greater_than: 0}
+  validate :employee_is_not_inactive
   validate :minimum_and_maximum_dates
   validate :end_date_cannot_be_before_start_date
   validate :vacation_not_already_included
@@ -125,6 +126,12 @@ class Vacation < ActiveRecord::Base
     end
     unless maximum_date > end_date
       errors.add(:end_date, "is before the maximum date of #{maximum_date}.")
+    end
+  end
+  
+  def employee_is_not_inactive
+    if self.employee.status == "Inactive"
+      errors.add("Employee's status", "was inactive.")
     end
   end
 end

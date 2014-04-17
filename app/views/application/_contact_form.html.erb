@@ -1,7 +1,5 @@
 <%= form_for :issue, method:"post",url:"/issue", html: {class: "form-horizontal", role: "form", id: "contact-form"} do |f| %>
 <div class="form-group">
-	<%= f.hidden_field :from, value: current_user.display_name %>
-	<%= f.hidden_field :email, value: current_user.email %>
 	<%= f.label :from, class: "col-sm-2 control-label" %>
 	<div class="col-sm-10">
 		<p class="form-control-static">
