@@ -1,6 +1,6 @@
 <% content_for :content do %>
 <section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
-	<% if request.referer.include? view_employee_vacations_url(current_user)  %>
+	<% if !request.referer.blank? and request.referer.include? view_employee_vacations_url(current_user)  %>
 		<span ng-hide ng-init="goToInitialPage = false"></span>
 	<% end %>
 	<div id="all-content">
