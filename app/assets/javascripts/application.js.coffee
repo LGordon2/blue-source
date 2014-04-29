@@ -46,7 +46,7 @@ $(document).ready ->
         $(this).siblings("span.errormsg").hide()
         $(this).siblings("span.errormsg").text("This phone number format is not recognized. Please check the country and number.")
         $(this).val(formatLocal("US", $(this).val()))
-    $(this).find("[data-loading-text]").button('loading') if valid
+    $(this).find("input[type=submit]").button('loading') if valid
     return valid
   unless Modernizr.inputtypes.time
     $("input[type=time]").each (index) ->
