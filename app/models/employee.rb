@@ -28,6 +28,8 @@ class Employee < ActiveRecord::Base
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
   validate :minimum_and_maximum_dates
+  validate :employee_cannot_be_their_own_manager
+  validate :resources_per_page_must_be_greater_than_zero
 
   def current_project
     all_project_histories = projects.where("roll_on_date <= :date and (roll_off_date IS NULL or roll_off_date >= :date)",date: Date.current)
@@ -51,6 +53,18 @@ class Employee < ActiveRecord::Base
   def manager_cannot_be_subordinate
     if self.manager and self.above?(self.manager)
       errors.add(:base, "You cannot be above your manager.")
+    end
+  end
+  
+  def employee_cannot_be_their_own_manager
+    if self.manager == self
+      errors.add(:base, "You cannot be your own manager.")
+    end
+  end
+  
+  def resources_per_page_must_be_greater_than_zero
+    unless self.preferences.blank? or self.preferences['resourcesPerPage'].to_i > 0
+      errors.add(:base, "Resources per page must be greater than 0.")
     end
   end
 

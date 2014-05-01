@@ -54,6 +54,7 @@ AngularHelpers.initializeResource = ($scope) ->
     $scope.currentPage-- if ($scope.currentPage > 0)
 
   $scope.groupToPages = () ->
+    $scope.resourcesPerPage = 15 if $scope.resourcesPerPage <= 0
     $scope.pagedResources = []
     return if $scope.filteredResources.length==0
     for i in [0..$scope.filteredResources.length-1]
