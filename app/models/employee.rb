@@ -57,7 +57,7 @@ class Employee < ActiveRecord::Base
   end
   
   def employee_cannot_be_their_own_manager
-    if self.manager == self
+    if self.manager and self.manager == self
       errors.add(:base, "You cannot be your own manager.")
     end
   end
