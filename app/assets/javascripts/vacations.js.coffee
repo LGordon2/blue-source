@@ -2,10 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  $("[data-method],[data-form-action]").click ->
+  $("[data-method],[data-form-action]").click (event) ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
     $('#vacation_form').attr('action',$(this).data("form-action")) if $(this).data("form-action")
     $("form").submit() if $(this).hasClass("approval-btn")
+    
   $("div.vacation-summary-table span").tooltip()
 
   #Edit button reveals editable fields

@@ -27,7 +27,7 @@ $(document).ready ->
     $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})
   $("#help-btn").tooltip()
-  $("form").submit ->
+  $("form").submit (event) ->
     valid = true
     $(this).find("[required]").each (index) ->
       if $(this).val() == ""

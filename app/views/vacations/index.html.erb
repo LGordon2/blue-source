@@ -31,15 +31,15 @@
 		<tr class="vacation-row <%= if flash[:success] then "success" elsif flash[:warning] then "warning" else "danger" end if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 			<td class="edit-field">
 				<span><%= vacation.date_requested.to_s(:long) unless vacation.date_requested.blank? %></span>
-				<%= date_field_tag "#{vacation.id}[vacation][date_requested]", vacation.date_requested, class: "hidden" %>
+				<%= date_field_tag "#{vacation.id}[vacation][date_requested]", vacation.date_requested, class: "hidden", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 			</td>
 			<td class="edit-field">
 				<span><%= vacation.start_date.to_s(:long) unless vacation.start_date.blank? %></span>
-				<%= date_field_tag "#{vacation.id}[vacation][start_date]", vacation.start_date, class:"date-field start-date hidden" %>
+				<%= date_field_tag "#{vacation.id}[vacation][start_date]", vacation.start_date, class:"date-field start-date hidden", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 				</td>
 			<td class="edit-field">
 				<span><%= vacation.end_date.to_s(:long) unless vacation.end_date.blank? %></span>
-				<%= date_field_tag "#{vacation.id}[vacation][end_date]", vacation.end_date, class:"date-field end-date hidden" %>
+				<%= date_field_tag "#{vacation.id}[vacation][end_date]", vacation.end_date, class:"date-field end-date hidden", placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD" %>
 			</td>
 			<%= content_tag :td, class: "business-days" do %>
 				<strong></strong>
