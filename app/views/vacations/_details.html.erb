@@ -15,7 +15,7 @@
 	</tr>
 	<% end %>
 	<tr>
-		<% vacation_surplus_or_deficit = (@employee.vacation_days_taken(Date.current) - @employee.accrued_vacation_days(Date.current)).round(2) %>
+		<% vacation_surplus_or_deficit = (@employee.vacation_days_taken(Date.new(@fyear),false) - @employee.accrued_vacation_days(Date.current)).round(2) %>
 		<% if vacation_surplus_or_deficit > 0.0 %>
 		<td class="danger">Vacation deficit</td>
 		<td class="danger"><%= vacation_surplus_or_deficit.abs.prettify %></td>
