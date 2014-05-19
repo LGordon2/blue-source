@@ -7,4 +7,3 @@ $ ->
     $(".panel-heading[data-target]").each ->
       panel_body = $($(this).attr('data-target'))
       panel_body.collapse('hide') unless panel_body.hasClass("collapse")
-    console.log(event)
