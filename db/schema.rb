@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321174221) do
+ActiveRecord::Schema.define(version: 20140519134711) do
 
   create_table "departments", force: true do |t|
     t.string   "name"
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20140321174221) do
     t.integer  "title_id"
     t.text     "preferences"
     t.boolean  "sys_admin"
-    t.integer  "extra_months"
+    t.integer  "bridge_time"
   end
 
   create_table "project_histories", force: true do |t|
@@ -85,11 +85,8 @@ ActiveRecord::Schema.define(version: 20140321174221) do
     t.text     "query_data"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "employee_id_id"
     t.integer  "employee_id"
   end
-
-  add_index "reports", ["employee_id_id"], name: "index_reports_on_employee_id_id"
 
   create_table "sessions", force: true do |t|
     t.string   "session_id"

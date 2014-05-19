@@ -35,8 +35,8 @@
 <% end %>
 <% if current_user.role.in? ["Company Admin", "Department Admin"] %>
 <div class="form-group">
-	<%= f.label :extra_months, nil, class: "control-label" %>
-	<%= f.number_field :extra_months, class: "form-control" %>
+	<%= f.label :bridge_time, nil, class: "control-label" %>
+	<%= f.number_field :bridge_time, class: "form-control" %>
 </div>
 <% end %>
 <div class="form-group">
