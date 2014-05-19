@@ -2,7 +2,7 @@
 <!-- Header information -->
 <% content_for 'panel_title_1' do %>General Info<% end %>
 <% content_for 'panel_heading_1' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.can_edit? @employee %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right no-collapse", data: {toggle: "modal", target: "#modal_1"} if current_user.can_edit? @employee %>
 <% end %>
 <!-- /Header information -->
 
@@ -84,7 +84,7 @@
 <% content_for 'panel_heading_2' do %>
 <% if current_user.can_edit? @employee %>
 <div class="pull-right">
-	<%= link_to "Manage", employee_project_histories_path(@employee), class: "btn btn-default btn-xs" %>
+	<%= link_to "Manage", employee_project_histories_path(@employee), class: "btn btn-default btn-xs no-collapse" %>
 </div>
 <% end %>
 <% end %>
@@ -137,10 +137,10 @@
 <% content_for 'panel_heading_3' do %>
 <div class="pull-right">
 	<% if current_user.can_view? @employee %>
-	<%= link_to "View", view_employee_vacations_path(@employee), class: "btn btn-default btn-xs" %>
+	<%= link_to "View", view_employee_vacations_path(@employee), class: "btn btn-default btn-xs no-collapse" %>
 	<% end %>
 	<% if current_user.can_edit? @employee %>
-	<%= link_to "Manage", employee_vacations_path(@employee), class: "btn btn-default btn-xs"  %>
+	<%= link_to "Manage", employee_vacations_path(@employee), class: "btn btn-default btn-xs no-collapse"  %>
 	<% end %>
 </div>
 <% end %>
