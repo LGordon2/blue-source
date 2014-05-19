@@ -27,7 +27,7 @@
 	<% end %>
 	<tr>
 		<td>Total floating holidays given</td>
-		<td><%= @employee.max_floating_holidays %></td>
+		<td><%= @employee.max_floating_holidays(Date.new(@fyear)) %></td>
 	</tr>
 	<tr>
 		<td>Total floating holidays taken</td>
