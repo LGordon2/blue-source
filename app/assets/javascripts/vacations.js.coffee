@@ -40,6 +40,7 @@ $ ->
       $(this).popover('hide')
   $("span.reason-show").hover ->
     $(this).popover('toggle')
+  $("tr.success").removeClass("success")
 
 set_business_days = (object) ->
   row_obj = object.parents("tr,#request-form")

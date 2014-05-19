@@ -102,7 +102,7 @@
 				    <% end %>
 				</div>
 			</td>
-			<td colspan="2"><%= submit_tag "Save Time Off", class: "btn btn-primary btn-xs", data: {"form-action" => employee_vacations_path(@employee), method: :post} %></td>
+			<td colspan="2"><%= submit_tag "Save Time Off", class: "btn btn-primary btn-xs", data: {"form-action" => employee_vacations_path(@employee), method: :post, "loading-text" => "Saving..."} %></td>
 		</tr>
 	</table>
 	</div>
