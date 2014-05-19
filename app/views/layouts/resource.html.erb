@@ -60,9 +60,10 @@
 
 		<%= yield :footer %>
 	</div>
+	
 	<div id="loading-section" ng-hide='loaded'>
 		<h1>Loading...</h1>
-		<%= image_tag 'loader.gif' %>
+		<div class="loader"></div>
 	</div>
 </section>
 

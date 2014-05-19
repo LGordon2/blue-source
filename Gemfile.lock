@@ -133,7 +133,7 @@ DEPENDENCIES
   mysql
   net-ldap
   pg
-  rails (= 4.0.0)
+  rails (>= 4.0.0)
   rails_12factor
   sass-rails (~> 4.0.0)
   sdoc
