@@ -6,7 +6,7 @@ manager:
   role: "Management"
   manager: director
   status: "Permanent"
-  department: departments(:rural)
+  department: rural
 
 consultant:
   username: john.doe
@@ -16,7 +16,7 @@ consultant:
   manager: manager
   status: "Permanent"
   start_date: "2010-12-19"
-  department: departments(:rural)
+  department: rural
   
 manager2:
   username: bob.ross
@@ -24,7 +24,7 @@ manager2:
   last_name: ross
   role: "Management"
   status: "Permanent"
-  department: departments(:rural)
+  department: rural
   
 consultant2:
   username: drew.carey
@@ -33,7 +33,7 @@ consultant2:
   role: "Base"
   manager: manager2
   status: "Permanent"
-  department: departments(:rural)
+  department: rural
 
 director:
   username: steve.jobs
@@ -41,12 +41,13 @@ director:
   last_name: jobs
   role: "Upper Management"
   status: "Permanent"
-  department: departments(:rural)
+  department: rural
 
 admin:
   username: bill.gates
   first_name: bill
   last_name: gates
-  role: "Area Admin"
+  role: "Department Admin"
   status: "Permanent"
-  department: departments(:rural)
+  department: rural
+  sys_admin: true

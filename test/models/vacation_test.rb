@@ -1,4 +1,5 @@
 require 'test_helper'
+include EmployeeHelper
 
 class VacationTest < ActiveSupport::TestCase
   test "fiscal year calculation" do
@@ -31,8 +32,8 @@ class VacationTest < ActiveSupport::TestCase
   end
   
   test "vacation before fiscal year and after fiscal year" do
-    v = Vacation.create({start_date: "2014-04-01", end_date: "2014-04-14", business_days: 10, vacation_type: "Vacation", employee_id: employees(:consultant).id, manager_id: employees(:manager).id})
-    v2 = Vacation.create({start_date: "2014-05-01", end_date: "2014-05-01", business_days: 1, vacation_type: "Vacation", employee_id: employees(:consultant).id, manager_id: employees(:manager).id})
+    v = Vacation.create({date_requested: "2014-04-01", start_date: "2014-04-01", end_date: "2014-04-14", business_days: 10, vacation_type: "Vacation", employee_id: employees(:consultant).id, manager_id: employees(:manager).id})
+    v2 = Vacation.create({date_requested: "2014-04-01", start_date: "2014-05-01", end_date: "2014-05-01", business_days: 1, vacation_type: "Vacation", employee_id: employees(:consultant).id, manager_id: employees(:manager).id})
     assert v.save
     assert v2.save
   end
@@ -41,6 +42,7 @@ class VacationTest < ActiveSupport::TestCase
     v1 = Vacation.new
     e1 = employees(:consultant)
     manager = employees(:manager)
+    v1.date_requested = "2014-04-01"
     v1.start_date = "2014-04-01"
     v1.end_date = "2014-04-01"
     v1.vacation_type = "Sick"
@@ -52,50 +54,50 @@ class VacationTest < ActiveSupport::TestCase
     assert v1.destroy
     assert_equal 0, e1.sick_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2013-12-02", end_date: "2013-12-13", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2013-12-02", start_date: "2013-12-02", end_date: "2013-12-13", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 10, v1.business_days
     assert_equal 10, e1.vacation_days_taken(v1.start_date)
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2013-12-02", end_date: "2013-12-12", vacation_type: "Vacation", employee: e1, manager: manager})
-    v2 = Vacation.create({start_date: "2013-12-13", end_date: "2013-12-13", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
-    v3 = Vacation.create({start_date: "2013-12-16", end_date: "2013-12-16", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
+    v1 = Vacation.create({date_requested: "2013-12-02", start_date: "2013-12-02", end_date: "2013-12-12", vacation_type: "Vacation", employee: e1, manager: manager})
+    v2 = Vacation.create({date_requested: "2013-12-13", start_date: "2013-12-13", end_date: "2013-12-13", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
+    v3 = Vacation.create({date_requested: "2013-12-16", start_date: "2013-12-16", end_date: "2013-12-16", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
     assert v1.save, "Vacation should have been saved"
     assert v2.save, "Vacation should have been saved"
     assert v3.save, "Vacation should have been saved"
     assert_equal 0.5, v2.business_days, "Business days calculation"
     assert_equal 10, e1.vacation_days_taken(v2.start_date), "Vacation days taken"
-    assert_equal (7*0.83+5*1.25).round, e1.max_vacation_days(v2.start_date)
-    v4 = Vacation.create({start_date: "2013-12-17", end_date: "2013-12-17", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
+    assert_equal special_vacation_round(8*0.83+4*1.25), e1.max_vacation_days(v2.start_date), "Checking max vacation days for employee with start date [#{e1.start_date}] and date is [#{v2.start_date}]"
+    v4 = Vacation.create({date_requested: "2013-12-17", start_date: "2013-12-17", end_date: "2013-12-17", vacation_type: "Vacation", employee: e1, manager: manager, half_day: true})
     assert v1.destroy
     assert v2.destroy
     assert v3.destroy
     assert v4.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date), "Reset"
     
-    v1 = Vacation.create({start_date: "2013-12-05", end_date: "2013-12-19", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2013-12-05", start_date: "2013-12-05", end_date: "2013-12-19", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 11, v1.business_days
     assert_equal 11, e1.vacation_days_taken(v1.start_date)
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2013-12-05", end_date: "2013-12-23", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2013-12-05", start_date: "2013-12-05", end_date: "2013-12-23", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 13, v1.business_days
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2014-04-17", end_date: "2014-05-01", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2014-04-17", start_date: "2014-04-17", end_date: "2014-05-01", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 11, v1.business_days
     assert_equal 10, e1.vacation_days_taken(v1.start_date)
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2014-04-17", end_date: "2014-05-21", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2014-04-17", start_date: "2014-04-17", end_date: "2014-05-21", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 25, v1.business_days
     assert_equal 10, e1.vacation_days_taken(v1.start_date)
@@ -103,7 +105,7 @@ class VacationTest < ActiveSupport::TestCase
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
     
-    v1 = Vacation.create({start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: e1, manager: manager})
+    v1 = Vacation.create({date_requested: "2014-04-17", start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: e1, manager: manager})
     assert v1.save, "Vacation should have been saved"
     assert_equal 26, v1.business_days
     assert v1.destroy

@@ -75,7 +75,7 @@ class Admin::TitlesController < ApplicationController
     
     def must_be_company_admin
       unless current_user.role == "Company Admin" or current_user.sys_admin?
-        redirect_to :root, flash: {error: "WTF are you doing..."}
+        redirect_to :root, flash: {error: "You do not have sys admin privileges."}
       end
     end
 end

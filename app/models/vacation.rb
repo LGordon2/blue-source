@@ -105,6 +105,8 @@ class Vacation < ActiveRecord::Base
   end
   
   def minimum_and_maximum_dates
+    raise Exception, "Date requested cannot be blank!" if date_requested.blank?
+    
     minimum_date = Date.new(2000)
     maximum_date = Date.new(2100)
     
