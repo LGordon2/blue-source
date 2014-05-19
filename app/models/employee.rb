@@ -25,6 +25,7 @@ class Employee < ActiveRecord::Base
   validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
   validates :status, presence: true, inclusion: {in: ->(employee) {employee.class.statuses}}
   validates :location, inclusion: {in: ->(employee) {employee.class.locations}}, allow_blank: true
+  validates :bridge_time, numericality: { only_integer: true }, allow_blank: true
   validate :manager_cannot_be_subordinate
   validate :company_admin_cannot_have_a_department
   validate :minimum_and_maximum_dates
