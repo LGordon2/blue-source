@@ -315,21 +315,6 @@ class Employee < ActiveRecord::Base
     ["Greensboro", "Atlanta", "Remote"]
   end
 
-  def self.levels(type)
-    case type.to_sym
-    when :consultant
-      ["Consultant I", "Consultant I/Technical", "Consultant II", "Consultant II/Technical", "Consultant III", "Consultant III/Technical"]
-    when :manager
-      ["Consulting Manager", "Sr. Consulting Manager"]
-    when :director
-      ["Director", "Sr. Director"]
-    when :avp
-      ["AVP"]
-    else
-      []
-    end
-  end
-
   def self.roles
     ["Base","Management","Upper Management","Department Head", "Department Admin", "Company Admin"]
   end
