@@ -26,7 +26,6 @@ class Employee < ActiveRecord::Base
   validates :location, inclusion: {in: ->(employee) {employee.class.locations}}, allow_blank: true
   validates :bridge_time, numericality: { only_integer: true }, allow_blank: true
   validate :manager_cannot_be_subordinate
-  validate :company_admin_cannot_have_a_department
   validate :minimum_and_maximum_dates
   validate :employee_cannot_be_their_own_manager
   validate :resources_per_page_must_be_greater_than_zero
@@ -402,12 +401,6 @@ class Employee < ActiveRecord::Base
       email_num = new_email.last
     end
     return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}.#{email_num.to_i+1}@orasi.com")
-  end
-
-  def company_admin_cannot_have_a_department
-    if self.role == "Company Admin" and !self.department.blank?
-      errors.add(:department, "must be blank for company admin.")
-    end
   end
   
   def minimum_and_maximum_dates
