@@ -1,13 +1,12 @@
 // Place all the styles related to the Vacation controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+//= require fading_colored_rows
 .vacation-summary-table
 {
   padding-bottom:10px;
   padding-top:10px;
   padding-right:10px;
-  
-
   
   span
   {
@@ -35,12 +34,5 @@ table{
   .btn.btn-xs
   {
     width: 100%;
-  }
-  tr>td{
-    $time: 3s ease-in;
-    transition: background-color $time;
-    -webkit-transition: background-color $time;
-    -o-transition: background-color $time;
-    -moz-transition: background-color $time;
   }
 }

@@ -1,0 +1,9 @@
+table{
+  tr>td{
+    $time: 3s ease-in;
+    transition: background-color $time;
+    -webkit-transition: background-color $time;
+    -o-transition: background-color $time;
+    -moz-transition: background-color $time;
+  }
+}

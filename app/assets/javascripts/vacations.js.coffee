@@ -1,6 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+#= require fading_colored_rows
 $ ->
   $("[data-method],[data-form-action]").click (event) ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")
@@ -40,7 +41,6 @@ $ ->
       $(this).popover('hide')
   $("span.reason-show").hover ->
     $(this).popover('toggle')
-  $("tr.success").removeClass("success")
 
 set_business_days = (object) ->
   row_obj = object.parents("tr,#request-form")

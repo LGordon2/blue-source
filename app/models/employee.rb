@@ -18,8 +18,7 @@ class Employee < ActiveRecord::Base
   before_validation :set_standards_for_user
 
   validates :username, presence: true, uniqueness: {case_sensitive: false}
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates :first_name, :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true, inclusion: {in: ->(employee) {employee.class.roles}}
   validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
@@ -48,7 +47,7 @@ class Employee < ActiveRecord::Base
   end
 
   def is_department_area_head_or_admin
-    self.role.in? ["Upper Management", "Department Head", "Area Head", "Area Admin"]
+    self.role.in? ["Upper Management", "Department Head"]
   end
 
   def manager_cannot_be_subordinate
