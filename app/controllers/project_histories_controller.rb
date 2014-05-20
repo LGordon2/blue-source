@@ -18,7 +18,7 @@ class ProjectHistoriesController < ApplicationController
       params[:sort]
     end
 
-    @project_histories = @employee.projects.joins([:project,:lead])
+    @project_histories = @employee.projects.joins(:project).joins('left join employees on employees.id = lead_id')
 
     order_field = "employees.first_name" if order_field == 'lead'
 
