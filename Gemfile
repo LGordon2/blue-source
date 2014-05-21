@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+gem 'rails', '>= 4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :group => [:development, :test, :production]
+gem 'sqlite3', :group => [:test, :production]
+gem 'mysql', group: :development
 
 # Use postgres for staging
 gem 'pg', :group => :staging

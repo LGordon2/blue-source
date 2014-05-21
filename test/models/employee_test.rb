@@ -19,7 +19,7 @@ class EmployeeTest < ActiveSupport::TestCase
     e.username = "bob.dylan"
     e.first_name = "bob"
     e.last_name = "dylan"
-    e.start_date = Date.new(9999,01,01)
+    e.start_date = Date.new(2099,01,01)
     assert_nothing_raised ActiveRecord::RecordInvalid do
       e.save!
     end
@@ -57,13 +57,6 @@ class EmployeeTest < ActiveSupport::TestCase
     
     employee.start_date = Date.current.years_ago(3).days_since(7)
     assert_operator 10, "<=", employee.max_vacation_days
-  end
-  
-  test "roll off date can't be before roll on date" do
-    employee = employees(:consultant)
-    employee.roll_on_date = Date.current
-    employee.roll_off_date = Date.current.ago(1.day)
-    assert_not employee.save
   end
   
   test "employee should be allowed to have start year on leap year day" do

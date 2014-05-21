@@ -18,15 +18,14 @@ class Employee < ActiveRecord::Base
   before_validation :set_standards_for_user
 
   validates :username, presence: true, uniqueness: {case_sensitive: false}
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates :first_name, :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\z/ }
   validates :role, presence: true, inclusion: {in: ->(employee) {employee.class.roles}}
   validates :department, presence: {message: "must be present for the role you've selected.", if: :is_department_area_head_or_admin}
   validates :status, presence: true, inclusion: {in: ->(employee) {employee.class.statuses}}
   validates :location, inclusion: {in: ->(employee) {employee.class.locations}}, allow_blank: true
+  validates :bridge_time, numericality: { only_integer: true }, allow_blank: true
   validate :manager_cannot_be_subordinate
-  validate :company_admin_cannot_have_a_department
   validate :minimum_and_maximum_dates
   validate :employee_cannot_be_their_own_manager
   validate :resources_per_page_must_be_greater_than_zero
@@ -47,7 +46,7 @@ class Employee < ActiveRecord::Base
   end
 
   def is_department_area_head_or_admin
-    self.role.in? ["Upper Management", "Department Head", "Area Head", "Area Admin"]
+    self.role.in? ["Upper Management", "Department Head"]
   end
 
   def manager_cannot_be_subordinate
@@ -71,7 +70,7 @@ class Employee < ActiveRecord::Base
   def accrued_vacation_days(on_date)
     date_to_use = nil
     unless self.start_date.blank?
-      date_to_use = self.start_date - (self.extra_months.blank? ? 0 : self.extra_months.months)
+      date_to_use = self.start_date - (self.bridge_time.blank? ? 0 : self.bridge_time.months)
     end
     accrued_vacation_days_on_date(on_date,date_to_use)
   end
@@ -314,21 +313,6 @@ class Employee < ActiveRecord::Base
     ["Greensboro", "Atlanta", "Remote"]
   end
 
-  def self.levels(type)
-    case type.to_sym
-    when :consultant
-      ["Consultant I", "Consultant I/Technical", "Consultant II", "Consultant II/Technical", "Consultant III", "Consultant III/Technical"]
-    when :manager
-      ["Consulting Manager", "Sr. Consulting Manager"]
-    when :director
-      ["Director", "Sr. Director"]
-    when :avp
-      ["AVP"]
-    else
-      []
-    end
-  end
-
   def self.roles
     ["Base","Management","Upper Management","Department Head", "Department Admin", "Company Admin"]
   end
@@ -417,12 +401,6 @@ class Employee < ActiveRecord::Base
       email_num = new_email.last
     end
     return get_unique_email("#{self.first_name}.#{self.last_name.tr_s("-' ","")}.#{email_num.to_i+1}@orasi.com")
-  end
-
-  def company_admin_cannot_have_a_department
-    if self.role == "Company Admin" and !self.department.blank?
-      errors.add(:department, "must be blank for company admin.")
-    end
   end
   
   def minimum_and_maximum_dates

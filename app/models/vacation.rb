@@ -6,12 +6,8 @@ class Vacation < ActiveRecord::Base
   
   before_validation :set_business_days
   
-  validates :vacation_type, presence: true, inclusion: { in: ["Other", "Sick", "Vacation", "Floating Holiday"] }
-  validates :date_requested, presence: true
-  validates :start_date, presence: true
-  validates :end_date, presence: true
-  validates :employee, presence: true
-  validates :manager, presence: true
+  validates :vacation_type, presence: true, inclusion: { in: ->(vacation){vacation.class.types} }
+  validates :date_requested, :start_date, :end_date, :employee, :manager, presence: true
   validates :business_days, presence: true, numericality: {greater_than: 0}
   validate :employee_is_not_inactive
   validate :minimum_and_maximum_dates
@@ -105,6 +101,8 @@ class Vacation < ActiveRecord::Base
   end
   
   def minimum_and_maximum_dates
+    return if date_requested.blank? or start_date.blank? or end_date.blank?
+    
     minimum_date = Date.new(2000)
     maximum_date = Date.new(2100)
     

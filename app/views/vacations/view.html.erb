@@ -16,7 +16,7 @@
 		<% end %>
 	</tr>
 	<% @fy_vacations.each do |vacation| %>
-	<tr>
+	<tr class="<%= if flash[:success] then "success" elsif flash[:warning] then "warning" else "danger" end if !flash[:created].blank? and vacation.id == flash[:created]  %>">
 		<td><%= vacation.date_requested.to_s(:long) unless vacation.date_requested.blank? %></td>
 		<td><%= vacation.start_date.to_s(:long) unless vacation.start_date.blank? %></td>
 		<td><%= vacation.end_date.to_s(:long) unless vacation.end_date.blank? %></td>

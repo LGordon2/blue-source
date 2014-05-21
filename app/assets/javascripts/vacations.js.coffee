@@ -1,6 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+#= require fading_colored_rows
 $ ->
   $("[data-method],[data-form-action]").click (event) ->
     $('input[name=_method]').val($(this).data("method")) if $(this).data("method")

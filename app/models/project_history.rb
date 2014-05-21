@@ -3,8 +3,7 @@ class ProjectHistory < ActiveRecord::Base
   belongs_to :project
   belongs_to :lead, class_name: "Employee"
 
-  validates :project_id, presence: true
-  validates :employee_id, presence: true
+  validates :project_id, :employee_id, presence: true
   validate :roll_off_date_cannot_be_before_roll_on_date
   validate :minimum_and_maximum_dates
 

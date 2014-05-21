@@ -2,7 +2,7 @@
 
 rural:
   name: "Rural"
-  department_id: department(:services).id
+  department_id: services.id
 
 services:
   name: "Services"

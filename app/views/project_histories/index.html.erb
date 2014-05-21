@@ -4,7 +4,7 @@
 <table id="project_history" class="table table-bordered">
 	<tr>
 		<th><%= link_to "Project Name", employee_project_histories_path(@employee, sort: :project_name, rev: params[:rev]!='true') %></th>
-		<th>Lead</th>
+		<th><%= link_to "Lead", employee_project_histories_path(@employee, sort: :lead, rev: params[:rev]!='true') %></th>
 		<th><%= link_to "Roll On Date", employee_project_histories_path(@employee, sort: :roll_on_date, rev: params[:rev]!='true') %></th>
 		<th><%= link_to "Roll Off Date", employee_project_histories_path(@employee, sort: :roll_off_date, rev: params[:rev]!='true') %></th>
 		<th>Scheduled Hours</th>
@@ -13,7 +13,7 @@
 		<th>Delete</th>
 	</tr>
 	<% @project_histories.each_with_index do |employee_project, index| %>
-	<%= content_tag :tr do -%>
+	<%= content_tag :tr, class: if !flash[:created].blank? and employee_project.id == flash[:created] then if flash[:success] then "success" elsif flash[:warning] then "warning" else "danger" end end do -%>
 		<%= hidden_field_tag "#{employee_project.id}[project_history][memo]", employee_project.memo %>
 		<td>
 			<span class="data-field"><%= employee_project.project.name %></span>

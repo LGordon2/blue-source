@@ -18,7 +18,9 @@ class ProjectHistoriesController < ApplicationController
       params[:sort]
     end
 
-    @project_histories = @employee.projects.joins(:project)
+    @project_histories = @employee.projects.joins(:project).joins('left join employees on employees.id = lead_id')
+
+    order_field = "employees.first_name" if order_field == 'lead'
 
     unless order_field.blank?
       @project_histories = @project_histories.order("#{order_field} #{params[:rev] == 'true' ? "DESC" : "ASC"}")
@@ -28,7 +30,7 @@ class ProjectHistoriesController < ApplicationController
   def create
     @project_history = ProjectHistory.new(project_history_params)
     if @project_history.save
-      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully created."}
+      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully created.", created: @project_history.id}
     else
       redirect_to employee_project_histories_path(@employee), flash: {error: @project_history.errors.full_messages}
     end
@@ -36,7 +38,7 @@ class ProjectHistoriesController < ApplicationController
 
   def update
     if @project_history.update(project_history_params)
-      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully updated."}
+      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully updated.", created: @project_history.id}
     else
       redirect_to employee_project_histories_path(@employee), flash: {error: @project_history.errors.full_messages}
     end

@@ -13,6 +13,12 @@ window.setEvent = ->
 $(document).ready ->
   $("#employee_project_id").on "change", ->
     set_team_leads()
+  $("button[data-target].no-collapse").click (event) ->
+    $($(this).attr("data-target")).modal('show')
+    return false
+  $("a[href].no-collapse").click (event) ->
+    window.location.href = $(this).attr("href")
+    return false
 set_team_leads = ->
   employee_project_id = $("#employee_project_id")
   team_leads_select = $("select#employee_team_lead_id")
