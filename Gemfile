@@ -4,8 +4,8 @@ source 'https://rubygems.org'
 gem 'rails', '>= 4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :group => [:test, :production]
-gem 'mysql', group: :development
+gem 'sqlite3', group: [:development, :test, :production]
+#gem 'mysql', group: :development
 
 # Use postgres for staging
 gem 'pg', :group => :staging
