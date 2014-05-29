@@ -1,9 +1,11 @@
 require 'net/ldap'
+
 class Employee < ActiveRecord::Base
   include EmployeeHelper
 
   serialize :preferences, Hash
 
+  #Associations
   has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
   has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations
@@ -15,6 +17,7 @@ class Employee < ActiveRecord::Base
   has_one :area, through: :department
   has_many :reports
 
+  #Validations
   before_validation :set_standards_for_user
 
   validates :username, presence: true, uniqueness: {case_sensitive: false}
@@ -88,7 +91,7 @@ class Employee < ActiveRecord::Base
     :port => 389,
     :auth => {
       :method => :simple,
-      :username => "ORASI\\#{self.username}",
+      :username => "ORASI\\#{self.username.downcase}",
       :password => password
     }
     validated = ldap.bind
