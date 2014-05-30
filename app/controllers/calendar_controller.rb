@@ -1,12 +1,25 @@
 class CalendarController < ApplicationController
   include VacationHelper
-  
+
   before_action :require_login
   helper_method :get_orasi_holiday, :change_month
 
   def report
     @vacation_types = params['filter'].collect {|type| type[0].to_s.tr_s("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
     @vacations = Vacation.where(vacation_type: @vacation_types).vacations_in_range(params["filter"]["start_date"],params["filter"]["end_date"])
+
+    unless params[:sort].blank?
+      case params[:sort].to_sym
+      when :name
+        @vacations = @vacations.joins(:employee).order("employees.first_name")
+      when :department
+        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id == departments.id").order("departments.name")
+      else
+        @vacations = @vacations.order(params[:sort])
+      end
+    end
+
+    @vacations = @vacations.reverse if params["rev"] == "true"
   end
 
   def index
@@ -41,7 +54,7 @@ class CalendarController < ApplicationController
     when 'department'
       @pdo_times = Vacation.where(employee_id: current_user.department.employees.pluck(:id))
     when 'direct'
-      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id) + [current_user.id]) 
+      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id) + [current_user.id])
     end
 
     unless @pdo_times.blank?
