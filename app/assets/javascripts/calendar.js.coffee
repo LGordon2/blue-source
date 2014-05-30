@@ -7,7 +7,8 @@ $ ->
   $(".disabled").on "click", ->
     return false;
   $(".list-group-item").tooltip()
-  $(".more-pdo").on "click", ->
+  $(".more-pdo").on "click", (event) ->
     $(this).siblings(".list-group-item-hidden").toggleClass("hidden")
     $(this).toggleClass("hidden")
     $(this).siblings(".more-pdo").toggleClass("hidden")
+    event.preventDefault()
