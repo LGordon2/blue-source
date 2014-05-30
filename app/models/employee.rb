@@ -87,12 +87,12 @@ class Employee < ActiveRecord::Base
       return true
     end
 
-    ldap = Net::LDAP.new :host => '10.238.242.32',
-    :port => 389,
-    :auth => {
-      :method => :simple,
-      :username => "ORASI\\#{self.username.downcase}",
-      :password => password
+    ldap = Net::LDAP.new host: '10.238.242.32',
+    port: 389,
+    auth: {
+      method: :simple,
+      username: "ORASI\\#{self.username.downcase}",
+      password: password
     }
     validated = ldap.bind
     if validated and (self.first_name.blank? or self.last_name.blank?)

@@ -47,6 +47,7 @@ BlueSource::Application.routes.draw do
   
   resource :calendar, only: [:index] do 
      get '/', to: 'calendar#index'
+     get '/report', to: 'calendar#report'
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

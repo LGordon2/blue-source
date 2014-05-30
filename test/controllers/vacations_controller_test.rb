@@ -85,4 +85,10 @@ class VacationsControllerTest < ActionController::TestCase
     get :index, {employee_id: manager.id}, {current_user_id: manager}
     assert_redirected_to :root
   end
+  
+  test 'flash is not nil when navigating to view vacations' do
+    consultant = employees(:consultant)
+    get :view, {employee_id: consultant.id}
+    assert_not_nil flash[:error]
+  end
 end

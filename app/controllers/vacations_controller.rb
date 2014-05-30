@@ -1,4 +1,5 @@
 class VacationsController < ApplicationController
+  before_action :require_login
   before_action :require_manager_login, except: [:view, :requests, :cancel]
 
   before_action :set_vacation, only: [:destroy, :update, :cancel]

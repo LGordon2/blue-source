@@ -1,6 +1,13 @@
 class CalendarController < ApplicationController
+  include VacationHelper
+  
   before_action :require_login
   helper_method :get_orasi_holiday, :change_month
+
+  def report
+    @vacation_types = params['filter'].collect {|type| type[0].to_s.tr_s("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
+    @vacations = Vacation.where(vacation_type: @vacation_types).vacations_in_range(params["filter"]["start_date"],params["filter"]["end_date"])
+  end
 
   def index
     @max_entries_per_day = 4
@@ -46,7 +53,7 @@ class CalendarController < ApplicationController
     @disabled_prev_month = (@starting_date - 1.month).year < @selectable_years.first
     @disabled_next_month = (@starting_date + 1.month).year > @selectable_years.last
 
-    @pdo_times = @pdo_times.where("(vacations.start_date >= :beginning_of_month and vacations.start_date <= :end_of_month) or (vacations.end_date >= :beginning_of_month and vacations.end_date <= :end_of_month)",beginning_of_month: @starting_date.beginning_of_month, end_of_month: @starting_date.end_of_month)
+    @pdo_times = @pdo_times.vacations_in_range(@starting_date.beginning_of_month, @starting_date.end_of_month)
   end
 
   def change_month(no_months)

@@ -54,21 +54,23 @@ a.month-changer:hover
     border-width: 0px;
   }
 }
-.list-group-item.floating-holiday
+.list-group-item
 {
-  background-color: $floating-holiday-color;
-}
-.list-group-item.vacation
-{
-  background-color: $vacation-color;
-}
-.list-group-item.sick
-{
-  background-color: $sick-color;
-}
-.list-group-item.other
-{
-  background-color: #999;
+  &.floating-holiday{
+    background-color: $floating-holiday-color;
+  }
+  &.vacation
+  {
+    background-color: $vacation-color;
+  }
+  &.sick
+  {
+    background-color: $sick-color;
+  }
+  &.other
+  {
+    background-color: #999;
+  }
 }
 div#calendar-date-select
 {
@@ -85,5 +87,11 @@ div#calendar-date-select
 {
   display:block;
   margin-top: 10px;
-
+}
+#filter-form
+{
+  margin: 20px auto;
+  &>.form-control, &>div{
+    margin-bottom: 20px;
+  }
 }
