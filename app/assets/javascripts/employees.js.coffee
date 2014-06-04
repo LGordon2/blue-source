@@ -3,7 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #= require auto_focus_search
 #= require auto_add_departments
-#= require auto_set_levels
 #= require angular_helpers
 
 window.setEvent = ->
