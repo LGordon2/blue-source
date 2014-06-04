@@ -28,7 +28,7 @@ BlueSource Team:
 First install ruby using RVM (Ruby Version Manager). This will help manage your projects easier. 
 To do this, open terminal and type:
 
-```ruby
+```bash
 $ \curl -sSL https://get.rvm.io | bash -s stable
 $ rvm install 2.1.1
 $ ruby -v 
@@ -37,7 +37,7 @@ $ ruby -v
 
 Then install rails by doing:
 
-```ruby
+```bash
 $ gem install rails
 $ rails -v
 ```
@@ -46,7 +46,7 @@ $ rails -v
 
 Now you will need to get git. To do this go to the website and download the app for github which gives you the gui interface and the command line tools. To check if git installed properly type this into terminal:
 
-```ruby
+```bash
 $ git --version
 ```
 
@@ -59,7 +59,7 @@ $ cd ~/Documents
 ```
 Then you can `clone` the BlueSource repository into that directory by typing this into the terminal:
 
-```ruby
+```bash
 $ git clone https://github.com/Orasi/blue-source.git
 ``` 
    *NOTE* This clones whatever files are in the repository to your local machine in the directory that you `cd` into. 
@@ -67,25 +67,25 @@ $ git clone https://github.com/Orasi/blue-source.git
 ## Running BlueSource Locally
 Now to run the web application locally, you have to setup all the gem dependencies for the bluesource project. So first `cd` into your the bluesource folder:
 
-```ruby
+```bash
 $ cd ~/Documents/blue-source/
 ```
 
 then you have to run `bundle install`. This will install everything that is in the `Gemfile`. 
 
-```ruby
+```bash
 $ bundle install
 ```
    *Note* If there any errors -usually with installing a gem- then you will not be able to run the project. I had a problem installing the postgresql gem. So I had to use a work around to get it to install. I downloaded postgresql from http://postgresapp.com. Then I installed the gem using the configurations from the app by typing this into the terminal: 
 
-```ruby 
+```bash
 $ gem install pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/9.3/bin/pg_config
 ``` 
 If that did not work you have to check where your pg_config is stored in your postgress.app. 
 
 After everything installs then you run `rails server` in the terminal while you are in the root directory of the blue-source folder. 
 
-```ruby 
+```bash
 $ rails server
 ```
 Then if you go to http://localhost:3000 in your browser. Then you should see the BlueSource web app login page. 
