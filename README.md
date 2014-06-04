@@ -42,7 +42,7 @@ $ gem install rails
 $ rails -v
 ```
 
-   *NOTE* This should install rails, also checking the version, and the `bundle gem` which you will need to setup your    project's gems. 
+   **NOTE** This should install rails, also checking the version, and the `bundle gem` which you will need to setup your    project's gems. 
 
 Now you will need to get git. To do this go to the website and download the app for github which gives you the gui interface and the command line tools. To check if git installed properly type this into terminal:
 
@@ -50,7 +50,7 @@ Now you will need to get git. To do this go to the website and download the app 
 $ git --version
 ```
 
-   *RECOMMENDED* To learn more about git there is a really good guide on try.github.com to start you in the right        direction into understand what git does. 
+   **RECOMMENDED** To learn more about git there is a really good guide on try.github.com to start you in the right        direction into understand what git does. 
 
 The final step is to grab the BlueSource code from github repository. First you want to cd into the directory that you want the repository to be in (I just put it in my Documents folder):
 
@@ -62,7 +62,7 @@ Then you can `clone` the BlueSource repository into that directory by typing thi
 ```bash
 $ git clone https://github.com/Orasi/blue-source.git
 ``` 
-   *NOTE* This clones whatever files are in the repository to your local machine in the directory that you `cd` into. 
+   **NOTE** This clones whatever files are in the repository to your local machine in the directory that you `cd` into. 
 
 ## Running BlueSource Locally
 Now to run the web application locally, you have to setup all the gem dependencies for the bluesource project. So first `cd` into your the bluesource folder:
@@ -76,7 +76,7 @@ then you have to run `bundle install`. This will install everything that is in t
 ```bash
 $ bundle install
 ```
-   *Note* If there any errors -usually with installing a gem- then you will not be able to run the project. I had a problem installing the postgresql gem. So I had to use a work around to get it to install. I downloaded postgresql from http://postgresapp.com. Then I installed the gem using the configurations from the app by typing this into the terminal: 
+   **NOTE** If there any errors -usually with installing a gem- then you will not be able to run the project. I had a problem installing the postgresql gem. So I had to use a work around to get it to install. I downloaded postgresql from http://postgresapp.com. Then I installed the gem using the configurations from the app by typing this into the terminal: 
 
 ```bash
 $ gem install pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/9.3/bin/pg_config
