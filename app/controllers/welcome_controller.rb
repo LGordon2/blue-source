@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    if params[:employee][:username].include? /^[a-z]+\.[a-z]+@orasi\.com$/ 
+    if params[:employee][:username] =~ (/^[a-z]+\.[a-z]+@orasi\.com$/) 
       params[:employee][:email] = params[:employee][:username]
       @employee = Employee.find_by(email: params[:employee][:email])
     else
