@@ -70,6 +70,11 @@ a.month-changer:hover
 {
   background-color: #999;
 }
+.list-group-item.pending
+{
+  background-color: white;
+  color: #5cb85c;
+}
 div#calendar-date-select
 {
   margin-bottom: 10px;

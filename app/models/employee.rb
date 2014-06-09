@@ -81,11 +81,11 @@ class Employee < ActiveRecord::Base
   def validate_against_ad(password)
     #Do authentication against the AD.
     return false if password.blank?
-    #unless Rails.env.production?
-      # self.first_name,self.last_name = self.username.downcase.split(".") if self.first_name.blank? or self.last_name.blank?
-      # self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
-      # return true
-    #end
+    unless Rails.env.production?
+      self.first_name,self.last_name = self.username.downcase.split(".") if self.first_name.blank? or self.last_name.blank?
+      self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
+      return true
+    end
     
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
