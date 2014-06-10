@@ -5,8 +5,15 @@ class CalendarController < ApplicationController
   helper_method :get_orasi_holiday, :change_month
 
   def report
-    @vacation_types = params['filter'].collect {|type| type[0].to_s.tr_s("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
-    @vacations = Vacation.where(vacation_type: @vacation_types).vacations_in_range(params["filter"]["start_date"],params["filter"]["end_date"])
+    @vacation_types = filter_params.collect {|type| type[0].to_s.gsub("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
+    @vacations = Vacation
+      .where(vacation_type: @vacation_types)
+      .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
+
+
+    unless filter_params['department'].blank?
+      @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
+    end
 
     unless params[:sort].blank?
       case params[:sort].to_sym
@@ -19,7 +26,20 @@ class CalendarController < ApplicationController
       end
     end
 
-    @vacations = @vacations.reverse if params["rev"] == "true"
+    @vacations = @vacations.reverse_order if params["rev"] == "true"
+
+    pageNumber = params["pgn"].to_i
+    pageNumber = 1 if pageNumber <= 0
+    @activePage = pageNumber - 1
+    resourcesPerPage = if current_user.preferences.blank? or current_user.preferences["resourcesPerPage"].blank?
+      15
+    else
+      current_user.preferences["resourcesPerPage"].to_i
+    end
+
+    @page_count = @vacations.count / resourcesPerPage
+    @max_pagination_pages = 10
+    @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
   end
 
   def index
@@ -101,5 +121,9 @@ class CalendarController < ApplicationController
     when day.christmas?
       "Christmas Day"
     end
+  end
+
+  def filter_params
+    params.require(:filter).permit(:start_date,:end_date,:department,:sick,:vacation,:floating_holiday,:other)
   end
 end
