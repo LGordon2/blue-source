@@ -28,18 +28,24 @@ class CalendarController < ApplicationController
 
     @vacations = @vacations.reverse_order if params["rev"] == "true"
 
-    pageNumber = params["pgn"].to_i
-    pageNumber = 1 if pageNumber <= 0
-    @activePage = pageNumber - 1
-    resourcesPerPage = if current_user.preferences.blank? or current_user.preferences["resourcesPerPage"].blank?
-      15
-    else
-      current_user.preferences["resourcesPerPage"].to_i
-    end
+    respond_to do |format|
+      format.html do
+        pageNumber = params["pgn"].to_i
+        pageNumber = 1 if pageNumber <= 0
+        @activePage = pageNumber - 1
+        resourcesPerPage = if current_user.preferences.blank? or current_user.preferences["resourcesPerPage"].blank?
+          15
+        else
+          current_user.preferences["resourcesPerPage"].to_i
+        end
 
-    @page_count = @vacations.count / resourcesPerPage
-    @max_pagination_pages = 10
-    @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
+        @page_count = @vacations.count / resourcesPerPage
+        @max_pagination_pages = 10
+        @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
+      end
+      format.json
+      format.xls
+    end
   end
 
   def index
