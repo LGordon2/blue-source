@@ -86,7 +86,6 @@ class Employee < ActiveRecord::Base
       self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
       return true
     end
-
     ldap = Net::LDAP.new host: '10.238.242.32',
     port: 389,
     auth: {
@@ -96,7 +95,7 @@ class Employee < ActiveRecord::Base
     }
     validated = ldap.bind
     if validated and (self.first_name.blank? or self.last_name.blank?)
-
+      
       filter = Net::LDAP::Filter.eq("samaccountname", self.username)
       treebase = "dc=orasi, dc=com"
       self.first_name,self.last_name=ldap.search(
