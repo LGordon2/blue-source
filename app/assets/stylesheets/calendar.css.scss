@@ -11,20 +11,22 @@ td.calendar-day-cell
   width: 248px;
   height: 100px;
 }
-.calendar-pending-vacation.list-group-item.floating-holiday
+.calendar-pending-vacation.list-group-item
 {
-  color: $floating-holiday-color;
-  background-color: #FFFFFF;
-}
-.calendar-pending-vacation.list-group-item.vacation
-{
-  color: $vacation-color;
-  background-color: #FFFFFF;
-}
-.calendar-pending-vacation.list-group-item.sick
-{
-  color: $sick-color;
-  background-color: #FFFFFF;
+  &.floating-holiday{
+    color: $floating-holiday-color;
+    background-color: #FFFFFF;
+  }
+  &.vacation
+  {
+    color: $vacation-color;
+    background-color: #FFFFFF;
+  }
+  &.sick
+  {
+    color: $sick-color;
+    background-color: #FFFFFF;
+  }
 }
 a.disabled
 {
@@ -72,11 +74,6 @@ a.month-changer:hover
     background-color: #999;
   }
 }
-.list-group-item.pending
-{
-  background-color: white;
-  color: #5cb85c;
-}
 div#calendar-date-select
 {
   margin-bottom: 10px;
@@ -92,4 +89,7 @@ div#calendar-date-select
 {
   display:block;
   margin-top: 10px;
+}
+#download-link-header{
+  padding: 10px;
 }
