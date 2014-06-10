@@ -5,11 +5,16 @@ class CalendarController < ApplicationController
   helper_method :get_orasi_holiday, :change_month
 
   def report
-    @vacation_types = filter_params.collect {|type| type[0].to_s.gsub("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
+    @vacation_types = filter_params.collect {|type, value| type.to_s.gsub("_", " ").titleize if (value.is_a?(String) and value.to_i == 1)}.compact
     @vacations = Vacation
       .where(vacation_type: @vacation_types)
       .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
 
+    unless filter_params["pending"].blank?
+      filter_params["pending"].each do |type, value|
+        @vacations = @vacations.where.not("vacation_type == ? AND status == ?", type.to_s.gsub("_", " ").titleize, "Pending") if value.to_i == 1
+      end
+    end
 
     unless filter_params['department'].blank?
       @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
@@ -131,6 +136,6 @@ class CalendarController < ApplicationController
   end
 
   def filter_params
-    params.require(:filter).permit(:start_date,:end_date,:department,:sick,:vacation,:floating_holiday,:other)
+    params.require(:filter).permit(:start_date,:end_date,:department,:sick,:vacation,:floating_holiday,:other, {pending: [:sick, :vacation, :floating_holiday]})
   end
 end
