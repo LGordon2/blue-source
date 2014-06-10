@@ -49,6 +49,16 @@
 						<li>
 							<%= link_to 'Calendar', :calendar %>
 						</li>
+						<li class="dropdown">
+							<%= link_to "#", data: {toggle: "dropdown"}, style: "padding-left: 10px;padding-right:10px;" do %>
+							<b class="caret"></b>
+							<% end %>
+						  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						    <li role="presentation">
+									<%= link_to "Reporting", "", data: {toggle: "modal", target: "#vacation_reporting_modal"} %>
+								</li>
+						  </ul>
+						</li>
 						<li>
 							<%= link_to 'Directory', :directory %>
 						</li>
@@ -109,5 +119,6 @@
 				</div>
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		<%= render "vacation_reporting_modal" %>
 	</body>
 </html>
