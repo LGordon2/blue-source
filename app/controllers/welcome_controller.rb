@@ -4,7 +4,12 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_by(username: params[:employee][:username].downcase)
+    if params[:employee][:username] =~ (/^[a-z]+\.[a-z]+@orasi\.com$/) 
+      params[:employee][:email] = params[:employee][:username]
+      @employee = Employee.find_by(email: params[:employee][:email])
+    else
+      @employee = Employee.find_by(username: params[:employee][:username].downcase)
+    end
     
     unless !@employee.blank? and @employee.validate_against_ad(params[:employee][:password])
       additional_errors = @employee.blank? ? [] : @employee.errors.full_messages
