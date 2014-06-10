@@ -14,7 +14,13 @@
 	<%= f.check_box vacation_type %>
 <% end %>
 </div>
+<div>
+<% [:sick, :vacation, :floating_holiday].each do |vacation_type| %>
+	<%= f.label "#{vacation_type} (Pending)", class: "control-label" %>
+	<%= check_box_tag "filter[pending][#{vacation_type}]" %>
+	<%= hidden_field_tag "filter[pending][#{vacation_type}]", 0 %>
+<% end %>
+</div>
 
 <%= f.submit 'Generate Report', class: "btn btn-primary", 'data-loading-text' => "Generating..." %>
 <% end %>
-
