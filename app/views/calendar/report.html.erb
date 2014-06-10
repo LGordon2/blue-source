@@ -1,5 +1,5 @@
 <div style="padding: 10px;">
-	<span>Download <%= link_to "XLS", report_calendar_path(params.merge(format: :xls)) %></span>
+	<span>Download <%= link_to "CSV", report_calendar_path(params.merge(format: :csv)) %> | <%= link_to "XLS", report_calendar_path(params.merge(format: :xls)) %></span>
 </div>
 <table class="table">
 	<tr>

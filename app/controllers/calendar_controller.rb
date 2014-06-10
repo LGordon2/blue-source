@@ -45,6 +45,7 @@ class CalendarController < ApplicationController
       end
       format.json
       format.xls
+      format.csv
     end
   end
 
