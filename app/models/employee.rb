@@ -86,6 +86,7 @@ class Employee < ActiveRecord::Base
       self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
       return true
     end
+<<<<<<< HEAD
     
     ldap = Net::LDAP.new :host => '10.238.242.32',
     :port => 389,
@@ -93,6 +94,15 @@ class Employee < ActiveRecord::Base
       :method => :simple,
       :username => "ORASI\\#{self.username.downcase}",
       :password => password
+=======
+
+    ldap = Net::LDAP.new host: '10.238.242.32',
+    port: 389,
+    auth: {
+      method: :simple,
+      username: "ORASI\\#{self.username.downcase}",
+      password: password
+>>>>>>> c6dd132a1875cebbbb88f48602af4d3004692dae
     }
     validated = ldap.bind
     if validated and (self.first_name.blank? or self.last_name.blank?)
