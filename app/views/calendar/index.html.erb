@@ -24,9 +24,6 @@
 		<% end %>
 		<% end %>
 	</div>
-	<div>
-		<a href data-toggle="modal" data-target="#modal_2">Reporting Link</a>
-	</div>
 	<% end %>
 </div>
 <div class="table-responsive">
@@ -94,11 +91,5 @@ Legend
 <div class="modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>
 </div>
-<% end %>
-<% content_for "modal_header_2" do %>
-<span>Reporting</span>
-<% end %>
-<% content_for "modal_content_2" do %>
-<%= render 'report_form' %>
 <% end %>
 <%= render 'modals/modal_group' %>

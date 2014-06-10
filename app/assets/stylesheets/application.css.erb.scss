@@ -42,7 +42,7 @@ input.has-error
   @media (min-width: 468px){
     width: 60%;
   }
-  
+
   @media (min-width: 768px) {
     width: 40%;
   }
@@ -96,7 +96,7 @@ input.has-error
   {
     font-size:18px;
   }
-  
+
   a.help-icon:hover, a.help-icon:focus
   {
     background-color:rgba(0, 0, 0, 0);
@@ -138,7 +138,7 @@ input.has-error
 textarea
 {
   min-height: 54px;
-  resize: none;  
+  resize: none;
 }
 .container.login-form
 {
@@ -175,5 +175,16 @@ a
 .inline-label-input
 {
   display:inline;
-  
+
+}
+#filter-form
+{
+  margin-bottom: 20px;
+  &>.form-control, &>div{
+    margin-bottom: 20px;
+  }
+  &>.form-control{
+    height: 34px;
+    font-size: 14px;
+  }
 }

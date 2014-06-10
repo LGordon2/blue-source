@@ -1,3 +1,6 @@
+<div style="padding: 10px;">
+	<span>Download <%= link_to "XLS", report_calendar_path(params.merge(format: :xls)) %></span>
+</div>
 <table class="table">
 	<tr>
 		<% ['Name','Start Date','End Date','Department','Vacation Type','Business Days'].each do |header| %>
@@ -17,3 +20,32 @@
 	</tr>
 	<% end %>
 </table>
+<% if @page_count > 1 %>
+<div>
+	<ul class="pagination">
+	  <%= content_tag :li, class: ("disabled" if @activePage == 0) do %>
+			<%= link_to "&laquo;".html_safe, report_calendar_path(params.merge("pgn" => @activePage.to_i)) %>
+		<% end %>
+
+		<% if @activePage > (@max_pagination_pages/2) %>
+			<% if @activePage < @page_count-(@max_pagination_pages/2-1) %>
+				<% range = (@activePage-(@max_pagination_pages/2)..@activePage+(@max_pagination_pages/2-1)) %>
+			<% else %>
+				<% range = ([@page_count-(@max_pagination_pages-1),1].max..@page_count) %>
+			<% end %>
+		<% else %>
+			<% range = (1..@page_count) %>
+		<% end %>
+
+		<% range.first(@max_pagination_pages).each do |num| %>
+			<%= content_tag :li, class: (if @activePage == num-1 then "active" end) do %>
+				<%= link_to num, report_calendar_path(params.merge("pgn" => num)) %>
+			<% end %>
+		<% end %>
+
+	  <%= content_tag :li, class: ("disabled" if @activePage == @page_count-1) do %>
+		  <%= link_to "&raquo;".html_safe, report_calendar_path(params.merge("pgn" => @activePage.to_i+2)) %>
+		<% end %>
+	</ul>
+</div>
+<% end %>
