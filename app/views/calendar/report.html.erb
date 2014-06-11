@@ -4,7 +4,7 @@
 <table class="table">
 	<tr>
 		<% ['Name','Start Date','End Date','Department','Vacation Type','Business Days'].each do |header| %>
-			<th><%= link_to header,report_calendar_path(sort: header.downcase.tr_s(" ","_"), rev: params[:rev]!='true', filter: params['filter']) %></th>
+			<th><%= link_to header,report_calendar_path(params.merge(sort: header.downcase.tr_s(" ","_"), rev: params[:rev]!='true', filter: params['filter'])) %></th>
 		<% end %>
 	</tr>
 	<% @vacations.each do |vacation| %>
