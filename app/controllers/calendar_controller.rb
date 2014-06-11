@@ -37,7 +37,7 @@ class CalendarController < ApplicationController
       when :name
         @vacations = @vacations.joins(:employee).order("employees.first_name")
       when :department
-        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id == departments.id").order("departments.name")
+        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id = departments.id").order("departments.name")
       else
         @vacations = @vacations.order(params[:sort])
       end
