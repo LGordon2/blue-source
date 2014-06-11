@@ -17,16 +17,14 @@ class CalendarController < ApplicationController
       return
     end
 
-    @vacation_types = filter_params.collect {|type, value| type.to_s.gsub("_", " ").titleize if (value.is_a?(String) and value.to_i == 1)}.compact
+    @include_reasons = filter_params[:include_reasons].to_i == 1
+
+    @vacation_types = Vacation.types.collect { |type| type if (filter_params[type.downcase.gsub(' ', '_').to_sym].to_i == 1) }.compact
+
     @vacations = Vacation
       .where(vacation_type: @vacation_types)
       .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
-
-    unless filter_params["pending"].blank?
-      filter_params["pending"].each do |type, value|
-        @vacations = @vacations.where.not("vacation_type == ? AND status == ?", type.to_s.gsub("_", " ").titleize, "Pending") if value.to_i == 1
-      end
-    end
+    @vacations = @vacations.where.not(status: "Pending") if filter_params[:include_pending].to_i == 0
 
     unless filter_params['department'].blank?
       @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
@@ -148,6 +146,8 @@ class CalendarController < ApplicationController
   end
 
   def filter_params
-    params.require(:filter).permit(:start_date,:end_date,:department,:sick,:vacation,:floating_holiday,:other, {pending: [:sick, :vacation, :floating_holiday]})
+    allowed_params = [:start_date, :end_date, :department, :sick, :vacation, :floating_holiday, :other, :include_pending]
+    allowed_params += [:include_reasons] if current_user.admin?
+    params.require(:filter).permit(allowed_params)
   end
 end
