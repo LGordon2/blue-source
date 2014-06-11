@@ -5,6 +5,18 @@ class CalendarController < ApplicationController
   helper_method :get_orasi_holiday, :change_month
 
   def report
+    errors = []
+    if filter_params[:start_date].blank?
+      errors << "Start date is required for reporting"
+    end
+    if filter_params[:end_date].blank?
+      errors << "End date is required for reporting"
+    end
+    unless errors.blank?
+      redirect_to :root, flash: {error: errors}
+      return
+    end
+
     @vacation_types = filter_params.collect {|type, value| type.to_s.gsub("_", " ").titleize if (value.is_a?(String) and value.to_i == 1)}.compact
     @vacations = Vacation
       .where(vacation_type: @vacation_types)
