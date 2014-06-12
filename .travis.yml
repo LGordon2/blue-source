@@ -1,5 +1,6 @@
 deploy:
   provider: heroku
   api_key: 7cd5694c-808e-418c-9ade-08fb50328e4a
+  strategy: git
   app:
     staging: bluesourcestaging
