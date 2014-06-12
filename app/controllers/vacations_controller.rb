@@ -108,7 +108,11 @@ class VacationsController < ApplicationController
   end
 
   def send_confirmation_email
-     VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver unless params["confirm"].blank?
+    unless params["confirm"].blank?
+     VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver
+    else
+      VacationRequestMailer.cancel_email(current_user, @employee.manager, @vacation).deliver
+    end
   end
 
   def set_fiscal_year_and_vacations

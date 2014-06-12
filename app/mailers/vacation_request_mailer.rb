@@ -20,6 +20,13 @@ class VacationRequestMailer < ActionMailer::Base
     @confirm_status = accepted ? "Accepted" : "Rejected"
     mail(to: @to_employee.email, subject: "[BlueSource] #{@from_manager.display_name}, #{request_type(to_employee, vacation)} #{@confirm_status.capitalize}")
   end
+  
+  def cancel_email(from_employee, to_manager, vacation)
+    @from_employee = from_employee
+    @to_manager = to_manager
+    @vacation = vacation
+    mail(to: @to_manager.email, subject: "[BlueSource] #{@from_employee.display_name}, Cancel #{request_type(from_employee, vacation)} Request")
+  end
 
   private
 
