@@ -1,71 +1,73 @@
 <% content_for :content do %>
-<section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
-	<% if !request.referer.blank? and request.referer.include? view_employee_vacations_url(current_user)  %>
-		<span ng-hide ng-init="goToInitialPage = false"></span>
-	<% end %>
-	<div id="all-content">
-		<h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
-		<%= yield :header_msgs %>
-		<%= render 'notification_section' %>
-		<div id="search-bar">
-			<input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here..." autofocus>
-		</div>
-		<div class="header-btn-section">
-			<div class="radio-btn-section">
-				<%= yield :header_btns %>
-				<div class="pull-right inline-label-input">
-					<%= form_for current_user, url: employee_preferences_path(current_user), method: :patch, html: {id: "resources-per-page"}, remote: true do |f| %>
-					<label style="display:inline;"><%= @resource_for_angular.pluralize.capitalize %> per page</label>
-					<%= select_tag "employee[preferences][resourcesPerPage]", options_for_select([ 5, 10, 15, 20 ], current_user.preferences['resourcesPerPage']), "ng-model" => "resourcesPerPage", "ng-change" => "search()", min: 5, max: 20, class: "form-control", style: "display:inline;width:inherit" %>
-					<% end %>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-		<div id="resource-content" ng-init="resourcesPerPage=<%= current_user.preferences[:resourcesPerPage].blank? ? 15 : current_user.preferences[:resourcesPerPage]%>" class="ng-cloak" ng-cloak ng-show="loaded">
-			<div class="table-responsive">
-				<table ng-show="pagedResources.length>0" class="table table-bordered table-condensed table-hover" cellspacing="10">
-					<%= yield :table %>
-				</table>
-				<h2 ng-show="pagedResources.length<=0 && resources.length>0 ">No rows found for '{{query}}'</h2>
-			</div>
-			<div ng-show="pagedResources.length>0">
-				<p class="pull-right">
-					{{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+pagedResources[currentPage].length}} of {{resourcesPerPage*(pagedResources.length-1) + pagedResources[pagedResources.length-1].length}}
-				</p>
-			</div>
-			<div>
-				<%= yield :bottom_button_placement %>
-			</div>
+    <section id="ng-app" ng-app="<%= controller_name %>_list_app" ng-controller="<%= controller_name %>_list_ctrl" class="center-block">
+      <% if !request.referer.blank? and request.referer.include? view_employee_vacations_url(current_user) %>
+          <span ng-hide ng-init="goToInitialPage = false"></span>
+      <% end %>
+      <div id="all-content">
+        <h1><%= content_for?(:welcome_msg) ? yield(:welcome_msg) : controller_name.capitalize %></h1>
+        <%= yield :header_msgs %>
+        <%= render 'notification_section' %>
+        <div id="search-bar">
+          <input id="search-bar" type="text" ng-model="query" ng-change="search()" class="form-control" placeholder="Search here..." autofocus>
+        </div>
+        <div class="header-btn-section">
+          <div class="radio-btn-section">
+            <%= yield :header_btns %>
+            <div class="pull-right inline-label-input">
+              <%= form_for current_user, url: employee_preferences_path(current_user), method: :patch, html: {id: "resources-per-page"}, remote: true do |f| %>
+                  <label style="display:inline;"><%= @resource_for_angular.pluralize.capitalize %> per page</label>
+                  <%= select_tag "employee[preferences][resourcesPerPage]", options_for_select([5, 10, 15, 20], current_user.preferences['resourcesPerPage']), "ng-model" => "resourcesPerPage", "ng-change" => "search()", min: 5, max: 20, class: "form-control", style: "display:inline;width:inherit" %>
+              <% end %>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div id="resource-content" ng-init="resourcesPerPage=<%= current_user.preferences[:resourcesPerPage].blank? ? 15 : current_user.preferences[:resourcesPerPage] %>" class="ng-cloak" ng-cloak ng-show="loaded">
+          <div class="table-responsive">
+            <table ng-show="pagedResources.length>0" class="table table-bordered table-condensed table-hover table-fixed" cellspacing="10">
+              <%= yield :table %>
+            </table>
+            <h2 ng-show="pagedResources.length<=0 && resources.length>0 ">No rows found for '{{query}}'</h2>
+          </div>
+          <div ng-show="pagedResources.length>0">
+            <p class="pull-right">
+              {{resourcesPerPage*currentPage+1}} to {{resourcesPerPage*currentPage+pagedResources[currentPage].length}}
+              of {{resourcesPerPage*(pagedResources.length-1) + pagedResources[pagedResources.length-1].length}}
+            </p>
+          </div>
+          <div>
+            <%= yield :bottom_button_placement %>
+          </div>
 
-			<div ng-show="pagedResources.length>1">
+          <div ng-show="pagedResources.length>1">
 
-				<ul class="pagination">
-					<li ng-class="{disabled: currentPage == 0}">
-						<a href ng-click="prevPage()">&laquo;</a>
-					</li>
-					<li ng-repeat="n in getPageNumbers()" ng-class="{active: n == currentPage}" ng-click="setPage()">
-						<a href ng-bind="n + 1">{{n}}</a>
-					</li>
-					<li ng-class="{disabled: currentPage == pagedResources.length - 1}">
-						<a href ng-click="nextPage()">&raquo;</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+            <ul class="pagination">
+              <li ng-class="{disabled: currentPage == 0}">
+                <a href ng-click="prevPage()">&laquo;</a>
+              </li>
+              <li ng-repeat="n in getPageNumbers()" ng-class="{active: n == currentPage}" ng-click="setPage()">
+                <a href ng-bind="n + 1">{{n}}</a>
+              </li>
+              <li ng-class="{disabled: currentPage == pagedResources.length - 1}">
+                <a href ng-click="nextPage()">&raquo;</a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-		<div class="ng-cloak" ng-cloak id="no-employees" ng-show="loaded && resources.length==0">
-			<h2>No <%= controller_name%> found.</h2>
-		</div>
+        <div class="ng-cloak" ng-cloak id="no-employees" ng-show="loaded && resources.length==0">
+          <h2>No <%= controller_name %> found.</h2>
+        </div>
 
-		<%= yield :footer %>
-	</div>
-	
-	<div id="loading-section" ng-hide='loaded'>
-		<h1>Loading...</h1>
-		<div class="loader"></div>
-	</div>
-</section>
+        <%= yield :footer %>
+      </div>
+
+      <div id="loading-section" ng-hide='loaded'>
+        <h1>Loading...</h1>
+
+        <div class="loader"></div>
+      </div>
+    </section>
 
 <% end %>
 <%= render template: "layouts/application" %>
