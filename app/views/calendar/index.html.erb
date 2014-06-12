@@ -39,7 +39,8 @@
 		<tr>
 			<% week_slice.each do |day| %>
 			<% i=0 %>
-			<td class="calendar-day-cell"> <% if day.month == @starting_date.month %>
+              <td class="calendar-day-cell <%= "company-holiday" if day.is_orasi_holiday? and day.month == @starting_date.month %>">
+                <% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
 			<div>
 				<%= content_tag :span, class: "#{"today" if day == Date.current}" do %>
@@ -97,6 +98,9 @@ Legend
 	<li class="list-group-item floating-holiday calendar-pending-vacation">
 		Floating Holiday (Pending)
 	</li>
+  <li class="list-group-item company-holiday vacation calendar-pending-vacation">
+    Company Holiday
+  </li>
 </ul>
 <div class="modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>

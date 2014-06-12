@@ -1,5 +1,5 @@
 class CalendarController < ApplicationController
-  include VacationHelper
+  helper VacationHelper
 
   before_action :require_login
   helper_method :get_orasi_holiday, :change_month
