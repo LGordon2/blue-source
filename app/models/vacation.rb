@@ -1,5 +1,5 @@
 class Vacation < ActiveRecord::Base
-  include VacationHelper
+  include OrasiDateCalculations
   
   scope :vacations_in_range, ->(start_date,end_date) do 
     where(%Q(

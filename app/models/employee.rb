@@ -1,7 +1,7 @@
 require 'net/ldap'
 
 class Employee < ActiveRecord::Base
-  include EmployeeHelper
+  include OrasiDateCalculations
 
   serialize :preferences, Hash
 
@@ -358,24 +358,24 @@ class Employee < ActiveRecord::Base
   def _pdo_taken(on_date, type, id=nil)
     on_date = Date.new(self.start_date.year,2,28) if on_date.leap? and on_date.month == 2 and on_date.day==29
 
-    year = Vacation.calculate_fiscal_year(on_date)
+    year = calculate_fiscal_year(on_date)
     pdo_days = 0.0
     self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date >= ? and start_date < ?", on_date.previous_fiscal_new_year, on_date.fiscal_new_year).each do |vacation|
       next if !id.nil? and vacation.id == id
       date_range = (vacation.start_date..vacation.end_date)
-      unless Vacation.fiscal_new_year_date(on_date).in?(date_range)
+      unless fiscal_new_year_date(on_date).in?(date_range)
         pdo_days += vacation.business_days
       else
-        pdo_days += Vacation.calc_business_days_for_range(vacation.start_date,Vacation.fiscal_new_year_date(on_date)-1)
+        pdo_days += calc_business_days_for_range(vacation.start_date,fiscal_new_year_date(on_date)-1)
       end
     end
 
-    last_fiscal_new_year = Vacation.fiscal_new_year_date(Date.new(on_date.year-1,on_date.month,on_date.day))
-    self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date < ?", Date.new(year-1,05,01).to_s).each do |vacation|
+    last_fiscal_new_year = fiscal_new_year_date(Date.new(on_date.year-1,on_date.month,on_date.day))
+    self.vacations.where(status: [nil,""]).where(vacation_type: type).where("start_date < ?", last_fiscal_new_year.to_s).each do |vacation|
         next if !id.nil? and vacation.id == id
         date_range = (vacation.start_date..vacation.end_date)
         if last_fiscal_new_year.in?(date_range)
-          pdo_days += Vacation.calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
+          pdo_days += calc_business_days_for_range(last_fiscal_new_year,vacation.end_date)
           pdo_days -= 0.5 if vacation.half_day?
         end
       end
