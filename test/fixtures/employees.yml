@@ -12,6 +12,7 @@ consultant:
   username: john.doe
   first_name: john
   last_name: doe
+  email: "john.doe@orasi.com"
   role: "Base"
   manager: manager
   status: "Permanent"

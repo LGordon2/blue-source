@@ -65,8 +65,12 @@ class Employee < ActiveRecord::Base
   end
   
   def resources_per_page_must_be_greater_than_zero
-    unless self.preferences.blank? or self.preferences['resourcesPerPage'].to_i > 0
-      errors.add(:base, "Resources per page must be greater than 0.")
+    unless self.preferences.blank? or self.preferences[:resourcesPerPage].to_i > 0
+      errors.add(:resources_per_page, "must be greater than 0.")
+    end
+
+    unless preferences.blank? or preferences[:resourcesPerPage].is_a? Integer
+      errors.add(:resources_per_page, "must be greater than 0.")
     end
   end
 
@@ -410,7 +414,7 @@ class Employee < ActiveRecord::Base
     maximum_date = Date.new(2100)
     
     unless start_date.blank?
-      unless minimum_date < start_date
+      unless minimum_date <= start_date
         errors.add(:start_date, "is before the minimum date of #{minimum_date}.")
       end
       unless maximum_date > start_date
