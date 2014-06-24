@@ -112,6 +112,35 @@ class Employee < ActiveRecord::Base
 
     return validated
   end
+  
+  def search_validate(employee_email, password)
+    return false if password.blank?
+    
+    ldap = Net::LDAP.new host: '10.238.242.32',
+    port: 389,
+    auth: {
+      method: :simple,
+      username: "ORASI\\david.quach",
+      password: password
+    }
+    
+    validated = ldap.bind
+    
+    if validated and employee_email =~ (/^[a-z]+\.[a-z]+@orasi\.com$/)
+      filter = Net::LDAP::Filter.eq("mail", employee_email)
+      
+      treebase = "dc=orasi, dc=com"
+      
+      self.username=ldap.search(
+          base: treebase,
+          filter: filter,
+          attributes: %w[samaccountname]
+        ).first.samaccountname.first
+    else 
+      return false
+    end
+  end
+  
 
   def display_name
     self.first_name.capitalize + " " + self.last_name.capitalize

@@ -65,9 +65,24 @@ class WelcomeController < ApplicationController
     redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
   
+  def search_employee
+    @employee = Employee.find_by(email: search_params[:employee_email])
+    
+    if @employee and @employee.search_validate(@employee.email, search_params[:admin_password])
+      redirect_to :back, flash: {info: "Employee's Username: #{@employee.username}"}
+    else
+      redirect_to :back, flash: {info: "Invalid Employee Email or Admin Password"}
+    end
+    
+  end
+  
   private 
   
   def issue_params
     params.require(:issue).permit(:comments, :type)
+  end
+  
+  def search_params
+    params.require(:search).permit(:employee_email, :admin_password)
   end
 end
