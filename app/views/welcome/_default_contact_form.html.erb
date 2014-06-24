@@ -1,0 +1,19 @@
+<%= form_for :issue, method:"post",url:"/issue", html: {class: "form-horizontal", role: "form", id: "login-contact-form"} do |f| %>
+<div class="form-group">
+	<!-- Field to input who is sending the email. Users at this contact form will not be logged in. -->
+	<%= f.label :from, class: "col-sm-2 control-label" %>
+	<div class="col-sm-10">
+		<%= f.text_area :from, class: 'form-control', required: true%>
+	</div>
+</div>
+<div class="form-group">
+	<%= f.label :comments, class: "col-sm-2 control-label"%>
+	<div class="col-sm-10">
+		<%= f.text_area :comments, class: "form-control", required: true%>
+	</div>
+</div>
+<div class="form-group modal-footer">
+	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"} if @in_modal %>
+	<%= submit_tag "Send", class: "btn btn-primary", "data-loading-text" => "Sending..."%>
+</div>
+<% end %>
