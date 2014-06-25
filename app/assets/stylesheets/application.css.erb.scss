@@ -168,6 +168,10 @@ a {
 
 }
 
+.tab-pane#search
+{
+  padding: 10px 20px;
+}
 #filter-form {
   margin-bottom: 20px;
   & > .form-control, & > div {

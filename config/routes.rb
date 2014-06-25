@@ -39,6 +39,7 @@ BlueSource::Application.routes.draw do
   get "logout", to: "welcome#logout", as: :logout
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
+  post "search", to: "welcome#search_employee", as: :search
   
   #Directory
   resource :directory, only: [:show], controller: "directory" do
