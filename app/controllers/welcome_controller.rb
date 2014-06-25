@@ -70,7 +70,7 @@ class WelcomeController < ApplicationController
     if current_user and current_user.admin? and current_user.search_validate(search_params[:employee_email], search_params[:admin_password])
       redirect_to :back, flash: {info: "Employee's Username: " + current_user.employee_searched_username}
     else
-      redirect_to :back, flash: {info: "Invalid Employee Email or Admin Password"}
+      redirect_to :back, flash: {error: "Invalid Employee Email or Admin Password"}
     end
   end
   
