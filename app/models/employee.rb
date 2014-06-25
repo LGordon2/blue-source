@@ -120,28 +120,35 @@ class Employee < ActiveRecord::Base
     port: 389,
     auth: {
       method: :simple,
-      username: "ORASI\\david.quach",
+      username: "ORASI\\#{self.username.downcase}",
       password: password
     }
     
     validated = ldap.bind
+    employee_email = employee_email.downcase
     
     if validated and employee_email =~ (/^[a-z]+\.[a-z]+@orasi\.com$/)
       filter = Net::LDAP::Filter.eq("mail", employee_email)
-      
       treebase = "dc=orasi, dc=com"
-      
-      self.username=ldap.search(
+      @username = ldap.search(
           base: treebase,
           filter: filter,
           attributes: %w[samaccountname]
-        ).first.samaccountname.first
+        )
     else 
       return false
     end
+    
   end
   
-
+  def employee_searched_username
+    unless @username.empty?
+      @username.first.samaccountname.first
+    else
+      "Not Found, Please Check If Employee's Email Is Entered Correctly"
+    end
+  end
+  
   def display_name
     self.first_name.capitalize + " " + self.last_name.capitalize
   end

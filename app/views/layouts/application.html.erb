@@ -92,7 +92,7 @@
 								<a href="#contact" data-toggle="tab">Contact</a>
 							</li>
 							<li>
-								<% if current_user and current_user.role == "Company Admin" %>
+								<% if current_user and current_user.admin? %>
 								<a href="#search" data-toggle="tab">Search</a>
 								<% end %>
 							</li>
@@ -109,10 +109,9 @@
 								<% end %>
 							</div>
 							<div class="tab-pane" id="search">
-								<%= render "search_form" if current_user and current_user.role == "Company Admin"  %>
+								<%= render "search_form" if current_user and current_user.admin? %>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div><!-- /.modal-dialog -->
