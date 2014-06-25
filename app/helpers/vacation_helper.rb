@@ -69,6 +69,12 @@ module VacationHelper
     def current_fiscal_year
       self.month >= 5 ? self.year+1 : self.year
     end
+
+    def is_orasi_holiday?
+      thanksgiving? or labor_day? or memorial_day? or
+          christmas? or christmas_eve? or independence_day? or
+          black_friday? or new_years_day?
+    end
   end
   
   #Calculates the fiscal year of the given date.
@@ -80,16 +86,14 @@ module VacationHelper
   def fiscal_new_year_date(date = Date.current)
     Date.new(calculate_fiscal_year(date),05,01)
   end
-  
+
+
   #Calculates the number of business days used for a date range.
   def calc_business_days_for_range(start_date, end_date)
     total = 0
     return total if start_date.blank? or end_date.blank?
     (start_date..end_date).each do |date|
-      total += 1 unless date.saturday? or date.sunday? or 
-      date.thanksgiving? or date.labor_day? or date.memorial_day? or
-      date.christmas? or date.christmas_eve? or date.independence_day? or
-      date.black_friday? or date.new_years_day?
+      total += 1 unless date.saturday? or date.sunday? or date.is_orasi_holiday?
     end
     return total
   end

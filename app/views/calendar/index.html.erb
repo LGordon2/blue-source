@@ -25,9 +25,6 @@
 		<% end %>
 		<button class="btn btn-primary expand-all" data-toggle="button">Show All</button>
 	</div>
-	<div>
-		<a href data-toggle="modal" data-target="#modal_2">Reporting Link</a>
-	</div>
 	<% end %>
 </div>
 <div class="table-responsive">
@@ -42,7 +39,8 @@
 		<tr>
 			<% week_slice.each do |day| %>
 			<% i=0 %>
-			<td class="calendar-day-cell"> <% if day.month == @starting_date.month %>
+              <td class="calendar-day-cell <%= "company-holiday" if day.is_orasi_holiday? and day.month == @starting_date.month %>">
+                <% if day.month == @starting_date.month %>
 			<% orasi_holiday = get_orasi_holiday(day) %>
 			<div>
 				<%= content_tag :span, class: "#{"today" if day == Date.current}" do %>
@@ -92,18 +90,21 @@ Legend
 	<li class="list-group-item other">
 		Other
 	</li>
-	<li class="list-group-item pending">
-		Pending
+	<li class="list-group-item sick calendar-pending-vacation">
+		Sick (Pending)
 	</li>
+	<li class="list-group-item vacation calendar-pending-vacation">
+		Vacation (Pending)
+	</li>
+	<li class="list-group-item floating-holiday calendar-pending-vacation">
+		Floating Holiday (Pending)
+	</li>
+  <li class="list-group-item company-holiday vacation calendar-pending-vacation">
+    Company Holiday
+  </li>
 </ul>
 <div class="modal-footer">
 	<%= button_tag "Close", type: "button", class: "btn btn-default", data: {dismiss: "modal"}%>
 </div>
-<% end %>
-<% content_for "modal_header_2" do %>
-<span>Reporting</span>
-<% end %>
-<% content_for "modal_content_2" do %>
-<%= render 'report_form' %>
 <% end %>
 <%= render 'modals/modal_group' %>

@@ -1,25 +1,67 @@
 class CalendarController < ApplicationController
-  include VacationHelper
+  helper VacationHelper
 
   before_action :require_login
   helper_method :get_orasi_holiday, :change_month
 
   def report
-    @vacation_types = params['filter'].collect {|type| type[0].to_s.tr_s("_", " ").split(" ").collect {|w| w.capitalize }.join(" ") if type[1].to_i == 1}.compact
-    @vacations = Vacation.where(vacation_type: @vacation_types).vacations_in_range(params["filter"]["start_date"],params["filter"]["end_date"])
+    errors = []
+    if filter_params[:start_date].blank?
+      errors << "Start date is required for reporting"
+    end
+    if filter_params[:end_date].blank?
+      errors << "End date is required for reporting"
+    end
+    unless errors.blank?
+      redirect_to :root, flash: {error: errors}
+      return
+    end
+
+    @include_reasons = filter_params[:include_reasons].to_i == 1
+
+    @vacation_types = Vacation.types.collect { |type| type if (filter_params[type.downcase.gsub(' ', '_').to_sym].to_i == 1) }.compact
+
+    @vacations = Vacation
+      .where(vacation_type: @vacation_types)
+      .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
+    @vacations = @vacations.where.not(status: "Pending") if filter_params[:include_pending].to_i == 0
+
+    unless filter_params['department'].blank?
+      @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
+    end
 
     unless params[:sort].blank?
       case params[:sort].to_sym
       when :name
         @vacations = @vacations.joins(:employee).order("employees.first_name")
       when :department
-        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id == departments.id").order("departments.name")
+        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id = departments.id").order("departments.name")
       else
         @vacations = @vacations.order(params[:sort])
       end
     end
 
-    @vacations = @vacations.reverse if params["rev"] == "true"
+    @vacations = @vacations.reverse_order if params["rev"] == "true"
+
+    respond_to do |format|
+      format.html do
+        pageNumber = params["pgn"].to_i
+        pageNumber = 1 if pageNumber <= 0
+        @activePage = pageNumber - 1
+        resourcesPerPage = if current_user.preferences.blank? or current_user.preferences["resourcesPerPage"].blank?
+          15
+        else
+          current_user.preferences["resourcesPerPage"].to_i
+        end
+
+        @page_count = @vacations.count / resourcesPerPage
+        @max_pagination_pages = 10
+        @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
+      end
+      format.json
+      format.xls
+      format.csv
+    end
   end
 
   def index
@@ -101,5 +143,11 @@ class CalendarController < ApplicationController
     when day.christmas?
       "Christmas Day"
     end
+  end
+
+  def filter_params
+    allowed_params = [:start_date, :end_date, :department, :sick, :vacation, :floating_holiday, :other, :include_pending]
+    allowed_params += [:include_reasons] if current_user.admin?
+    params.require(:filter).permit(allowed_params)
   end
 end

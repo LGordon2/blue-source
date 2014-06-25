@@ -52,7 +52,11 @@ class Vacation < ActiveRecord::Base
       return business_days
     end
   end
-  
+
+  def pending?
+    self.status == "Pending"
+  end
+
   private
   
   def vacation_not_added_before_start_date

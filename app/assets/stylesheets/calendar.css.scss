@@ -11,20 +11,31 @@ td.calendar-day-cell
   width: 248px;
   height: 100px;
 }
-.calendar-pending-vacation.list-group-item.floating-holiday
-{
-  color: $floating-holiday-color;
-  background-color: #FFFFFF;
+
+.company-holiday {
+  $opacity: .15;
+  $orasi_blue: rgba(53, 123, 185, $opacity);
+  height: 25px;
+  background-image: linear-gradient(135deg, $orasi_blue 25%, transparent 25%, transparent 50%, $orasi_blue 50%, $orasi_blue 75%, transparent 75%, transparent); /* Standard syntax (must be last) */
+  background-size: 40px 40px;
 }
-.calendar-pending-vacation.list-group-item.vacation
+
+.calendar-pending-vacation.list-group-item
 {
-  color: $vacation-color;
-  background-color: #FFFFFF;
-}
-.calendar-pending-vacation.list-group-item.sick
-{
-  color: $sick-color;
-  background-color: #FFFFFF;
+  &.floating-holiday{
+    color: $floating-holiday-color;
+    background-color: #FFFFFF;
+  }
+  &.vacation
+  {
+    color: $vacation-color;
+    background-color: #FFFFFF;
+  }
+  &.sick
+  {
+    color: $sick-color;
+    background-color: #FFFFFF;
+  }
 }
 a.disabled
 {
@@ -72,11 +83,6 @@ a.month-changer:hover
     background-color: #999;
   }
 }
-.list-group-item.pending
-{
-  background-color: white;
-  color: #5cb85c;
-}
 div#calendar-date-select
 {
   margin-bottom: 10px;
@@ -93,10 +99,6 @@ div#calendar-date-select
   display:block;
   margin-top: 10px;
 }
-#filter-form
-{
-  margin: 20px auto;
-  &>.form-control, &>div{
-    margin-bottom: 20px;
-  }
+#download-link-header{
+  padding: 10px;
 }

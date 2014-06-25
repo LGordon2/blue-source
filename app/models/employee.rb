@@ -65,7 +65,7 @@ class Employee < ActiveRecord::Base
   end
   
   def resources_per_page_must_be_greater_than_zero
-    unless self.preferences.blank? or self.preferences['resourcesPerPage'].to_i > 0
+    unless self.preferences.blank? or self.preferences[:resourcesPerPage].to_i > 0
       errors.add(:base, "Resources per page must be greater than 0.")
     end
   end
