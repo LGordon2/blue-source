@@ -8,6 +8,7 @@ gem 'sqlite3', group: [:development, :test, :production]
 #gem 'mysql', group: :development
 
 gem 'simplecov', group: :test
+gem 'coveralls', require: false
 
 # Use postgres for staging
 gem 'pg', :group => :staging
