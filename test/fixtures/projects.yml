@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  name: MyString
+  name: Test Project
   start_date: 2013-11-19 10:17:47
   end_date: 2013-11-19 10:17:47
 
