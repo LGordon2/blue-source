@@ -81,14 +81,27 @@ class VacationsControllerTest < ActionController::TestCase
   end
   
   test "manager should be redirected to root when trying to manage own vacation" do
-    manager = employees(:manager)
-    get :index, {employee_id: manager.id}, {current_user_id: manager}
+    get :index, {employee_id: @manager.id}, {current_user_id: @manager}
     assert_redirected_to :root
   end
   
   test 'flash is not nil when navigating to view vacations' do
-    consultant = employees(:consultant)
-    get :view, {employee_id: consultant.id}
+    get :view, {employee_id: @consultant.id}
     assert_not_nil flash[:error]
+  end
+
+  test 'manager should be able to create a vacation for employee' do
+    params = {
+        vacation: {
+          date_requested: Date.current,
+          start_date: Date.current,
+          end_date: Date.current,
+          vacation_type: Vacation.types.sample
+        },
+        employee_id: @consultant.id
+    }
+
+    post :create, params, { current_user_id: @manager }
+    assert_nil flash[:error]
   end
 end

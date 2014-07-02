@@ -2,10 +2,10 @@
 
 one:
   name: Test Project
-  start_date: 2013-11-19 10:17:47
-  end_date: 2013-11-19 10:17:47
+  start_date: <%= Date.current %>
+  end_date: <%= Date.current %>
 
 two:
-  name: MyString
-  start_date: 2013-11-19 10:17:47
-  end_date: 2013-11-19 10:17:47
+  name: Test Project 2
+  start_date: <%= Date.current %>
+  end_date: <%= Date.current %>
