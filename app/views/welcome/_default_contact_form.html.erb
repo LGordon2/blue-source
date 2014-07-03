@@ -1,9 +1,16 @@
-<%= form_for :issue, method:"post",url:"/issue", html: {class: "form-horizontal", role: "form", id: "login-contact-form"} do |f| %>
+<%= form_for :login_issue, method:"post",url:"/login_issue", html: {class: "form-horizontal", role: "form", id: "login-contact-form"} do |f| %>
 <div class="form-group">
 	<!-- Field to input who is sending the email. Users at this contact form will not be logged in. -->
-	<%= f.label :from, class: "col-sm-2 control-label" %>
+	<%= f.label :name, class: "col-sm-2 control-label" %>
 	<div class="col-sm-10">
-		<%= f.text_area :from, class: 'form-control', required: true%>
+		<%= f.text_area :name, class: 'form-control', required: true%>
+	</div>
+</div>
+<div class="form-group">
+	<!-- Field to input an email address. This way the user can be contacted. -->
+	<%= f.label :email, class: "col-sm-2 control-label" %>
+	<div class="col-sm-10">
+		<%= f.text_area :email, class: 'form-control', required: true%>
 	</div>
 </div>
 <div class="form-group">

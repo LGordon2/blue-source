@@ -60,9 +60,19 @@ class WelcomeController < ApplicationController
     redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
   
+  def login_issue
+    email = HelpMailer.login_help_email(login_issue_params[:name], login_issue_params[:email], login_issue_params[:comments])
+    email.deliver
+    redirect_to :back, flash: {info: 'Login issue email sent.'}
+  end
+  
   private 
   
   def issue_params
     params.require(:issue).permit(:comments, :type)
+  end
+  
+  def login_issue_params
+    params.require(:login_issue).permit(:name, :email, :comments)
   end
 end

@@ -9,6 +9,15 @@ class HelpMailer < ActionMailer::Base
     mail(bcc: default_emails, subject: "#{type} submitted by #{from}")
   end
   
+  def login_help_email(from, email, comments)
+    @from = from
+    @email = email
+    @comments = comments
+    @type = 'Login issue'
+	mail(bcc: default_emails, subject: "Login issue submitted by #{from}")
+    #mail(to: 'ethan.bell@orasi.com', bcc: default_emails, subject: "Login issue submitted by #{from}")
+  end
+  
   private
   
   def default_emails
