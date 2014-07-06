@@ -105,7 +105,8 @@ class VacationsControllerTest < ActionController::TestCase
           date_requested: date,
           start_date: date,
           end_date: date,
-          vacation_type: Vacation.types.sample
+          vacation_type: Vacation.types.sample,
+          reason: reason
         },
         employee_id: @consultant.id
     }
