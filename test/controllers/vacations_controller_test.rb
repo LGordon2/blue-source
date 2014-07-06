@@ -3,15 +3,21 @@ require 'test_helper'
 class VacationsControllerTest < ActionController::TestCase
   def setup
     @manager = employees(:manager)
+    assert @manager.save
     @manager2 = employees(:manager2)
+    assert @manager2.save
     @consultant = employees(:consultant)
+    assert @consultant.save
     @consultant2 = employees(:consultant2)
+    assert @consultant2.save
     @director = employees(:director)
+    assert @director.save
     @admin = employees(:admin)
+    assert @admin.save
     @vacation = vacations(:one)
     @vacation.manager = @manager
     @vacation.employee = @consultant
-    @vacation.save
+    assert @vacation.save
     
     request.env["HTTP_REFERER"] = root_url()
     @sick_day_params = {vacation: {date_requested: "2013-12-17", business_days: 1, start_date: "2013-12-17", end_date: "2013-12-17", vacation_type: "Sick"}}
@@ -91,11 +97,14 @@ class VacationsControllerTest < ActionController::TestCase
   end
 
   test 'manager should be able to create a vacation for employee' do
+    date = Date.new(2014,07,01)
+    type = Vacation.types.sample
+    reason = "This is a test" if type == 'Other'
     params = {
         vacation: {
-          date_requested: Date.current,
-          start_date: Date.current,
-          end_date: Date.current,
+          date_requested: date,
+          start_date: date,
+          end_date: date,
           vacation_type: Vacation.types.sample
         },
         employee_id: @consultant.id

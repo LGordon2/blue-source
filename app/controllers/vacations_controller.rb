@@ -108,9 +108,9 @@ class VacationsController < ApplicationController
   end
 
   def send_confirmation_email
-    unless params["confirm"].blank?
-     VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver
-    else
+    if params["confirm"].present?
+      VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver
+    elsif @employee.manager.present?
       VacationRequestMailer.cancel_email(current_user, @employee.manager, @vacation).deliver
     end
   end
