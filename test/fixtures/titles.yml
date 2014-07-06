@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: SampleTitle1
+consultant:
+  name: Consultant
 
-two:
-  name: SampleTitle2
+manager:
+  name: Manager

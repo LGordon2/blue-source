@@ -14,6 +14,7 @@ class Employee < ActiveRecord::Base
   has_many :projects, class_name: "ProjectHistory"
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
+  belongs_to :title
   has_one :area, through: :department
   has_many :reports
 
@@ -40,12 +41,7 @@ class Employee < ActiveRecord::Base
   end
 
   def title
-    unless self.title_id.blank?
-      title_found = Title.find_by(id: self.title_id)
-      unless title_found.blank?
-        title_found.name
-      end 
-    end
+    employee_title.name unless employee_title.blank?
   end
 
   def is_department_area_head_or_admin
@@ -382,10 +378,10 @@ class Employee < ActiveRecord::Base
 
   def pdo_taken(on_date, type, id=nil)
     case type
-    when "Vacation" then vacation_days_taken(on_date, id=nil)
-    when "Floating Holiday" then floating_holidays_taken(on_date, id=nil)
-    when "Sick" then sick_days_taken(on_date, id=nil)
-    else raise Exception
+    when 'Vacation' then vacation_days_taken(on_date, id=nil)
+    when 'Floating Holiday' then floating_holidays_taken(on_date, id=nil)
+    when 'Sick' then sick_days_taken(on_date, id=nil)
+    else fail ArgumentError, "Invalid PDO type #{type}"
     end
   end
 
