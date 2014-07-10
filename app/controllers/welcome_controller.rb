@@ -64,7 +64,7 @@ class WelcomeController < ApplicationController
     email.deliver
     redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
-  
+
   def search_employee
     
     if current_user and current_user.admin? and current_user.search_validate(search_params[:employee_email], search_params[:admin_password])
@@ -72,6 +72,13 @@ class WelcomeController < ApplicationController
     else
       redirect_to :back, flash: {error: "Invalid Employee Email or Admin Password"}
     end
+
+  end
+
+  def login_issue
+    email = HelpMailer.login_help_email(login_issue_params[:name], login_issue_params[:email], login_issue_params[:comments])
+    email.deliver
+    redirect_to :back, flash: {info: 'Login issue email sent.'}
   end
   
   private 
@@ -79,8 +86,12 @@ class WelcomeController < ApplicationController
   def issue_params
     params.require(:issue).permit(:comments, :type)
   end
-  
+
   def search_params
     params.require(:search).permit(:employee_email, :admin_password)
+  end
+
+  def login_issue_params
+    params.require(:login_issue).permit(:name, :email, :comments)
   end
 end

@@ -8,5 +8,7 @@ deploy:
   api_key:
     secure: Uy0KLwthnnb8QVsQ19X4j6qPIYMjUpZ1TerH2Zb/OrtTy6cJj2jLsDRjnH1ZrdD/n/kL/+kwA7xbQtUbwmdQQmfqHar9AqxKt2YTuNQ9fqAgDMeIlUfFAmlOru08xhjL6ZOrFW0NvLpdLiclK0Essfuh6OdIaFdQKMbtY4B2ewE=
   app: bluesourcestaging
-  on: travis-ci-setup
+  on:
+    branch: staging
+    rvm: 2.0.0
   buildpack: https://github.com/Orasi/heroku-buildpack-ruby.git
