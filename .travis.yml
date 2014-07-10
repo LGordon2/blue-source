@@ -2,8 +2,11 @@ language: ruby
 rvm:
 - 2.0.0
 - 2.1.0
+before_deploy: "git fetch --unshallow"
 deploy:
   provider: heroku
   api_key:
     secure: Uy0KLwthnnb8QVsQ19X4j6qPIYMjUpZ1TerH2Zb/OrtTy6cJj2jLsDRjnH1ZrdD/n/kL/+kwA7xbQtUbwmdQQmfqHar9AqxKt2YTuNQ9fqAgDMeIlUfFAmlOru08xhjL6ZOrFW0NvLpdLiclK0Essfuh6OdIaFdQKMbtY4B2ewE=
-  on: staging
+  app: bluesourcestaging
+  on: travis-ci-setup
+  buildpack: https://github.com/Orasi/heroku-buildpack-ruby.git
