@@ -14,8 +14,7 @@ class HelpMailer < ActionMailer::Base
     @email = email
     @comments = comments
     @type = 'Login issue'
-	mail(bcc: default_emails, subject: "Login issue submitted by #{from}")
-    #mail(to: 'ethan.bell@orasi.com', bcc: default_emails, subject: "Login issue submitted by #{from}")
+    mail(bcc: default_emails, subject: "Login issue submitted by #{from}")
   end
   
   private
