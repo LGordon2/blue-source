@@ -2,7 +2,7 @@
 <tr ng-init="role='<%=current_user.role%>'">
 	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
 	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
-	<th><%= link_to "Title", "#", 'ng-click' => "predicate='role'; reverse=!reverse; search()"%></th>
+	<th><%= link_to "Title", "#", 'ng-click' => "predicate='title'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%></th>
 	<th><%= link_to "Location", "#", 'ng-click' => "predicate='location'; reverse=!reverse; search()"%></th>
