@@ -33,7 +33,7 @@ set_team_leads = ->
     
 @employees_list_app = angular.module('employees_list_app', []);
 
-employees_list_ctrl = ($scope, $http, $filter) ->
+employees_list_ctrl = ($scope, $http, $filter, $log) ->
   AngularHelpers.getResources($scope,$http,'employees.json')
   AngularHelpers.initializeResource($scope)
   
@@ -45,23 +45,23 @@ employees_list_ctrl = ($scope, $http, $filter) ->
     $scope.filteredResources = $filter('filter')($scope.resources, (employee) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       searchMatch(employee.display_name, $scope.query) ||
-      searchMatch(employee.role, $scope.query) || 
+      searchMatch(employee.title, $scope.query) ||
       (employee.manager? && (searchMatch(employee.manager.first_name, $scope.query) || 
       searchMatch(employee.manager.last_name, $scope.query) || searchMatch(employee.manager.display_name, $scope.query))) || 
       (employee.project? && searchMatch(employee.project.name, $scope.query)) ||
       searchMatch(employee.location, $scope.query) ||
       searchMatch(employee.title, $scope.query))
     manager_id = $scope.manager_id
-    
+
     $scope.filteredResources = $filter('filter')($scope.filteredResources,{status:"!Inactive"}) unless $scope.show_inactive
     $scope.filteredResources = $filter('filter')($scope.filteredResources,{manager_id: parseInt($scope.current_id)},true) if $scope.current_id != ''
     $scope.filteredResources = $filter('orderBy')($scope.filteredResources,$scope.predicate,$scope.reverse)
-    
+
     $scope.currentPage = 0;
     $scope.groupToPages()
   
   
-employees_list_ctrl.$inject = ['$scope', '$http', '$filter'];
+employees_list_ctrl.$inject = ['$scope', '$http', '$filter', '$log'];
 
 @employees_list_app.controller 'employees_list_ctrl', employees_list_ctrl
   

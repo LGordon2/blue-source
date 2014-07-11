@@ -1,9 +1,11 @@
 require 'net/ldap'
+
 class Employee < ActiveRecord::Base
   include EmployeeHelper
 
   serialize :preferences, Hash
 
+  #Associations
   has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
   has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations
@@ -12,9 +14,11 @@ class Employee < ActiveRecord::Base
   has_many :projects, class_name: "ProjectHistory"
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
+  belongs_to :title
   has_one :area, through: :department
   has_many :reports
 
+  #Validations
   before_validation :set_standards_for_user
 
   validates :username, presence: true, uniqueness: {case_sensitive: false}
@@ -37,12 +41,7 @@ class Employee < ActiveRecord::Base
   end
 
   def title
-    unless self.title_id.blank?
-      title_found = Title.find_by(id: self.title_id)
-      unless title_found.blank?
-        title_found.name
-      end 
-    end
+    employee_title.name unless employee_title.blank?
   end
 
   def is_department_area_head_or_admin
@@ -62,7 +61,7 @@ class Employee < ActiveRecord::Base
   end
   
   def resources_per_page_must_be_greater_than_zero
-    unless self.preferences.blank? or self.preferences['resourcesPerPage'].to_i > 0
+    unless self.preferences.blank? or self.preferences[:resourcesPerPage].to_i > 0
       errors.add(:base, "Resources per page must be greater than 0.")
     end
   end
@@ -83,17 +82,16 @@ class Employee < ActiveRecord::Base
       self.email = "#{self.username.downcase}@orasi.com" if self.email.blank?
       return true
     end
-
-    ldap = Net::LDAP.new :host => '10.238.242.32',
-    :port => 389,
-    :auth => {
-      :method => :simple,
-      :username => "ORASI\\#{self.username}",
-      :password => password
+    ldap = Net::LDAP.new host: '10.238.242.32',
+    port: 389,
+    auth: {
+      method: :simple,
+      username: "ORASI\\#{self.username.downcase}",
+      password: password
     }
     validated = ldap.bind
     if validated and (self.first_name.blank? or self.last_name.blank?)
-
+      
       filter = Net::LDAP::Filter.eq("samaccountname", self.username)
       treebase = "dc=orasi, dc=com"
       self.first_name,self.last_name=ldap.search(
@@ -110,7 +108,43 @@ class Employee < ActiveRecord::Base
 
     return validated
   end
-
+  
+  def search_validate(employee_email, password)
+    return false if password.blank?
+    
+    ldap = Net::LDAP.new host: '10.238.242.32',
+    port: 389,
+    auth: {
+      method: :simple,
+      username: "ORASI\\#{self.username.downcase}",
+      password: password
+    }
+    
+    validated = ldap.bind
+    employee_email = employee_email.downcase
+    
+    if validated and employee_email =~ (/^[a-z]+\.[a-z]+@orasi\.com$/)
+      filter = Net::LDAP::Filter.eq("mail", employee_email)
+      treebase = "dc=orasi, dc=com"
+      @username = ldap.search(
+          base: treebase,
+          filter: filter,
+          attributes: %w[samaccountname]
+        )
+    else 
+      return false
+    end
+    
+  end
+  
+  def employee_searched_username
+    unless @username.empty?
+      @username.first.samaccountname.first
+    else
+      "Not Found, Please Check If Employee's Email Is Entered Correctly"
+    end
+  end
+  
   def display_name
     self.first_name.capitalize + " " + self.last_name.capitalize
   end
@@ -344,10 +378,10 @@ class Employee < ActiveRecord::Base
 
   def pdo_taken(on_date, type, id=nil)
     case type
-    when "Vacation" then vacation_days_taken(on_date, id=nil)
-    when "Floating Holiday" then floating_holidays_taken(on_date, id=nil)
-    when "Sick" then sick_days_taken(on_date, id=nil)
-    else raise Exception
+    when 'Vacation' then vacation_days_taken(on_date, id=nil)
+    when 'Floating Holiday' then floating_holidays_taken(on_date, id=nil)
+    when 'Sick' then sick_days_taken(on_date, id=nil)
+    else fail ArgumentError, "Invalid PDO type #{type}"
     end
   end
 

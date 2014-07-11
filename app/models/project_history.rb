@@ -24,7 +24,7 @@ class ProjectHistory < ActiveRecord::Base
         errors.add(:roll_on_date, "is before the minimum date of #{minimum_date}.")
       end
       unless maximum_date > roll_on_date
-        errors.add(:roll_on_date, "is after the maximum date of #{minimum_date}.")
+        errors.add(:roll_on_date, "is after the maximum date of #{maximum_date}.")
       end
     end
     

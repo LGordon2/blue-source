@@ -1,6 +1,14 @@
 class Vacation < ActiveRecord::Base
   include VacationHelper
   
+  scope :vacations_in_range, ->(start_date,end_date) do 
+    where(%Q(
+       (vacations.start_date BETWEEN :filter_start_date and :filter_end_date) or
+       (vacations.end_date BETWEEN :filter_start_date and :filter_end_date) or
+       (:filter_start_date BETWEEN vacations.start_date and vacations.end_date)
+     ),filter_start_date: start_date, filter_end_date: end_date)
+  end
+  
   belongs_to :employee
   belongs_to :manager, class_name: "Employee"
   
@@ -44,7 +52,11 @@ class Vacation < ActiveRecord::Base
       return business_days
     end
   end
-  
+
+  def pending?
+    self.status == "Pending"
+  end
+
   private
   
   def vacation_not_added_before_start_date
@@ -82,7 +94,7 @@ class Vacation < ActiveRecord::Base
     
     (start_date..end_date).each do |date|
       start_date_count = (half_day and date == end_date) ? 0.5 : 1
-      days_taken = Employee.find(employee_id).vacations.where("(start_date >= :date and start_date <= :date) or (end_date >= :date and end_date <= :date)",date: date).where.not(id: id).inject(start_date_count) do |sum, v|
+      days_taken = Employee.find(employee_id).vacations.vacations_in_range(date,date).where.not(id: id).inject(start_date_count) do |sum, v|
         sum + ((v.end_date == date and v.half_day) ? 0.5 : 1)
       end
       return errors.add(:date_range, "includes date already included for PDO.") if days_taken > 1

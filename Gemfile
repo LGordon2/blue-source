@@ -4,8 +4,11 @@ source 'https://rubygems.org'
 gem 'rails', '>= 4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :group => [:test, :production]
-gem 'mysql', group: :development
+gem 'sqlite3', group: [:development, :test, :production]
+#gem 'mysql', group: :development
+
+gem 'simplecov', group: :test
+gem 'coveralls', require: false
 
 # Use postgres for staging
 gem 'pg', :group => :staging
@@ -55,4 +58,4 @@ gem 'unicorn', group: :staging
 # gem 'capistrano', group: :development
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+gem 'debugger', group: [:development, :test]

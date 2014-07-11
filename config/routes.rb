@@ -39,6 +39,8 @@ BlueSource::Application.routes.draw do
   get "logout", to: "welcome#logout", as: :logout
   post "login", to: "welcome#validate", as: :check_login
   post "issue", to: "welcome#issue", as: :issue
+  post "search", to: "welcome#search_employee", as: :search
+  post "login_issue", to: "welcome#login_issue", as: :login_issue
   
   #Directory
   resource :directory, only: [:show], controller: "directory" do
@@ -47,6 +49,7 @@ BlueSource::Application.routes.draw do
   
   resource :calendar, only: [:index] do 
      get '/', to: 'calendar#index'
+     get '/report', to: 'calendar#report'
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

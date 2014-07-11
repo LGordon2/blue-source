@@ -1,4 +1,5 @@
 class VacationsController < ApplicationController
+  before_action :require_login
   before_action :require_manager_login, except: [:view, :requests, :cancel]
 
   before_action :set_vacation, only: [:destroy, :update, :cancel]
@@ -107,7 +108,11 @@ class VacationsController < ApplicationController
   end
 
   def send_confirmation_email
-     VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver unless params["confirm"].blank?
+    if params["confirm"].present?
+      VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver
+    elsif @employee.manager.present?
+      VacationRequestMailer.cancel_email(current_user, @employee.manager, @vacation).deliver
+    end
   end
 
   def set_fiscal_year_and_vacations
