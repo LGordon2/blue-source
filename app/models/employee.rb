@@ -9,14 +9,14 @@ class Employee < ActiveRecord::Base
   has_many :subordinates, class_name: "Employee", foreign_key: :manager_id
   has_many :project_members, class_name: "Employee", foreign_key: :team_lead_id
   has_many :vacations
+  has_many :projects, class_name: "ProjectHistory"
+  has_many :reports
   belongs_to :manager, class_name: "Employee"
   belongs_to :team_lead, class_name: "Employee"
-  has_many :projects, class_name: "ProjectHistory"
   belongs_to :department
   belongs_to :employee_title, class_name: "Title", foreign_key: :title_id
   belongs_to :title
   has_one :area, through: :department
-  has_many :reports
 
   #Validations
   before_validation :set_standards_for_user
@@ -388,7 +388,7 @@ class Employee < ActiveRecord::Base
   private
 
   def _pdo_taken(on_date, type, id=nil)
-    on_date = Date.new(self.start_date.year,2,28) if on_date.leap? and on_date.month == 2 and on_date.day==29
+    on_date = Date.new(self.start_date.year, 2, 28) if on_date.leap? && on_date.month == 2 && on_date.day==29
 
     year = Vacation.calculate_fiscal_year(on_date)
     pdo_days = 0.0
