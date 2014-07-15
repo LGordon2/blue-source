@@ -48,9 +48,6 @@ gem 'bcrypt-ruby'
 # Use LDAP for authentication
 gem 'net-ldap'
 
-#Encryption
-gem 'symmetric-encryption', group: :production
-
 # Use unicorn as the app server
 gem 'unicorn', group: :staging
 
