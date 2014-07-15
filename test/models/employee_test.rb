@@ -59,9 +59,9 @@ class EmployeeTest < ActiveSupport::TestCase
     assert_operator 10, "<=", employee.max_vacation_days
   end
   
-  test "employee should be allowed to have start year on leap year day" do
+  test 'employee should be allowed to have start year on leap year day' do
     e = employees(:consultant)
-    e.email = "bob.barker.2@orasi.com"
+    e.email = 'bob.barker.2@orasi.com'
     e.start_date = Date.new(2012,2,29)
     e.save!
   end

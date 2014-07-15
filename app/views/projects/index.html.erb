@@ -19,7 +19,7 @@
 		<input type="checkbox" name="options" id="option1">Show Inactives</label>
 </div>
 <% end %>
-<% if current_user.is_upper_management? %>
+<% if current_user.upper_management? %>
 <div class="btn-group">
 	<%= button_tag "Add", class: "btn btn-default", data: {toggle: "modal", target: "#modal_1"} %>
 </div>

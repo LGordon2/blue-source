@@ -87,15 +87,15 @@ class ProjectsController < ApplicationController
   end
   
   def project_params
-    params.require(:project).permit(:name, :start_date, :end_date, :status, :client_partner_id, :memo) if current_user.is_upper_management?
+    params.require(:project).permit(:name, :start_date, :end_date, :status, :client_partner_id, :memo) if current_user.upper_management?
   end
   
   def project_lead_ids
-    params.require(:project).permit(leads: []) if current_user.is_upper_management?
+    params.require(:project).permit(leads: []) if current_user.upper_management?
   end
   
   def validate_can_edit_projects
-    unless current_user.is_upper_management?
+    unless current_user.upper_management?
       redirect_to :back, flash: {error: "You do not have permission to edit projects."}
       return
     end

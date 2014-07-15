@@ -63,7 +63,7 @@
 							<%= link_to 'Directory', :directory %>
 						</li>
 						<li>
-							<%= link_to "Projects", :projects if current_user.is_manager_or_higher? %>
+							<%= link_to "Projects", :projects if current_user.manager_or_higher? %>
 						</li>
 						<li>
 							<%= link_to current_user.role.in?(['Base']) ? "My Information" : "Employees", current_user.role.in?(['Base']) ? view_employee_vacations_path(current_user) : :root %>
