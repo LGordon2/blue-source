@@ -5,6 +5,7 @@
 # property set.  Don't declare `role :all`, it's a meta role.
 
 role :app, %w{deploy@perrybox}
+role :web, %w{deploy@perrybox}
 
 
 # Extended Server Syntax
@@ -13,7 +14,7 @@ role :app, %w{deploy@perrybox}
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'perrybox', user: 'deploy', roles: %w{app}
+server 'perrybox', user: 'deploy', roles: %w{web app}
 
 
 # Custom SSH Options
