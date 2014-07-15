@@ -19,13 +19,13 @@ BlueSource Team:
 
 # Installation 
 
-## Minimum Requirements - (mac)
+## Minimum Requirements - (Mac)
 1. **Ruby:** The language that the Rails framework runs on. 
 2. **Rails:** The framework that will be used to run the BlueSource application.
 3. **Text editor or IDE (Eclipse):** Any text editor will do, it'll just be used to edit files (I'm currently using Eclipse with an Aptana plugin, let me know if you want to setup eclipse). 
 4. **Github account:** Github is used for version control and pulling the code down from the website. 
 
-## Setup - (mac)
+## Setup - (Mac)
 
 First install ruby using RVM (Ruby Version Manager). This will help manage your projects easier. 
 To do this, open terminal and type:
