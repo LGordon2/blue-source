@@ -104,6 +104,15 @@ class ApiControllerTest < ActionController::TestCase
     assert_not_empty JSON.parse(@response.body)['error']
   end
 
+  test 'should not exception for manager with valid login if employee does not have manager' do
+    @request.headers['Authorization'] = "Basic #{get_valid_encoded_string(@users.first)}"
+    assert employees(:director).manager.blank?
+    assert_nothing_raised do
+      get :manager, params_with_user(:director), { current_user_id: employees(:consultant) }
+    end
+    assert_response :success
+  end
+
 
   private
 
@@ -119,8 +128,8 @@ class ApiControllerTest < ActionController::TestCase
     Base64.encode64("#{user['username']}#{inserted_string}:#{user['password']}").chomp
   end
 
-  def params_with_user
-    { format: :json, q: employees(:consultant).username }
+  def params_with_user(symbol = :consultant)
+    { format: :json, q: employees(symbol).username }
   end
 
   def params_with_unknown_user
