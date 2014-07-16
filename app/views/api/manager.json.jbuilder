@@ -1,0 +1,1 @@
+json.extract! @employee.manager, :first_name, :last_name, :username

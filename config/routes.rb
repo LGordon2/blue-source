@@ -1,8 +1,12 @@
 BlueSource::Application.routes.draw do
+  #BlueSource API
+  get "api/subordinates"
+  get "api/manager"
+
   resources :titles
 
-  get "admin/index"
   #Admin
+  get "admin/index"
   namespace :admin do
     resources :departments, only: :index
     resources :titles
