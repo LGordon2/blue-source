@@ -1,3 +1,4 @@
+# rubocop:disable Style/LineLength
 # Semi open API controller for BlueSource
 class ApiController < ApplicationController
   before_action :initialize_errors_array
@@ -49,7 +50,7 @@ class ApiController < ApplicationController
   end
 
   def authenticate
-    authenticate_or_request_with_http_basic do |username, password|
+    authenticate_or_request_with_http_basic('BlueSource') do |username, password|
       @users.include?('username' => username, 'password' => password)
     end
   end
