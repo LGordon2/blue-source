@@ -124,7 +124,7 @@ class ApiControllerTest < ActionController::TestCase
 
   private
 
-  def response_includes_employee?(employee, select = %w(username first_name last_name))
+  def response_includes_employee?(employee, select = %w(username first_name last_name location))
     JSON.parse(@response.body).include?(employee.attributes.select { |k, _| k.in?(select) })
   end
 
