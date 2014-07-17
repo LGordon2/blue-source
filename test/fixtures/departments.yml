@@ -2,7 +2,11 @@
 
 rural:
   name: "Rural"
-  department_id: services.id
+  parent_department: services
 
 services:
   name: "Services"
+
+mobile:
+  name: 'Mobile'
+  parent_department: services

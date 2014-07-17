@@ -15,13 +15,9 @@ class Department < ActiveRecord::Base
   end
   
   def above? other_department
-    if other_department.blank?
-      return false
-    end
-    
-    if other_department == self
-      return true
-    end
+    return false if other_department.blank?
+
+    return true if other_department == self
     
     self.above? other_department.parent_department
   end
