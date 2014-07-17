@@ -10,9 +10,9 @@ class VacationsControllerTest < ActionController::TestCase
     assert @consultant.save
     @consultant2 = employees(:consultant2)
     assert @consultant2.save
-    @director = employees(:director)
+    @director = employees(:upper_manager)
     assert @director.save
-    @admin = employees(:admin)
+    @admin = employees(:department_admin)
     assert @admin.save
     @vacation = vacations(:one)
     @vacation.manager = @manager

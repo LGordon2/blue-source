@@ -108,17 +108,17 @@ class ApiControllerTest < ActionController::TestCase
 
   test 'should not exception for manager with valid login if employee does not have manager' do
     @request.headers['Authorization'] = "Basic #{get_valid_encoded_string(@users.first)}"
-    assert employees(:director).manager.blank?
+    assert employees(:upper_manager).manager.blank?
     assert_nothing_raised do
-      get :manager, params_with_user(:director), current_user_id: employees(:consultant)
+      get :manager, params_with_user(:upper_manager), current_user_id: employees(:consultant)
     end
     assert_response :success
   end
 
   test 'subordinates must not contain self' do
     @request.headers['Authorization'] = "Basic #{get_valid_encoded_string(@users.first)}"
-    get :subordinates, format: :json, q: employees(:director).username
-    assert_not response_includes_employee?(employees(:director)), 'Subordinates includes employee'
+    get :subordinates, format: :json, q: employees(:upper_manager).username
+    assert_not response_includes_employee?(employees(:upper_manager)), 'Subordinates includes employee'
     assert_response :success
   end
 

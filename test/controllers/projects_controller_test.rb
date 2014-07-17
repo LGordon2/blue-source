@@ -17,7 +17,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
   
   test "director can view projects" do
-    get :index, {format: :json}, session = {current_user_id: employees(:director).id}
+    get :index, {format: :json}, session = {current_user_id: employees(:upper_manager).id}
     assert_response :success
   end
 end
