@@ -169,7 +169,7 @@ class Employee < ActiveRecord::Base
   # We can view the employee if:
   # * We are the employee
   # * We are above the employee
-  # * We are a upper manager/department/area head/admin in the same department/area of the employee
+  # * We are a upper manager/department head/admin in the same department of the employee
   # * We are a company admin
   def can_view?(other_employee)
     # We are the employee
@@ -178,22 +178,20 @@ class Employee < ActiveRecord::Base
     # We are above the employee
     return true if above? other_employee
 
-    # We are a upper manager/department/area head/admin in the same department/area of the employee
-    if other_employee.department.present?
-      if other_employee.department == department && role.in?(['Upper Management'])
-        return true
-      elsif (!department.blank? && department.above?(other_employee.department)) && role.in?(['Department Head', 'Department Admin'])
-        return true
-      end
-    end
-
     # We are a company admin
     return true if role == 'Company Admin'
+
+    # We are a upper manager/department head/admin in the same department of the employee
+    return false unless other_employee.department.present?
+
+    return true if other_employee.department == department && role.in?(['Upper Management'])
+
+    return true if (department.present? && department.above?(other_employee.department)) && role.in?(['Department Head', 'Department Admin'])
 
     false
   end
 
-  # We can view the employee if:
+  # We can edit the employee if:
   # * We are above the employee
   # * We are upper management/department head and are in the same department as the employee
   # * We are an area head/admin and are in the same area as the employee
