@@ -3,7 +3,7 @@ class CreateReports < ActiveRecord::Migration
     create_table :reports do |t|
       t.string :name
       t.text :query_data
-      
+
       t.timestamps
     end
   end

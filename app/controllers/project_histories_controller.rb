@@ -1,60 +1,60 @@
 class ProjectHistoriesController < ApplicationController
   before_action :require_login
 
-  #Sets the employee
+  # Sets the employee
   before_action :set_employee
   before_action :can_edit_employee
 
   before_action :set_project_history, only: [:show, :destroy, :update]
 
   def index
-    @default_scheduled_hours_start = "8:30 AM"
-    @default_scheduled_hours_end = "5:30 PM"
+    @default_scheduled_hours_start = '8:30 AM'
+    @default_scheduled_hours_end = '5:30 PM'
 
     order_field = case params[:sort]
-    when "project_name"
-      "projects.name"
+    when 'project_name'
+      'projects.name'
     else
       params[:sort]
     end
 
     @project_histories = @employee.projects.joins(:project).joins('left join employees on employees.id = lead_id')
 
-    order_field = "employees.first_name" if order_field == 'lead'
+    order_field = 'employees.first_name' if order_field == 'lead'
 
     unless order_field.blank?
-      @project_histories = @project_histories.order("#{order_field} #{params[:rev] == 'true' ? "DESC" : "ASC"}")
+      @project_histories = @project_histories.order("#{order_field} #{params[:rev] == 'true' ? 'DESC' : 'ASC'}")
     end
   end
 
   def create
     @project_history = ProjectHistory.new(project_history_params)
     if @project_history.save
-      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully created.", created: @project_history.id}
+      redirect_to employee_project_histories_path(@employee), flash: { success: 'Project history successfully created.', created: @project_history.id }
     else
-      redirect_to employee_project_histories_path(@employee), flash: {error: @project_history.errors.full_messages}
+      redirect_to employee_project_histories_path(@employee), flash: { error: @project_history.errors.full_messages }
     end
   end
 
   def update
     if @project_history.update(project_history_params)
-      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully updated.", created: @project_history.id}
+      redirect_to employee_project_histories_path(@employee), flash: { success: 'Project history successfully updated.', created: @project_history.id }
     else
-      redirect_to employee_project_histories_path(@employee), flash: {error: @project_history.errors.full_messages}
+      redirect_to employee_project_histories_path(@employee), flash: { error: @project_history.errors.full_messages }
     end
   end
 
   def show
     respond_to do |format|
-      format.json {render json: @project_history}
+      format.json { render json: @project_history }
     end
   end
 
   def destroy
     if @project_history.destroy
-      redirect_to employee_project_histories_path(@employee), flash: {success: "Project history successfully deleted."}
+      redirect_to employee_project_histories_path(@employee), flash: { success: 'Project history successfully deleted.' }
     else
-      redirect_to employee_project_histories_path(@employee), flash: {error: @project_history.errors.full_messages}
+      redirect_to employee_project_histories_path(@employee), flash: { error: @project_history.errors.full_messages }
     end
   end
 
@@ -69,11 +69,11 @@ class ProjectHistoriesController < ApplicationController
   end
 
   def project_history_params
-    which_params = params[:id].blank? ? "new" : params[:id]
-    params[which_params].require(:project_history).permit(:project_id,:lead_id,:roll_on_date,:roll_off_date,:scheduled_hours_start,:scheduled_hours_end,:memo).merge(employee_id: @employee.id)
+    which_params = params[:id].blank? ? 'new' : params[:id]
+    params[which_params].require(:project_history).permit(:project_id, :lead_id, :roll_on_date, :roll_off_date, :scheduled_hours_start, :scheduled_hours_end, :memo).merge(employee_id: @employee.id)
   end
 
   def can_edit_employee
-    redirect_to :root, flash: {error: "You do not have permission to edit this employee."} unless current_user.can_edit? @employee
+    redirect_to :root, flash: { error: 'You do not have permission to edit this employee.' } unless current_user.can_edit? @employee
   end
 end

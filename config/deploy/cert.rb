@@ -7,15 +7,13 @@
 # role :app, %w{deploy@localhost}
 # role :web, %w{deploy@localhost}
 
-
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server definition into the
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server 'localhost', user: 'deploy', roles: %w{web app}
-
+server 'localhost', user: 'deploy', roles: %w(web app)
 
 # Custom SSH Options
 # ==================

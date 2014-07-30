@@ -1,9 +1,9 @@
 class VacationRequestMailer < ActionMailer::Base
-  default from: "bluesource@orasi.com"
+  default from: 'bluesource@orasi.com'
 
   before_action :attach_logo
 
-  def request_email(from_user, to_manager, vacation, memo, cc=nil)
+  def request_email(from_user, to_manager, vacation, memo, cc = nil)
     @memo = memo
     @from_user = from_user
     @to_manager = to_manager
@@ -17,10 +17,10 @@ class VacationRequestMailer < ActionMailer::Base
     @from_manager = from_manager
     @vacation = vacation
     @accepted = accepted
-    @confirm_status = accepted ? "Accepted" : "Rejected"
+    @confirm_status = accepted ? 'Accepted' : 'Rejected'
     mail(to: @to_employee.email, subject: "[BlueSource] #{@from_manager.display_name}, #{request_type(to_employee, vacation)} #{@confirm_status.capitalize}")
   end
-  
+
   def cancel_email(from_employee, to_manager, vacation)
     @from_employee = from_employee
     @to_manager = to_manager
@@ -31,11 +31,11 @@ class VacationRequestMailer < ActionMailer::Base
   private
 
   def attach_logo
-    attachments.inline['logo.png'] = File.read(Rails.root.to_path+"/app/assets/images/logo.png")
+    attachments.inline['logo.png'] = File.read(Rails.root.to_path + '/app/assets/images/logo.png')
   end
 
   def request_type(employee, vacation)
-    unless vacation.reason.blank? or employee.status != "Contractor"
+    unless vacation.reason.blank? or employee.status != 'Contractor'
       vacation.reason
     else
       vacation.vacation_type

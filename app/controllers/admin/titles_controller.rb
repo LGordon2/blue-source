@@ -29,7 +29,7 @@ class Admin::TitlesController < ApplicationController
 
     respond_to do |format|
       if @title.save
-        format.html { redirect_to admin_titles_path, flash: {success: "Title successfully created."} }
+        format.html { redirect_to admin_titles_path, flash: { success: 'Title successfully created.' } }
         format.json { render action: 'show', status: :created, location: @title }
       else
         format.html { render action: 'new' }
@@ -43,7 +43,7 @@ class Admin::TitlesController < ApplicationController
   def update
     respond_to do |format|
       if @title.update(title_params)
-        format.html { redirect_to admin_titles_path(@title), flash: {success: "Title successfully updated."} }
+        format.html { redirect_to admin_titles_path(@title), flash: { success: 'Title successfully updated.' } }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -57,25 +57,25 @@ class Admin::TitlesController < ApplicationController
   def destroy
     @title.destroy
     respond_to do |format|
-      format.html { redirect_to admin_titles_url, flash: {success: "Title successfully deleted."} }
+      format.html { redirect_to admin_titles_url, flash: { success: 'Title successfully deleted.' } }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_title
-      @title = Title.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_title
+    @title = Title.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def title_params
-      params.require(:title).permit(:name)
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def title_params
+    params.require(:title).permit(:name)
+  end
+
+  def must_be_company_admin
+    unless current_user.role == 'Company Admin' || current_user.sys_admin?
+      redirect_to :root, flash: { error: 'You do not have sys admin privileges.' }
     end
-    
-    def must_be_company_admin
-      unless current_user.role == "Company Admin" or current_user.sys_admin?
-        redirect_to :root, flash: {error: "You do not have sys admin privileges."}
-      end
-    end
+  end
 end
