@@ -1,9 +1,21 @@
 <% content_for :table do %>
 <tr>
-	<th><%= link_to "Project Name", "#", 'ng-click' => "predicate='name'; reverse=!reverse; search()" %></th>
-	<th><%= link_to "Client Partner", "#", 'ng-click' => "predicate='client_partner.display_name';  reverse=!reverse; search() "%>
-	<th><%= link_to "Team Leads", "#", 'ng-click' => "predicate='all_leads';  reverse=!reverse; search() "%></th>
-	<th><%= link_to "Status", "#", 'ng-click' => "predicate='status'; reverse=!reverse; search()" %></th>
+	<th>
+      <%= link_to "Project Name", "#", 'ng-click' => "predicate='name'; reverse=!reverse; search()" %>
+      <%= render partial: "application/ascending_descending_icon", locals: {predicate: "name", numeric: false} %>
+    </th>
+	<th>
+      <%= link_to "Client Partner", "#", 'ng-click' => "predicate='client_partner.display_name';  reverse=!reverse; search() "%>
+      <%= render partial: "application/ascending_descending_icon", locals: {predicate: "client_partner.display_name", numeric: false} %>
+    </th>
+	<th>
+      <%= link_to "Team Leads", "#", 'ng-click' => "predicate='all_leads';  reverse=!reverse; search() "%>
+      <%= render partial: "application/ascending_descending_icon", locals: {predicate: "all_leads", numeric: false} %>
+    </th>
+	<th>
+      <%= link_to "Status", "#", 'ng-click' => "predicate='status'; reverse=!reverse; search()" %>
+      <%= render partial: "application/ascending_descending_icon", locals: {predicate: "status", numeric: false} %>
+    </th>
 </tr>
 <tr ng-repeat="project in pagedResources[currentPage] ">
 	<td><%= link_to '{{project.name}}', "projects/{{project.id}}"%></td>

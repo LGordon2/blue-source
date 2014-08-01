@@ -7,13 +7,34 @@
     <% irc_pic = asset_path "irc.png" %>
 
     <tr ng-init="role='<%= current_user.role %>';filteredDepartment=''">
-      <th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
-      <th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
-      <th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.last_name'; reverse=!reverse; search()" %></th>
-      <th ng-show='filteredDepartment==""'><%= link_to "Department", "#", "ng-click" => "predicate='department.name'; reverse=!reverse; search()" %></th>
-      <th><%= link_to "Office Phone", "#", 'ng-click' => "predicate='office_phone'; reverse=!reverse; search()" %></th>
-      <th><%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()" %></th>
-      <th><%= link_to "IM Name", "#", 'ng-click' => "predicate='im_name'; reverse=!reverse; search()" %></th>
+      <th>
+        <%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "first_name", numeric: false} %>
+      </th>
+      <th>
+        <%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "last_name", numeric: false} %>
+      </th>
+      <th>
+        <%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.first_name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "manager.first_name", numeric: false} %>
+      </th>
+      <th ng-show='filteredDepartment==""'>
+        <%= link_to "Department", "#", "ng-click" => "predicate='department.name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "department.name", numeric: false} %>
+      </th>
+      <th>
+        <%= link_to "Office Phone", "#", 'ng-click' => "predicate='office_phone'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "office_phone", numeric: true} %>
+      </th>
+      <th>
+        <%= link_to "Cell Phone", "#", 'ng-click' => "predicate='cell_phone'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "cell_phone", numeric: true} %>
+      </th>
+      <th>
+        <%= link_to "IM Name", "#", 'ng-click' => "predicate='im_name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: {predicate: "im_name", numeric: false} %>
+      </th>
     </tr>
     <tr ng-repeat="employee in pagedResources[currentPage]">
       <td><a href="mailto:{{employee.email}}">{{employee.first_name}}</a></td>

@@ -18,7 +18,9 @@ $orasi_blue: #357bb9;
 span.errormsg {
   color: red;
 }
-
+.orasi-blue{
+  color: $orasi_blue;
+}
 input.has-error {
   border: 1px solid red;
 }

@@ -51,6 +51,9 @@ gem 'net-ldap'
 # Use unicorn as the app server
 gem 'unicorn', group: :staging
 
+# Haml support!
+gem 'haml-rails'
+
 # Use Capistrano for deployment
 group :development do
   gem 'capistrano'

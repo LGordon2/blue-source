@@ -1,19 +1,39 @@
 <% content_for :table do %>
 <tr ng-init="role='<%=current_user.role%>'">
-	<th><%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %></th>
-	<th><%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %></th>
-	<th><%= link_to "Title", "#", 'ng-click' => "predicate='title'; reverse=!reverse; search()"%></th>
-  <th><%= link_to "Supervisor", "#", "ng-click" => "predicate='manager.first_name'; reverse=!reverse; search()" %></th>
-  <th><%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()" %></th>
-  <th><%= link_to "Location", "#", 'ng-click' => "predicate='location'; reverse=!reverse; search()"%></th>
+	<th>
+        <%= link_to "First Name", "#", 'ng-click' => "predicate='first_name'; reverse=!reverse; search()" %>
+        <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'first_name', numeric: false } %>
+    </th>
+	<th>
+      <%= link_to "Last Name", "#", 'ng-click' => "predicate='last_name'; reverse=!reverse; search()" %>
+      <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'last_name', numeric: false } %>
+    </th>
+	<th>
+      <%= link_to "Title", "#", 'ng-click' => "predicate='title'; reverse=!reverse; search()"%>
+      <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'title', numeric: false } %>
+    </th>
+	<th>
+      <%= link_to "Supervisor", "#", 'ng-click' => "predicate='manager.first_name'; reverse=!reverse; search()"%>
+      <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'manager.first_name', numeric: false } %>
+    </th>
+	<th>
+      <%= link_to "Project", "#", 'ng-click' => "predicate='project.name'; reverse=!reverse; search()"%>
+      <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'project.name', numeric: false } %>
+    </th>
+	<th>
+      <%= link_to "Location", "#", 'ng-click' => "predicate='location'; reverse=!reverse; search()"%>
+      <%= render partial: "application/ascending_descending_icon", locals: { predicate: 'location', numeric: false } %>
+    </th>
 </tr>
 <tr ng-repeat="employee in pagedResources[currentPage]">
 	<td><%= link_to '{{employee.first_name}}', "employees/{{employee.id}}"%></td>
 	<td><%= link_to '{{employee.last_name}}', "employees/{{employee.id}}"%></td>
 	<td>{{employee.title}}</td>
 	<td><%= link_to '{{employee.manager.display_name}}', "employees/{{employee.manager.id}}"%></td>
-	<td ng-show="employee.project.name!=null"><%= link_to '{{employee.project.name}}', "projects/{{employee.project.id}}"%></td>
-	<td ng-hide="employee.project.name!=null">Not billable</td>
+	<td>
+      <span ng-if="employee.project.id != null"><%= link_to '{{employee.project.name}}', "projects/{{employee.project.id}}" %></span>
+      <span ng-if="employee.project.id == null">{{employee.project.name}}</span>
+    </td>
 	<td>{{employee.location}}</td>
 </tr>
 <% end %>
