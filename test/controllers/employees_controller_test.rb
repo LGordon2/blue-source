@@ -52,4 +52,48 @@ class EmployeesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'manager should not be able to create new employee' do
+    employee = employees(:consultant)
+    post :create, { employee: { username: employee.username,
+                                first_name: employee.first_name,
+                                last_name: employee.last_name,
+                                email: employee.email,
+                                role: employee.role,
+                                department: employee.department,
+                                status: employee.status },
+                    id: employees(:consultant).id }, { current_user_id: employees(:manager).id }
+    assert_redirected_to :root
+    assert_not_nil flash[:error]
+  end
+
+  test 'admin should be able to create new employee' do
+    post :create, { employee: { username: 'michael.jordan',
+                                first_name: 'Michael',
+                                last_name: 'Jordan',
+                                email: 'michael.jordon@orasi.com',
+                                role: 'Base',
+                                department: 'rural',
+                                status: 'Permanent',
+                                start_date: '2014-08-5' } },
+                  { current_user_id: employees(:company_admin).id }
+    assert_redirected_to :root
+    assert_not_nil flash[:success]
+  end
+
+  test 'admin cannot create employee duplicate employee' do
+    employee = employees(:consultant)
+    post :create, { employee: { username: employee.username,
+                                first_name: employee.first_name,
+                                last_name: employee.last_name,
+                                email: employee.email,
+                                role: employee.role,
+                                department: employee.department,
+                                status: employee.status,
+                                start_date: employee.start_date } },
+                  { current_user_id: employees(:company_admin).id }
+    assert_redirected_to :root
+    assert_not_nil flash[:error]
+  end
+
+
 end

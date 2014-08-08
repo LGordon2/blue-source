@@ -42,9 +42,10 @@ class Admin::TitlesControllerTest < ActionController::TestCase
     assert_redirected_to admin_titles_path
   end
 
-  test 'user is not admin should redirect to root with flash message' do
+  test 'user should not be able to see titles' do
     get :index, nil, {current_user_id: employees(:consultant).id}
     assert_redirected_to :root
+    assert_not_nil flash[:error]
   end
 
 end
