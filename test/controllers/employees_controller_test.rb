@@ -51,4 +51,5 @@ class EmployeesControllerTest < ActionController::TestCase
     assert !employees(:manager).subordinates.empty?
     assert_response :success
   end
+
 end

@@ -223,4 +223,33 @@ class EmployeeTest < ActiveSupport::TestCase
     company_admin = employees(:company_admin)
     assert company_admin.can_view?(consultant)
   end
+
+  test 'employee can not login without password' do
+    employee_model = Employee.new
+    assert_not employee_model.validate_against_ad('')
+  end
+
+  test 'employee can login with username and password in development environment' do
+    Rails.env = 'development'
+    employee1 = Employee.create(username: 'michael.jordan')
+    assert employee1.validate_against_ad('space_jam')
+    Rails.env = 'test'
+  end
+
+  test 'employee cannot login with incorrect credentials in production environment' do
+    Rails.env = 'production'
+    employee1 = Employee.create(username: 'kevin.bacon')
+    assert_not employee1.validate_against_ad('foot_loose')
+    Rails.env = 'test'
+  end
+
+  test 'admin cannot search for employee username without their password' do
+    admin1 = Employee.create(username: 'kevin.spacey')
+    assert_not admin1.search_validate('michael.jordan@orasi.com', '')
+  end
+
+  test 'admin cannot search for employee username with incorrect password' do
+    admin1 = Employee.create(username: 'kevin.spacey')
+    assert_not admin1.search_validate('will.ferrel@orasi.com', 'horrible_bosses')
+  end
 end
