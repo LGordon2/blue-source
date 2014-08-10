@@ -1,5 +1,5 @@
 json.array!(current_user.all_subordinates) do |employee|
-  json.extract! employee, :id, :manager_id, :status
+  json.extract! employee, :id, :status
   json.first_name employee.first_name.capitalize
   json.last_name employee.last_name.capitalize
   json.display_name employee.display_name
