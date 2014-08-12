@@ -29,7 +29,7 @@ First install ruby using RVM (Ruby Version Manager). This will help manage your 
 To do this, open terminal and type:
 
 ```bash
-$ \curl -sSL https://get.rvm.io | bash -s stable
+$ curl -sSL https://get.rvm.io | bash -s stable
 $ rvm install 2.1.1
 $ ruby -v 
 ```
