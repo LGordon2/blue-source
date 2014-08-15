@@ -5,13 +5,31 @@
 <div class="table-responsive">
 <table class="table table-responsive table-bordered">
 	<tr>
-		<th><%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true', fy: params[:fy])  %></th>
-		<th><%= link_to 'Start Date',view_employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true', fy: params[:fy])  %></th>
-		<th><%= link_to 'End Date',view_employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true', fy: params[:fy])  %></th>
-		<th><%= link_to 'Total Business Days',view_employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true', fy: params[:fy])  %></th>
-		<th><%= link_to 'Type',view_employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true', fy: params[:fy])  %></th>
+		<th>
+          <%= link_to 'Date Requested',view_employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true', fy: params[:fy])  %>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'date_requested', forward: params[:rev]!='true', numeric: true} %>
+        </th>
+		<th>
+          <%= link_to 'Start Date',view_employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true', fy: params[:fy])  %>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'start_date', forward: params[:rev]!='true', numeric: true} %>
+        </th>
+		<th>
+          <%= link_to 'End Date',view_employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true', fy: params[:fy])  %>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'end_date', forward: params[:rev]!='true', numeric: true} %>
+        </th>
+		<th>
+          <%= link_to 'Total Business Days',view_employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true', fy: params[:fy])  %>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'business_days', forward: params[:rev]!='true', numeric: true} %>
+        </th>
+		<th>
+          <%= link_to 'Type',view_employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true', fy: params[:fy])  %>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'vacation_type', forward: params[:rev]!='true', numeric: false} %>
+        </th>
 		<% if @any_with_pending_status %>
-		<th><%= link_to "Status",view_employee_vacations_path(@employee, sort: :status, rev: params[:rev]!='true', fy: params[:fy])%></th>
+		<th>
+          <%= link_to "Status",view_employee_vacations_path(@employee, sort: :status, rev: params[:rev]!='true', fy: params[:fy])%>
+          <%= render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'status', forward: params[:rev]!='true', numeric: false} %>
+        </th>
 		<th>Cancel</th>
 		<% end %>
 	</tr>

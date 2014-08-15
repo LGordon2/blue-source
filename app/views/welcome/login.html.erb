@@ -12,6 +12,40 @@
 	</div>
 	<div class="form-group">
 		<%= u.submit 'Login', class: "btn btn-primary", "data-loading-text" => "Logging in..." %>
+		<%= link_to "Can't log in?", "#", id: "login-help-link", data: {toggle: "modal", target: "#login_help_modal"}%>
 	</div>
 </div>
 <% end %>
+
+<div class="modal fade" id="login_help_modal" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#login-help" data-toggle="tab">Help</a>
+					</li>
+					<li>
+						<a href="#login-contact" data-toggle="tab">Contact</a>
+					</li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active" id="login-help">
+						<%= render 'login_help_info' %>
+					</div>
+					
+					<div class="tab-pane" id="login-contact">
+						<%= render 'default_contact_form' %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

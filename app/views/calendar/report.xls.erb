@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <% ["Name","Start Date","End Date","Department","Vacation Type","Business Days"].each do |header| %>
+          <Cell><Data ss:Type="String"><%= header %></Data></Cell>
+        <% end %>
+      </Row>
+    <% @vacations.each do |vacation| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= vacation.employee.display_name %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= vacation.start_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= vacation.end_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= vacation.employee.department.name unless vacation.employee.department.blank? %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= vacation.vacation_type %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= vacation.business_days %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

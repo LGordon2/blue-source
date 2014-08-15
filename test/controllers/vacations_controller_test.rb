@@ -3,15 +3,21 @@ require 'test_helper'
 class VacationsControllerTest < ActionController::TestCase
   def setup
     @manager = employees(:manager)
+    assert @manager.save
     @manager2 = employees(:manager2)
+    assert @manager2.save
     @consultant = employees(:consultant)
+    assert @consultant.save
     @consultant2 = employees(:consultant2)
-    @director = employees(:director)
-    @admin = employees(:admin)
+    assert @consultant2.save
+    @director = employees(:upper_manager)
+    assert @director.save
+    @admin = employees(:department_admin)
+    assert @admin.save
     @vacation = vacations(:one)
     @vacation.manager = @manager
     @vacation.employee = @consultant
-    @vacation.save
+    assert @vacation.save
     
     request.env["HTTP_REFERER"] = root_url()
     @sick_day_params = {vacation: {date_requested: "2013-12-17", business_days: 1, start_date: "2013-12-17", end_date: "2013-12-17", vacation_type: "Sick"}}
@@ -81,8 +87,31 @@ class VacationsControllerTest < ActionController::TestCase
   end
   
   test "manager should be redirected to root when trying to manage own vacation" do
-    manager = employees(:manager)
-    get :index, {employee_id: manager.id}, {current_user_id: manager}
+    get :index, {employee_id: @manager.id}, {current_user_id: @manager}
     assert_redirected_to :root
+  end
+  
+  test 'flash is not nil when navigating to view vacations' do
+    get :view, {employee_id: @consultant.id}
+    assert_not_nil flash[:error]
+  end
+
+  test 'manager should be able to create a vacation for employee' do
+    date = Date.new(2014,07,01)
+    type = Vacation.types.sample
+    reason = "This is a test" if type == 'Other'
+    params = {
+        vacation: {
+          date_requested: date,
+          start_date: date,
+          end_date: date,
+          vacation_type: type,
+          reason: reason
+        },
+        employee_id: @consultant.id
+    }
+
+    post :create, params, { current_user_id: @manager }
+    assert_nil flash[:error]
   end
 end

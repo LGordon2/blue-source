@@ -1,0 +1,26 @@
+<%= form_for :filter, html: {class: "form", role: "form", id: "filter-form"}, url: report_calendar_path, method: :get do |f| %>
+<%= f.label :start_date, class: "control-label" %>
+<%= f.date_field :start_date, class: "form-control", required: true %>
+
+<%= f.label :end_date, class: "control-label" %>
+<%= f.date_field :end_date, class: "form-control", required: true %>
+
+<%= f.label :department, class: "control-label" %>
+<%= f.select :department, Department.all.collect {|d| [d.name, d.id]}, {include_blank: true}, class: "form-control" %>
+
+<div>
+<% [:sick, :vacation, :floating_holiday, :other].each do |vacation_type| %>
+	<%= f.label vacation_type, class: "control-label" %>
+	<%= f.check_box vacation_type %>
+<% end %>
+</div>
+<div>
+  <%= f.label "Include pending?", class: "control-label" %>
+  <%= f.check_box :include_pending %>
+  <% if current_user and current_user.admin? %>
+      <%= f.label "Include reasons?", class: "control-label" %>
+      <%= f.check_box :include_reasons %>
+  <% end %>
+</div>
+<%= f.submit 'Generate Report', class: "btn btn-primary", 'data-loading-text' => "Generating..." %>
+<% end %>

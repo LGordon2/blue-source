@@ -4,8 +4,11 @@ source 'https://rubygems.org'
 gem 'rails', '>= 4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', :group => [:test, :production]
-gem 'mysql', group: :development
+gem 'sqlite3', group: [:development, :test, :production]
+#gem 'mysql', group: :development
+
+gem 'simplecov', group: :test
+gem 'coveralls', require: false
 
 # Use postgres for staging
 gem 'pg', :group => :staging
@@ -45,14 +48,18 @@ gem 'bcrypt-ruby'
 # Use LDAP for authentication
 gem 'net-ldap'
 
-#Encryption
-gem 'symmetric-encryption', group: :production
-
 # Use unicorn as the app server
 gem 'unicorn', group: :staging
 
+# Haml support!
+gem 'haml-rails'
+
 # Use Capistrano for deployment
-# gem 'capistrano', group: :development
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+end
 
 # Use debugger
-# gem 'debugger', group: [:development, :test]
+#gem 'debugger', group: [:development, :test]

@@ -4,7 +4,7 @@ manager:
   first_name: bob
   last_name: barker
   role: "Management"
-  manager: director
+  manager: upper_manager
   status: "Permanent"
   department: rural
 
@@ -17,7 +17,17 @@ consultant:
   status: "Permanent"
   start_date: "2010-12-19"
   department: rural
-  
+
+contractor:
+  username: michael.jordon
+  first_name: michael
+  last_name: jordon
+  role: "Base"
+  manager: manager
+  status: "Contractor"
+  start_date: "2013-12-19"
+  department: rural
+
 manager2:
   username: bob.ross
   first_name: bob
@@ -35,7 +45,7 @@ consultant2:
   status: "Permanent"
   department: rural
 
-director:
+upper_manager:
   username: steve.jobs
   first_name: steve
   last_name: jobs
@@ -43,11 +53,51 @@ director:
   status: "Permanent"
   department: rural
 
-admin:
+upper_manager2:
+  username: perry.thomas
+  first_name: perry
+  last_name: thomas
+  role: 'Upper Management'
+  status: 'Permanent'
+  department: mobile
+
+department_head:
+  username: fred.rogers
+  first_name: fred
+  last_name: rogers
+  role: "Department Head"
+  status: "Permanent"
+  department: rural
+
+department_admin:
   username: bill.gates
   first_name: bill
   last_name: gates
   role: "Department Admin"
   status: "Permanent"
+  department: rural
+  sys_admin: true
+
+services_admin:
+  username: dan.visintainer
+  first_name: dan
+  last_name: visintainer
+  role: 'Department Admin'
+  status: 'Permanent'
+  department: services
+
+company_admin:
+  username: steve.toth
+  first_name: steve
+  last_name: toth
+  role: 'Company Admin'
+  status: 'Permanent'
+
+sys_admin:
+  username: bryan.ball
+  first_name: bryan
+  last_name: ball
+  role: 'Department Admin'
+  status: 'Permanent'
   department: rural
   sys_admin: true

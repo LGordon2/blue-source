@@ -1,6 +1,6 @@
 <% content_for 'panel_title_1' do %>Project Info<% end %>
 <% content_for 'panel_heading_1' do %>
-<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.is_upper_management? %>
+<%= button_tag "Manage", class: "btn btn-default btn-xs pull-right", data: {toggle: "modal", target: "#modal_1"} if current_user.upper_management? %>
 <% end %>
 <% content_for 'panel_body_1' do %>
 <table class="table table-responsive">

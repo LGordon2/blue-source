@@ -155,8 +155,8 @@
 	</tr>
 	<tr>
 		<td>Vacation Days Taken:</td>
-		<td><%= "#{@employee.vacation_days_taken.prettify}/#{@employee.max_vacation_days}" %></td>
-	</tr>
+      <td><%= "#{@employee.vacation_days_taken(Date.new(calculate_fiscal_year)).prettify}/#{@employee.max_vacation_days(Date.current)}" %></td>
+    </tr>
 	<tr>
 		<td>Floating Holidays Taken:</td>
 		<td><%= "#{@employee.floating_holidays_taken.prettify}/#{@employee.max_floating_holidays}" %></td>

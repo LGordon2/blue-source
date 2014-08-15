@@ -2,43 +2,50 @@ require 'test_helper'
 
 class Admin::TitlesControllerTest < ActionController::TestCase
   setup do
-    @title = titles(:one)
+    @title = titles(:consultant)
   end
 
   test "should get index" do
-    get :index, nil, {current_user_id: employees(:admin).id }
+    get :index, nil, {current_user_id: employees(:sys_admin).id }
     assert_response :success
     assert_not_nil assigns(:titles)
   end
 
   test "should get new" do
-    get :new, nil, {current_user_id: employees(:admin).id }
+    get :new, nil, {current_user_id: employees(:sys_admin).id }
     assert_response :success
   end
 
   test "should create title" do
     assert_difference('Title.count') do
-      post :create, {title: { name: "#{@title.name} testing" }}, {current_user_id: employees(:admin).id }
+      post :create, {title: { name: "#{@title.name} testing" }}, {current_user_id: employees(:sys_admin).id }
     end
 
     assert_redirected_to admin_titles_path
   end
 
   test "should get edit" do
-    get :edit, {id: @title}, {current_user_id: employees(:admin).id }
+    get :edit, {id: @title}, {current_user_id: employees(:sys_admin).id }
     assert_response :success
   end
 
   test "should update title" do
-    patch :update, {id: @title, title: { name: @title.name }}, {current_user_id: employees(:admin).id }
+    patch :update, {id: @title, title: { name: @title.name }}, {current_user_id: employees(:sys_admin).id }
     assert_redirected_to admin_titles_path(assigns(:title))
   end
 
   test "should destroy title" do
     assert_difference('Title.count', -1) do
-      delete :destroy, {id: @title}, {current_user_id: employees(:admin).id }
+      delete :destroy, {id: @title}, {current_user_id: employees(:sys_admin).id }
     end
 
     assert_redirected_to admin_titles_path
   end
+
+  test 'user should not be able to see titles' do
+    get :index, nil, {current_user_id: employees(:consultant).id}
+    assert_redirected_to :root
+    assert_not_nil flash[:error]
+  end
+
 end

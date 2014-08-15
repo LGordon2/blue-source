@@ -5,7 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 #one: {}
-# column: value
+#  column: value
 #
 #two: {}
 #  column: value
