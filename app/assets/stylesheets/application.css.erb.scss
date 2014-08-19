@@ -15,165 +15,172 @@
  *= require_self
  */
 $orasi_blue: #357bb9;
-span.errormsg
-{
+span.errormsg {
   color: red;
 }
-input.has-error
-{
+.orasi-blue{
+  color: $orasi_blue;
+}
+input.has-error {
   border: 1px solid red;
 }
-.navbar
-{
+
+.navbar {
   background-color: white;
   margin-bottom: 0px;
 }
-#loading-section
-{
+
+#loading-section {
   text-align: center;
 }
-.bs-docs-nav .navbar-toggle .icon-bar
-{
+
+.bs-docs-nav .navbar-toggle .icon-bar {
   background-color: $orasi_blue;
 }
-.notification-list-group
-{
+
+.notification-list-group {
   width: 100%;
-  @media (min-width: 468px){
+  @media (min-width: 468px) {
     width: 60%;
   }
-  
+
   @media (min-width: 768px) {
     width: 40%;
   }
-  @media (min-width: 1200px){
+  @media (min-width: 1200px) {
     width: 30%;
   }
-  a
-  {
+  a {
     color: $orasi_blue;
   }
 }
 
-.badge-sm
-{
+.badge-sm {
   padding: 1px 7px;
   background-color: $orasi_blue;
 }
-.table
-{
-  td.logo-row
-  {
-    padding-top:6px;
-    padding-bottom:0px;
+
+.table {
+  td.logo-row {
+    padding-top: 6px;
+    padding-bottom: 0px;
   }
 }
-#add_team_lead{
-  margin-bottom:5px;
+
+#add_team_lead {
+  margin-bottom: 5px;
 }
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('<%= asset_path "glyphicons-halflings-regular.eot" %>');
   src: url('<%= asset_path "glyphicons-halflings-regular.eot" %>?#iefix') format('embedded-opentype'), url('<%= asset_path "glyphicons-halflings-regular.woff" %>') format('woff'), url('<%= asset_path "glyphicons-halflings-regular.ttf" %>') format('truetype'), url('<%= asset_path "glyphicons-halflings-regular.svg" %>#glyphicons_halflingsregular') format('svg');
 }
-.navbar
-{
+
+.navbar {
   border-bottom-color: #357bb9;
   border-radius: 0px;
 }
-.header-btn-section
-{
+
+.header-btn-section {
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.radio-btn-label
-{
+
+.radio-btn-label {
   display: inline;
 }
-.nav
-{
-  .glyphicon
-  {
-    font-size:18px;
+
+.nav {
+  .glyphicon {
+    font-size: 18px;
   }
-  
-  a.help-icon:hover, a.help-icon:focus
-  {
-    background-color:rgba(0, 0, 0, 0);
+
+  a.help-icon:hover, a.help-icon:focus {
+    background-color: rgba(0, 0, 0, 0);
     color: rgb(102, 102, 102);
   }
 }
-.navbar-header
-{
-  display:inline;
-  a:hover, a:focus
-  {
-    background-color:rgba(0, 0, 0, 0);
+
+.navbar-header {
+  display: inline;
+  a:hover, a:focus {
+    background-color: rgba(0, 0, 0, 0);
   }
-  .brand
-  {
+  .brand {
     display: inline;
     width: 100px;
   }
-  .img-brand
-  {
-    padding:10px;
+  .img-brand {
+    padding: 10px;
   }
 }
 
-.container > .navbar-header
-{
+.container > .navbar-header {
   margin: 0px;
 }
-.panel-group
-{
+
+.panel-group {
   margin-bottom: 20px;
-  td:nth-child(2)
-  {
+  td:nth-child(2) {
     text-align: left !important;
     width: 25%;
   }
 }
 
-textarea
-{
+textarea {
   min-height: 54px;
-  resize: none;  
+  resize: none;
 }
-.container.login-form
-{
+
+.container.login-form {
   width: 300px;
   float: left;
 }
-a
-{
-  color:$orasi_blue;
+
+a {
+  color: $orasi_blue;
 }
-.glyphicon.glyphicon-plus,.glyphicon.glyphicon-remove,.approval-btn
-{
-  cursor:pointer;
+
+.glyphicon.glyphicon-plus, .glyphicon.glyphicon-remove, .approval-btn {
+  cursor: pointer;
 }
-.glyphicon.glyphicon-plus
-{
-  color:green;
+
+.glyphicon.glyphicon-plus {
+  color: green;
 }
-.glyphicon.glyphicon-remove
-{
-  color:red;
+
+.glyphicon.glyphicon-remove {
+  color: red;
 }
-.team-lead-section
-{
-  .additional-lead-field{
+
+.team-lead-section {
+  .additional-lead-field {
     width: 95%;
     display: inline;
   }
-  .glyphicon.glyphicon-remove{
+  .glyphicon.glyphicon-remove {
     text-align: center;
     padding: 2px;
   }
 }
-.inline-label-input
+
+.inline-label-input {
+  display: inline;
+
+}
+
+.tab-pane#search
 {
-  display:inline;
-  
+  padding: 10px 20px;
+}
+#filter-form {
+  margin-bottom: 20px;
+  & > .form-control, & > div {
+    margin-bottom: 20px;
+  }
+  & > .form-control {
+    height: 34px;
+    font-size: 14px;
+  }
 }

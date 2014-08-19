@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+	<body>
+		<p>
+			<%= @to_manager.first_name.capitalize %>,
+		</p>
+		<p>
+			<%= mail_to @from_employee.email, @from_employee.display_name %> has cancelled the following time off:
+		</p>
+		<% unless @vacation.reason.blank? %>
+		<% reason_msg = "(#{@vacation.reason})"%>
+		<% else %>
+		<% reason_msg = "" %>
+		<% end%>
+		<% unless @vacation.start_date == @vacation.end_date %>
+		<p>
+			<%= @vacation.vacation_type + reason_msg + " - from #{@vacation.start_date.to_formatted_s(:long_ordinal)} until #{@vacation.end_date.to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% else %>
+		<p>
+			<%= @vacation.vacation_type + reason_msg + " - on #{@vacation.start_date.to_formatted_s(:long_ordinal)}."%>
+		</p>
+		<% end %>
+		<p>
+			Thank you,
+		</p>
+		<%= image_tag attachments['logo.png'].url, width: 137, height: 47 -%>
+		<% unless Rails.env.production? %>
+		<p>
+			Please disregard this email.  If you are receiving this email incorrectly, please send all angry emails to <%= mail_to "lewis.gordon@orasi.com" %>.
+		</p>
+		<% end %>
+	</body>
+</html>
+

@@ -1,3 +1,5 @@
+require 'vacation_helper'
+
 module EmployeeHelper
   def time_ago_exact(on_date)
     time_array = []
@@ -63,5 +65,9 @@ module EmployeeHelper
     end
     
     _split_max_days.first
+  end
+
+  def active_subordinates
+    self.subordinates.where.not(status: 'Inactive')
   end
 end

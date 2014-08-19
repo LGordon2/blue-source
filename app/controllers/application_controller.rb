@@ -46,13 +46,13 @@ class ApplicationController < ActionController::Base
   def require_manager_login
     if current_user.nil?
       redirect_to :login, flash: {error: "You must be logged in to view this section of BlueSource."}
-    elsif !current_user.is_manager_or_higher?
+    elsif !current_user.manager_or_higher?
       redirect_to view_employee_vacations_path(current_user)
     end
   end
   
   def require_upper_management
-    if !current_user.is_upper_management?
+    if !current_user.upper_management?
       redirect_to :back, flash: {error: "You do not have permissions to edit this employee."}
     end
   end
