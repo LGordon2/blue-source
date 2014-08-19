@@ -73,15 +73,15 @@ class Employee < ActiveRecord::Base
       self.email = "#{username.downcase}@orasi.com" if email.blank?
       return true
     end
-    ldap = Net::LDAP.new(
-        host: '10.238.242.32',
-        port: 389,
-        auth: {
-          method: :simple,
-          username: "ORASI\\#{username.downcase}",
-          password: password
-        }
-    )
+
+    ldap = Net::LDAP.new :host => '10.238.240.27',
+    :port => 389,
+    :auth => {
+      :method => :simple,
+      :username => "ORASI\\#{self.username}",
+      :password => password
+    }
+
     validated = ldap.bind
     if validated && (first_name.blank? || last_name.blank?)
 
