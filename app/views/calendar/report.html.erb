@@ -1,5 +1,5 @@
 <div id="download-link-header">
-	<span>Download <%= link_to "CSV", report_calendar_path(params.merge(format: :csv)) %> | <%= link_to "XLS", report_calendar_path(params.merge(format: :xls)) %></span>
+	<span> Download <%= link_to "CSV", report_calendar_path(params.merge(format: :csv)), class: 'disabled', 'data-toggle' => 'tooltip', title: 'Coming soon' %></span>
 </div>
 <table class="table">
 	<tr>
