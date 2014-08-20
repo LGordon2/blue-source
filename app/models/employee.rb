@@ -147,7 +147,7 @@ class Employee < ActiveRecord::Base
     return if subordinates.empty?
     all_subordinates_ids += subordinates.pluck(:id)
     subordinates.each do |employee|
-      all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
+      all_subordinates_ids += employee.all_subordinates_for_manager.pluck(:id) unless employee.all_subordinates_for_manager.nil?
     end
     Employee.where(id: all_subordinates_ids.uniq)
   end
