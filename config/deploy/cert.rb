@@ -19,7 +19,7 @@ set :linked_files, %w(db/cert.sqlite3 config/api.yml)
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-set :branch, :master
+set :branch, :staging
 set :migration_role, :web
 
 # Default deploy_to directory is /var/www/my_app
