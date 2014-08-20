@@ -143,6 +143,15 @@ class Employee < ActiveRecord::Base
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
+  def all_subordinates_for_manager
+    return if subordinates.empty?
+    all_subordinates_ids += subordinates.pluck(:id)
+    subordinates.each do |employee|
+      all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
+    end
+    Employee.where(id: all_subordinates_ids.uniq)
+  end
+
   def all_subordinates
     return Employee.all if role == 'Company Admin'
     all_subordinates_ids = []
@@ -150,12 +159,7 @@ class Employee < ActiveRecord::Base
       return department.employees if subordinates.empty?
       all_subordinates_ids += Employee.where(id: (department.employees.pluck(:id) + subordinates.pluck(:id)).flatten.uniq)
     end
-    return if subordinates.empty?
-    all_subordinates_ids += subordinates.pluck(:id)
-    subordinates.each do |employee|
-      all_subordinates_ids += employee.all_subordinates.pluck(:id) unless employee.all_subordinates.nil?
-    end
-    Employee.where(id: all_subordinates_ids.uniq)
+    all_subordinates_for_manager
   end
 
   def above?(other_employee)
