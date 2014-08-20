@@ -106,7 +106,7 @@ class Employee < ActiveRecord::Base
     return false if password.blank?
 
     ldap = Net::LDAP.new(
-        host: '10.238.242.32',
+        host: '10.238.240.27',
         port: 389,
         auth: {
           method: :simple,
