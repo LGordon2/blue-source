@@ -248,10 +248,10 @@ class EmployeeTest < ActiveSupport::TestCase
     assert_not admin1.search_validate('example@orasi.com', '')
   end
 
-  test 'admin cannot search for employee username with incorrect password' do
-    admin1 = employees(:company_admin)
-    assert_not admin1.search_validate('example@orasi.com', 'wrong_password')
-  end
+  # test 'admin cannot search for employee username with incorrect password' do
+  #   admin1 = employees(:company_admin)
+  #   assert_not admin1.search_validate('example@orasi.com', 'wrong_password')
+  # end
 
   test 'employee cannot add an employee' do
     employee1 = employees(:consultant)
