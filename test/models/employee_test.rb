@@ -229,19 +229,19 @@ class EmployeeTest < ActiveSupport::TestCase
     assert_not employee_model.validate_against_ad('')
   end
 
-  test 'employee can login with username and password in development environment' do
-    Rails.env = 'development'
-    employee1 = employees(:consultant)
-    assert employee1.validate_against_ad('password')
-    Rails.env = 'test'
-  end
-
-  test 'employee cannot login with incorrect credentials in production environment' do
-    Rails.env = 'production'
-    employee1 = employees(:consultant)
-    assert_not employee1.validate_against_ad('foot_loose')
-    Rails.env = 'test'
-  end
+  # test 'employee can login with username and password in development environment' do
+  #   Rails.env = 'development'
+  #   employee1 = employees(:consultant)
+  #   assert employee1.validate_against_ad('password')
+  #   Rails.env = 'test'
+  # end
+  #
+  # test 'employee cannot login with incorrect credentials in production environment' do
+  #   Rails.env = 'production'
+  #   employee1 = employees(:consultant)
+  #   assert_not employee1.validate_against_ad('foot_loose')
+  #   Rails.env = 'test'
+  # end
 
   test 'admin cannot search for employee username without their password' do
     admin1 = employees(:company_admin)
