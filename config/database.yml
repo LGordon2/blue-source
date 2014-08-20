@@ -43,4 +43,4 @@ staging:
 
 cert:
   <<: *sqlite
-  database: db/cert.sqlite3
+  database: ../../shared/db/cert.sqlite3
