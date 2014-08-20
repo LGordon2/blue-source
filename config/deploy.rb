@@ -11,6 +11,7 @@ set :branch, :staging
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/var/www/blue-source-cert'
+set :rails_env, :cert
 
 # Default value for :scm is :git
 # set :scm, :git

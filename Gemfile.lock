@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/capistrano/rails.git
+  revision: e4f93b7bf69b2d9e2a9ee15369b36490c91e7c79
+  specs:
+    capistrano-rails (1.1.1)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -36,9 +44,6 @@ GEM
     capistrano-bundler (1.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano-rails (1.1.1)
-      capistrano (~> 3.1)
-      capistrano-bundler (~> 1.1)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -167,7 +172,7 @@ DEPENDENCIES
   bcrypt-ruby
   capistrano
   capistrano-bundler
-  capistrano-rails
+  capistrano-rails!
   coffee-rails (~> 4.0.0)
   coveralls
   haml-rails
