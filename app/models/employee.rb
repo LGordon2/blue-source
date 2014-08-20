@@ -143,7 +143,7 @@ class Employee < ActiveRecord::Base
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
-  def all_subordinates_for_manager
+  def all_subordinates_for_manager(all_subordinates_ids=[])
     return if subordinates.empty?
     all_subordinates_ids += subordinates.pluck(:id)
     subordinates.each do |employee|
@@ -159,7 +159,7 @@ class Employee < ActiveRecord::Base
       return department.employees if subordinates.empty?
       all_subordinates_ids += Employee.where(id: (department.employees.pluck(:id) + subordinates.pluck(:id)).flatten.uniq)
     end
-    all_subordinates_for_manager
+    all_subordinates_for_manager(all_subordinates_ids)
   end
 
   def above?(other_employee)
