@@ -17,7 +17,17 @@ consultant:
   status: "Permanent"
   start_date: "2010-12-19"
   department: rural
-  
+
+contractor:
+  username: michael.jordon
+  first_name: michael
+  last_name: jordon
+  role: "Base"
+  manager: manager
+  status: "Contractor"
+  start_date: "2013-12-19"
+  department: rural
+
 manager2:
   username: bob.ross
   first_name: bob

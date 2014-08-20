@@ -111,4 +111,27 @@ class VacationTest < ActiveSupport::TestCase
     assert v1.destroy
     assert_equal 0, e1.vacation_days_taken(v1.start_date)
   end
+
+  test 'pdo taken should should be zero for ending current fiscal year less than the fiscal year' do
+    v1 = Vacation.create({date_requested: "2014-04-17", start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: employees(:consultant), manager: employees(:manager)})
+    assert_equal 0, v1.pdo_taken(2016)
+  end
+
+  test 'current fiscal year is within the requested dates should return correct pdo' do
+    v1 = Vacation.create({date_requested: "2014-05-19", start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: employees(:consultant), manager: employees(:manager)})
+    assert_equal 10, v1.pdo_taken(2014)
+  end
+
+  test 'previous fiscal year within the requested dates should return business days minus half days' do
+    v1 = Vacation.create({date_requested: "2014-05-19", start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: employees(:consultant), manager: employees(:manager), half_day: true})
+    assert_equal 15.5, v1.pdo_taken(2015)
+  end
+
+  test 'vacation status pending should return true for pending method' do
+    v1 = Vacation.create({date_requested: "2014-05-19", start_date: "2014-04-17", end_date: "2014-05-22", vacation_type: "Vacation", employee: employees(:consultant), manager: employees(:manager), status: 'Pending'})
+    assert v1.pending?
+  end
+
+
+
 end
