@@ -13,7 +13,6 @@
 #= require angular
 #= require jquery
 #= require jquery.ui.effect-blind
-#= require jquery_ujs
 #= require bootstrap
 #= require jquery.autosize.min
 #= require expand_collapse_panels
