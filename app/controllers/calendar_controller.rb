@@ -8,7 +8,6 @@ class CalendarController < ApplicationController
     errors = []
     if filter_params[:start_date].blank?
       errors << "Start date is required for reporting"
-
     end
     if filter_params[:end_date].blank?
       errors << "End date is required for reporting"

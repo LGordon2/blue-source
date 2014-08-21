@@ -10,15 +10,15 @@
 <div>
 <% [:sick, :vacation, :floating_holiday, :other].each do |vacation_type| %>
 	<%= f.label vacation_type, class: "control-label" %>
-	<%= f.check_box vacation_type%>
+	<%= f.check_box vacation_type %>
 <% end %>
 </div>
 <div>
   <%= f.label "Include pending?", class: "control-label" %>
-  <%= f.check_box :include_pending%>
+  <%= f.check_box :include_pending %>
   <% if current_user and current_user.admin? %>
       <%= f.label "Include reasons?", class: "control-label" %>
-      <%= f.check_box :include_reasons%>
+      <%= f.check_box :include_reasons %>
   <% end %>
 </div>
 <%= f.submit 'Generate Report', class: "btn btn-primary", 'data-loading-text' => "Generating..." %>
