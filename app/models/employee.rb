@@ -98,7 +98,7 @@ class Employee < ActiveRecord::Base
 
   def search_validate(employee_email, password)
     return false if password.blank?
-    return false unless true#Rails.env.production?
+    return false unless Rails.env.production?
 
     set_ldap(username.downcase, password)
 
