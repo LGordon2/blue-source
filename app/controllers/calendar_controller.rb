@@ -26,7 +26,7 @@ class CalendarController < ApplicationController
       .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
     @vacations = @vacations.where.not(status: "Pending") if filter_params[:include_pending].to_i == 0
 
-    unless filter_params['department'].blank?
+    unless filter_params['department'].blank? or filter_params['department'] == 'Select All'
       @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
     end
 
