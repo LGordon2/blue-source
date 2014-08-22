@@ -54,9 +54,11 @@ class CalendarController < ApplicationController
           current_user.preferences["resourcesPerPage"].to_i
         end
 
+        @filter = OpenStruct.new(filter_params)
         @page_count = @vacations.count / resourcesPerPage
         @max_pagination_pages = 10
         @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
+
       end
       format.json
       format.xls

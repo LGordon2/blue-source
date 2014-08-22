@@ -1,5 +1,6 @@
 <div id="download-link-header">
-	<span> Download <%= link_to "CSV", report_calendar_path(params.merge(format: :csv)), class: 'disabled', 'data-toggle' => 'tooltip', title: 'Coming soon' %></span>
+    <span> Download <%= link_to "CSV", report_calendar_path(params.merge(format: :csv)), class: 'disabled', 'data-toggle' => 'tooltip', title: 'Coming soon' %></span>
+    <span class="pull-right"><%= button_tag 'Edit Report', class: 'btn btn-sm btn-primary',data: {toggle: 'modal', target: '#vacation_reporting_modal'}, style: 'margin-bottom: 10px;' %></span>
 </div>
 <table class="table">
 	<tr>
