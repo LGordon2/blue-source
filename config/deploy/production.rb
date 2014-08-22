@@ -15,16 +15,16 @@
 # used to set extended properties on the server.
 
 server 'orasi-portal', user: 'deploy', roles: %w(web)
-set :linked_files, %w(db/cert.sqlite3 config/api.yml)
+set :linked_files, %w(db/production.sqlite3 config/api.yml)
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-set :branch, :staging
-set :migration_role, :web
+set :branch, 'master'
+set :migration_role, 'web'
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/blue-source-cert'
-set :rails_env, :cert
+set :deploy_to, '/var/www/blue-source'
+set :rails_env, :production
 
 # Custom SSH Options
 # ==================

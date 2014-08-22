@@ -6,12 +6,9 @@ set :repo_url, 'git@github.com:Orasi/blue-source.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-# set :branch, 'capistrano-setup'
-# set :migration_role, 'web'
 
 # Default deploy_to directory is /var/www/my_app
-set :deploy_to, '/var/www/blue-source-cert'
-# set :rails_env, :cert
+# set :rails_env, :staging
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -41,7 +38,7 @@ namespace :deploy do
 
   desc 'Restart application'
   task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
+    on roles(:web), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       execute :touch, release_path.join('tmp/restart.txt')
     end

@@ -57,7 +57,7 @@ gem 'haml-rails'
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails', git: 'https://github.com/capistrano/rails.git'
+  gem 'capistrano-rails'
 end
 
 # Use debugger
