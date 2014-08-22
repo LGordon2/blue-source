@@ -5,7 +5,7 @@
 <%= f.date_field :end_date, 'value' => "#{@filter.start_date unless @filter.nil?}", class: 'form-control', required: true %>
 
 <%= f.label :department, class: "control-label" %>
-<%= f.select :department, Department.all.collect {|d| [d.name, d.id]}, {include_blank: true}, class: "form-control" %>
+<%= f.select :department, Department.all.collect {|d| [d.name, d.id]}.unshift('Select All'), {include_blank: false}, class: "form-control" %>
 
 <div>
 <% [:sick, :vacation, :floating_holiday, :other].each do |vacation_type| %>
