@@ -13,8 +13,12 @@ class CalendarController < ApplicationController
     if filter_params[:end_date].blank?
       errors << 'End date is required for reporting'
     end
+    if filter_params[:end_date] < filter_params[:start_date]
+      errors << 'Start date must be before end date.'
+    end
+
     unless errors.blank?
-      redirect_to :root, flash: { error: errors }
+      redirect_to :back, flash: { error: errors }
       return
     end
 
@@ -43,7 +47,7 @@ class CalendarController < ApplicationController
     end
 
     @vacations = @vacations.reverse_order if params['rev'] == 'true'
-
+    @report_vacations = get_report_vacations(@vacations)
     respond_to do |format|
       format.html do
         page_number = params['pgn'].to_i
@@ -59,7 +63,7 @@ class CalendarController < ApplicationController
         @page_count = @vacations.count / resources_per_page
         @max_pagination_pages = 10
         @vacations = @vacations.limit(resources_per_page).offset(resources_per_page * (page_number - 1))
-        @fixed_vacations = get_report_vacations(@vacations)
+        @report_vacations = get_report_vacations(@vacations)
       end
       format.json
       format.csv
@@ -129,11 +133,16 @@ class CalendarController < ApplicationController
     vacations.map do |vacation|
       end_date = [Date.parse(params['filter']['end_date']), vacation.end_date].min
       start_date = [Date.parse(params['filter']['start_date']), vacation.start_date].max
+      employee_dept_name = if vacation.employee.department.present?
+                             vacation.employee.department.name
+                           else
+                             nil
+                           end
       OpenStruct.new(
                        start_date: start_date,
                        end_date: end_date,
                        employee_name: vacation.employee.display_name,
-                       employee_dept_name: vacation.employee.department.name,
+                       employee_dept_name: employee_dept_name,
                        vacation_type: vacation.vacation_type,
                        business_days: (calc_business_days_for_range(start_date, end_date) - ((vacation.half_day && end_date == vacation.end_date) ? 0.5 : 0)),
                        reason: vacation.reason
