@@ -74,25 +74,19 @@ class Employee < ActiveRecord::Base
       return true
     end
 
-    ldap = Net::LDAP.new :host => '10.238.240.27',
-    :port => 389,
-    :auth => {
-      :method => :simple,
-      :username => "ORASI\\#{self.username}",
-      :password => password
-    }
+    set_ldap(username.downcase, password)
 
-    validated = ldap.bind
+    validated = @ldap.bind
     if validated && (first_name.blank? || last_name.blank?)
 
       filter = Net::LDAP::Filter.eq('samaccountname', username)
       treebase = 'dc=orasi, dc=com'
-      self.first_name, self.last_name = ldap.search(
+      self.first_name, self.last_name = @ldap.search(
         base: treebase,
         filter: filter,
         attributes: %w(displayname)
       ).first.displayname.first.downcase.split(' ')
-      self.email = ldap.search(
+      self.email = @ldap.search(
         base: treebase,
         filter: filter,
         attributes: %w(mail)
@@ -104,24 +98,17 @@ class Employee < ActiveRecord::Base
 
   def search_validate(employee_email, password)
     return false if password.blank?
-    return true unless Rails.env.production?
-    ldap = Net::LDAP.new(
-        host: '10.238.240.27',
-        port: 389,
-        auth: {
-          method: :simple,
-          username: "ORASI\\#{username.downcase}",
-          password: password
-        }
-    )
+    return false unless Rails.env.production?
 
-    validated = ldap.bind
+    set_ldap(username.downcase, password)
+
+    validated = @ldap.bind
     employee_email = employee_email.downcase
 
     if validated && employee_email =~ (/^[a-z]+\.[a-z]+@orasi\.com$/)
       filter = Net::LDAP::Filter.eq('mail', employee_email)
       treebase = 'dc=orasi, dc=com'
-      @username = ldap.search(
+      @username = @ldap.search(
         base: treebase,
         filter: filter,
         attributes: %w(samaccountname)
@@ -132,7 +119,7 @@ class Employee < ActiveRecord::Base
   end
 
   def employee_searched_username
-    if !@username.empty?
+    if @username.present?
       @username.first.samaccountname.first
     else
       "Not found, please check if employee's email is entered correctly."
@@ -350,6 +337,16 @@ class Employee < ActiveRecord::Base
   end
 
   private
+
+  def set_ldap(username, password)
+    @ldap = Net::LDAP.new host: ENV['LDAP_SERVER'],
+                          port: ENV['LDAP_PORT'],
+                          auth: {
+                              method: :simple,
+                              username: "ORASI\\#{username}",
+                              password: password
+                          }
+  end
 
   def _pdo_taken(on_date, type, id = nil)
     on_date = Date.new(start_date.year, 2, 28) if on_date.leap? && on_date.month == 2 && on_date.day == 29
