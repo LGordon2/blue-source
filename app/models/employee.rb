@@ -98,14 +98,14 @@ class Employee < ActiveRecord::Base
 
   def search_validate(employee_email, password)
     return false if password.blank?
-    return false unless Rails.env.production?
+    return false unless true#Rails.env.production?
 
     set_ldap(username.downcase, password)
 
     validated = @ldap.bind
     employee_email = employee_email.downcase
 
-    if validated && employee_email =~ (/^[a-z]+\.[a-z]+@orasi\.com$/)
+    if validated
       filter = Net::LDAP::Filter.eq('mail', employee_email)
       treebase = 'dc=orasi, dc=com'
       @username = @ldap.search(
