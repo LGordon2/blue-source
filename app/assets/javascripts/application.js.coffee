@@ -12,6 +12,7 @@
 #
 #= require angular
 #= require jquery
+#= require jquery_ujs
 #= require bootstrap
 #= require jquery.autosize.min
 #= require expand_collapse_panels
