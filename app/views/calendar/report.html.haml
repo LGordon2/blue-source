@@ -4,7 +4,9 @@
     = link_to 'CSV', report_calendar_path(params.merge(format: :csv))
     |
     = link_to 'JSON', report_calendar_path(params.merge(format: :json))
-  = button_tag 'Edit Report', class: 'btn btn-sm btn-primary pull-right', data: { toggle: 'modal', target: '#vacation_reporting_modal' }
+  .btn-group.pull-right
+    = button_tag 'New Report', class: 'btn btn-sm btn-primary', data: { toggle: 'modal', target: '#vacation_reporting_modal' }
+    = button_tag 'Edit Report', class: 'btn btn-sm btn-primary', data: { toggle: 'modal', target: '#vacation_reporting_modal_edit' }
   .clearfix
 %table.table
   %tr
@@ -36,3 +38,5 @@
 
       %li{ class: ('disabled' if @next_disabled) }
         = link_to '&raquo;'.html_safe, report_calendar_path(params.merge('pgn' => @active_page + 2))
+
+= render partial: 'vacation_reporting_modal', locals: {edit: true}

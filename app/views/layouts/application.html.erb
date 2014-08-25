@@ -102,7 +102,7 @@
 								<a href="#contact" data-toggle="tab">Contact</a>
 							</li>
 							<li>
-								<% if current_user and current_user.admin? %>
+								<% if current_user && current_user.admin? %>
 								<a href="#search" data-toggle="tab">Search</a>
 								<% end %>
 							</li>
@@ -119,13 +119,13 @@
 								<% end %>
 							</div>
 							<div class="tab-pane" id="search">
-								<%= render "search_form" if current_user and current_user.admin? %>
+								<%= render "search_form" if current_user && current_user.admin? %>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		<%= render "vacation_reporting_modal" %>
+		<%= render 'vacation_reporting_modal' %>
 	</body>
 </html>
