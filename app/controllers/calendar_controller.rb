@@ -185,10 +185,10 @@ class CalendarController < ApplicationController
     @prev_disabled = @active_page == 0
 
     if @active_page > (@max_pagination_pages / 2)
-      if @active_page < @page_count-(@max_pagination_pages / 2 - 1)
-        @pagination_range = (@active_page-(@max_pagination_pages / 2)..@active_page+(@max_pagination_pages / 2 - 1))
+      if @active_page < @page_count - (@max_pagination_pages / 2 - 1)
+        @pagination_range = (@active_page - (@max_pagination_pages / 2)..@active_page + (@max_pagination_pages / 2 - 1))
       else
-        @pagination_range = ([@page_count-(@max_pagination_pages - 1), 1].max..@page_count)
+        @pagination_range = ([@page_count - (@max_pagination_pages - 1), 1].max..@page_count)
       end
     else
       @pagination_range = (1..@page_count)
