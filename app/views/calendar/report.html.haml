@@ -1,13 +1,15 @@
 #download-link-header
   %span
     Download
-    = link_to "CSV", report_calendar_path(params.merge(format: :csv)), class: 'disabled', 'data-toggle' => 'tooltip', title: 'Coming soon'
+    = link_to 'CSV', report_calendar_path(params.merge(format: :csv))
+  = button_tag 'Edit Report', class: 'btn btn-sm btn-primary pull-right',data: {toggle: 'modal', target: '#vacation_reporting_modal'}
+  .clearfix
 %table.table
   %tr
-    - ['Name','Start Date','End Date','Department','Vacation Type','Business Days'].each do |header|
-      %th= link_to header,report_calendar_path(params.merge(sort: header.downcase.tr_s(" ","_"), rev: params[:rev]!='true', filter: params['filter']))
+    - ['Name', 'Start Date', 'End Date', 'Department', 'Vacation Type', 'Business Days'].each do |header|
+      %th= link_to header, report_calendar_path(params.merge(sort: header.downcase.tr_s(' ','_'), rev: params[:rev]!='true', filter: params['filter']))
     - if @include_reasons
-      %th= link_to "Reason", report_calendar_path(params.merge(sort: "Reason", rev: params[:rev]!='true', filter: params['filter']))
+      %th= link_to 'Reason', report_calendar_path(params.merge(sort: 'Reason', rev: params[:rev]!='true', filter: params['filter']))
     - @report_vacations.each do |vacation|
       %tr
         %td= vacation.employee_name
@@ -21,19 +23,12 @@
 - if @page_count > 1
   .pagination
     %ul.pagination
-      %li{ class: ("disabled" if @active_page == 0) }
-        = link_to "&laquo;".html_safe, report_calendar_path(params.merge("pgn" => @active_page.to_i))
-        - if @active_page > (@max_pagination_pages/2)
-          - if @active_page < @page_count-(@max_pagination_pages/2-1)
-            - range = (@active_page-(@max_pagination_pages/2)..@active_page+(@max_pagination_pages/2-1))
-          - else
-            - range = ([@page_count-(@max_pagination_pages-1),1].max..@page_count)
-        - else
-          - range = (1..@page_count)
+      %li{ class: ('disabled' if @prev_disabled) }
+        = link_to '&laquo;'.html_safe, report_calendar_path(params.merge('pgn' => @active_page))
 
-        - range.first(@max_pagination_pages).each do |num|
-          %li{ class: (if @active_page == num-1 then "active" end) }
-            = link_to num, report_calendar_path(params.merge("pgn" => num))
+      - @pagination_range.first(@max_pagination_pages).each do |num|
+        %li{ class: ('active' if @active_page == num - 1) }
+          = link_to num, report_calendar_path(params.merge('pgn' => num))
 
-        %li{ class: ("disabled" if @active_page == @page_count-1) }
-          = link_to "&raquo;".html_safe, report_calendar_path(params.merge("pgn" => @active_page.to_i+2))
+      %li{ class: ('disabled' if @next_disabled) }
+        = link_to '&raquo;'.html_safe, report_calendar_path(params.merge('pgn' => @active_page + 2))

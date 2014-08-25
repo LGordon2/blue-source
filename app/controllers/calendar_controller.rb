@@ -53,6 +53,7 @@ class CalendarController < ApplicationController
         page_number = params['pgn'].to_i
         page_number = 1 if page_number <= 0
         @active_page = page_number - 1
+
         resources_per_page = if current_user.preferences.blank? || current_user.preferences['resourcesPerPage'].blank?
                                15
                              else
@@ -61,9 +62,10 @@ class CalendarController < ApplicationController
 
         @filter = OpenStruct.new(filter_params)
         @page_count = @vacations.count / resources_per_page
-        @max_pagination_pages = 10
+        set_pagination
         @vacations = @vacations.limit(resources_per_page).offset(resources_per_page * (page_number - 1))
         @report_vacations = get_report_vacations(@vacations)
+
       end
       format.json
       format.csv
@@ -175,5 +177,21 @@ class CalendarController < ApplicationController
     allowed_params = %i(start_date end_date department sick vacation floating_holiday other include_pending)
     allowed_params += %i(include_reasons) if current_user.admin?
     params.require(:filter).permit(allowed_params)
+  end
+
+  def set_pagination
+    @max_pagination_pages = 10
+    @next_disabled = @active_page == @page_count - 1
+    @prev_disabled = @active_page == 0
+
+    if @active_page > (@max_pagination_pages / 2)
+      if @active_page < @page_count-(@max_pagination_pages / 2 - 1)
+        @pagination_range = (@active_page-(@max_pagination_pages / 2)..@active_page+(@max_pagination_pages / 2 - 1))
+      else
+        @pagination_range = ([@page_count-(@max_pagination_pages - 1), 1].max..@page_count)
+      end
+    else
+      @pagination_range = (1..@page_count)
+    end
   end
 end
