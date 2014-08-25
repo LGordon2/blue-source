@@ -2,12 +2,14 @@
   %span
     Download
     = link_to 'CSV', report_calendar_path(params.merge(format: :csv))
-  = button_tag 'Edit Report', class: 'btn btn-sm btn-primary pull-right',data: {toggle: 'modal', target: '#vacation_reporting_modal'}
+  = button_tag 'Edit Report', class: 'btn btn-sm btn-primary pull-right', data: { toggle: 'modal', target: '#vacation_reporting_modal' }
   .clearfix
 %table.table
   %tr
     - ['Name', 'Start Date', 'End Date', 'Department', 'Vacation Type', 'Business Days'].each do |header|
-      %th= link_to header, report_calendar_path(params.merge(sort: header.downcase.tr_s(' ','_'), rev: params[:rev]!='true', filter: params['filter']))
+      %th
+        = link_to header, report_calendar_path(params.merge(sort: header.downcase.tr_s(' ','_'), rev: params[:rev]!='true', filter: params['filter']))
+        = render partial: 'application/ascending_descending_icon_nojs', locals: { predicate: params['sort'].present? && params['sort'].humanize.downcase == header.downcase, forward: params[:rev] != 'true', numeric: ['Start Date', 'End Date', 'Business Days'].include?(header) }
     - if @include_reasons
       %th= link_to 'Reason', report_calendar_path(params.merge(sort: 'Reason', rev: params[:rev]!='true', filter: params['filter']))
     - @report_vacations.each do |vacation|
