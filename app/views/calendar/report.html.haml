@@ -2,6 +2,8 @@
   %span
     Download
     = link_to 'CSV', report_calendar_path(params.merge(format: :csv))
+    |
+    = link_to 'JSON', report_calendar_path(params.merge(format: :json))
   = button_tag 'Edit Report', class: 'btn btn-sm btn-primary pull-right', data: { toggle: 'modal', target: '#vacation_reporting_modal' }
   .clearfix
 %table.table
