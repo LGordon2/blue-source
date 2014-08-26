@@ -54,7 +54,7 @@ class Vacation < ActiveRecord::Base
   end
 
   def pending?
-    self.status == "Pending"
+    self.status == 'Pending'
   end
 
   private
