@@ -28,7 +28,7 @@ test:
   pool: 5
   timeout: 5000
 
-production:
+production: &sqlite
   adapter: sqlite3
   database: db/production.sqlite3
   pool: 5
@@ -40,3 +40,7 @@ staging:
   database: my_database_production
   pool: 5
   timeout: 5000
+
+cert:
+  <<: *sqlite
+  database: db/cert.sqlite3

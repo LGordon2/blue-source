@@ -66,4 +66,8 @@ module EmployeeHelper
     
     _split_max_days.first
   end
+
+  def active_subordinates
+    self.subordinates.where.not(status: 'Inactive')
+  end
 end

@@ -18,6 +18,7 @@ module VacationHelper
     end
     return total
   end
+
   def self.included(base)
     base.extend(VacationHelper)
   end

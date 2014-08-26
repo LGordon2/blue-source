@@ -2,11 +2,11 @@ language: ruby
 rvm:
 - 2.0.0
 - 2.1.0
-before_deploy: "git fetch --unshallow"
+before_deploy: git fetch --unshallow
 deploy:
   provider: heroku
   api_key:
-    secure: Uy0KLwthnnb8QVsQ19X4j6qPIYMjUpZ1TerH2Zb/OrtTy6cJj2jLsDRjnH1ZrdD/n/kL/+kwA7xbQtUbwmdQQmfqHar9AqxKt2YTuNQ9fqAgDMeIlUfFAmlOru08xhjL6ZOrFW0NvLpdLiclK0Essfuh6OdIaFdQKMbtY4B2ewE=
+    secure: Msze5WLVEHM/3S//Yw73FDy0Glrl8x510/nEnXGSuru0jfxADyGh0ZAITGR3y4vMfTwECpEbQOzY2PHTNG0tCKKdBSV/ZmcYNRLdtjdeQojhNsVZqfeX+FDoEGdI/q5u5qkflzqdg1D77NW5hmN3CsKzaVZB/6KgQaFnHHfQtlw=
   app: bluesourcestaging
   on:
     branch: staging

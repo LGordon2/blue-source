@@ -12,7 +12,7 @@ $ ->
     $(this).toggleClass("hidden")
     $(this).siblings(".more-pdo").toggleClass("hidden")
     event.preventDefault()
-  $(".expand-all").on "click", (event) ->  
+  $(".expand-all").on "click", ->
     if ($(".list-group-item-hidden:hidden").length > 0)
       $(".more-pdo").siblings(".list-group-item-hidden:hidden").toggleClass("hidden")
       $(".more-pdo:contains('more'):visible").toggleClass("hidden")
@@ -21,4 +21,5 @@ $ ->
       $(".more-pdo").siblings(".list-group-item-hidden:visible").toggleClass("hidden")
       $(".more-pdo:contains('more'):hidden").toggleClass("hidden") 
       $(".more-pdo:contains('Collapse'):visible").toggleClass("hidden")
+  $('[data-toggle]').tooltip()
       

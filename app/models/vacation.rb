@@ -102,15 +102,15 @@ class Vacation < ActiveRecord::Base
     
   end
   
-  def pdo_days_taken
-    Rails.logger.error "Start date was blank." if self.start_date.blank?
-    Rails.logger.error "End date was blank." if self.end_date.blank?
-    return if self.start_date.blank? or self.end_date.blank? or self.vacation_type == "Other"
-    
-    unless validate_pto(self.start_date,self.end_date)
-      errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
-    end
-  end
+  # def pdo_days_taken
+  #   Rails.logger.error "Start date was blank." if self.start_date.blank?
+  #   Rails.logger.error "End date was blank." if self.end_date.blank?
+  #   return if self.start_date.blank? or self.end_date.blank? or self.vacation_type == "Other"
+  #
+  #   unless validate_pto(self.start_date,self.end_date)
+  #     errors.add(:base, "Adding this PTO would put employee over alloted #{self.vacation_type.downcase} days.")
+  #   end
+  # end
   
   def minimum_and_maximum_dates
     return if date_requested.blank? or start_date.blank? or end_date.blank?

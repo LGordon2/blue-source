@@ -1,7 +1,7 @@
 BlueSource
 ==============
 [![Build Status](https://travis-ci.org/Orasi/blue-source.svg?branch=master)](http://travis-ci.org/Orasi/blue-source)
-[![Coverage Status](https://coveralls.io/repos/Orasi/blue-source/badge.png?branch=simplecov-integration)](https://coveralls.io/r/Orasi/blue-source?branch=simplecov-integration)
+[![Coverage Status](https://coveralls.io/repos/Orasi/blue-source/badge.png?branch=master)](https://coveralls.io/r/Orasi/blue-source?branch=master)
 
 BlueSource is an employee information tracking system. Its creation came from the need to have a universal and collaborative tool for storing employee records. By using BlueSource, a user is able to maintain information about employees, projects, and time off. All data is stored on a central database allowing employees to be transferred between projects and functional teams securely and efficiently. BlueSource uses your current Orasi user credentials, so information can be accessed securely without the need for creating a separate account.
 
@@ -31,7 +31,7 @@ First install ruby using RVM (Ruby Version Manager). This will help manage your 
 To do this, open terminal and type:
 
 ```bash
-$ \curl -sSL https://get.rvm.io | bash -s stable
+$ curl -sSL https://get.rvm.io | bash -s stable
 $ rvm install 2.1.1
 $ ruby -v 
 ```
