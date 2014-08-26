@@ -121,7 +121,7 @@ class VacationsControllerTest < ActionController::TestCase
   test 'mail is generated on vacation request' do
     vacation_type = 'Sick'
     ActionMailer::Base.deliveries.clear
-    post :requests, {employee_id: @consultant.id, vacation: {date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: vacation_type}},{current_user_id: @consultant.id}
+    post :requests, { employee_id: @consultant.id, vacation: { date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: vacation_type } }, current_user_id: @consultant.id
     assert_nil flash[:error]
     assert_equal 1, ActionMailer::Base.deliveries.size
     mail = ActionMailer::Base.deliveries.first
@@ -132,7 +132,7 @@ class VacationsControllerTest < ActionController::TestCase
     vacation_type = 'Other'
     prev_vacation_count = Vacation.count
     ActionMailer::Base.deliveries.clear
-    post :requests, {employee_id: @consultant.id, vacation: {date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: vacation_type}},{current_user_id: @consultant.id}
+    post :requests, { employee_id: @consultant.id, vacation: { date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: vacation_type } }, current_user_id: @consultant.id
     assert_not_nil flash[:error]
     assert_equal prev_vacation_count, Vacation.count
     assert_equal 0, ActionMailer::Base.deliveries.size
@@ -142,7 +142,7 @@ class VacationsControllerTest < ActionController::TestCase
     prev_vacation_count = Vacation.count
     assert @pending_vacation.pending?
     ActionMailer::Base.deliveries.clear
-    put :update, {employee_id: @consultant.id, id: @pending_vacation.id, "#{@pending_vacation.id}" => {vacation: {status: ''}}, confirm: 'true'}, {current_user_id: @manager.id}
+    put :update, { employee_id: @consultant.id, id: @pending_vacation.id, "#{@pending_vacation.id}" => { vacation: { status: '' } }, confirm: 'true' }, current_user_id: @manager.id
     assert_nil flash[:error]
     assert_equal prev_vacation_count, Vacation.count
     assert_equal 1, ActionMailer::Base.deliveries.size
@@ -154,7 +154,7 @@ class VacationsControllerTest < ActionController::TestCase
     prev_vacation_count = Vacation.count
     assert @pending_vacation.pending?
     ActionMailer::Base.deliveries.clear
-    put :update, {employee_id: @consultant.id, id: @pending_vacation.id, "#{@pending_vacation.id}" => {vacation: {status: ''}}, confirm: 'false'}, {current_user_id: @manager.id}
+    put :update, { employee_id: @consultant.id, id: @pending_vacation.id, "#{@pending_vacation.id}" => { vacation: { status: '' } }, confirm: 'false' }, current_user_id: @manager.id
     assert_nil flash[:error]
     assert_equal prev_vacation_count, Vacation.count
     assert_equal 1, ActionMailer::Base.deliveries.size
@@ -165,7 +165,7 @@ class VacationsControllerTest < ActionController::TestCase
   test 'mail is generated on vacation cancellation' do
     prev_vacation_count = Vacation.count
     ActionMailer::Base.deliveries.clear
-    delete :cancel, {employee_id: @consultant.id, id: @pending_vacation.id}, {current_user_id: @consultant.id}
+    delete :cancel, { employee_id: @consultant.id, id: @pending_vacation.id }, current_user_id: @consultant.id
     assert_nil flash[:error]
     assert_equal prev_vacation_count - 1, Vacation.count
     assert_equal 1, ActionMailer::Base.deliveries.size
@@ -176,7 +176,7 @@ class VacationsControllerTest < ActionController::TestCase
   test 'no mail is generated on non pending vacation deletion' do
     prev_vacation_count = Vacation.count
     ActionMailer::Base.deliveries.clear
-    delete :destroy, {employee_id: @consultant.id, id: @vacation.id}, {current_user_id: @manager.id}
+    delete :destroy, { employee_id: @consultant.id, id: @vacation.id }, current_user_id: @manager.id
     assert_nil flash[:error]
     assert_equal prev_vacation_count - 1, Vacation.count
     assert_equal 0, ActionMailer::Base.deliveries.size

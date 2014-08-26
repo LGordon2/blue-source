@@ -6,3 +6,6 @@ Style/MethodLength:
 
 Style/Documentation:
   Enabled: false
+
+Style/ClassLength:
+  Enabled: false
