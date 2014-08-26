@@ -65,7 +65,7 @@
 				<%= submit_tag "Update Time Off", class: "hidden btn btn-xs btn-primary", data: {method: :patch, "form-action" => employee_vacation_path(@employee,vacation)} %> <span class="glyphicon glyphicon-pencil"></span> <% end %>
 				<% end %> </td>
 				<td class="icon-field"> <% unless vacation.status == "Pending" %>
-				<%= link_to employee_vacation_path(vacation.employee, vacation), method: :delete, data: {confirm: "Are you sure you want to delete this?"} do %>
+				<%= link_to employee_vacation_path(vacation.employee, vacation, no_mail: true), method: :delete, data: {confirm: "Are you sure you want to delete this?"} do %>
 				<button class="hidden edit-field btn btn-xs btn-danger">
 					Remove
 				</button><span class="glyphicon glyphicon-trash"></span> <% end %>
