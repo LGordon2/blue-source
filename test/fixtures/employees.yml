@@ -4,6 +4,7 @@ manager:
   first_name: bob
   last_name: barker
   role: "Management"
+  email: 'bob.barker@orasi.com'
   manager: upper_manager
   status: "Permanent"
   department: rural
