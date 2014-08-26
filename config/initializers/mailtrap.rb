@@ -13,5 +13,5 @@ if ENV['MAILTRAP_HOST'].present?
     authentication: :plain
   }
 elsif !Rails.env.production?
-  BlueSource::Application.config.action_mailer.perform_deliveries = false
+  BlueSource::Application.config.action_mailer.perform_deliveries = false unless Rails.env.test?
 end
