@@ -51,7 +51,7 @@ class VacationsController < ApplicationController
   def destroy
     respond_to do |format|
       if @vacation.destroy
-        send_confirmation_email
+        send_confirmation_email unless params['no_mail'] == 'true'
         format.html{redirect_to :back, flash: {success: "Time off successfully deleted."}}
       else
         format.html{redirect_to :back, flash: {error: @vacation.errors.full_messages, created: @vacation.id}}

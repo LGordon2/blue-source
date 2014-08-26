@@ -1,0 +1,97 @@
+%div
+  %h1
+    Time Off Details for
+    = @employee.display_name
+
+  = render 'notification_section'
+  = render 'vacation_summary'
+
+  = form_tag employee_vacations_path(@employee), method: :post, id: 'vacation_form' do
+    %input{ name: '_method', type: 'hidden'}
+      .table-responsive
+        %table.table.table-bordered.table-hover.table-condensed
+          %tr
+            %th
+              = link_to 'Date Requested',employee_vacations_path(@employee, sort: :date_requested, rev: params[:rev]!='true', fy: params[:fy])
+              = render partial: 'application/ascending_descending_icon_nojs', locals: { predicate: params[:sort] == 'date_requested', forward: params[:rev]!='true', numeric: true }
+            %th
+              = link_to 'Start Date',employee_vacations_path(@employee, sort: :start_date, rev: params[:rev]!='true', fy: params[:fy])
+              = render partial: 'application/ascending_descending_icon_nojs', locals: { predicate: params[:sort] == 'start_date', forward: params[:rev]!='true', numeric: true }
+            %th
+              = link_to 'End Date',employee_vacations_path(@employee, sort: :end_date, rev: params[:rev]!='true', fy: params[:fy])
+              = render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'end_date', forward: params[:rev]!='true', numeric: true}
+            %th
+              = link_to 'Total Business Days',employee_vacations_path(@employee, sort: :business_days, rev: params[:rev]!='true', fy: params[:fy])
+              = render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'business_days', forward: params[:rev]!='true', numeric: true}
+            %th
+              = link_to 'Type',employee_vacations_path(@employee, sort: :vacation_type, rev: params[:rev]!='true', fy: params[:fy])
+              = render partial: 'application/ascending_descending_icon_nojs', locals: {predicate: params[:sort] == 'vacation_type', forward: params[:rev]!='true', numeric: false}
+            %th Half Day
+            - if @fy_vacations.count > 0
+              - unless @fy_vacations.count == @fy_vacations.where(status: 'Pending').count
+                %th Edit
+                %th Delete
+              - if @any_with_pending_status
+                %th Accept?
+            - else
+              %th Save
+          - @fy_vacations.each do |vacation|
+            %tr.vacation-row{class: (if flash[:success] then 'success' elsif flash[:warning] then 'warning' else 'danger' end if !flash[:created].blank? and vacation.id == flash[:created]) }
+              - %i(date_requested start_date end_date).each do |field|
+                %td.edit-field
+                  %span= vacation.send(field).to_s(:long) unless vacation.send(field).blank?
+                  %input.hidden{ type: 'date', placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD', name: "#{vacation.id}[vacation][#{field.to_s}]", value: vacation.send(field) }
+              %td.business-days
+                %strong
+              %td.edit-field
+                - reason_content = "<input name='#{vacation.id}[vacation][reason]' value='#{vacation.reason}'>"
+                %span{ 'data-title' => 'Reason', 'data-content' => vacation.reason, 'data-placement' => 'left', class: ('reason-show' if vacation.vacation_type == 'Other')}= vacation.vacation_type
+                = select_tag "#{vacation.id}[vacation][vacation_type]", options_for_select(Vacation.types,vacation.vacation_type), data: {title: 'Reason', content: reason_content, placement: 'top', html: true, animation: false}, class: 'vacation-type form-control hidden'
+              %td.check-field
+                .hidden{'data-toggle' => 'buttons'}
+                  %label.btn.btn-xs.btn-primary{class: ('active' if vacation.half_day)}
+                    = check_box_tag "#{vacation.id}[vacation][half_day]", true, vacation.half_day, class: 'half-day'
+                    Half Day
+              - unless @fy_vacations.count == @fy_vacations.where(status: 'Pending').count
+                %td
+                  - unless vacation.status == "Pending"
+                    = link_to "#", class: "edit-btn" do
+                      = submit_tag "Update Time Off", class: "hidden btn btn-xs btn-primary", data: {method: :patch, "form-action" => employee_vacation_path(@employee,vacation)}
+                      %span.glyphicon.glyphicon-pencil
+                %td.icon-field
+                  - unless vacation.status == "Pending"
+                    = link_to employee_vacation_path(vacation.employee, vacation, no_mail: true), method: :delete, data: {confirm: "Are you sure you want to delete this?"} do
+                      %button.hidden.edit-field.btn.btn-xs.btn-danger Remove
+                      %span.glyphicon.glyphicon-trash
+              - if @any_with_pending_status
+                %td
+                  - if vacation.status == "Pending"
+                    = link_to '#' do
+                      = tag :span, class: "approval-btn glyphicon glyphicon-ok pull-left", style: "color:green", data: {method: :patch, "form-action" => employee_vacation_path(vacation.employee, vacation, :confirm => true)}
+                    = link_to employee_vacation_path(vacation.employee, vacation, :confirm => false), method: :delete do
+                      %span.glyphicon.glyphicon-remove.pull-right
+          %tr
+            %td
+              %input{ type: 'date', name: 'new[vacation][date_requested]', value: Time.now.strftime('%F'), placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD' }
+            %td
+              %input.date-field.start-date{ type: 'date', name: 'new[vacation][start_date]', placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD' }
+            %td
+              %input.date-field.end-date{ type: 'date', name: 'new[vacation][end_date]', placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD' }
+            %td.business-days
+              %strong
+            %td
+              - new_reason_content = "<input name='new[vacation][reason]'>"
+              = select_tag 'new[vacation][vacation_type]', options_for_select(Vacation.types), data: {title: 'Reason', content: new_reason_content, placement: 'bottom', html: true, animation: false}, class: 'vacation-type form-control'
+            %td
+              %div{'data-toggle' => 'buttons'}
+                %label.btn.btn-xs.btn-primary
+                  = check_box_tag 'new[vacation][half_day]', true, false, class: 'half-day'
+                  Half Day
+            %td{colspan: 2}
+              %input.btn.btn-primary.btn-xs{type: 'submit', value: 'Save Time Off', 'data-fo rm-action' => employee_vacations_path(@employee), 'data-method' => :post, 'data-loading-text' => 'Saving...'}
+      = link_to 'Back', employee_path(@employee)
+- content_for 'modal_header_1' do
+  = "Time off details for FY#{@fyear}"
+- content_for 'modal_content_1' do
+  = render 'details'
+= render 'modals/modal_group'
