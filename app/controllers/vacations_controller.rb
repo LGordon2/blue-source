@@ -1,12 +1,12 @@
 class VacationsController < ApplicationController
   before_action :require_login
-  before_action :require_manager_login, except: [:view, :requests, :cancel]
+  before_action :require_manager_login, except: %i(view requests update cancel)
 
-  before_action :set_vacation, only: [:destroy, :update, :cancel]
+  before_action :set_vacation, only: %i(destroy update cancel)
   before_action :set_employee
-  before_action :set_fiscal_year_and_vacations, only: [:view, :index]
-  before_action :check_edit_permissions, only: [:index, :update, :create, :destroy]
-  before_action :check_view_permissions, only: [:view, :requests, :cancel]
+  before_action :set_fiscal_year_and_vacations, only: %i(view index)
+  before_action :check_edit_permissions, only: %i(index update create destroy)
+  before_action :check_view_permissions, only: %i(view requests cancel)
 
   def index
     respond_to do |format|
@@ -110,7 +110,7 @@ class VacationsController < ApplicationController
   def send_confirmation_email
     if params["confirm"].present?
       VacationRequestMailer.confirm_email(current_user, @employee, @vacation, params["confirm"]=="true").deliver
-    elsif @employee.manager.present?
+    elsif @employee.manager.present? && @vacation.pending?
       VacationRequestMailer.cancel_email(current_user, @employee.manager, @vacation).deliver
     end
   end
@@ -146,7 +146,7 @@ class VacationsController < ApplicationController
       @vacation = Vacation.find(params[:id])
     rescue
       respond_to do |format|
-        format.html {redirect_to :back, flash: {error: "Time off not found in BlueSource."}}
+        format.html {redirect_to :back, flash: {error: 'Time off not found in BlueSource.'}}
       end
     end
   end
@@ -156,18 +156,18 @@ class VacationsController < ApplicationController
   end
 
   def vacation_params
-     initial_params = if !params[:id].blank?
-       params[params[:id]]
-     elsif params['new'].blank?
-       params
-     else
-       params['new']
-     end
+     initial_params = if params[:id].present?
+                         params[params[:id]]
+                       elsif params['new'].blank?
+                         params
+                       else
+                         params['new']
+                       end
 
      all_params = initial_params.require(:vacation).permit(:date_requested,:start_date,:end_date,:vacation_type,:business_days,:employee_id,:half_day,:reason,:status)
      all_params[:manager_id]=current_user.id
      all_params[:employee_id]=params[:employee_id]
-     all_params[:status]=""
+     all_params[:status]=''
      all_params[:half_day]=false if all_params[:half_day].blank?
      return all_params
   end

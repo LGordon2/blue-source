@@ -30,3 +30,13 @@ contractor_vacation:
   employee: contractor
   manager: manager
   reason: Contractor Vacation
+
+pending:
+  date_requested: 2014-08-25
+  start_date: 2014-08-25
+  end_date: 2014-08-25
+  business_days: 1
+  status: Pending
+  employee: consultant
+  manager: manager
+  vacation_type: Sick

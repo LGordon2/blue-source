@@ -1,0 +1,11 @@
+Style/LineLength:
+  Enabled: false
+
+Style/MethodLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassLength:
+  Enabled: false
