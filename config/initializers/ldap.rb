@@ -1,0 +1,2 @@
+ENV['LDAP_SERVER'] ||= '10.238.240.27'
+ENV['LDAP_PORT'] ||= '389'

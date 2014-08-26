@@ -1,5 +1,5 @@
 json.array!(current_user.all_subordinates) do |employee|
-  json.extract! employee, :id, :manager_id, :status
+  json.extract! employee, :id, :status
   json.first_name employee.first_name.capitalize
   json.last_name employee.last_name.capitalize
   json.display_name employee.display_name
@@ -13,9 +13,12 @@ json.array!(current_user.all_subordinates) do |employee|
 	    json.display_name employee.manager.display_name
 	  end
   end
-  unless employee.current_project.blank?
-	  json.project do
-	    json.extract! employee.current_project, :name, :id
-	  end
+  json.project do
+    if employee.current_project.present?
+      json.extract! employee.current_project, :name, :id
+    else
+      json.name 'Not billable'
+      json.id nil
+    end
   end
 end

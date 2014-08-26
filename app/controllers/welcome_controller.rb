@@ -4,7 +4,12 @@ class WelcomeController < ApplicationController
   layout "resource", only: :index
   
   def validate
-    @employee = Employee.find_by(username: params[:employee][:username].downcase)
+    if params[:employee][:username] =~ (/^[a-z]+\.[a-z]+@orasi\.com$/) 
+      params[:employee][:email] = params[:employee][:username]
+      @employee = Employee.find_by(email: params[:employee][:email])
+    else
+      @employee = Employee.find_by(username: params[:employee][:username].downcase)
+    end
     
     unless !@employee.blank? and @employee.validate_against_ad(params[:employee][:password])
       additional_errors = @employee.blank? ? [] : @employee.errors.full_messages
@@ -59,10 +64,34 @@ class WelcomeController < ApplicationController
     email.deliver
     redirect_to :back, flash: {info: "#{issue_params[:type].capitalize} email sent."}
   end
+
+  def search_employee
+    
+    if current_user && current_user.admin? && current_user.search_validate(search_params[:employee_email], search_params[:admin_password])
+      redirect_to :back, flash: {info: "Employee's username: #{current_user.employee_searched_username}"}
+    else
+      redirect_to :back, flash: {error: 'Invalid employee email or admin password.'}
+    end
+
+  end
+
+  def login_issue
+    email = HelpMailer.login_help_email(login_issue_params[:name], login_issue_params[:email], login_issue_params[:comments])
+    email.deliver
+    redirect_to :back, flash: {info: 'Login issue email sent.'}
+  end
   
   private 
   
   def issue_params
     params.require(:issue).permit(:comments, :type)
+  end
+
+  def search_params
+    params.require(:search).permit(:employee_email, :admin_password)
+  end
+
+  def login_issue_params
+    params.require(:login_issue).permit(:name, :email, :comments)
   end
 end

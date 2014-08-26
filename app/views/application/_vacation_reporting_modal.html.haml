@@ -1,0 +1,8 @@
+.modal.fade.in#vacation_reporting_modal{tabindex: -1, role: :dialog}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'data-dismiss' => 'modal', 'aria-hidden' => 'true'} x
+        %h4.modal-title#modal_label_2
+          %span Vacation Reporting
+      .modal-body= render 'calendar/report_form'

@@ -1,6 +1,69 @@
 class CalendarController < ApplicationController
+  helper VacationHelper
+
   before_action :require_login
   helper_method :get_orasi_holiday, :change_month
+
+  def report
+    errors = []
+    if filter_params[:start_date].blank?
+      errors << "Start date is required for reporting"
+    end
+    if filter_params[:end_date].blank?
+      errors << "End date is required for reporting"
+    end
+    unless errors.blank?
+      redirect_to :root, flash: {error: errors}
+      return
+    end
+
+    @include_reasons = filter_params[:include_reasons].to_i == 1
+
+    @vacation_types = Vacation.types.collect { |type| type if (filter_params[type.downcase.gsub(' ', '_').to_sym].to_i == 1) }.compact
+
+    @vacations = Vacation
+      .where(vacation_type: @vacation_types)
+      .vacations_in_range(filter_params["start_date"],filter_params["end_date"])
+    @vacations = @vacations.where.not(status: "Pending") if filter_params[:include_pending].to_i == 0
+
+    unless filter_params['department'].blank? or filter_params['department'] == 'Select All'
+      @vacations = @vacations.where(employee_id: Department.find(filter_params['department']).employees.pluck(:id))
+    end
+
+    unless params[:sort].blank?
+      case params[:sort].to_sym
+      when :name
+        @vacations = @vacations.joins(:employee).order("employees.first_name")
+      when :department
+        @vacations = @vacations.joins(:employee).joins("LEFT JOIN departments on employees.department_id = departments.id").order("departments.name")
+      else
+        @vacations = @vacations.order(params[:sort])
+      end
+    end
+
+    @vacations = @vacations.reverse_order if params["rev"] == "true"
+
+    respond_to do |format|
+      format.html do
+        pageNumber = params["pgn"].to_i
+        pageNumber = 1 if pageNumber <= 0
+        @activePage = pageNumber - 1
+        resourcesPerPage = if current_user.preferences.blank? or current_user.preferences["resourcesPerPage"].blank?
+          15
+        else
+          current_user.preferences["resourcesPerPage"].to_i
+        end
+
+        @filter = OpenStruct.new(filter_params)
+        @page_count = @vacations.count / resourcesPerPage
+        @max_pagination_pages = 10
+        @vacations = @vacations.limit(resourcesPerPage).offset(resourcesPerPage*(pageNumber-1))
+
+      end
+      format.json
+      format.csv
+    end
+  end
 
   def index
     @max_entries_per_day = 4
@@ -34,7 +97,7 @@ class CalendarController < ApplicationController
     when 'department'
       @pdo_times = Vacation.where(employee_id: current_user.department.employees.pluck(:id))
     when 'direct'
-      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id) + [current_user.id]) 
+      @pdo_times = Vacation.where(employee_id: current_user.subordinates.pluck(:id) + [current_user.id])
     end
 
     unless @pdo_times.blank?
@@ -46,7 +109,7 @@ class CalendarController < ApplicationController
     @disabled_prev_month = (@starting_date - 1.month).year < @selectable_years.first
     @disabled_next_month = (@starting_date + 1.month).year > @selectable_years.last
 
-    @pdo_times = @pdo_times.where("(vacations.start_date >= :beginning_of_month and vacations.start_date <= :end_of_month) or (vacations.end_date >= :beginning_of_month and vacations.end_date <= :end_of_month)",beginning_of_month: @starting_date.beginning_of_month, end_of_month: @starting_date.end_of_month)
+    @pdo_times = @pdo_times.vacations_in_range(@starting_date.beginning_of_month, @starting_date.end_of_month)
   end
 
   def change_month(no_months)
@@ -81,5 +144,11 @@ class CalendarController < ApplicationController
     when day.christmas?
       "Christmas Day"
     end
+  end
+
+  def filter_params
+    allowed_params = [:start_date, :end_date, :department, :sick, :vacation, :floating_holiday, :other, :include_pending]
+    allowed_params += [:include_reasons] if current_user.admin?
+    params.require(:filter).permit(allowed_params)
   end
 end

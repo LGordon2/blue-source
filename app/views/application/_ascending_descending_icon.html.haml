@@ -1,0 +1,7 @@
+%span{"ng-show" => "predicate=='#{predicate}'"}
+  - if numeric
+    %span.glyphicon.glyphicon-sort-by-order-alt.pull-right.orasi-blue{"ng-show" => 'reverse==true'}
+    %span.glyphicon.glyphicon-sort-by-order.pull-right.orasi-blue{"ng-show" => 'reverse==false'}
+  - else
+    %span.glyphicon.glyphicon-sort-by-alphabet-alt.pull-right.orasi-blue{"ng-show" => 'reverse==true'}
+    %span.glyphicon.glyphicon-sort-by-alphabet.pull-right.orasi-blue{"ng-show" => 'reverse==false'}

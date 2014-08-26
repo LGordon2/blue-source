@@ -4,3 +4,9 @@
 require File.expand_path('../config/application', __FILE__)
 
 BlueSource::Application.load_tasks
+
+task 'test_lew' do
+  on %w(lew) do
+    puts 'hi'
+  end
+end
