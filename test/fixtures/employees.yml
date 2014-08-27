@@ -19,6 +19,16 @@ consultant:
   start_date: "2010-12-19"
   department: rural
 
+inactive:
+  username: jason.rickard
+  first_name: jason
+  last_name: rickard
+  role: Base
+  manager: manager
+  status: Inactive
+  start_date: 2010-12-19
+  department: rural
+
 contractor:
   username: michael.jordon
   first_name: michael
