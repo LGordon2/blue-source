@@ -1,71 +1,70 @@
 require 'test_helper'
 
 class ProjectHistoriesControllerTest < ActionController::TestCase
-  test "roll off date cannot be before roll on date" do
-    project = projects(:one)
-    employee = employees(:consultant)
-
-    assert_not_nil project
-    assert_not_nil employee
-
-    p = ProjectHistory.create({
-      project: project,
-      employee: employee,
-      roll_on_date: Date.current,
-      roll_off_date: Date.current - 1.day
-    })
-
-    # Roll on date before roll off date
-    p.update({roll_on_date: Date.current, roll_off_date: Date.current - 1.day})
-    assert_not p.valid?, p.errors.full_messages
-
-    # Roll on date equals roll off date
-    p.update({roll_on_date: Date.current, roll_off_date: Date.current})
-    assert p.valid?, p.errors.full_messages
-
-    # Roll on date after roll off date
-    p.update({roll_on_date: Date.current, roll_off_date: Date.current + 1.day})
-    assert p.valid?, p.errors.full_messages
+  def setup
+    @manager = employees(:manager)
+    @consultant = employees(:consultant)
+    @consultant2 = employees(:consultant2)
+    @consultant_history = project_histories(:consultant_history)
   end
 
-  test 'maximum and minimum dates' do
-    minimum_date = Date.new(2000)
-    maximum_date = Date.new(2100)
-    project = projects(:one)
-    employee = employees(:manager)
+  test 'index can be reached as a manager' do
+    get :index, { employee_id: @consultant.id }, current_user_id: @manager.id
+    assert_response :success, @response.headers
+  end
 
-    assert_not_nil project
-    assert_not_nil employee
+  test 'index cannot be reached as a consultant' do
+    get :index, { employee_id: @consultant.id }, current_user_id: @consultant.id
+    assert_redirected_to :root, @response.headers
+  end
 
-    p = ProjectHistory.create({
-        project: project,
-        employee: employee,
-        roll_on_date: Date.current,
-        roll_off_date: Date.current - 1.day
-    })
+  test 'index with non nil sort should not break' do
+    get :index, { employee_id: @consultant.id, sort: 'project_name' }, current_user_id: @manager.id
+    assert_response :success, @response.headers
+  end
 
-    # Roll on date is before minimum date
-    p.update({roll_on_date: minimum_date - 1.day})
-    assert_not p.valid?, "Able to set the roll on day before the minimum date"
+  test 'manager can create a new project history for consultant' do
+    post :create, { employee_id: @consultant.id, new: { project_history: { roll_on_date: Time.now, roll_off_date: Time.now + 1.day, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_nil flash[:error]
+  end
 
-    # Roll on date is after minimum date and before maximum date
-    p.update({roll_on_date: minimum_date + 1.day})
-    assert p.valid?, p.errors.full_messages
+  test 'manager cannot create a new project history for consultant not under them' do
+    post :create, { employee_id: @consultant2.id, new: { project_history: { roll_on_date: Time.now, roll_off_date: Time.now + 1.day, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
 
-    # Roll on date is after maximum date
-    p.update({roll_on_date: maximum_date + 1.day, roll_off_date: maximum_date + 2.days})
-    assert_not p.valid?, "Able to set the roll on day after the maximum date"
+  test 'manager can update a new project history for consultant' do
+    patch :update, { employee_id: @consultant.id, id: @consultant_history.id, "#{@consultant_history.id}" => { project_history: { roll_on_date: Time.now, roll_off_date: Time.now + 1.day, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_nil flash[:error]
+  end
 
-    # Reset date to something valid
-    p.update({roll_on_date: Date.current, roll_off_date: Date.current + 1.day})
-    assert p.valid?, "Current date is not valid for the roll on date"
+  test 'manager cannot update a new project history for consultant not under them' do
+    patch :update, { employee_id: @consultant2.id, id: @consultant_history.id, "#{@consultant_history.id}" => { project_history: { roll_on_date: Time.now, roll_off_date: Time.now + 1.day, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
 
-    # Roll off date is after maximum date
-    p.update({roll_off_date: maximum_date + 1.day})
-    assert_not p.valid?, "Able to set the roll off day after the maximum date"
+  test 'manager can delete a new project history for consultant' do
+    delete :destroy, { employee_id: @consultant.id, id: @consultant_history.id }, current_user_id: @manager.id
+    assert_nil flash[:error]
+  end
 
-    # Roll off date is before minimum date
-    p.update({roll_on_date: minimum_date - 2.days, roll_off_date: minimum_date - 1.day})
-    assert_not p.valid?, "Able to set the roll off day before the minimum date"
+  test 'manager cannot delete a new project history for consultant not under them' do
+    delete :destroy, { employee_id: @consultant2.id, id: @consultant_history.id }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
+
+  test "manager can view their subordinates's project history" do
+    get :show, { employee_id: @consultant.id, id: @consultant_history.id, format: :json }, current_user_id: @manager.id
+    assert_response :success
+  end
+
+  test 'cannot create a new project history with a start date after end date' do
+    post :create, { employee_id: @consultant.id, new: { project_history: { roll_on_date: Time.now + 1.day, roll_off_date: Time.now, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
+
+  test 'cannot update a project history with a start date after end date' do
+    patch :update, { employee_id: @consultant.id, id: @consultant_history.id, "#{@consultant_history.id}" => { project_history: { roll_on_date: Time.now + 1.day, roll_off_date: Time.now, project_id: Project.first.id } } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
   end
 end

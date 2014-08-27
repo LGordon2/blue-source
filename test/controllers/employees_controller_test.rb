@@ -74,7 +74,7 @@ class EmployeesControllerTest < ActionController::TestCase
                                 role: 'Base',
                                 department: 'rural',
                                 status: 'Permanent',
-                                start_date: '2014-08-5' } },
+                                start_date: '2014-08-05' } },
                   { current_user_id: employees(:company_admin).id }
     assert_redirected_to :root
     assert_not_nil flash[:success]
@@ -95,5 +95,23 @@ class EmployeesControllerTest < ActionController::TestCase
     assert_not_nil flash[:error]
   end
 
+  test 'admin should not be able to create new employee with invalid start date' do
+    request.env['HTTP_REFERER'] = root_path
+    post :create, { employee: { username: 'michael.jordan',
+                                first_name: 'Michael',
+                                last_name: 'Jordan',
+                                email: 'michael.jordon@orasi.com',
+                                role: 'Base',
+                                department: 'rural',
+                                status: 'Permanent',
+                                start_date: 'afefiauhfeliafuh' } },
+         { current_user_id: employees(:company_admin).id }
+    assert_redirected_to :root
+    assert_not_nil flash[:error]
+  end
 
+  test 'no current user and no referer is redirected tro login' do
+    get :index
+    assert_redirected_to :login
+  end
 end

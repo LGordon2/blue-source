@@ -13,6 +13,7 @@
 #= require angular
 #= require jquery
 #= require jquery_ujs
+#= require jquery.ui.datepicker
 #= require bootstrap
 #= require jquery.autosize.min
 #= require expand_collapse_panels
@@ -22,6 +23,7 @@
 
 
 $(document).ready ->
+  $('input[type=date]').datepicker()
   $("form#resources-per-page select").on "change", ->
     $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})

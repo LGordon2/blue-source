@@ -50,8 +50,8 @@ upper_manager:
   username: steve.jobs
   first_name: steve
   last_name: jobs
-  role: "Upper Management"
-  status: "Permanent"
+  role: Upper Management
+  status: Permanent
   department: rural
 
 upper_manager2:
@@ -102,3 +102,11 @@ sys_admin:
   status: 'Permanent'
   department: rural
   sys_admin: true
+
+no_manager:
+  username: chris.kelly
+  first_name: chris
+  last_name: kelly
+  role: Base
+  status: Permanent
+  department: rural

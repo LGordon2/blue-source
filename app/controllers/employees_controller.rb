@@ -11,8 +11,6 @@ class EmployeesController < ApplicationController
 
   #Validate date parameters.
   before_action :validate_start_date, only: [:create, :update]
-  before_action :validate_roll_on_date, only: [:create, :update]
-  before_action :validate_roll_off_date, only: [:create, :update]
 
   layout :set_layout
 
@@ -98,16 +96,8 @@ class EmployeesController < ApplicationController
     validate_date(employee_params[:start_date]) unless employee_params[:start_date].blank?
   end
 
-  def validate_roll_on_date
-    validate_date(employee_params[:roll_on_date])
-  end
-
-  def validate_roll_off_date
-    validate_date(employee_params[:roll_off_date])
-  end
-
   def employee_params
-    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :roll_on_date, :roll_off_date, :scheduled_hours_start, :scheduled_hours_end, :project_comments, :title_id]
+    allowed_params = [:username, :first_name, :last_name, :project_id, :start_date, :office_phone, :level, :location, :cell_phone, :email, :im_name, :im_client, :team_lead_id, :scheduled_hours_start, :scheduled_hours_end, :project_comments, :title_id]
     allowed_params += [:role, :manager_id, :status, :additional_days, :bridge_time] if current_user.upper_management?
     param_hash = params.require(:employee).permit(allowed_params, department_id: [])
     param_hash[:department_id] = param_hash[:department_id].reject {|val| val == ""}.last if param_hash.has_key?(:department_id)

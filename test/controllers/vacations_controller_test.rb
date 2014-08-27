@@ -14,6 +14,8 @@ class VacationsControllerTest < ActionController::TestCase
     assert @director.save
     @admin = employees(:department_admin)
     assert @admin.save
+    @no_manager = employees(:no_manager)
+    assert @no_manager.save, @no_manager.errors.full_messages
     @vacation = vacations(:one)
     @vacation.manager = @manager
     @vacation.employee = @consultant
@@ -180,5 +182,61 @@ class VacationsControllerTest < ActionController::TestCase
     assert_nil flash[:error]
     assert_equal prev_vacation_count - 1, Vacation.count
     assert_equal 0, ActionMailer::Base.deliveries.size
+  end
+
+  test 'consultants can view their own vacations' do
+    get :view, { employee_id: @consultant.id }, current_user_id: @consultant.id
+    assert_response :success
+  end
+
+  test "consultants can't view each other's vacations" do
+    get :view, { employee_id: @consultant.id }, current_user_id: @consultant2.id
+    assert_response :redirect
+  end
+
+  test 'cannot delete unknown vacation' do
+    delete :destroy, { employee_id: @consultant.id, id: -1 }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
+
+  test "other consultant cannot cancel consultant's pdo" do
+    delete :cancel, { employee_id: @consultant.id, id: @pending_vacation }, current_user_id: @consultant2.id
+    assert_not_nil flash[:error]
+  end
+
+  test 'cannot cancel non pending pdo' do
+    delete :cancel, { employee_id: @consultant.id, id: @vacation }, current_user_id: @consultant.id
+    assert_not_nil flash[:error]
+  end
+
+  test 'employee without manager cannot request vacation' do
+    post :requests, { employee_id: @no_manager.id, vacation: { date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: 'Sick' } }, current_user_id: @no_manager.id
+    assert_not_nil flash[:error]
+  end
+
+  test 'should be able to take over max vacation days for the fiscal year' do
+    post :create, { employee_id: @consultant.id, vacation: { date_requested: '2014-08-16', start_date: '2014-09-16', end_date: '2014-10-15', vacation_type: 'Vacation' } }, current_user_id: @manager.id
+    assert_nil flash[:error]
+
+    patch :update, { employee_id: @consultant.id, id: @vacation.id, "#{@vacation.id}" => { vacation: { date_requested: '2014-08-16', start_date: '2014-10-16', end_date: '2014-11-06', vacation_type: 'Vacation' } } }, current_user_id: @manager.id
+    assert_nil flash[:error]
+  end
+
+  test 'should be able to take over max vacation days for the next fiscal year' do
+    post :create, { employee_id: @consultant.id, vacation: { date_requested: '2014-08-16', start_date: '2015-03-16', end_date: '2015-05-15', vacation_type: 'Vacation' } }, current_user_id: @manager.id
+    assert_nil flash[:error]
+  end
+
+  test 'start date must be before or same as end date' do
+    post :create, { employee_id: @consultant.id, vacation: { date_requested: Time.now, start_date: Time.now + 1.day, end_date: Time.now, vacation_type: 'Vacation' } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+
+    patch :update, { employee_id: @consultant.id, id: @vacation.id, "#{@vacation.id}" => { vacation: { date_requested: Time.now, start_date: Time.now + 1.day, end_date: Time.now, vacation_type: 'Vacation' } } }, current_user_id: @manager.id
+    assert_not_nil flash[:error]
+  end
+
+  test 'should be able to create vacation using new' do
+    post :create, { employee_id: @consultant.id, new: { vacation: { date_requested: '2014-08-16', start_date: '2014-09-16', end_date: '2014-10-15', vacation_type: 'Vacation' } } }, current_user_id: @manager.id
+    assert_nil flash[:error]
   end
 end
