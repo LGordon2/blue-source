@@ -1,12 +1,12 @@
 BlueSource::Application.routes.draw do
   #BlueSource API
-  get "api/subordinates"
-  get "api/manager"
+  get 'api/subordinates'
+  get 'api/manager'
 
   resources :titles
 
   #Admin
-  get "admin/index"
+  get 'admin/index'
   namespace :admin do
     resources :departments, only: :index
     resources :titles
@@ -17,7 +17,7 @@ BlueSource::Application.routes.draw do
     resources :vacations, only: [:index,:create,:update,:destroy] do
       collection do
         get 'view'
-        post "requests"
+        post 'requests'
       end
       member do
         delete 'cancel'

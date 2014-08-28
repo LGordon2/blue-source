@@ -13,6 +13,7 @@
  *= require jquery.ui.datepicker
  *= require scaffolds
  *= require loader
+ *= require jquery.ui.datepicker
  *= require_self
  */
 $orasi_blue: #357bb9;
@@ -185,7 +186,6 @@ a {
     font-size: 14px;
   }
 }
-
 input::-webkit-calendar-picker-indicator{
   display: none;
 }
