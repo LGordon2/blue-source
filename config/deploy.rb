@@ -1,7 +1,6 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
-set :application, 'blue-source'
 set :repo_url, 'git@github.com:Orasi/blue-source.git'
 
 # Default branch is :master

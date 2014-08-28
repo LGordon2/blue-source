@@ -43,6 +43,10 @@ class Employee < ActiveRecord::Base
     employee_title.name unless employee_title.blank?
   end
 
+  def contractor?
+    status == 'Contractor'
+  end
+
   def department_area_head_or_admin?
     role.in?(['Upper Management', 'Department Head'])
   end

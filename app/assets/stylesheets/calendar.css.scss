@@ -101,4 +101,9 @@ div#calendar-date-select
 }
 #download-link-header{
   padding: 10px;
+
+  span{
+    vertical-align: -moz-middle-with-baseline;
+    vertical-align: -webkit-baseline-middle;
+  }
 }

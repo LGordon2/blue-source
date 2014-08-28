@@ -1,8 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  project_id: 
-  employee_id: 
+  project: one
+  employee: consultant
 
 two:
   project_id: 
