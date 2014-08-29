@@ -22,6 +22,5 @@ $ ->
       $(".more-pdo:contains('more'):hidden").toggleClass("hidden") 
       $(".more-pdo:contains('Collapse'):visible").toggleClass("hidden")
   $('[data-toggle]').tooltip()
-  $('#check-all').on 'click', ->
-    $(this).parent().find('input[type=checkbox]').prop('checked',true)
+
       

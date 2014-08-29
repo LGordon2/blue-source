@@ -12,7 +12,6 @@
     - %i(sick vacation floating_holiday other).each do |vacation_type|
       = f.label vacation_type, class: 'control-label'
       = f.check_box vacation_type
-    %a#check-all Check All
   #pending-and-reasons-checkboxes
     = f.label 'Include pending?', class: 'control-label'
     = f.check_box :include_pending
