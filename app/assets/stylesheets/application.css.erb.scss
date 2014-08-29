@@ -10,9 +10,11 @@
  *
  *= require bootstrap
  *= require bootstrap-theme
+ *= require jquery.ui.datepicker
  *= require scaffolds
  *= require loader
  *= require jquery.ui.datepicker
+ *= require jquery-ui-bs
  *= require_self
  */
 $orasi_blue: #357bb9;
@@ -33,6 +35,21 @@ input.has-error {
 
 #loading-section {
   text-align: center;
+}
+#about-section {
+  padding: 10px;
+
+  ul{
+    padding: 10px;
+
+    li{
+      list-style-type: none;
+    }
+  }
+
+  #tester-link a{
+    cursor: pointer;
+  }
 }
 
 .bs-docs-nav .navbar-toggle .icon-bar {
@@ -184,7 +201,4 @@ a {
     height: 34px;
     font-size: 14px;
   }
-}
-input[type="date"]::-webkit-input-placeholder{
-  visibility: hidden !important;
 }

@@ -13,6 +13,7 @@
 #= require angular
 #= require jquery
 #= require jquery_ujs
+#= require jquery.ui.datepicker
 #= require bootstrap
 #= require jquery.autosize.min
 #= require expand_collapse_panels
@@ -22,9 +23,14 @@
 
 
 $(document).ready ->
+  $('input[type=date]').datepicker({dateFormat: 'yy-mm-dd'}) if (!Modernizr.inputtypes.date)
   $("form#resources-per-page select").on "change", ->
     $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})
+  $('.expand-link').on 'click', ->
+    return unless $(this).data('target') != 'undefined'
+    target = $(this).data('target')
+    $(target).toggle()
   $("#help-btn").tooltip()
   $("form").submit (event) ->
     valid = true
