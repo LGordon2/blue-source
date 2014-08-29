@@ -27,6 +27,10 @@ $(document).ready ->
   $("form#resources-per-page select").on "change", ->
     $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})
+  $('.expand-link').on 'click', ->
+    return unless $(this).data('target') != 'undefined'
+    target = $(this).data('target')
+    $(target).toggle()
   $("#help-btn").tooltip()
   $("form").submit (event) ->
     valid = true

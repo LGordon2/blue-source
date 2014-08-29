@@ -6,7 +6,7 @@ $icon_color: #ffffff;
   color: $icon_color;
 
   .ui-icon{
-    background-image: url("//download.jqueryui.com/themeroller/images/ui-icons_#{$icon_color}_256x240.png");
+    background-image: url("<%= image_path 'jquery-ui-icons-white.png' %>");
   }
 }
 .ui-datepicker-calendar{
