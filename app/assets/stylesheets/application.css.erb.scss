@@ -10,6 +10,7 @@
  *
  *= require bootstrap
  *= require bootstrap-theme
+ *= require jquery.ui.datepicker
  *= require scaffolds
  *= require loader
  *= require jquery.ui.datepicker
@@ -184,7 +185,4 @@ a {
     height: 34px;
     font-size: 14px;
   }
-}
-input[type="date"]::-webkit-input-placeholder{
-  visibility: hidden !important;
 }
