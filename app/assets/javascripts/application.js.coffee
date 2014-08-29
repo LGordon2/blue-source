@@ -23,7 +23,7 @@
 
 
 $(document).ready ->
-  $('input[type=date]').datepicker({dateFormat: 'yy-mm-dd'})
+  $('input[type=date]').datepicker({dateFormat: 'yy-mm-dd'}) if (!Modernizr.inputtypes.date)
   $("form#resources-per-page select").on "change", ->
     $(this).parent("form").submit()
   $('textarea').autosize({append: "\n"})
