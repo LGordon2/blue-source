@@ -15,7 +15,7 @@
 # used to set extended properties on the server.
 
 set :application, 'blue-source'
-server 'orasi-portal', user: 'lew', roles: %w(web)
+server 'orasi-portal', user: 'deploy', roles: %w(web)
 set :linked_files, %w(db/production.sqlite3 config/api.yml)
 
 # Default branch is :master
