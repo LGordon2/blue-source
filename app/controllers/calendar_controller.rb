@@ -61,7 +61,7 @@ class CalendarController < ApplicationController
                              end
 
         @filter = OpenStruct.new(filter_params)
-        @page_count = @vacations.count / resources_per_page
+        @page_count = (@vacations.count.to_f / resources_per_page).ceil
         set_pagination
         @vacations = @vacations.limit(resources_per_page).offset(resources_per_page * (page_number - 1))
         @report_vacations = get_report_vacations(@vacations)

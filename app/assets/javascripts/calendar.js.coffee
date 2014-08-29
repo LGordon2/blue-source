@@ -22,4 +22,5 @@ $ ->
       $(".more-pdo:contains('more'):hidden").toggleClass("hidden") 
       $(".more-pdo:contains('Collapse'):visible").toggleClass("hidden")
   $('[data-toggle]').tooltip()
+
       
