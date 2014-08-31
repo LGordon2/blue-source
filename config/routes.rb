@@ -1,20 +1,20 @@
 BlueSource::Application.routes.draw do
-  #BlueSource API
+  # BlueSource API
   get 'api/subordinates'
   get 'api/manager'
 
   resources :titles
 
-  #Admin
+  # Admin
   get 'admin/index'
   namespace :admin do
     resources :departments, only: :index
     resources :titles
   end
- 
-  #Employees stuff
+
+  # Employees stuff
   resources :employees do
-    resources :vacations, only: [:index,:create,:update,:destroy] do
+    resources :vacations, only: [:index, :create, :update, :destroy] do
       collection do
         get 'view'
         post 'requests'
@@ -31,31 +31,31 @@ BlueSource::Application.routes.draw do
     get 'sub_departments'
     get 'employees'
   end
-  
-  #Projects
 
-  resources :projects, only: [:index,:show,:create,:update,:edit] do
+  # Projects
+
+  resources :projects, only: [:index, :show, :create, :update, :edit] do
     get 'leads'
   end
-  
-  #Welcome (login)
-  get "login", to: 'welcome#login', as: :login
-  get "logout", to: "welcome#logout", as: :logout
-  post "login", to: "welcome#validate", as: :check_login
-  post "issue", to: "welcome#issue", as: :issue
-  post "search", to: "welcome#search_employee", as: :search
-  post "login_issue", to: "welcome#login_issue", as: :login_issue
-  
-  #Directory
-  resource :directory, only: [:show], controller: "directory" do
-    resources :employees, only: [:index], action: "directory"
+
+  # Welcome (login)
+  get 'login', to: 'welcome#login', as: :login
+  get 'logout', to: 'welcome#logout', as: :logout
+  post 'login', to: 'welcome#validate', as: :check_login
+  post 'issue', to: 'welcome#issue', as: :issue
+  post 'search', to: 'welcome#search_employee', as: :search
+  post 'login_issue', to: 'welcome#login_issue', as: :login_issue
+
+  # Directory
+  resource :directory, only: [:show], controller: 'directory' do
+    resources :employees, only: [:index], action: 'directory'
   end
-  
-  resource :calendar, only: [:index] do 
-     get '/', to: 'calendar#index'
-     get '/report', to: 'calendar#report'
+
+  resource :calendar, only: [:index] do
+    get '/', to: 'calendar#index'
+    get '/report', to: 'calendar#report'
   end
-  
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -96,7 +96,7 @@ BlueSource::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
