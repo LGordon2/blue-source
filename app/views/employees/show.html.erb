@@ -95,7 +95,7 @@
 <table class="table">
 	<tr>
 		<td>Project:</td>
-		<td><%= (@current_project.blank? or @current_project.project.blank?) ? "Not billable" : @current_project.project.name %></td>
+		<td><%= (@current_project.blank? || @current_project.project.blank?) ? "Not billable" : @current_project.project.name %></td>
 	</tr>
 	<tr>
 		<td>Project Lead:</td>

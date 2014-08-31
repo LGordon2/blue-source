@@ -123,7 +123,7 @@ class VacationsControllerTest < ActionController::TestCase
   test 'mail is generated on vacation request' do
     vacation_type = 'Sick'
     ActionMailer::Base.deliveries.clear
-    post :requests, { employee_id: @consultant.id, vacation: { date_requested: Time.now, start_date: Time.now, end_date: Time.now, vacation_type: vacation_type } }, current_user_id: @consultant.id
+    post :requests, { employee_id: @consultant.id, vacation: { date_requested: Time.now, start_date: Time.now, end_date: Time.now + 5.days, vacation_type: vacation_type } }, current_user_id: @consultant.id
     assert_nil flash[:error]
     assert_equal 1, ActionMailer::Base.deliveries.size
     mail = ActionMailer::Base.deliveries.first

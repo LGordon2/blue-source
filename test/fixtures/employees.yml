@@ -3,10 +3,10 @@ manager:
   username: bob.barker
   first_name: bob
   last_name: barker
-  role: "Management"
-  email: 'bob.barker@orasi.com'
+  role: Management
+  email: bob.barker@orasi.com
   manager: upper_manager
-  status: "Permanent"
+  status: Permanent
   department: rural
 
 consultant:

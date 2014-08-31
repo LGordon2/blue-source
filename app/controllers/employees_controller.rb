@@ -10,7 +10,7 @@ class EmployeesController < ApplicationController
   before_action :can_view, only: :show
 
   # Validate date parameters.
-  before_action :validate_start_date, only: [:create, :update]
+  before_action :validate_start_date, only: %i(create update)
 
   layout :set_layout
 
@@ -18,7 +18,7 @@ class EmployeesController < ApplicationController
     @prev_page = 3 if request.referer == employee_vacations_url(@employee.id)
     @prev_page = 2 if flash[:project] == true
 
-    @current_project = ProjectHistory.where(employee: @employee).where('roll_on_date <= :date and (roll_off_date IS NULL or roll_off_date >= :date)', date: Date.current).first
+    @current_project = ProjectHistory.employee_current_projects(@employee).first
 
     respond_to do |format|
       format.json { render json: @employee }
@@ -37,12 +37,11 @@ class EmployeesController < ApplicationController
     if @employee.update(preferences)
       redirect_to @employee, flash: { success: 'Employee successfully updated.' }
     else
-      redirect_to @employee, flash: { error: @employee.errors.full_messages.first }
+      redirect_to @employee, flash: { error: @employee.errors.full_messages }
     end
   end
 
   def create
-    # raise Exception
     @employee = Employee.new(employee_params)
     unless current_user.can_add? @employee
       redirect_to :root, flash: { error: 'You do not have permission to add this employee.' }
@@ -68,9 +67,9 @@ class EmployeesController < ApplicationController
 
   def update
     if @employee.update(employee_params)
-      redirect_to @employee, flash: { success: 'Employee successfully updated.', project: !employee_params[:project_id].nil? }
+      redirect_to @employee, flash: { success: 'Employee successfully updated.', project: employee_params[:project_id].present? }
     else
-      redirect_to @employee, flash: { error: @employee.errors.full_messages.first }
+      redirect_to @employee, flash: { error: @employee.errors.full_messages }
     end
   end
 
@@ -98,8 +97,8 @@ class EmployeesController < ApplicationController
     allowed_params = %i(username first_name last_name project_id start_date office_phone level location cell_phone email im_name im_client team_lead_id scheduled_hours_start scheduled_hours_end project_comments title_id)
     allowed_params += %i(role manager_id status additional_days bridge_time) if current_user.upper_management?
     param_hash = params.require(:employee).permit(allowed_params, department_id: [])
-    param_hash[:department_id] = param_hash[:department_id].reject { |val| val == '' }.last if param_hash.key?(:department_id)
-    param_hash.each { |key, val| param_hash[key] = val.downcase if key == 'first_name' || key == 'last_name' } unless param_hash.blank?
+    param_hash[:department_id] = param_hash[:department_id].reject { |val| val.empty? }.last if param_hash.key?(:department_id)
+    param_hash.each { |key, val| param_hash[key] = val.downcase if %w(first_name last_name).include?(key) } unless param_hash.blank?
   end
 
   # Permissions
