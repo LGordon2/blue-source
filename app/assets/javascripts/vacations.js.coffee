@@ -48,6 +48,7 @@ set_business_days = (object) ->
   $end_date = row_obj.find(".end-date")
   $half_day = row_obj.find("input.half-day")
   $business_days = row_obj.find(".business-days")
+  console.log($start_date)
   bsn_days = calc_business_days($start_date.val(),$end_date.val(),$half_day.prop("checked"))
   $business_days.children().text(bsn_days)
 
