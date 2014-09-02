@@ -40,7 +40,7 @@
               - %w(date_requested start_date end_date).each do |field|
                 %td.edit-field
                   %span= vacation.send(field).to_s(:long) unless vacation.send(field).blank?
-                  %input.hidden{ type: 'date', placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD', name: "#{vacation.id}[vacation][#{field}]", value: vacation.send(field), class: field.dasherize }
+                  %input.date-field.hidden{ type: 'date', placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD', name: "#{vacation.id}[vacation][#{field}]", value: vacation.send(field), class: field.dasherize }
               %td.business-days
                 %strong
               %td.edit-field
