@@ -26,6 +26,8 @@ $(document).ready ->
   $('input[type=date]').datepicker({dateFormat: 'yy-mm-dd'}) if (!Modernizr.inputtypes.date)
   $("form#resources-per-page select").on "change", ->
     $(this).parent("form").submit()
+  $('.check-all').on 'click', ->
+    $(this).siblings('input[type=checkbox]').prop('checked', true)
   $('textarea').autosize({append: "\n"})
   $('.expand-link').on 'click', ->
     return unless $(this).data('target') != 'undefined'
