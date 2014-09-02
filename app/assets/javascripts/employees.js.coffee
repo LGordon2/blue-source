@@ -42,7 +42,6 @@ employees_list_ctrl = ($scope, $http, $filter, $log, $parse) ->
   searchMatch = AngularHelpers.searchMatch
     
   $scope.search = ->
-    $log.info($scope.predicate)
     $scope.filteredResources = $filter('filter')($scope.resources, (employee) ->
       return searchMatch(employee.first_name, $scope.query) || searchMatch(employee.last_name, $scope.query) ||
       searchMatch(employee.display_name, $scope.query) ||
@@ -58,7 +57,7 @@ employees_list_ctrl = ($scope, $http, $filter, $log, $parse) ->
     #  typeof get(obj) == 'undefined' ?  '' : get(obj)
 
     $scope.filteredResources = $filter('filter')($scope.filteredResources,{status:"!Inactive"}) unless $scope.show_inactive
-    $scope.filteredResources = $filter('filter')($scope.filteredResources,{manager_id: parseInt($scope.current_id)},true) if $scope.current_id != ''
+    $scope.filteredResources = $filter('filter')($scope.filteredResources,{'manager.id': parseInt($scope.current_id)},true) if $scope.current_id != ''
     $scope.filteredResources = $filter('orderBy')($scope.filteredResources, $scope.predicate, $scope.reverse)
 
     $scope.currentPage = 0
