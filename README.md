@@ -9,6 +9,7 @@ BlueSource Team:
 
     Lew Gordon - Development
     David Quach - Development
+    Ethan Bell - Development
     Perry Thomas - Project Management
     Adam Thomas - Business Analysis, Design
     John Martin - Functional Testing
