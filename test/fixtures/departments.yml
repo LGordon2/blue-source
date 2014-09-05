@@ -10,3 +10,7 @@ services:
 mobile:
   name: 'Mobile'
   parent_department: services
+
+sub_rural:
+  name: Sub Rural
+  parent_department: rural

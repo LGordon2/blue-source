@@ -3,9 +3,10 @@ manager:
   username: bob.barker
   first_name: bob
   last_name: barker
-  role: "Management"
+  role: Management
+  email: bob.barker@orasi.com
   manager: upper_manager
-  status: "Permanent"
+  status: Permanent
   department: rural
 
 consultant:
@@ -16,6 +17,16 @@ consultant:
   manager: manager
   status: "Permanent"
   start_date: "2010-12-19"
+  department: rural
+
+inactive:
+  username: jason.rickard
+  first_name: jason
+  last_name: rickard
+  role: Base
+  manager: manager
+  status: Inactive
+  start_date: 2010-12-19
   department: rural
 
 contractor:
@@ -49,8 +60,8 @@ upper_manager:
   username: steve.jobs
   first_name: steve
   last_name: jobs
-  role: "Upper Management"
-  status: "Permanent"
+  role: Upper Management
+  status: Permanent
   department: rural
 
 upper_manager2:
@@ -101,3 +112,11 @@ sys_admin:
   status: 'Permanent'
   department: rural
   sys_admin: true
+
+no_manager:
+  username: chris.kelly
+  first_name: chris
+  last_name: kelly
+  role: Base
+  status: Permanent
+  department: rural

@@ -1,0 +1,40 @@
+#about-section
+  %h3
+    = image_tag 'logo.png', height: 50
+    = BlueSource::Application.config.version
+  %p
+    BlueSource is an employee information tracking system. Its
+    creation came from the need to have a universal and collaborative
+    tool for storing employee records. By using BlueSource, a user is
+    able to maintain information about employees, projects, and time off.
+    All data is stored on a central database allowing employees to be
+    transferred between projects and functional teams securely and
+    efficiently. BlueSource uses your current Orasi user credentials, so
+    information can be accessed securely without the need for creating
+    a separate account.
+  %h5 BlueSource Team
+  %ul
+    %li Perry Thomas - Project Management
+    %li Adam Thomas - Business Analysis, Design
+    %li Lew Gordon - Development Lead
+    %li David Quach - Development
+    %li Ethan Bell - Development
+    %li Linley Love - Data Entry, User Acceptance Testing
+    %li#tester-link
+      %a.expand-link{'data-target' => '#about-testers'} Show BlueSource QA
+    #about-testers{style: 'display: none'}
+      %li John Martin - Functional Testing
+      %li Lateef Livers - Functional Testing
+      %li Kevin Hedgecock - Functional Testing
+      %li Jason Trogdon - Functional Testing
+      %li John Doll - Functional Testing
+      %li Caleb Brough - Functional Testing
+      %li Jeff Dudelston - Functional Testing
+      %li Gabriel Jackson - Functional Testing
+      %li Josh Jackson - Functional Testing
+      %li Jock Lanier - Functional Testing
+      %li Kevin Munro - Functional Testing
+
+.modal-footer
+  - if @in_modal
+    %button.btn.btn-default{type: 'Button', 'data-dismiss' => 'modal'} Close

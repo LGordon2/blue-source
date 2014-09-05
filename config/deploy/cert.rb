@@ -14,6 +14,7 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
+set :application, 'blue-source-cert'
 server 'orasi-portal', user: 'deploy', roles: %w(web)
 set :linked_files, %w(db/cert.sqlite3 config/api.yml)
 

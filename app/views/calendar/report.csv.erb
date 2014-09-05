@@ -1,4 +1,4 @@
 Name,Start Date,End Date,Department,Vacation Type,Business Days
-<% @vacations.each do | vacation | %>
-<%=vacation.employee.display_name%>,<%=vacation.start_date%>,<%=vacation.end_date%>,<%=vacation.employee.department.name unless vacation.employee.department.blank?%>,<%=vacation.vacation_type%>,<%=vacation.business_days%>
+<% @report_vacations.each do | vacation | %>
+<%=vacation.employee_name%>,<%=vacation.start_date%>,<%=vacation.end_date%>,<%=vacation.employee_dept_name%>,<%=vacation.vacation_type%>,<%=vacation.business_days%><%= ",#{vacation.reason}" if @include_reasons %>
 <% end %>

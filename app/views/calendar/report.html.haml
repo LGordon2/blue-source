@@ -1,0 +1,43 @@
+= render 'notification_section'
+#download-link-header
+  %span
+    Download
+    = link_to 'CSV', report_calendar_path(params.merge(format: :csv))
+    |
+    = link_to 'JSON', report_calendar_path(params.merge(format: :json))
+  .btn-group.pull-right
+    = button_tag 'New Report', class: 'btn btn-sm btn-primary', data: { toggle: 'modal', target: '#vacation_reporting_modal' }
+    = button_tag 'Edit Report', class: 'btn btn-sm btn-primary', data: { toggle: 'modal', target: '#vacation_reporting_modal_edit' }
+  .clearfix
+%table.table
+  %tr
+    - ['Name', 'Start Date', 'End Date', 'Department', 'Vacation Type', 'Business Days'].each do |header|
+      %th
+        = link_to header, report_calendar_path(params.merge(sort: header.downcase.tr_s(' ','_'), rev: params[:rev]!='true', filter: params['filter']))
+        = render partial: 'application/ascending_descending_icon_nojs', locals: { predicate: params['sort'].present? && params['sort'].humanize.downcase == header.downcase, forward: params[:rev] != 'true', numeric: ['Start Date', 'End Date', 'Business Days'].include?(header) }
+    - if @include_reasons
+      %th= link_to 'Reason', report_calendar_path(params.merge(sort: 'Reason', rev: params[:rev]!='true', filter: params['filter']))
+    - @report_vacations.each do |vacation|
+      %tr
+        %td= vacation.employee_name
+        %td= vacation.start_date
+        %td= vacation.end_date
+        %td= vacation.employee_dept_name
+        %td= vacation.vacation_type
+        %td= vacation.business_days
+        - if @include_reasons
+          %td= vacation.reason
+- if @page_count > 1
+  .pagination
+    %ul.pagination
+      %li{ class: ('disabled' if @prev_disabled) }
+        = link_to '&laquo;'.html_safe, report_calendar_path(params.merge('pgn' => @active_page))
+
+      - @pagination_range.first(@max_pagination_pages).each do |num|
+        %li{ class: ('active' if @active_page == num - 1) }
+          = link_to num, report_calendar_path(params.merge('pgn' => num))
+
+      %li{ class: ('disabled' if @next_disabled) }
+        = link_to '&raquo;'.html_safe, report_calendar_path(params.merge('pgn' => @active_page + 2))
+
+= render partial: 'vacation_reporting_modal', locals: {edit: true}

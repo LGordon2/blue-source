@@ -1,15 +1,18 @@
+- edit = false if local_assigns[:edit].nil?
+- @filter = nil unless edit
 = form_for :filter, html: {class: :form, role: :form, id: 'filter-form'}, url: report_calendar_path, method: :get do |f|
   = f.label :start_date, class: 'control-label'
-  = f.date_field :start_date, 'value' => "#{@filter.start_date unless @filter.nil?}", class: 'form-control', required: true, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD"
+  = f.date_field :start_date, id: "reporting_start_date#{'_edit' if edit}", 'value' => "#{@filter.start_date unless @filter.nil? || edit == false}", class: 'form-control', required: true, placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD'
   = f.label :end_date, class: 'control-label'
-  = f.date_field :end_date, 'value' => "#{@filter.end_date unless @filter.nil?}", class: 'form-control', required: true, placeholder: "YYYY-MM-DD", pattern: '\d{4}-\d{2}-\d{2}', title: "YYYY-MM-DD"
+  = f.date_field :end_date, id: "reporting_end_date#{'_edit' if edit}", 'value' => "#{@filter.end_date unless @filter.nil? || edit == false}", class: 'form-control', required: true, placeholder: 'YYYY-MM-DD', pattern: '\d{4}-\d{2}-\d{2}', title: 'YYYY-MM-DD'
   = f.label :department, class: 'control-label'
   = f.select :department, Department.all.collect {|d| [d.name, d.id]}.unshift('Select All'), {include_blank: false}, class: 'form-control'
 
   #vacation-checkboxes
-    - [:sick, :vacation, :floating_holiday, :other].each do |vacation_type|
+    - %i(sick vacation floating_holiday other).each do |vacation_type|
       = f.label vacation_type, class: 'control-label'
       = f.check_box vacation_type
+    %a.check-all Check all
   #pending-and-reasons-checkboxes
     = f.label 'Include pending?', class: 'control-label'
     = f.check_box :include_pending

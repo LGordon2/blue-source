@@ -20,3 +20,23 @@ three:
   end_date: 2013-12-27
   business_days: 3
   vacation_type: Vacation
+
+contractor_vacation:
+  date_requested: 2014-08-21
+  start_date: 2014-08-21
+  end_date: 2014-08-21
+  business_days: 1
+  vacation_type: Vacation
+  employee: contractor
+  manager: manager
+  reason: Contractor Vacation
+
+pending:
+  date_requested: 2014-08-25
+  start_date: 2014-08-25
+  end_date: 2014-08-25
+  business_days: 1
+  status: Pending
+  employee: consultant
+  manager: manager
+  vacation_type: Sick

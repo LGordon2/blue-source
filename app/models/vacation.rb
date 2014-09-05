@@ -26,15 +26,13 @@ class Vacation < ActiveRecord::Base
   validate :pdo_type_must_be_other_if_contractor
   
   def self.types
-    ["Sick","Vacation","Floating Holiday","Other"]
+    ['Sick','Vacation','Floating Holiday','Other']
   end
   
   def pdo_type_must_be_other_if_contractor
-    if self.employee.status == "Contractor" and !self.vacation_type.in? ["Sick", "Vacation", "Other"]
-      errors.add(:base, "Contractors can only take sick or vacation time.")
-    elsif self.employee.status == "Contractor" and self.vacation_type != "Other"
+    if self.employee.status == 'Contractor' && self.vacation_type != 'Other'
       self.reason = "Contractor #{self.vacation_type}"
-      self.vacation_type = "Other"
+      self.vacation_type = 'Other'
       self.save
     end
   end
@@ -54,34 +52,26 @@ class Vacation < ActiveRecord::Base
   end
 
   def pending?
-    self.status == "Pending"
+    self.status == 'Pending'
   end
 
   private
   
   def vacation_not_added_before_start_date
-    if !(self.employee.start_date.blank? or self.start_date.blank?) and (self.employee.start_date > self.start_date)
-      errors.add(:start_date, "is before employee's start date.")
-    end
+    errors.add(:start_date, "is before employee's start date.") if !(employee.start_date.blank? || start_date.blank?) && (employee.start_date > start_date)
   end
   
   def reason_present_if_other
-    if self.reason.blank? and self.vacation_type == "Other"
-      errors.add(:base, "Reason must be present for vacation type 'Other'.")
-    end
+    errors.add(:base, "Reason must be present for vacation type 'Other'.") if self.reason.blank? && self.vacation_type == 'Other'
   end
   
   def end_date_cannot_be_before_start_date
-    unless end_date.blank? or start_date.blank? or end_date >= start_date
-      errors.add(:end_date, "can't be before start date.")
-    end
+    errors.add(:end_date, "can't be before start date.") unless end_date.blank? || start_date.blank? || end_date >= start_date
   end
   
   def set_business_days
     #Calculates the correct number of business days taken.
-    Rails.logger.error "Start date was blank." if self.start_date.blank?
-    Rails.logger.error "End date was blank." if self.end_date.blank?
-    return if self.start_date.blank? or self.end_date.blank?
+    return if self.start_date.blank? || self.end_date.blank?
     
     self.business_days = Vacation.calc_business_days_for_range(self.start_date,self.end_date)
     self.business_days -= 0.5 if self.half_day
@@ -113,35 +103,21 @@ class Vacation < ActiveRecord::Base
   # end
   
   def minimum_and_maximum_dates
-    return if date_requested.blank? or start_date.blank? or end_date.blank?
+    return if date_requested.blank? || start_date.blank? || end_date.blank?
     
     minimum_date = Date.new(2000)
     maximum_date = Date.new(2100)
-    
-    unless minimum_date < date_requested
-      errors.add(:date_requested, "is before the minimum date of #{minimum_date}.")
-    end
-    unless minimum_date < start_date
-      errors.add(:start_date, "is before the minimum date of #{minimum_date}.")
-    end
-    unless minimum_date < end_date
-      errors.add(:end_date, "is before the minimum date of #{minimum_date}.")
-    end
-    
-    unless maximum_date > date_requested
-      errors.add(:date_requested, "is after the maximum date of #{maximum_date}.")
-    end
-    unless maximum_date > start_date
-      errors.add(:start_date, "is before the maximum date of #{maximum_date}.")
-    end
-    unless maximum_date > end_date
-      errors.add(:end_date, "is before the maximum date of #{maximum_date}.")
-    end
+
+    errors.add(:date_requested, "is before the minimum date of #{minimum_date}.") unless minimum_date < date_requested
+    errors.add(:start_date, "is before the minimum date of #{minimum_date}.") unless minimum_date < start_date
+    errors.add(:end_date, "is before the minimum date of #{minimum_date}.") unless minimum_date < end_date
+
+    errors.add(:date_requested, "is after the maximum date of #{maximum_date}.") unless maximum_date > date_requested
+    errors.add(:start_date, "is before the maximum date of #{maximum_date}.") unless maximum_date > start_date
+    errors.add(:end_date, "is before the maximum date of #{maximum_date}.")unless maximum_date > end_date
   end
   
   def employee_is_not_inactive
-    if self.employee.status == "Inactive"
-      errors.add("Employee's status", "was inactive.")
-    end
+    errors.add("Employee's status", 'was inactive.') if employee.status == 'Inactive'
   end
 end

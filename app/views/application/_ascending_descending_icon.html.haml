@@ -1,5 +1,5 @@
 %span{"ng-show" => "predicate=='#{predicate}'"}
-  - if numeric
+  - if defined?(numeric) && numeric
     %span.glyphicon.glyphicon-sort-by-order-alt.pull-right.orasi-blue{"ng-show" => 'reverse==true'}
     %span.glyphicon.glyphicon-sort-by-order.pull-right.orasi-blue{"ng-show" => 'reverse==false'}
   - else

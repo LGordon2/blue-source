@@ -1,0 +1,21 @@
+// BlueSource JQueryUI styling
+$orasi_blue: #357bb9;
+$icon_color: #ffffff;
+.ui-widget-header{
+  background: $orasi_blue;
+  color: $icon_color;
+
+  .ui-icon{
+    background-image: url("<%= image_path 'jquery-ui-icons-white.png' %>");
+  }
+}
+.ui-datepicker-calendar{
+  .ui-state-default{
+    background: none;
+  }
+}
+.ui-widget-content{
+  .ui-state-highlight{
+    border: 1px solid $orasi_blue;
+  }
+}
