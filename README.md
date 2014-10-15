@@ -1,3 +1,5 @@
+# Development on this repo has stopped: please see [Orasi/blue-source](https://github.com/Orasi/blue-source).
+
 BlueSource
 ==============
 [![Build Status](https://travis-ci.org/Orasi/blue-source.svg?branch=master)](http://travis-ci.org/Orasi/blue-source)
